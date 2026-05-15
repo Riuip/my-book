@@ -81,4 +81,41 @@
   /* ---------- Footer year ---------- */
   var yr = document.querySelector('[data-year]');
   if (yr) yr.textContent = new Date().getFullYear();
+
+  /* ---------- Sidebar (article navigation drawer) ---------- */
+  var sidebar = document.getElementById('sidebar');
+  var backdrop = document.getElementById('sidebar-backdrop');
+  var sidebarToggle = document.querySelector('[data-sidebar-toggle]');
+  var sidebarClose = document.querySelector('[data-sidebar-close]');
+
+  function openSidebar() {
+    if (!sidebar) return;
+    sidebar.classList.add('is-open');
+    if (backdrop) backdrop.classList.add('is-open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeSidebar() {
+    if (!sidebar) return;
+    sidebar.classList.remove('is-open');
+    if (backdrop) backdrop.classList.remove('is-open');
+    document.body.style.overflow = '';
+  }
+  if (sidebarToggle) sidebarToggle.addEventListener('click', openSidebar);
+  if (sidebarClose) sidebarClose.addEventListener('click', closeSidebar);
+  if (backdrop) backdrop.addEventListener('click', closeSidebar);
+
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && sidebar && sidebar.classList.contains('is-open')) {
+      closeSidebar();
+    }
+  });
+
+  // Highlight current article in sidebar
+  if (sidebar) {
+    var sidebarLinks = sidebar.querySelectorAll('.sidebar__item');
+    Array.prototype.forEach.call(sidebarLinks, function (a) {
+      var href = (a.getAttribute('href') || '').toLowerCase();
+      if (href === file) a.classList.add('is-active');
+    });
+  }
 })();
