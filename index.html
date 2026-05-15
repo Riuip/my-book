@@ -3,128 +3,111 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Maison — 个人札记</title>
-  <meta name="description" content="一份私人札记。关于生活、思考、品味与时间的纪录。" />
+  <title>WYQ 专属博客</title>
+  <meta name="description" content="WYQ 的个人博客 · 记录生活、思考与日常。" />
+  <meta name="theme-color" content="#fbfbfd" media="(prefers-color-scheme: light)" />
+  <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)" />
   <link rel="stylesheet" href="assets/css/style.css" />
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230b0b0d'/%3E%3Ctext x='50%25' y='58%25' text-anchor='middle' font-family='serif' font-style='italic' font-size='20' fill='%23c9a961'%3EM%3C/text%3E%3C/svg%3E" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230071e3'/%3E%3Ctext x='50%25' y='62%25' text-anchor='middle' font-family='-apple-system,system-ui,sans-serif' font-weight='700' font-size='14' fill='white'%3EWYQ%3C/text%3E%3C/svg%3E" />
+  <script>
+    // Set theme before paint to avoid flash
+    (function(){try{var t=localStorage.getItem('wyq-theme');if(t!=='light'&&t!=='dark'){t=window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';}document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
+  </script>
 </head>
 <body>
 
   <!-- NAV -->
   <nav class="nav">
-    <a class="nav__brand" href="index.html">
-      <span class="crest"></span>
-      <span>MAISON</span>
-    </a>
-    <ul class="nav__menu">
-      <li><a href="index.html">札记</a></li>
-      <li><a href="about.html">关于</a></li>
-      <li><a href="#contact">联络</a></li>
-    </ul>
+    <div class="nav__inner">
+      <a class="nav__brand" href="index.html">
+        <span class="dot"></span>
+        <span>WYQ</span>
+      </a>
+      <ul class="nav__menu">
+        <li><a href="index.html">博客</a></li>
+        <li><a href="about.html">关于</a></li>
+        <li>
+          <button class="nav__theme" data-theme-toggle aria-label="切换主题">
+            <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+            </svg>
+            <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="4"/>
+              <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/>
+            </svg>
+          </button>
+        </li>
+      </ul>
+    </div>
   </nav>
 
   <!-- HERO -->
   <header class="hero">
-    <div class="hero__bg"></div>
-    <div class="hero__content">
-      <div class="hero__eyebrow reveal">EST · MMXXVI · 私人札记</div>
-      <h1 class="hero__title reveal" data-delay="1">
-        生活, 是一场<br />
-        <em>缓慢而精致</em> 的修行。
-      </h1>
-      <p class="hero__sub reveal" data-delay="2">
-        在喧嚣的时代里，留一隅静室。<br />
-        以文字记叙时间，以审美安顿心灵。
+    <div class="hero__inner">
+      <h1 class="hero__title reveal">WYQ 专属博客</h1>
+      <p class="hero__sub reveal" data-delay="1">
+        记录生活、思考与日常的私人空间。
       </p>
-      <a class="hero__cta reveal" href="#journal" data-delay="3">
-        翻阅札记 <span>→</span>
-      </a>
-    </div>
-    <div class="hero__scroll">
-      <span>SCROLL</span>
-      <span class="line"></span>
+      <div class="hero__actions reveal" data-delay="2">
+        <a class="btn btn--primary" href="#journal">浏览文章</a>
+        <a class="btn btn--ghost" href="about.html">了解更多</a>
+      </div>
     </div>
   </header>
 
   <!-- JOURNAL -->
   <section class="section" id="journal">
     <div class="section__head reveal">
-      <div class="section__eyebrow">— Journal —</div>
-      <h2 class="section__title">最 <em>新</em> 札记</h2>
-      <span class="section__rule"></span>
+      <h2 class="section__title">最新文章</h2>
+      <span class="section__hint">按分类筛选</span>
     </div>
 
+    <!-- Filters -->
+    <div class="filters reveal" data-delay="1">
+      <button class="chip is-active" data-filter="all">全部</button>
+      <button class="chip" data-filter="life">生活</button>
+      <button class="chip" data-filter="thoughts">思考</button>
+      <button class="chip" data-filter="travel">旅行</button>
+      <button class="chip" data-filter="tech">技术</button>
+    </div>
+
+    <!-- Posts grid (currently empty — add new posts here) -->
     <div class="posts">
-      <article class="post-card reveal">
-        <div class="post-card__num">N° 01</div>
-        <h3 class="post-card__title">在京都的清晨, 我学会了等待</h3>
-        <div class="post-card__meta">
-          <span>2026 · 04 · 12</span>
-          <span class="dot"></span>
-          <span>旅 行</span>
-        </div>
-        <p class="post-card__excerpt">
-          天还未亮，鸭川的水声尚未醒来。我握着一只温热的茶碗，看薄雾从石板路上缓缓升起⋯⋯
-        </p>
-        <a class="post-card__more" href="post-kyoto.html">继续阅读</a>
-      </article>
+      <!--
+        POST CARD TEMPLATE — copy this block to add a new article.
+        - data-category: one of life / thoughts / travel / tech
+        - href: link to the article page
 
-      <article class="post-card reveal" data-delay="1">
-        <div class="post-card__num">N° 02</div>
-        <h3 class="post-card__title">关于一只旧钢笔的记忆</h3>
-        <div class="post-card__meta">
-          <span>2026 · 03 · 28</span>
-          <span class="dot"></span>
-          <span>器 物</span>
-        </div>
-        <p class="post-card__excerpt">
-          它是父亲留给我的，笔尖已被岁月磨得圆润。每次落笔，都像是与一段沉默的时间对话⋯⋯
-        </p>
-        <a class="post-card__more" href="post-pen.html">继续阅读</a>
-      </article>
+        <a class="post-card reveal" data-category="life" href="post-example.html">
+          <span class="post-card__tag">生活</span>
+          <h3 class="post-card__title">文章标题</h3>
+          <p class="post-card__excerpt">文章摘要……</p>
+          <div class="post-card__meta">
+            <span>2026 · 05 · 15</span>
+            <span class="dot"></span>
+            <span>3 分钟阅读</span>
+          </div>
+        </a>
+      -->
 
-      <article class="post-card reveal" data-delay="2">
-        <div class="post-card__num">N° 03</div>
-        <h3 class="post-card__title">夜读札记: 论独处的奢侈</h3>
-        <div class="post-card__meta">
-          <span>2026 · 03 · 09</span>
-          <span class="dot"></span>
-          <span>思 考</span>
+      <div class="empty" data-empty>
+        <div class="empty__title">还没有文章</div>
+        <div class="empty__desc">
+          打开 <code>index.html</code>，复制 <code>POST CARD TEMPLATE</code> 注释里的代码块，<br/>
+          粘贴到 <code>.posts</code> 内部并填写内容即可。
         </div>
-        <p class="post-card__excerpt">
-          独处不是孤独, 而是一种选择。在无人之处, 我们才得以遇见真正的自己⋯⋯
-        </p>
-        <a class="post-card__more" href="post-solitude.html">继续阅读</a>
-      </article>
-    </div>
-  </section>
-
-  <!-- QUOTE -->
-  <section class="section section--narrow">
-    <div class="reveal" style="text-align:center;max-width:780px;margin:0 auto;">
-      <div class="article__divider">
-        <span></span><span class="diamond"></span><span></span>
-      </div>
-      <p style="font-family:'Playfair Display',serif;font-style:italic;font-size:clamp(1.5rem,3vw,2.2rem);line-height:1.5;color:var(--gold-soft);">
-        “我们追逐的不是奢华本身, <br/>而是那份从容地, 与时间共处的能力。”
-      </p>
-      <div class="article__divider" style="margin-top:36px;">
-        <span></span><span class="diamond"></span><span></span>
       </div>
     </div>
   </section>
 
   <!-- FOOTER -->
-  <footer class="footer" id="contact">
-    <div class="footer__brand">Maison</div>
-    <div class="footer__tag">A Private Journal · 私 人 札 记</div>
-    <div class="footer__social">
-      <a href="mailto:hello@example.com">EMAIL</a>
-      <a href="#">INSTAGRAM</a>
-      <a href="#">RSS</a>
-    </div>
-    <div class="footer__copy">
-      © <span data-year>2026</span> · Crafted with patience &amp; taste
+  <footer class="footer">
+    <div class="footer__inner">
+      <div>© <span data-year>2026</span> WYQ. All rights reserved.</div>
+      <ul class="footer__links">
+        <li><a href="index.html">博客</a></li>
+        <li><a href="about.html">关于</a></li>
+      </ul>
     </div>
   </footer>
 
