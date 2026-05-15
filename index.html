@@ -55,7 +55,7 @@
   <!-- HERO — giant headline like Apple, sits on the animated aurora background -->
   <header class="hero">
     <div class="hero__inner">
-      <h1 class="hero__title hero__title--brand reveal" id="heroTypewriter" data-text="Hello, I'm WYQ"></h1>
+      <h1 class="hero__title hero__title--brand" id="heroTypewriter" data-text="Hello, I'm WYQ" style="opacity:1;transform:none;background:none;-webkit-background-clip:unset;background-clip:unset;-webkit-text-fill-color:var(--accent);color:var(--accent);filter:none;"></h1>
       <p class="hero__sub reveal" data-delay="1">
         一个属于自己的、慢节奏的角落。<br/>
         记录生活、思考与日常。
@@ -159,20 +159,10 @@
   (function() {
     var el = document.getElementById('heroTypewriter');
     if (!el) return;
-    // Force visible — override .reveal opacity:0
-    el.classList.add('in');
-    el.style.opacity = '1';
-    el.style.transform = 'none';
-    // Disable gradient text during typing (background-clip:text makes text invisible without bg)
-    el.style.background = 'none';
-    el.style.webkitBackgroundClip = 'unset';
-    el.style.backgroundClip = 'unset';
-    el.style.webkitTextFillColor = 'var(--accent)';
-    el.style.color = 'var(--accent)';
 
     var text = el.getAttribute('data-text') || '';
-    var delay = 500;       // wait 0.5s before starting
-    var speed = 85;        // ms per character
+    var delay = 500;
+    var speed = 85;
     var cursor = document.createElement('span');
     cursor.className = 'typewriter-cursor';
     cursor.textContent = '|';
@@ -188,18 +178,18 @@
           i++;
           setTimeout(type, speed);
         } else {
-          // Typing done — restore gradient text style
           cursor.classList.add('blink');
           setTimeout(function() {
             cursor.style.opacity = '0';
             setTimeout(function() {
               cursor.remove();
-              // Restore the gradient text effect
+              // Restore gradient
               el.style.background = '';
               el.style.webkitBackgroundClip = '';
               el.style.backgroundClip = '';
               el.style.webkitTextFillColor = '';
               el.style.color = '';
+              el.style.filter = '';
             }, 400);
           }, 1200);
         }
