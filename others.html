@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>其他 — WYQ 专属博客</title>
+  <meta name="description" content="WYQ 想分享的一些有趣的东西。敬请期待。" />
+  <meta name="theme-color" content="#fbfbfd" media="(prefers-color-scheme: light)" />
+  <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)" />
+  <link rel="stylesheet" href="assets/css/style.css?v=7" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230071e3'/%3E%3Ctext x='50%25' y='62%25' text-anchor='middle' font-family='-apple-system,system-ui,sans-serif' font-weight='700' font-size='14' fill='white'%3EWYQ%3C/text%3E%3C/svg%3E" />
+  <script>
+    (function(){try{var t=localStorage.getItem('wyq-theme');if(t!=='light'&&t!=='dark'){t=window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';}document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
+  </script>
+</head>
+<body>
+
+  <!-- AURORA — animated blue/white/purple gradient (whole site) -->
+  <div class="aurora" aria-hidden="true"></div>
+
+  <!-- NAV -->
+  <nav class="nav">
+    <div class="nav__inner">
+      <a class="nav__brand" href="index.html">
+        <span class="dot"></span>
+        <span>WYQ</span>
+      </a>
+      <ul class="nav__menu">
+        <li><a href="index.html">主页</a></li>
+        <li><a href="post-002.html">文章</a></li>
+        <li><a href="others.html">其他</a></li>
+        <li>
+          <button class="nav__theme" data-theme-toggle aria-label="切换主题">
+            <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+            </svg>
+            <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="4"/>
+              <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/>
+            </svg>
+          </button>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- HERO — Coming-soon stage with vivid multi-color animated gradient -->
+  <main class="others-stage">
+    <div class="others-stage__inner">
+
+      <span class="others-pill reveal">Coming Soon &middot; 敬请期待</span>
+
+      <h1 class="others-title reveal" data-delay="1">
+        <span class="others-title__rainbow">其&nbsp;他</span>
+      </h1>
+
+      <p class="others-sub reveal" data-delay="2">
+        这里会分享一些有趣的东西。
+      </p>
+
+      <p class="others-meta reveal" data-delay="3">
+        想法、收藏、小工具、奇怪的灵感 &mdash; 慢慢上线，敬请期待。
+      </p>
+
+      <!-- Animated marquee strip of category pills -->
+      <div class="others-marquee reveal" data-delay="3" aria-hidden="true">
+        <div class="others-marquee__track">
+          <span class="others-tag others-tag--c1">音乐</span>
+          <span class="others-tag others-tag--c2">影视</span>
+          <span class="others-tag others-tag--c3">摄影</span>
+          <span class="others-tag others-tag--c4">收藏</span>
+          <span class="others-tag others-tag--c5">小工具</span>
+          <span class="others-tag others-tag--c6">奇思妙想</span>
+          <!-- duplicate for seamless loop -->
+          <span class="others-tag others-tag--c1">音乐</span>
+          <span class="others-tag others-tag--c2">影视</span>
+          <span class="others-tag others-tag--c3">摄影</span>
+          <span class="others-tag others-tag--c4">收藏</span>
+          <span class="others-tag others-tag--c5">小工具</span>
+          <span class="others-tag others-tag--c6">奇思妙想</span>
+        </div>
+      </div>
+
+      <!-- Floating dots animation -->
+      <div class="others-dots reveal" data-delay="4">
+        <span></span><span></span><span></span>
+      </div>
+
+      <div class="others-actions reveal" data-delay="4">
+        <a class="btn btn--primary btn--lg" href="index.html">回到主页</a>
+        <a class="btn btn--ghost btn--lg" href="mailto:wyq200707@qq.com">写信告诉我你想看的</a>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer__inner">
+      <div>&copy; <span data-year>2026</span> WYQ. All rights reserved.</div>
+      <ul class="footer__links">
+        <li><a href="index.html">主页</a></li>
+        <li><a href="post-002.html">文章</a></li>
+        <li><a href="others.html">其他</a></li>
+      </ul>
+    </div>
+  </footer>
+
+  <script src="assets/js/main.js?v=7"></script>
+</body>
+</html>
