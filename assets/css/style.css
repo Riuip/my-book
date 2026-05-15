@@ -1621,3 +1621,66 @@ body.search-open {
     animation: none !important;
   }
 }
+
+
+
+/* =========================================================
+   COPY BUTTON — for code blocks and quiz table
+   ========================================================= */
+.pre-wrapper {
+  position: relative;
+}
+.copy-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 5px 10px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 500;
+  font-family: inherit;
+  color: var(--text-muted);
+  background: var(--bg-tint);
+  border: 1px solid var(--line);
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+  white-space: nowrap;
+}
+.copy-btn:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+  background: var(--accent-soft);
+}
+.copy-btn.is-copied {
+  color: #34d399;
+  border-color: #34d399;
+  background: rgba(52, 211, 153, 0.08);
+}
+.copy-btn svg {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+}
+.copy-btn__text {
+  font-size: 12px;
+}
+
+/* Position copy button in code blocks */
+.pre-wrapper .copy-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  opacity: 0;
+  transition: opacity 0.2s ease, background-color 0.2s ease, color 0.2s ease;
+}
+.pre-wrapper:hover .copy-btn,
+.pre-wrapper .copy-btn.is-copied {
+  opacity: 1;
+}
+
+/* Quiz table copy cell */
+.q-copy-cell {
+  text-align: center;
+  vertical-align: middle !important;
+  width: 70px;
+}
