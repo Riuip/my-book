@@ -1238,26 +1238,14 @@ body {
    Applied to sections BELOW the hero only. The hero area
    is excluded so the typewriter animation can run freely.
    ========================================================= */
+/* Hero is ALWAYS visible — typewriter IS the entrance animation */
 .page-enter > .hero {
-  /* Hero fades in quickly via opacity only — no filter blur */
-  animation: pageHeroFade 0.6s ease forwards;
+  animation: none;
+  opacity: 1;
 }
 .page-enter > section,
 .page-enter > .footer {
   animation: pageContentFade 1s cubic-bezier(0.2, 0.7, 0.2, 1) forwards;
-}
-
-/* The typewriter title must never be hidden */
-#heroTypewriter {
-  animation: none !important;
-  opacity: 1 !important;
-  transform: none !important;
-  filter: none !important;
-}
-
-@keyframes pageHeroFade {
-  0% { opacity: 0; }
-  100% { opacity: 1; }
 }
 
 @keyframes pageContentFade {
