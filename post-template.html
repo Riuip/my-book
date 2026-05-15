@@ -1,15 +1,14 @@
 <!doctype html>
 <!--
   ============================================================
-  ARTICLE TEMPLATE — 复制这个文件改名为 post-xxx.html
-  然后修改：
-    1. <title> 与 article-hero__title
-    2. article-hero__tag (分类)
-    3. article-hero__meta (日期 / 阅读时长)
+  ARTICLE TEMPLATE — 苹果风排版
+  复制这个文件改名 (例: post-001.html)，然后修改：
+    1. <title> 与 .article-hero__title
+    2. .article-hero__tag (分类)
+    3. .article-hero__meta (作者 / 日期 / 阅读时长)
     4. <article class="article"> 内的正文
-    5. 在 blog.html 内为这篇文章添加一张 post-card
 
-  正文支持的元素 (style.css 中有匹配样式):
+  正文支持的元素 (style.css 已有匹配样式):
     p, p.lead, h2, h3, ul/ol/li, blockquote, code, pre, a, hr
   ============================================================
 -->
@@ -21,7 +20,6 @@
   <meta name="description" content="文章摘要" />
   <meta name="theme-color" content="#fbfbfd" media="(prefers-color-scheme: light)" />
   <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)" />
-  <link rel="alternate" type="application/rss+xml" title="WYQ 专属博客" href="rss.xml" />
   <link rel="stylesheet" href="assets/css/style.css" />
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230071e3'/%3E%3Ctext x='50%25' y='62%25' text-anchor='middle' font-family='-apple-system,system-ui,sans-serif' font-weight='700' font-size='14' fill='white'%3EWYQ%3C/text%3E%3C/svg%3E" />
   <script>
@@ -30,6 +28,7 @@
 </head>
 <body>
 
+  <!-- NAV -->
   <nav class="nav">
     <div class="nav__inner">
       <a class="nav__brand" href="index.html">
@@ -38,8 +37,7 @@
       </a>
       <ul class="nav__menu">
         <li><a href="index.html">主页</a></li>
-        <li><a href="blog.html">博客</a></li>
-        <li class="hide-sm"><a href="rss.xml">RSS</a></li>
+        <li><a href="post-template.html">文章</a></li>
         <li>
           <button class="nav__theme" data-theme-toggle aria-label="切换主题">
             <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
@@ -55,6 +53,7 @@
     </div>
   </nav>
 
+  <!-- ARTICLE HERO -->
   <header class="article-hero">
     <div class="article-hero__inner">
       <span class="article-hero__tag reveal">分 类</span>
@@ -62,13 +61,14 @@
       <div class="article-hero__meta reveal" data-delay="2">
         <span>WYQ</span>
         <span class="dot"></span>
-        <span>2026 · 05 · 22</span>
+        <span>2026 &middot; 05 &middot; 22</span>
         <span class="dot"></span>
         <span>5 分钟阅读</span>
       </div>
     </div>
   </header>
 
+  <!-- ARTICLE BODY -->
   <article class="article">
     <p class="lead">
       这里写一段引言段落 — 它会以更大、更显著的字号显示, 作为这篇文章的开场。
@@ -77,9 +77,7 @@
     <h2>第一节标题</h2>
     <p>
       正文段落。在这里写下你的内容。每段用 <code>&lt;p&gt;</code> 包起来即可。
-    </p>
-    <p>
-      支持 <a href="#">链接</a>、<strong>加粗</strong>、<em>斜体</em>，以及行内 <code>code</code>。
+      支持 <a href="#">链接</a>、<strong>加粗</strong>、<em>斜体</em>、以及行内 <code>code</code>。
     </p>
 
     <blockquote>
@@ -94,7 +92,7 @@
     </ul>
 
     <h3>子标题</h3>
-    <p>更细粒度的段落标题。</p>
+    <p>更细粒度的段落标题, 用来组织一段较长的内容。</p>
 
     <pre><code>// 代码块也有合适的样式
 function hello() {
@@ -105,31 +103,23 @@ function hello() {
     <hr/>
 
     <p style="color:var(--text-muted); font-size:16px;">
-      — WYQ &nbsp;·&nbsp; 2026 年 5 月
+      &mdash; WYQ &nbsp;&middot;&nbsp; 2026 年 5 月
     </p>
   </article>
 
+  <!-- ARTICLE FOOTER -->
   <div class="article-foot">
-    <a class="btn btn--ghost" href="blog.html" style="color:var(--text-soft);">‹ 返回博客</a>
+    <a class="btn btn--ghost" href="index.html" style="color:var(--text-soft);">&lsaquo; 返回主页</a>
     <a class="btn btn--ghost" href="mailto:wyq200707@qq.com">写信给 WYQ</a>
   </div>
 
-  <section class="comments" id="comments">
-    <h2 class="comments__head">评论</h2>
-    <p class="comments__hint">
-      评论由 <a href="https://giscus.app" target="_blank" rel="noopener">Giscus</a> 提供 (基于 GitHub Discussions, 完全免费)。
-      想启用？打开 <code>assets/js/main.js</code> 中的 <code>GISCUS</code> 配置区，按注释修改后即可生效。
-    </p>
-    <div id="giscus-container"></div>
-  </section>
-
+  <!-- FOOTER -->
   <footer class="footer">
     <div class="footer__inner">
-      <div>© <span data-year>2026</span> WYQ. All rights reserved.</div>
+      <div>&copy; <span data-year>2026</span> WYQ. All rights reserved.</div>
       <ul class="footer__links">
         <li><a href="index.html">主页</a></li>
-        <li><a href="blog.html">博客</a></li>
-        <li><a href="rss.xml">RSS</a></li>
+        <li><a href="post-template.html">文章</a></li>
       </ul>
     </div>
   </footer>
