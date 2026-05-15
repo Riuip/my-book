@@ -4,13 +4,12 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>WYQ 专属博客</title>
-  <meta name="description" content="WYQ 的个人博客 · 记录生活、思考与日常。" />
+  <meta name="description" content="WYQ 的个人主页。" />
   <meta name="theme-color" content="#fbfbfd" media="(prefers-color-scheme: light)" />
   <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)" />
   <link rel="stylesheet" href="assets/css/style.css" />
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230071e3'/%3E%3Ctext x='50%25' y='62%25' text-anchor='middle' font-family='-apple-system,system-ui,sans-serif' font-weight='700' font-size='14' fill='white'%3EWYQ%3C/text%3E%3C/svg%3E" />
   <script>
-    // Set theme before paint to avoid flash
     (function(){try{var t=localStorage.getItem('wyq-theme');if(t!=='light'&&t!=='dark'){t=window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';}document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
   </script>
 </head>
@@ -24,8 +23,8 @@
         <span>WYQ</span>
       </a>
       <ul class="nav__menu">
-        <li><a href="index.html">博客</a></li>
-        <li><a href="about.html">关于</a></li>
+        <li><a href="index.html">主页</a></li>
+        <li><a href="post-template.html">文章</a></li>
         <li>
           <button class="nav__theme" data-theme-toggle aria-label="切换主题">
             <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
@@ -41,72 +40,87 @@
     </div>
   </nav>
 
-  <!-- HERO -->
+  <!-- HERO — giant headline like Apple -->
   <header class="hero">
     <div class="hero__inner">
-      <h1 class="hero__title reveal">WYQ 专属博客</h1>
-      <p class="hero__sub reveal" data-delay="1">
-        记录生活、思考与日常的私人空间。
+      <p class="hero__eyebrow reveal">Hello, I&rsquo;m WYQ</p>
+      <h1 class="hero__title reveal" data-delay="1">WYQ&nbsp;专属博客</h1>
+      <p class="hero__sub reveal" data-delay="2">
+        一个属于自己的、慢节奏的角落。<br/>
+        记录生活、思考与日常。
       </p>
-      <div class="hero__actions reveal" data-delay="2">
-        <a class="btn btn--primary" href="#journal">浏览文章</a>
-        <a class="btn btn--ghost" href="about.html">了解更多</a>
+      <div class="hero__actions reveal" data-delay="3">
+        <a class="btn btn--primary btn--lg" href="post-template.html">查看文章</a>
+        <a class="btn btn--ghost btn--lg" href="#about">了解更多</a>
       </div>
     </div>
   </header>
 
-  <!-- JOURNAL -->
-  <section class="section" id="journal">
-    <div class="section__head reveal">
-      <h2 class="section__title">最新文章</h2>
-      <span class="section__hint">按分类筛选</span>
-    </div>
+  <!-- TILES — about me -->
+  <section style="padding: 40px 0 80px;" id="about">
+    <div class="tiles">
 
-    <!-- Filters -->
-    <div class="filters reveal" data-delay="1">
-      <button class="chip is-active" data-filter="all">全部</button>
-      <button class="chip" data-filter="life">生活</button>
-      <button class="chip" data-filter="thoughts">思考</button>
-      <button class="chip" data-filter="travel">旅行</button>
-      <button class="chip" data-filter="tech">技术</button>
-    </div>
-
-    <!-- Posts grid (currently empty — add new posts here) -->
-    <div class="posts">
-      <!--
-        POST CARD TEMPLATE — copy this block to add a new article.
-        - data-category: one of life / thoughts / travel / tech
-        - href: link to the article page
-
-        <a class="post-card reveal" data-category="life" href="post-example.html">
-          <span class="post-card__tag">生活</span>
-          <h3 class="post-card__title">文章标题</h3>
-          <p class="post-card__excerpt">文章摘要……</p>
-          <div class="post-card__meta">
-            <span>2026 · 05 · 15</span>
-            <span class="dot"></span>
-            <span>3 分钟阅读</span>
-          </div>
-        </a>
-      -->
-
-      <div class="empty" data-empty>
-        <div class="empty__title">还没有文章</div>
-        <div class="empty__desc">
-          打开 <code>index.html</code>，复制 <code>POST CARD TEMPLATE</code> 注释里的代码块，<br/>
-          粘贴到 <code>.posts</code> 内部并填写内容即可。
+      <!-- About me (large dark tile) -->
+      <article class="tile tile--wide tile--dark reveal">
+        <div class="tile__eyebrow">关于我</div>
+        <h2 class="tile__title">你好，我是 WYQ。</h2>
+        <p class="tile__desc">
+          我喜欢记录, 喜欢慢慢地把生活整理成可以被回头翻阅的样子。
+          这里是我的私人空间, 没有焦虑的算法, 也没有刻意的曝光,
+          只是把那些值得留下的瞬间, 安放在文字里。
+        </p>
+        <div class="tile__actions">
+          <a class="btn btn--primary" href="post-template.html">读我的文章</a>
+          <a class="btn btn--ghost" href="mailto:wyq200707@qq.com">联系我</a>
         </div>
-      </div>
+      </article>
+
+      <!-- Profile -->
+      <article class="tile reveal" data-delay="1">
+        <div class="tile__eyebrow">个人资料</div>
+        <h2 class="tile__title" style="font-size:30px;">基本信息</h2>
+        <div class="profile-grid">
+          <div class="profile-row">
+            <span>身份</span>
+            <span>WYQ</span>
+          </div>
+          <div class="profile-row">
+            <span>记录</span>
+            <span>生活 · 思考 · 旅行 · 技术</span>
+          </div>
+          <div class="profile-row">
+            <span>更新</span>
+            <span>一周一更</span>
+          </div>
+          <div class="profile-row">
+            <span>联络</span>
+            <span style="font-size:14px;">wyq200707@qq.com</span>
+          </div>
+        </div>
+      </article>
+
+      <!-- Blog jump CTA (highlight) -->
+      <article class="tile tile--wide tile--accent reveal" data-delay="2">
+        <div class="tile__eyebrow">Journal</div>
+        <h2 class="tile__title">前往博客文章</h2>
+        <p class="tile__desc">
+          所有的文章都在这里。点击下方按钮开始阅读。
+        </p>
+        <div class="tile__actions">
+          <a class="btn btn--primary" href="post-template.html">查看文章</a>
+        </div>
+      </article>
+
     </div>
   </section>
 
   <!-- FOOTER -->
   <footer class="footer">
     <div class="footer__inner">
-      <div>© <span data-year>2026</span> WYQ. All rights reserved.</div>
+      <div>&copy; <span data-year>2026</span> WYQ. All rights reserved.</div>
       <ul class="footer__links">
-        <li><a href="index.html">博客</a></li>
-        <li><a href="about.html">关于</a></li>
+        <li><a href="index.html">主页</a></li>
+        <li><a href="post-template.html">文章</a></li>
       </ul>
     </div>
   </footer>
