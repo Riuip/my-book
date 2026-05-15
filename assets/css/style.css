@@ -1684,3 +1684,421 @@ body.search-open {
   vertical-align: middle !important;
   width: 70px;
 }
+
+
+
+/* =========================================================
+   READING PROGRESS BAR
+   ========================================================= */
+.reading-progress {
+  position: fixed;
+  top: 48px;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  z-index: 9998;
+  background: transparent;
+  pointer-events: none;
+}
+.reading-progress__bar {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, var(--accent), #a78bfa);
+  border-radius: 0 2px 2px 0;
+  transition: width 0.1s linear;
+  box-shadow: 0 0 8px rgba(0, 113, 227, 0.4);
+}
+
+/* =========================================================
+   TABLE OF CONTENTS (TOC) — Floating widget
+   ========================================================= */
+.toc-widget {
+  position: fixed;
+  top: 120px;
+  right: 24px;
+  width: 240px;
+  max-height: calc(100vh - 180px);
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+}
+
+.toc-toggle {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  background: color-mix(in srgb, var(--bg-elev) 90%, transparent);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--line);
+  border-radius: 12px 12px 0 0;
+  cursor: pointer;
+  transition: color 0.2s ease, background-color 0.2s ease;
+}
+.toc-toggle:hover {
+  color: var(--text);
+  background: var(--bg-elev);
+}
+.toc-toggle svg {
+  width: 14px;
+  height: 14px;
+  transition: transform 0.3s ease;
+}
+.toc-toggle.is-collapsed svg {
+  transform: rotate(-90deg);
+}
+
+.toc {
+  overflow-y: auto;
+  background: color-mix(in srgb, var(--bg-elev) 90%, transparent);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--line);
+  border-top: none;
+  border-radius: 0 0 12px 12px;
+  padding: 8px 0;
+  transition: max-height 0.35s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease, padding 0.3s ease;
+  max-height: 60vh;
+  opacity: 1;
+}
+.toc.is-collapsed {
+  max-height: 0;
+  opacity: 0;
+  padding: 0;
+  overflow: hidden;
+  border: none;
+}
+
+.toc__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.toc__item {
+  margin: 0;
+}
+.toc__item--sub {
+  padding-left: 14px;
+}
+.toc__link {
+  display: block;
+  padding: 7px 16px;
+  font-size: 13px;
+  line-height: 1.4;
+  color: var(--text-muted);
+  border-left: 2px solid transparent;
+  transition: color 0.2s ease, border-color 0.2s ease, background-color 0.2s ease;
+  text-decoration: none;
+  letter-spacing: -0.01em;
+}
+.toc__link:hover {
+  color: var(--text);
+  background: var(--bg-tint);
+}
+.toc__link.is-active {
+  color: var(--accent);
+  border-left-color: var(--accent);
+  background: var(--accent-soft);
+  font-weight: 500;
+}
+
+/* Hide TOC on smaller screens */
+@media (max-width: 1200px) {
+  .toc-widget {
+    display: none;
+  }
+}
+
+/* =========================================================
+   BACK TO TOP BUTTON
+   ========================================================= */
+.back-to-top {
+  position: fixed;
+  bottom: 32px;
+  right: 32px;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--bg-elev);
+  border: 1px solid var(--line);
+  color: var(--text-soft);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 999;
+  opacity: 0;
+  transform: translateY(16px) scale(0.8);
+  pointer-events: none;
+  transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.2, 0.7, 0.2, 1),
+              background-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+.back-to-top.is-visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  pointer-events: auto;
+}
+.back-to-top:hover {
+  background: var(--accent);
+  color: #fff;
+  border-color: var(--accent);
+  box-shadow: 0 8px 24px rgba(0, 113, 227, 0.3);
+  transform: translateY(-2px) scale(1.05);
+}
+.back-to-top svg {
+  width: 20px;
+  height: 20px;
+}
+
+/* =========================================================
+   DARK MODE TRANSITION ANIMATION
+   ========================================================= */
+.theme-transition-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  pointer-events: none;
+  opacity: 0;
+  clip-path: circle(0% at var(--tx, 50%) var(--ty, 50%));
+  transition: clip-path 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+              opacity 0.1s ease;
+}
+.theme-transition-overlay.is-active {
+  opacity: 0.6;
+  clip-path: circle(150% at var(--tx, 50%) var(--ty, 50%));
+}
+.theme-transition-overlay.is-fading {
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+/* =========================================================
+   SHARE BUTTONS
+   ========================================================= */
+.share-section {
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 0 22px 36px;
+}
+.share-section__title {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 14px;
+}
+.share-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.share-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  border-radius: 980px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-soft);
+  background: var(--bg-tint);
+  border: 1px solid var(--line);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: inherit;
+}
+.share-btn:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+  background: var(--accent-soft);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 113, 227, 0.12);
+}
+.share-btn.is-copied {
+  color: #34d399;
+  border-color: #34d399;
+  background: rgba(52, 211, 153, 0.08);
+}
+.share-btn__icon {
+  display: flex;
+  align-items: center;
+}
+.share-btn__icon svg {
+  width: 16px;
+  height: 16px;
+}
+.share-btn__label {
+  font-size: 13px;
+}
+
+/* =========================================================
+   TAGS / CATEGORIES PAGE
+   ========================================================= */
+.tags-page {
+  min-height: 100vh;
+  padding: 120px 22px 80px;
+}
+.tags-page__inner {
+  max-width: 800px;
+  margin: 0 auto;
+}
+.tags-page__title {
+  font-size: clamp(36px, 5vw, 56px);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: var(--text);
+  text-align: center;
+  margin-bottom: 14px;
+}
+.tags-page__subtitle {
+  font-size: 18px;
+  color: var(--text-muted);
+  text-align: center;
+  margin-bottom: 48px;
+}
+
+/* Tag cloud */
+.tag-cloud {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 56px;
+}
+.tag-cloud__item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 18px;
+  border-radius: 980px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-soft);
+  background: var(--bg-elev);
+  border: 1px solid var(--line);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-decoration: none;
+}
+.tag-cloud__item:hover,
+.tag-cloud__item.is-active {
+  color: #fff;
+  border-color: transparent;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+}
+.tag-cloud__item[data-tag="life"]:hover,
+.tag-cloud__item[data-tag="life"].is-active { background: linear-gradient(135deg, #ff5f8a, #ff3d6e); }
+.tag-cloud__item[data-tag="thoughts"]:hover,
+.tag-cloud__item[data-tag="thoughts"].is-active { background: linear-gradient(135deg, #a78bfa, #8b5cf6); }
+.tag-cloud__item[data-tag="travel"]:hover,
+.tag-cloud__item[data-tag="travel"].is-active { background: linear-gradient(135deg, #ffd23d, #ffa600); color: #1d1d1f; }
+.tag-cloud__item[data-tag="tech"]:hover,
+.tag-cloud__item[data-tag="tech"].is-active { background: linear-gradient(135deg, #60a5fa, #3b82f6); }
+.tag-cloud__item[data-tag="meta"]:hover,
+.tag-cloud__item[data-tag="meta"].is-active { background: linear-gradient(135deg, #6ee7b7, #34d399); color: #1d1d1f; }
+
+.tag-cloud__count {
+  font-size: 11px;
+  background: rgba(0, 0, 0, 0.08);
+  padding: 2px 7px;
+  border-radius: 980px;
+  color: inherit;
+}
+[data-theme="dark"] .tag-cloud__count {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+/* Category sections */
+.tags-section {
+  margin-bottom: 48px;
+}
+.tags-section__header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 18px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--line);
+}
+.tags-section__dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+.tags-section[data-cat="life"] .tags-section__dot { background: #ff5f8a; }
+.tags-section[data-cat="thoughts"] .tags-section__dot { background: #a78bfa; }
+.tags-section[data-cat="travel"] .tags-section__dot { background: #ffd23d; }
+.tags-section[data-cat="tech"] .tags-section__dot { background: #60a5fa; }
+.tags-section[data-cat="meta"] .tags-section__dot { background: #6ee7b7; }
+
+.tags-section__title {
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--text);
+}
+.tags-section__count {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin-left: auto;
+}
+
+.tags-article {
+  display: flex;
+  align-items: center;
+  padding: 16px 20px;
+  border-radius: 14px;
+  background: var(--bg-elev);
+  border: 1px solid var(--line);
+  margin-bottom: 10px;
+  color: var(--text);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+  text-decoration: none;
+  gap: 16px;
+}
+.tags-article:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px -6px rgba(0, 0, 0, 0.12);
+  border-color: var(--accent);
+  color: var(--text);
+}
+.tags-article__num {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+  flex-shrink: 0;
+}
+.tags-article__title {
+  flex: 1;
+  font-size: 16px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+}
+.tags-article__date {
+  font-size: 13px;
+  color: var(--text-muted);
+  flex-shrink: 0;
+}
+
+@media (max-width: 600px) {
+  .tags-article {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+  }
+  .tags-article__date {
+    align-self: flex-end;
+  }
+}

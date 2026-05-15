@@ -28,6 +28,11 @@
 </head>
 <body>
 
+  <!-- READING PROGRESS BAR -->
+  <div class="reading-progress" aria-hidden="true">
+    <div class="reading-progress__bar" id="reading-progress"></div>
+  </div>
+
   <!-- AURORA — animated blue/white/purple gradient (whole site) -->
   <div class="aurora" aria-hidden="true"></div>
 
@@ -210,6 +215,12 @@ function hello() {
     </p>
   </article>
 
+  <!-- SHARE BUTTONS -->
+  <div class="share-section">
+    <div class="share-section__title">分享文章</div>
+    <div class="share-buttons" id="share-buttons"></div>
+  </div>
+
   <!-- ARTICLE FOOTER -->
   <div class="article-foot">
     <a class="btn btn--ghost" href="index.html" style="color:var(--text-soft);">&lsaquo; 返回主页</a>
@@ -228,7 +239,26 @@ function hello() {
     </div>
   </footer>
 
+  <!-- TOC WIDGET -->
+  <div class="toc-widget">
+    <button class="toc-toggle" id="toc-toggle">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="6 9 12 15 18 9"/>
+      </svg>
+      <span>目录</span>
+    </button>
+    <nav class="toc" id="toc" aria-label="文章目录"></nav>
+  </div>
+
+  <!-- BACK TO TOP -->
+  <button class="back-to-top" id="back-to-top" aria-label="返回顶部">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <polyline points="18 15 12 9 6 15"/>
+    </svg>
+  </button>
+
   <script src="assets/js/main.js?v=9"></script>
   <script src="assets/js/copy-btn.js?v=1"></script>
+  <script src="assets/js/enhancements.js?v=1"></script>
 </body>
 </html>
