@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>WYQ 专属博客</title>
+    <link>https://riuip.github.io/my-book/</link>
+    <atom:link href="https://riuip.github.io/my-book/rss.xml" rel="self" type="application/rss+xml" />
+    <description>WYQ 的个人博客 — 记录生活、思考与日常。</description>
+    <language>zh-CN</language>
+    <managingEditor>wyq200707@qq.com (WYQ)</managingEditor>
+    <webMaster>wyq200707@qq.com (WYQ)</webMaster>
+    <lastBuildDate>Fri, 15 May 2026 00:00:00 +0800</lastBuildDate>
+
+    <item>
+      <title>欢迎访问我的博客</title>
+      <link>https://riuip.github.io/my-book/post-welcome.html</link>
+      <guid isPermaLink="true">https://riuip.github.io/my-book/post-welcome.html</guid>
+      <pubDate>Fri, 15 May 2026 00:00:00 +0800</pubDate>
+      <category>生活</category>
+      <description><![CDATA[
+        这是 WYQ 专属博客的第一篇文章。一个开始的地方, 一个属于自己的角落 — 想跟你聊聊为什么我会建这个博客。
+      ]]></description>
+    </item>
+
+    <!--
+      新文章模板 — 复制到上方:
+
+      <item>
+        <title>文章标题</title>
+        <link>https://riuip.github.io/my-book/post-xxx.html</link>
+        <guid isPermaLink="true">https://riuip.github.io/my-book/post-xxx.html</guid>
+        <pubDate>Fri, 22 May 2026 00:00:00 +0800</pubDate>
+        <category>生活</category>
+        <description><![CDATA[ 文章摘要 ]]></description>
+      </item>
+    -->
+
+  </channel>
+</rss>
