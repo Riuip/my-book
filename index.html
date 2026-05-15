@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Maison — 个人札记</title>
+  <meta name="description" content="一份私人札记。关于生活、思考、品味与时间的纪录。" />
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230b0b0d'/%3E%3Ctext x='50%25' y='58%25' text-anchor='middle' font-family='serif' font-style='italic' font-size='20' fill='%23c9a961'%3EM%3C/text%3E%3C/svg%3E" />
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav class="nav">
+    <a class="nav__brand" href="index.html">
+      <span class="crest"></span>
+      <span>MAISON</span>
+    </a>
+    <ul class="nav__menu">
+      <li><a href="index.html">札记</a></li>
+      <li><a href="about.html">关于</a></li>
+      <li><a href="#contact">联络</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <header class="hero">
+    <div class="hero__bg"></div>
+    <div class="hero__content">
+      <div class="hero__eyebrow reveal">EST · MMXXVI · 私人札记</div>
+      <h1 class="hero__title reveal" data-delay="1">
+        生活, 是一场<br />
+        <em>缓慢而精致</em> 的修行。
+      </h1>
+      <p class="hero__sub reveal" data-delay="2">
+        在喧嚣的时代里，留一隅静室。<br />
+        以文字记叙时间，以审美安顿心灵。
+      </p>
+      <a class="hero__cta reveal" href="#journal" data-delay="3">
+        翻阅札记 <span>→</span>
+      </a>
+    </div>
+    <div class="hero__scroll">
+      <span>SCROLL</span>
+      <span class="line"></span>
+    </div>
+  </header>
+
+  <!-- JOURNAL -->
+  <section class="section" id="journal">
+    <div class="section__head reveal">
+      <div class="section__eyebrow">— Journal —</div>
+      <h2 class="section__title">最 <em>新</em> 札记</h2>
+      <span class="section__rule"></span>
+    </div>
+
+    <div class="posts">
+      <article class="post-card reveal">
+        <div class="post-card__num">N° 01</div>
+        <h3 class="post-card__title">在京都的清晨, 我学会了等待</h3>
+        <div class="post-card__meta">
+          <span>2026 · 04 · 12</span>
+          <span class="dot"></span>
+          <span>旅 行</span>
+        </div>
+        <p class="post-card__excerpt">
+          天还未亮，鸭川的水声尚未醒来。我握着一只温热的茶碗，看薄雾从石板路上缓缓升起⋯⋯
+        </p>
+        <a class="post-card__more" href="post-kyoto.html">继续阅读</a>
+      </article>
+
+      <article class="post-card reveal" data-delay="1">
+        <div class="post-card__num">N° 02</div>
+        <h3 class="post-card__title">关于一只旧钢笔的记忆</h3>
+        <div class="post-card__meta">
+          <span>2026 · 03 · 28</span>
+          <span class="dot"></span>
+          <span>器 物</span>
+        </div>
+        <p class="post-card__excerpt">
+          它是父亲留给我的，笔尖已被岁月磨得圆润。每次落笔，都像是与一段沉默的时间对话⋯⋯
+        </p>
+        <a class="post-card__more" href="post-pen.html">继续阅读</a>
+      </article>
+
+      <article class="post-card reveal" data-delay="2">
+        <div class="post-card__num">N° 03</div>
+        <h3 class="post-card__title">夜读札记: 论独处的奢侈</h3>
+        <div class="post-card__meta">
+          <span>2026 · 03 · 09</span>
+          <span class="dot"></span>
+          <span>思 考</span>
+        </div>
+        <p class="post-card__excerpt">
+          独处不是孤独, 而是一种选择。在无人之处, 我们才得以遇见真正的自己⋯⋯
+        </p>
+        <a class="post-card__more" href="post-solitude.html">继续阅读</a>
+      </article>
+    </div>
+  </section>
+
+  <!-- QUOTE -->
+  <section class="section section--narrow">
+    <div class="reveal" style="text-align:center;max-width:780px;margin:0 auto;">
+      <div class="article__divider">
+        <span></span><span class="diamond"></span><span></span>
+      </div>
+      <p style="font-family:'Playfair Display',serif;font-style:italic;font-size:clamp(1.5rem,3vw,2.2rem);line-height:1.5;color:var(--gold-soft);">
+        “我们追逐的不是奢华本身, <br/>而是那份从容地, 与时间共处的能力。”
+      </p>
+      <div class="article__divider" style="margin-top:36px;">
+        <span></span><span class="diamond"></span><span></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer" id="contact">
+    <div class="footer__brand">Maison</div>
+    <div class="footer__tag">A Private Journal · 私 人 札 记</div>
+    <div class="footer__social">
+      <a href="mailto:hello@example.com">EMAIL</a>
+      <a href="#">INSTAGRAM</a>
+      <a href="#">RSS</a>
+    </div>
+    <div class="footer__copy">
+      © <span data-year>2026</span> · Crafted with patience &amp; taste
+    </div>
+  </footer>
+
+  <script src="assets/js/main.js"></script>
+</body>
+</html>
