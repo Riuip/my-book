@@ -7,7 +7,7 @@
   <meta name="description" content="WYQ 专属博客的第一篇文章 —— 介绍这个博客, 并附上一份从零搭建静态个人博客的详细教程。" />
   <meta name="theme-color" content="#fbfbfd" media="(prefers-color-scheme: light)" />
   <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)" />
-  <link rel="stylesheet" href="assets/css/style.css?v=4" />
+  <link rel="stylesheet" href="assets/css/style.css?v=5" />
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230071e3'/%3E%3Ctext x='50%25' y='62%25' text-anchor='middle' font-family='-apple-system,system-ui,sans-serif' font-weight='700' font-size='14' fill='white'%3EWYQ%3C/text%3E%3C/svg%3E" />
   <script>
     (function(){try{var t=localStorage.getItem('wyq-theme');if(t!=='light'&&t!=='dark'){t=window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';}document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
@@ -29,22 +29,60 @@
         </svg>
       </button>
     </div>
-    <ul class="sidebar__list">
-      <li>
-        <a class="sidebar__item" href="post-002.html">
-          <span class="sidebar__num">N&deg; 02 &middot; 生活</span>
+
+    <!-- Category filter chips -->
+    <div class="sidebar__filters" role="tablist" aria-label="文章分类">
+      <button class="sidebar__chip is-active" data-cat-filter="all">全部</button>
+      <button class="sidebar__chip" data-cat-filter="life">生活</button>
+      <button class="sidebar__chip" data-cat-filter="thoughts">思考</button>
+      <button class="sidebar__chip" data-cat-filter="travel">旅行</button>
+      <button class="sidebar__chip" data-cat-filter="tech">技术</button>
+      <button class="sidebar__chip" data-cat-filter="meta">起步</button>
+    </div>
+
+    <!-- Article list, grouped by category -->
+    <div class="sidebar__list">
+      <!-- 生活 -->
+      <section class="sidebar__group" data-cat="life">
+        <div class="sidebar__group-title">生 活</div>
+        <a class="sidebar__item" data-cat="life" href="post-002.html">
+          <span class="sidebar__num">N&deg; 02</span>
           <span class="sidebar__item-title">胃寒怎么办: 日常调理与食疗建议</span>
           <span class="sidebar__date">2026 &middot; 05 &middot; 22</span>
         </a>
-      </li>
-      <li>
-        <a class="sidebar__item" href="post-001.html">
-          <span class="sidebar__num">N&deg; 01 &middot; 起步</span>
+      </section>
+
+      <!-- 思考 -->
+      <section class="sidebar__group" data-cat="thoughts">
+        <div class="sidebar__group-title">思 考</div>
+        <p style="padding:6px 22px 8px;font-size:12px;color:var(--text-muted);margin:0;">暂无文章</p>
+      </section>
+
+      <!-- 旅行 -->
+      <section class="sidebar__group" data-cat="travel">
+        <div class="sidebar__group-title">旅 行</div>
+        <p style="padding:6px 22px 8px;font-size:12px;color:var(--text-muted);margin:0;">暂无文章</p>
+      </section>
+
+      <!-- 技术 -->
+      <section class="sidebar__group" data-cat="tech">
+        <div class="sidebar__group-title">技 术</div>
+        <p style="padding:6px 22px 8px;font-size:12px;color:var(--text-muted);margin:0;">暂无文章</p>
+      </section>
+
+      <!-- 起步 / 关于博客 -->
+      <section class="sidebar__group" data-cat="meta">
+        <div class="sidebar__group-title">起 步</div>
+        <a class="sidebar__item" data-cat="meta" href="post-001.html">
+          <span class="sidebar__num">N&deg; 01</span>
           <span class="sidebar__item-title">欢迎 &amp; 这个博客是怎么搭出来的</span>
           <span class="sidebar__date">2026 &middot; 05 &middot; 15</span>
         </a>
-      </li>
-    </ul>
+      </section>
+
+      <p class="sidebar__empty" data-sidebar-empty>该分类暂无文章</p>
+    </div>
+
     <div class="sidebar__foot">
       <a href="index.html">&lsaquo; 返回主页</a>
     </div>
@@ -351,6 +389,6 @@
     </div>
   </footer>
 
-  <script src="assets/js/main.js?v=4"></script>
+  <script src="assets/js/main.js?v=5"></script>
 </body>
 </html>

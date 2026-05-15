@@ -118,4 +118,49 @@
       if (href === file) a.classList.add('is-active');
     });
   }
+
+  /* ---------- Sidebar category filter ---------- */
+  if (sidebar) {
+    var chips = sidebar.querySelectorAll('[data-cat-filter]');
+    var groups = sidebar.querySelectorAll('.sidebar__group');
+    var emptyMsg = sidebar.querySelector('[data-sidebar-empty]');
+
+    function applyCatFilter(cat) {
+      var anyVisible = false;
+      Array.prototype.forEach.call(groups, function (g) {
+        var gCat = g.getAttribute('data-cat');
+        if (cat === 'all' || cat === gCat) {
+          g.hidden = false;
+          // Count real article items (skip "暂无文章" placeholder)
+          var hasItem = g.querySelector('.sidebar__item');
+          if (hasItem) anyVisible = true;
+        } else {
+          g.hidden = true;
+        }
+      });
+
+      // Auto-scroll to active group when picking a single category
+      if (cat !== 'all') {
+        var activeGroup = sidebar.querySelector('.sidebar__group[data-cat="' + cat + '"]');
+        if (activeGroup) activeGroup.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+      } else {
+        // Reset scroll to top when going back to "all"
+        var listEl = sidebar.querySelector('.sidebar__list');
+        if (listEl) listEl.scrollTop = 0;
+      }
+
+      if (emptyMsg) {
+        if (cat !== 'all' && !anyVisible) emptyMsg.classList.add('is-shown');
+        else emptyMsg.classList.remove('is-shown');
+      }
+    }
+
+    Array.prototype.forEach.call(chips, function (chip) {
+      chip.addEventListener('click', function () {
+        Array.prototype.forEach.call(chips, function (c) { c.classList.remove('is-active'); });
+        chip.classList.add('is-active');
+        applyCatFilter(chip.getAttribute('data-cat-filter'));
+      });
+    });
+  }
 })();
