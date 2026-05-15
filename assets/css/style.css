@@ -742,3 +742,137 @@ button {
 @media (max-width: 480px) {
   .sidebar { width: 86vw; }
 }
+
+
+
+/* =========================================================
+   AURORA — animated blue/white/purple gradient (whole site)
+   - A fixed, full-viewport layer behind everything
+   - Two animated radial-gradient stacks for depth
+   - Colors gently shift via hue-rotate + slow rotation
+   - Disabled when user prefers reduced motion
+   ========================================================= */
+
+/* Aurora color tokens — light theme */
+:root {
+  --aurora-1: rgba(168, 208, 255, 0.55);   /* sky blue   */
+  --aurora-2: rgba(200, 184, 255, 0.55);   /* lavender   */
+  --aurora-3: rgba(220, 232, 255, 0.50);   /* pale white-blue */
+  --aurora-4: rgba(232, 216, 255, 0.50);   /* lilac mist */
+  --aurora-5: rgba(140, 110, 240, 0.18);   /* deep purple kiss */
+  --aurora-6: rgba(0, 113, 227, 0.16);     /* deep blue kiss   */
+}
+
+[data-theme="dark"] {
+  --aurora-1: rgba(40, 80, 160, 0.55);
+  --aurora-2: rgba(80, 50, 150, 0.55);
+  --aurora-3: rgba(20, 40, 90, 0.55);
+  --aurora-4: rgba(60, 30, 110, 0.50);
+  --aurora-5: rgba(140, 90, 240, 0.30);
+  --aurora-6: rgba(40, 110, 230, 0.30);
+}
+
+/* Body must allow stacking children below z-index 0 */
+html { background-color: var(--bg); }
+body {
+  /* keep the existing solid color as a safe fallback,
+     the animated layer is rendered on top of it */
+  background-color: transparent;
+}
+
+.aurora {
+  position: fixed;
+  inset: -10%;                /* slight overflow so the rotation never reveals edges */
+  z-index: -1;                /* behind all content but above the html bg */
+  pointer-events: none;
+  overflow: hidden;
+  background-color: var(--bg); /* solid base under the gradients */
+}
+
+/* Layer 1: large slow-rotating blobs */
+.aurora::before {
+  content: "";
+  position: absolute;
+  inset: -20%;
+  background:
+    radial-gradient(circle at 18% 22%, var(--aurora-1) 0%, transparent 42%),
+    radial-gradient(circle at 82% 18%, var(--aurora-2) 0%, transparent 45%),
+    radial-gradient(circle at 12% 82%, var(--aurora-3) 0%, transparent 45%),
+    radial-gradient(circle at 86% 84%, var(--aurora-4) 0%, transparent 45%);
+  filter: blur(60px) saturate(120%);
+  animation: aurora-rotate 38s linear infinite;
+  will-change: transform;
+}
+
+/* Layer 2: punchier accent blobs, opposite rotation */
+.aurora::after {
+  content: "";
+  position: absolute;
+  inset: -25%;
+  background:
+    radial-gradient(circle at 35% 60%, var(--aurora-5) 0%, transparent 45%),
+    radial-gradient(circle at 70% 35%, var(--aurora-6) 0%, transparent 50%);
+  filter: blur(80px) saturate(140%);
+  animation: aurora-rotate-rev 56s linear infinite,
+             aurora-breathe 14s ease-in-out infinite;
+  will-change: transform, opacity;
+  mix-blend-mode: screen;
+}
+
+[data-theme="dark"] .aurora::after {
+  mix-blend-mode: lighten;
+}
+
+@keyframes aurora-rotate {
+  from { transform: rotate(0deg)   scale(1); }
+  50%  { transform: rotate(180deg) scale(1.05); }
+  to   { transform: rotate(360deg) scale(1); }
+}
+
+@keyframes aurora-rotate-rev {
+  from { transform: rotate(0deg)    translateY(0)    scale(1); }
+  50%  { transform: rotate(-180deg) translateY(-20px) scale(1.08); }
+  to   { transform: rotate(-360deg) translateY(0)    scale(1); }
+}
+
+@keyframes aurora-breathe {
+  0%, 100% { opacity: 0.85; }
+  50%      { opacity: 1; }
+}
+
+/* Make hero/article-hero/footer translucent so the aurora shows through */
+.hero,
+.article-hero {
+  background: transparent;
+}
+.hero::before,
+.article-hero::before {
+  /* Soften the original glow so it sits on top of the aurora gracefully */
+  opacity: 0.7;
+}
+.footer {
+  background: color-mix(in srgb, var(--bg-tint) 88%, transparent);
+}
+
+/* Tile cards become slightly translucent for a "frosted on aurora" look */
+.tile {
+  background: color-mix(in srgb, var(--bg-elev) 92%, transparent);
+  backdrop-filter: saturate(140%) blur(8px);
+  -webkit-backdrop-filter: saturate(140%) blur(8px);
+}
+.tile--dark {
+  background: color-mix(in srgb, var(--bg-deep) 95%, transparent);
+}
+.tile--accent {
+  /* keep the accent CTA fully opaque — it's a brand surface */
+  background: linear-gradient(135deg, #0071e3 0%, #2997ff 100%);
+  backdrop-filter: none;
+}
+
+/* Disable animation for users who ask for reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .aurora::before,
+  .aurora::after {
+    animation: none !important;
+  }
+}
