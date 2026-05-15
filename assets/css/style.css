@@ -1589,56 +1589,25 @@ body.search-open {
 }
 
 /* After typing completes, smoothly fade to gradient */
-#heroTypewriter.typewriter-done {
-  animation: typewriterToGradient 1.2s ease forwards;
+/* During typing: solid blue, no gradient, no glow */
+#heroTypewriter.typewriter-typing {
+  background: none !important;
+  -webkit-background-clip: unset !important;
+  background-clip: unset !important;
+  -webkit-text-fill-color: var(--accent) !important;
+  color: var(--accent) !important;
+  filter: none !important;
+  transition: filter 1.2s ease;
 }
-
-@keyframes typewriterToGradient {
-  0% {
-    background: none;
-    -webkit-background-clip: unset;
-    background-clip: unset;
-    -webkit-text-fill-color: var(--accent);
-    color: var(--accent);
-    filter: none;
-  }
-  100% {
-    background: linear-gradient(135deg, #0a64d4 0%, #0071e3 35%, #2997ff 65%, #5fb5ff 100%);
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-    color: transparent;
-    filter: drop-shadow(0 6px 24px rgba(0, 113, 227, 0.30))
-            drop-shadow(0 0 1px rgba(0, 113, 227, 0.18));
-  }
-}
-[data-theme="dark"] #heroTypewriter.typewriter-done {
-  animation: typewriterToGradientDark 1.2s ease forwards;
-}
-@keyframes typewriterToGradientDark {
-  0% {
-    background: none;
-    -webkit-background-clip: unset;
-    background-clip: unset;
-    -webkit-text-fill-color: var(--accent);
-    color: var(--accent);
-    filter: none;
-  }
-  100% {
-    background: linear-gradient(135deg, #4ba6ff 0%, #2997ff 35%, #5fb5ff 65%, #a3d4ff 100%);
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-    color: transparent;
-    filter: drop-shadow(0 6px 28px rgba(41, 151, 255, 0.45))
-            drop-shadow(0 0 2px rgba(41, 151, 255, 0.30));
-  }
+/* After typing: class removed, CSS gradient from .hero__title--brand kicks in.
+   The filter transition makes the glow appear smoothly. */
+#heroTypewriter {
+  transition: filter 1.2s ease;
 }
 
 @media (prefers-reduced-motion: reduce) {
   .typewriter-cursor,
-  .typewriter-cursor.blink,
-  #heroTypewriter.typewriter-done {
+  .typewriter-cursor.blink {
     animation: none !important;
   }
 }
