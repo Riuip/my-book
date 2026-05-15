@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>搜索文章 — WYQ 专属博客</title>
+  <meta name="description" content="搜索 WYQ 博客的所有文章。" />
+  <meta name="theme-color" content="#fbfbfd" media="(prefers-color-scheme: light)" />
+  <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)" />
+  <link rel="stylesheet" href="assets/css/style.css?v=9" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230071e3'/%3E%3Ctext x='50%25' y='62%25' text-anchor='middle' font-family='-apple-system,system-ui,sans-serif' font-weight='700' font-size='14' fill='white'%3EWYQ%3C/text%3E%3C/svg%3E" />
+  <script>
+    (function(){try{var t=localStorage.getItem('wyq-theme');if(t!=='light'&&t!=='dark'){t=window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';}document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
+  </script>
+</head>
+<body>
+
+  <!-- AURORA -->
+  <div class="aurora" aria-hidden="true"></div>
+
+  <!-- NAV -->
+  <nav class="nav">
+    <div class="nav__inner">
+      <a class="nav__brand" href="index.html">
+        <span class="dot"></span>
+        <span>WYQ</span>
+      </a>
+      <ul class="nav__menu">
+        <li><a href="index.html">主页</a></li>
+        <li><a href="post-006.html">文章</a></li>
+        <li><a href="others.html">其他</a></li>
+        <li>
+          <button class="nav__theme" data-theme-toggle aria-label="切换主题">
+            <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+            </svg>
+            <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="4"/>
+              <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/>
+            </svg>
+          </button>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- SEARCH PAGE CONTENT -->
+  <section class="search-page">
+    <div class="search-page__inner">
+      <h1 class="search-page__title">搜索文章</h1>
+      <div class="search-page__box">
+        <svg class="search-page__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="8"/>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+        </svg>
+        <input type="text" class="search-page__input" id="searchPageInput" placeholder="输入关键词搜索..." autofocus autocomplete="off" />
+        <button class="search-page__clear" id="searchPageClear" aria-label="清除">&times;</button>
+      </div>
+      <div class="search-page__results" id="searchPageResults">
+        <p class="search-page__hint">输入关键词开始搜索所有文章</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer__inner">
+      <div>&copy; <span data-year>2026</span> WYQ. All rights reserved.</div>
+      <ul class="footer__links">
+        <li><a href="index.html">主页</a></li>
+        <li><a href="post-006.html">文章</a></li>
+        <li><a href="others.html">其他</a></li>
+      </ul>
+    </div>
+  </footer>
+
+  <script src="assets/js/main.js?v=9"></script>
+  <script src="assets/js/search.js?v=1"></script>
+</body>
+</html>
