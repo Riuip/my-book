@@ -1,0 +1,414 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Web-Omni 网页全能王: 我做了一个 17 合 1 的浏览器插件 — WYQ 专属博客</title>
+  <meta name="description" content="Web-Omni 是我做的一个 Chrome 浏览器插件, 把 18 个常用工具集成在一起。本文讲讲它的功能、架构和实现思路。" />
+  <meta name="theme-color" content="#fbfbfd" media="(prefers-color-scheme: light)" />
+  <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)" />
+  <link rel="stylesheet" href="assets/css/style.css?v=8" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230071e3'/%3E%3Ctext x='50%25' y='62%25' text-anchor='middle' font-family='-apple-system,system-ui,sans-serif' font-weight='700' font-size='14' fill='white'%3EWYQ%3C/text%3E%3C/svg%3E" />
+  <script>
+    (function(){try{var t=localStorage.getItem('wyq-theme');if(t!=='light'&&t!=='dark'){t=window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';}document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
+  </script>
+</head>
+<body>
+
+  <!-- AURORA — animated blue/white/purple gradient (whole site) -->
+  <div class="aurora" aria-hidden="true"></div>
+
+  <!-- SIDEBAR — Blog directory drawer -->
+  <aside class="sidebar" id="sidebar" aria-label="博客目录">
+    <div class="sidebar__head">
+      <span class="sidebar__title">博客目录</span>
+      <button class="sidebar__close" data-sidebar-close aria-label="关闭目录">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="6" x2="6" y2="18"/>
+          <line x1="6" y1="6" x2="18" y2="18"/>
+        </svg>
+      </button>
+    </div>
+
+    <!-- Category filter chips -->
+    <div class="sidebar__filters" role="tablist" aria-label="文章分类">
+      <button class="sidebar__chip is-active" data-cat-filter="all">全部</button>
+      <button class="sidebar__chip" data-cat-filter="life">生活</button>
+      <button class="sidebar__chip" data-cat-filter="thoughts">思考</button>
+      <button class="sidebar__chip" data-cat-filter="travel">旅行</button>
+      <button class="sidebar__chip" data-cat-filter="tech">技术</button>
+      <button class="sidebar__chip" data-cat-filter="meta">起步</button>
+    </div>
+
+    <!-- Article list, grouped by category -->
+    <div class="sidebar__list">
+      <!-- 生活 -->
+      <section class="sidebar__group" data-cat="life">
+        <div class="sidebar__group-title">生 活</div>
+        <a class="sidebar__item" data-cat="life" href="post-002.html">
+          <span class="sidebar__num">N&deg; 02</span>
+          <span class="sidebar__item-title">胃寒怎么办: 日常调理与食疗建议</span>
+          <span class="sidebar__date">2026 &middot; 05 &middot; 22</span>
+        </a>
+      </section>
+
+      <!-- 思考 -->
+      <section class="sidebar__group" data-cat="thoughts">
+        <div class="sidebar__group-title">思 考</div>
+        <p style="padding:6px 22px 8px;font-size:12px;color:var(--text-muted);margin:0;">暂无文章</p>
+      </section>
+
+      <!-- 旅行 -->
+      <section class="sidebar__group" data-cat="travel">
+        <div class="sidebar__group-title">旅 行</div>
+        <p style="padding:6px 22px 8px;font-size:12px;color:var(--text-muted);margin:0;">暂无文章</p>
+      </section>
+
+      <!-- 技术 -->
+      <section class="sidebar__group" data-cat="tech">
+        <div class="sidebar__group-title">技 术</div>
+        <a class="sidebar__item" data-cat="tech" href="post-003.html">
+          <span class="sidebar__num">N&deg; 03</span>
+          <span class="sidebar__item-title">Web-Omni: 我做了一个 17 合 1 的浏览器插件</span>
+          <span class="sidebar__date">2026 &middot; 05 &middot; 29</span>
+        </a>
+      </section>
+
+      <!-- 起步 / 关于博客 -->
+      <section class="sidebar__group" data-cat="meta">
+        <div class="sidebar__group-title">起 步</div>
+        <a class="sidebar__item" data-cat="meta" href="post-001.html">
+          <span class="sidebar__num">N&deg; 01</span>
+          <span class="sidebar__item-title">欢迎 &amp; 这个博客是怎么搭出来的</span>
+          <span class="sidebar__date">2026 &middot; 05 &middot; 15</span>
+        </a>
+      </section>
+
+      <p class="sidebar__empty" data-sidebar-empty>该分类暂无文章</p>
+    </div>
+
+    <div class="sidebar__foot">
+      <a href="index.html">&lsaquo; 返回主页</a>
+    </div>
+  </aside>
+  <div class="sidebar-backdrop" id="sidebar-backdrop"></div>
+
+  <!-- NAV -->
+  <nav class="nav">
+    <div class="nav__inner">
+      <a class="nav__brand" href="index.html">
+        <span class="dot"></span>
+        <span>WYQ</span>
+      </a>
+      <ul class="nav__menu">
+        <li>
+          <button class="nav__sidebar-toggle" data-sidebar-toggle aria-label="打开博客目录">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="3" y1="6" x2="21" y2="6"/>
+              <line x1="3" y1="12" x2="21" y2="12"/>
+              <line x1="3" y1="18" x2="21" y2="18"/>
+            </svg>
+          </button>
+        </li>
+        <li><a href="index.html">主页</a></li>
+        <li><a href="post-003.html">文章</a></li>
+        <li><a href="others.html">其他</a></li>
+        <li>
+          <button class="nav__theme" data-theme-toggle aria-label="切换主题">
+            <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+            </svg>
+            <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="4"/>
+              <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/>
+            </svg>
+          </button>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- ARTICLE HERO -->
+  <header class="article-hero">
+    <div class="article-hero__inner">
+      <span class="article-hero__tag reveal">N&deg; 03 &middot; 技 术</span>
+      <h1 class="article-hero__title reveal" data-delay="1">Web-Omni: 我做了一个 17 合 1 的浏览器插件</h1>
+      <div class="article-hero__meta reveal" data-delay="2">
+        <span>WYQ</span>
+        <span class="dot"></span>
+        <span>2026 &middot; 05 &middot; 29</span>
+        <span class="dot"></span>
+        <span>12 分钟阅读</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- ARTICLE BODY -->
+  <article class="article">
+    <p class="lead">
+      这一篇, 我想跟你聊聊我自己做的一个开源项目 &mdash;
+      <a href="https://github.com/Riuip/web-Omni-/releases" target="_blank" rel="noopener"><strong>Web-Omni (网页全能王)</strong></a>。
+      它是一个浏览器扩展, 把 17 个我自己最常用的&ldquo;网页小工具&rdquo;都揉到了同一个插件里。
+      下面是它的功能、架构, 以及实现过程中我踩过的一些坑。
+    </p>
+
+    <hr/>
+
+    <h2>一、它是个什么</h2>
+    <p>
+      简单说, 就是一个 Chrome 浏览器扩展。装上以后, 你的浏览器会多出一组以前需要装十几个插件、
+      或者完全没人做的功能。Manifest V3, 体积不大, 没有任何远程后端, 不收集任何数据 &mdash;
+      所有计算都在你自己的浏览器里发生。
+    </p>
+    <ul>
+      <li><strong>名字</strong>: Web-Omni (网页全能王)</li>
+      <li><strong>当前版本</strong>: v1.1 (插件 manifest 内为 4.0.0)</li>
+      <li><strong>开源协议</strong>: GitHub 仓库开源</li>
+      <li><strong>下载</strong>: <a href="https://github.com/Riuip/web-Omni-/releases" target="_blank" rel="noopener">github.com/Riuip/web-Omni-/releases</a></li>
+    </ul>
+
+    <blockquote>
+      &ldquo;不为做一个完美的产品, 只为把自己最常重复的操作, 变成一次安装。&rdquo;
+    </blockquote>
+
+    <hr/>
+
+    <h2>二、它能做什么 &mdash; 17 个内置功能</h2>
+    <p>
+      Web-Omni 由一个 <code>background.js</code> 后台 + 17 个独立的 content script 组成。
+      每个脚本对应一个&ldquo;功能模块&rdquo;, 互相不依赖, 想用哪个就用哪个。
+    </p>
+
+    <h3>1. 视觉控制类</h3>
+    <ul>
+      <li><strong>visual-dictator</strong> &mdash; 自定义页面字号、字体、行高、颜色</li>
+      <li><strong>immersive-modding</strong> &mdash; 沉浸阅读模式, 一键去除花花绿绿的干扰</li>
+      <li><strong>sticky-killer</strong> &mdash; 一键清除粘性导航条、悬浮广告、回到顶部按钮</li>
+      <li><strong>element-pip</strong> &mdash; 把页面任意元素&ldquo;摘下来&rdquo;做成画中画悬浮窗</li>
+    </ul>
+
+    <h3>2. 数据与自动化</h3>
+    <ul>
+      <li><strong>data-harvester</strong> &mdash; 一键抓取页面表格 / 列表为 CSV / JSON</li>
+      <li><strong>automation-geek</strong> &mdash; 录制和回放点击, 用于重复性操作</li>
+      <li><strong>ecommerce-scraper</strong> &mdash; 电商页商品信息提取</li>
+      <li><strong>price-comparator</strong> &mdash; 多平台价格比较</li>
+      <li><strong>dom-monitor</strong> &mdash; 监控页面 DOM 变化, 比如&ldquo;有货提醒&rdquo;</li>
+    </ul>
+
+    <h3>3. 隐私与安全</h3>
+    <ul>
+      <li><strong>privacy-shield</strong> &mdash; 隐私保护, 拦截常见追踪脚本</li>
+      <li><strong>clean-url</strong> &mdash; 自动清洗 URL 中的追踪参数 (utm_xxx, fbclid 等)</li>
+      <li><strong>password-vault</strong> &mdash; 本地密码库 (单独的 vault.html 页面)</li>
+      <li><strong>input-timemachine</strong> &mdash; 输入历史记录, 防止表单一刷就丢</li>
+    </ul>
+
+    <h3>4. 媒体与传输</h3>
+    <ul>
+      <li><strong>audio-normalizer</strong> &mdash; 自动平衡网页里各处音频的音量</li>
+      <li><strong>youtube-enhancer</strong> &mdash; 给 YouTube 加一些原生没有的功能</li>
+      <li><strong>lan-transfer</strong> &mdash; 局域网手机&harr;电脑互传文件 (基于 WebRTC)</li>
+    </ul>
+
+    <h3>5. 工具与中枢</h3>
+    <ul>
+      <li><strong>page-tools</strong> &mdash; 页面工具集合</li>
+      <li><strong>command-hub</strong> &mdash; 快捷指令中枢, <code>Ctrl+Shift+K</code> 呼出, 是所有功能的入口</li>
+    </ul>
+
+    <hr/>
+
+    <h2>三、技术架构</h2>
+
+    <h3>1. Manifest V3 + 17 个 content script</h3>
+    <p>
+      用的是 Chrome 推荐的最新插件标准 <strong>Manifest V3</strong>。
+      它有几个核心约束:
+    </p>
+    <ul>
+      <li>后台脚本必须是 <code>service_worker</code>, 不能常驻; 用完即休眠</li>
+      <li>不能用 <code>eval</code>、不能动态注入远程脚本</li>
+      <li>跨脚本通信必须走 <code>chrome.runtime.sendMessage</code> / <code>onMessage</code></li>
+    </ul>
+    <p>
+      所有 content script 都注入到 <code>&lt;all_urls&gt;</code> 上, 但默认&ldquo;沉睡&rdquo; &mdash;
+      只在用户从 command-hub 主动激活某功能时, 才真正干活。
+    </p>
+
+    <h3>2. 后台 service worker 是个&ldquo;消息中继&rdquo;</h3>
+    <p>
+      <code>background.js</code> 本身没有业务逻辑, 它只做两件事:
+    </p>
+    <pre><code>// 1. 把任何 content script 发的消息, 中继给同 tab 的所有脚本
+chrome.runtime.onMessage.addListener((req, sender, sendResponse) =&gt; {
+  if (sender.tab &amp;&amp; req.action) {
+    chrome.tabs.sendMessage(sender.tab.id, req);
+  }
+});
+
+// 2. 监听全局快捷键, 触发 command-hub 显示
+chrome.commands.onCommand.addListener((command) =&gt; {
+  if (command === "toggle-command-hub") {
+    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) =&gt; {
+      if (tabs.length) chrome.tabs.sendMessage(tabs[0].id, { action: "TOGGLE_COMMAND_HUB" });
+    });
+  }
+});</code></pre>
+    <p>
+      这个&ldquo;轻后台&rdquo;模式, 让插件冷启动几乎为零开销, 也最大程度避开了 V3 service worker
+      被频繁回收带来的状态丢失问题。
+    </p>
+
+    <h3>3. 一切配置都在 chrome.storage</h3>
+    <p>
+      用户在 command-hub 里勾选的开关、自定义字号、密码库的密文等,
+      全部写到 <code>chrome.storage.local</code>。这有两个好处:
+    </p>
+    <ul>
+      <li>关闭浏览器再打开, 状态原样恢复</li>
+      <li>未来可以无缝切到 <code>chrome.storage.sync</code> 实现跨设备同步</li>
+    </ul>
+
+    <hr/>
+
+    <h2>四、最难的两个模块</h2>
+
+    <h3>1. lan-transfer &mdash; WebRTC 局域网传文件</h3>
+    <p>
+      最早这个功能是想要&ldquo;手机和电脑一键互传&rdquo; &mdash; 后来发现远比想象的复杂。
+      最终采用了两套模式:
+    </p>
+    <ol>
+      <li>
+        <strong>模式 A</strong>: 从插件直接&ldquo;下载手机页面 HTML&rdquo;, 用户把 HTML 发给手机,
+        手机用浏览器打开, 输入房间码连接 &mdash; 简单, 但需要 STUN 服务可用
+      </li>
+      <li>
+        <strong>模式 B</strong>: 一键导出&ldquo;局域网页包 ZIP&rdquo;, 里面是
+        <code>index.html</code> + <code>start-mobile-server.cmd</code> + <code>serve-mobile.ps1</code>。
+        用户在 Windows 上双击运行, 手机直接用 IP 访问, 稳定得多
+      </li>
+    </ol>
+    <p>
+      涉及到的技术栈: <strong>WebRTC DataChannel</strong> + <strong>peerjs</strong> + <strong>QRCode</strong> + 本地 PowerShell HTTP server。
+    </p>
+
+    <blockquote>
+      &ldquo;在内网传一个文件, 居然要一套 WebRTC + STUN + 房间码 &mdash; 网络这件事, 越深入越敬畏。&rdquo;
+    </blockquote>
+
+    <h3>2. command-hub &mdash; 17 合 1 的入口</h3>
+    <p>
+      因为有 17 个功能, 不能让用户右键 17 个菜单, 也不能让浏览器图标弹出一堆开关。
+      最终的设计是:
+    </p>
+    <ul>
+      <li>全局快捷键 <code>Ctrl+Shift+K</code> 呼出一个浮层</li>
+      <li>浮层是 Spotlight 风格 &mdash; 顶部一个搜索框, 下面是模糊匹配的功能列表</li>
+      <li>每个功能项右边显示当前状态 (开 / 关 / 配置中)</li>
+      <li>键盘上下选, Enter 触发, Esc 关闭</li>
+    </ul>
+    <p>
+      为了不污染网页的样式, command-hub 用了 <strong>Shadow DOM</strong> 包起来, 网页本身的 CSS 完全影响不到它。
+    </p>
+
+    <hr/>
+
+    <h2>五、几个我特别得意的细节</h2>
+
+    <h3>1. 沉浸阅读 &mdash; 不只是&ldquo;清空样式&rdquo;</h3>
+    <p>
+      市面上的&ldquo;阅读模式&rdquo;基本都是&ldquo;识别文章主体, 重排页面&rdquo;。我没用现成方案, 而是用了
+      <strong>启发式选择器评分</strong>: 给页面所有元素打分 (文字密度、图片比例、链接占比),
+      最终得分最高的子树就是&ldquo;正文&rdquo;。准确率比想象中高很多。
+    </p>
+
+    <h3>2. 输入时光机 &mdash; 防止表单一刷就丢</h3>
+    <p>
+      监听所有 <code>input</code> / <code>textarea</code> 的输入事件,
+      用 <strong>防抖 + IndexedDB</strong> 异步保存。
+      浏览器崩溃后再打开, 自动检测当前 URL 有没有过去的草稿, 提示恢复。
+      &ldquo;再也不怕填长表填到最后一刷新就没了&rdquo;。
+    </p>
+
+    <h3>3. 价格比较器 &mdash; 跨域请求是怎么解决的</h3>
+    <p>
+      在某宝商品页, 怎么去拿京东的价格? 答案是: <strong>permissions: &lt;all_urls&gt;</strong> +
+      <strong>chrome.declarativeNetRequest</strong>。借助插件特权,
+      content script 可以发任意跨域请求, 然后把结果回传到当前页。
+      没有 CORS 之苦。
+    </p>
+
+    <hr/>
+
+    <h2>六、踩过的坑</h2>
+
+    <h3>1. service worker 会被随时杀掉</h3>
+    <p>
+      Manifest V3 的 service worker 不像 V2 的 background page, 它会在 30 秒空闲后被回收。
+      我一开始把状态存在 <code>self</code> 上, 结果一会儿就丢。最终方案: <strong>所有状态都进 chrome.storage</strong>,
+      service worker 每次唤醒时从 storage 重建。
+    </p>
+
+    <h3>2. content script 的样式污染</h3>
+    <p>
+      把 UI 直接 inject 进网页的话, 网页的 <code>* { margin: 0 }</code> 之类的会破坏一切。
+      解决: <strong>Shadow DOM 隔离</strong> + 内联所有样式。
+    </p>
+
+    <h3>3. 17 个脚本同时注入会变慢</h3>
+    <p>
+      早期所有脚本 <code>document_start</code> 注入, 页面打开慢得肉眼可见。
+      改成 <code>document_idle</code> + 每个脚本&ldquo;懒激活&rdquo; (只 import 接口, 真要用时再 import 实现) 后,
+      一切都正常了。
+    </p>
+
+    <hr/>
+
+    <h2>七、想试用？</h2>
+    <p>下载方式:</p>
+    <ol>
+      <li>访问 <a href="https://github.com/Riuip/web-Omni-/releases" target="_blank" rel="noopener">GitHub Releases 页面</a></li>
+      <li>下载最新版的 ZIP</li>
+      <li>解压</li>
+      <li>Chrome &rarr; 扩展程序 &rarr; 打开&ldquo;开发者模式&rdquo;</li>
+      <li>点&ldquo;加载已解压的扩展程序&rdquo;, 选刚才解压的目录</li>
+      <li><code>Ctrl+Shift+K</code> 呼出 command-hub, 开始玩</li>
+    </ol>
+
+    <p>
+      项目完全开源, 欢迎 star、Issue、PR &mdash;
+      <a href="https://github.com/Riuip/web-Omni-" target="_blank" rel="noopener">github.com/Riuip/web-Omni-</a>。
+    </p>
+
+    <blockquote>
+      &ldquo;最值得做的工具, 是你自己每天都会用到的那种。&rdquo;
+    </blockquote>
+
+    <p style="color:var(--text-muted); font-size:16px; margin-top:36px;">
+      &mdash; WYQ &nbsp;&middot;&nbsp; 2026 年 5 月 29 日
+    </p>
+  </article>
+
+  <!-- ARTICLE FOOTER -->
+  <div class="article-foot">
+    <a class="btn btn--ghost" href="post-002.html" style="color:var(--text-soft);">&lsaquo; 上一篇: 胃寒怎么办</a>
+    <a class="btn btn--ghost" href="index.html">返回主页 &rsaquo;</a>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer__inner">
+      <div>&copy; <span data-year>2026</span> WYQ. All rights reserved.</div>
+      <ul class="footer__links">
+        <li><a href="index.html">主页</a></li>
+        <li><a href="post-003.html">最新文章</a></li>
+        <li><a href="others.html">其他</a></li>
+      </ul>
+    </div>
+  </footer>
+
+  <script src="assets/js/main.js?v=8"></script>
+</body>
+</html>
