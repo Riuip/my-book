@@ -1,0 +1,311 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>欢迎 &amp; 这个博客是怎么搭出来的 — WYQ 专属博客</title>
+  <meta name="description" content="WYQ 专属博客的第一篇文章 —— 介绍这个博客, 并附上一份从零搭建静态个人博客的详细教程。" />
+  <meta name="theme-color" content="#fbfbfd" media="(prefers-color-scheme: light)" />
+  <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)" />
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230071e3'/%3E%3Ctext x='50%25' y='62%25' text-anchor='middle' font-family='-apple-system,system-ui,sans-serif' font-weight='700' font-size='14' fill='white'%3EWYQ%3C/text%3E%3C/svg%3E" />
+  <script>
+    (function(){try{var t=localStorage.getItem('wyq-theme');if(t!=='light'&&t!=='dark'){t=window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';}document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
+  </script>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav class="nav">
+    <div class="nav__inner">
+      <a class="nav__brand" href="index.html">
+        <span class="dot"></span>
+        <span>WYQ</span>
+      </a>
+      <ul class="nav__menu">
+        <li><a href="index.html">主页</a></li>
+        <li><a href="post-001.html">文章</a></li>
+        <li>
+          <button class="nav__theme" data-theme-toggle aria-label="切换主题">
+            <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+            </svg>
+            <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="4"/>
+              <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/>
+            </svg>
+          </button>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- ARTICLE HERO -->
+  <header class="article-hero">
+    <div class="article-hero__inner">
+      <span class="article-hero__tag reveal">N&deg; 01 &middot; 起 步</span>
+      <h1 class="article-hero__title reveal" data-delay="1">欢迎 &amp; 这个博客是怎么搭出来的</h1>
+      <div class="article-hero__meta reveal" data-delay="2">
+        <span>WYQ</span>
+        <span class="dot"></span>
+        <span>2026 &middot; 05 &middot; 15</span>
+        <span class="dot"></span>
+        <span>10 分钟阅读</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- ARTICLE BODY -->
+  <article class="article">
+    <p class="lead">
+      你好, 欢迎来到 <strong>WYQ 专属博客</strong>。
+      这是这里的第一篇文章 — 我会先介绍这个博客本身,
+      然后把<strong>从零开始搭建这种静态个人博客的全部步骤</strong>详细写下来,
+      让任何对编程一无所知的朋友, 也能照着做出一个属于自己的、免费、可全球访问的网站。
+    </p>
+
+    <hr/>
+
+    <h2>一、关于这个博客</h2>
+    <p>
+      这个博客是我的个人空间, 不为流量, 不为变现, 只为留下一些可以回头翻阅的文字。
+      它的设计灵感来自苹果官网 — 大字标题、毛玻璃顶栏、圆角卡片、柔和阴影,
+      以及那种"留白即奢侈"的克制感。
+    </p>
+
+    <h3>它有哪些功能</h3>
+    <ul>
+      <li><strong>苹果官网风的视觉语言</strong> — SF 字体栈、`#0071e3` 主蓝、巨型 Hero 标题。</li>
+      <li><strong>暗 / 亮主题切换</strong> — 自动跟随系统, 也可以点右上角图标手动切换, 选择会被记住。</li>
+      <li><strong>主页只放介绍</strong> — Hero、关于我、个人资料、跳转文章按钮, 不在首页堆文章。</li>
+      <li><strong>独立的文章详情页</strong> — 苹果风排版, 引言段加大、二级标题清晰、引用块带蓝色侧边线。</li>
+      <li><strong>完全静态</strong> — 没有数据库, 没有后端, 没有构建步骤, 一份 HTML 改完就能上线。</li>
+    </ul>
+
+    <h3>它用了哪些"技术"</h3>
+    <p>
+      只有最朴素的三样东西: <strong>HTML / CSS / JavaScript</strong>。
+      没有 React, 没有 Vue, 没有 Next.js, 也没有 Tailwind。
+      托管在 <a href="https://pages.github.com/" target="_blank" rel="noopener">GitHub Pages</a>, 永久免费、自带 HTTPS、全球加速。
+    </p>
+
+    <blockquote>
+      &ldquo;最适合你的工具, 是你能完全掌控的那个。&rdquo;
+    </blockquote>
+
+    <hr/>
+
+    <h2>二、搭建教程: 从零到上线</h2>
+    <p>
+      下面这份教程, 假设你 <strong>从未写过代码</strong>。我会把每一步都说清楚。
+      从注册账号到博客上线, 大约需要 <strong>30 分钟</strong>。
+    </p>
+
+    <h3>你需要的东西</h3>
+    <ul>
+      <li>一台能上网的电脑（Windows / Mac / Linux 都行）</li>
+      <li>一个邮箱（用来注册 GitHub 账号）</li>
+      <li>一颗愿意慢慢来的心</li>
+    </ul>
+
+    <hr/>
+
+    <h2>第 1 步: 注册一个 GitHub 账号</h2>
+    <p>
+      <a href="https://github.com/signup" target="_blank" rel="noopener">github.com/signup</a> 用邮箱注册一个账号。
+      记下你的<strong>用户名</strong> — 它会出现在你博客的网址里, 例如 <code>https://你的用户名.github.io/</code>。
+    </p>
+    <p>
+      完成邮箱验证后, 你就拥有了一个属于自己的 GitHub。这是接下来一切的起点。
+    </p>
+
+    <h2>第 2 步: 创建一个仓库（Repository）</h2>
+    <p>
+      "仓库"听起来吓人, 其实就是一个云端的项目文件夹, 用来放你博客所有的文件。
+    </p>
+    <ol>
+      <li>登录后, 点右上角 <strong>+</strong> &rarr; <strong>New repository</strong></li>
+      <li><strong>Repository name</strong> 填一个名字, 比如 <code>my-book</code> 或 <code>blog</code></li>
+      <li>选 <strong>Public</strong>（必须公开, GitHub Pages 才免费）</li>
+      <li>勾上 <strong>Add a README file</strong></li>
+      <li>点 <strong>Create repository</strong></li>
+    </ol>
+    <p>
+      创建好之后, 你会进入仓库主页。把它的网址记下来, 类似:
+    </p>
+    <pre><code>https://github.com/你的用户名/my-book</code></pre>
+
+    <h2>第 3 步: 把博客文件放进仓库</h2>
+    <p>
+      如果你想直接用我现在这个博客的代码作为起点 — 仓库
+      <a href="https://github.com/Riuip/my-book" target="_blank" rel="noopener">Riuip/my-book</a>
+      是开源的, 可以参考。
+    </p>
+    <p>
+      最简单的两种做法:
+    </p>
+
+    <h3>做法 A: 在 GitHub 网页上手动创建文件</h3>
+    <ol>
+      <li>进你刚创建的仓库</li>
+      <li>点 <strong>Add file &rarr; Create new file</strong></li>
+      <li>文件名输入 <code>index.html</code></li>
+      <li>把内容粘贴进去</li>
+      <li>滚到底部, 点 <strong>Commit changes</strong></li>
+      <li>重复以上过程, 把 <code>post-001.html</code>、<code>assets/css/style.css</code>、<code>assets/js/main.js</code>、<code>.nojekyll</code> 都建好</li>
+    </ol>
+    <p>
+      其中 <code>assets/css/style.css</code> 这种带斜杠的文件名, GitHub 会自动帮你创建文件夹。
+    </p>
+
+    <h3>做法 B: 用本地工具上传（更专业一点）</h3>
+    <p>
+      如果你愿意装个 <a href="https://desktop.github.com/" target="_blank" rel="noopener">GitHub Desktop</a> 或者
+      <a href="https://code.visualstudio.com/" target="_blank" rel="noopener">VS Code</a>, 体验会更舒服:
+    </p>
+    <ol>
+      <li>用 GitHub Desktop "Clone" 你的仓库到本地</li>
+      <li>用 VS Code 打开那个文件夹, 编辑文件</li>
+      <li>在 GitHub Desktop 里写一句 commit message, 点 <strong>Commit to main</strong>, 再点 <strong>Push origin</strong></li>
+    </ol>
+
+    <h2>第 4 步: 启用 GitHub Pages</h2>
+    <p>这是把仓库变成网站的关键一步:</p>
+    <ol>
+      <li>进入仓库的 <strong>Settings</strong>（设置）</li>
+      <li>左侧菜单找到 <strong>Pages</strong></li>
+      <li><strong>Source</strong>: 选 <code>Deploy from a branch</code></li>
+      <li><strong>Branch</strong>: 左边选 <code>main</code>, 右边选 <code>/ (root)</code></li>
+      <li>点 <strong>Save</strong></li>
+    </ol>
+    <p>等 1 到 2 分钟, 页面顶部会出现一句话:</p>
+    <blockquote>
+      Your site is live at <code>https://你的用户名.github.io/my-book/</code>
+    </blockquote>
+    <p>
+      点那个链接 — 那就是你的博客了 🎉
+    </p>
+
+    <h2>第 5 步: 写一篇属于你的真文章</h2>
+    <p>这是最有趣的一步。打开仓库里的 <code>post-template.html</code>, 这是我准备好的文章模板:</p>
+    <ol>
+      <li>把它复制一份, 重命名为 <code>post-001.html</code>（或者 <code>post-hello.html</code> 之类的名字）</li>
+      <li>修改文件最上面的 <code>&lt;title&gt;</code> 为你的文章标题</li>
+      <li>修改 <code>article-hero__title</code> 里的标题</li>
+      <li>修改 <code>article-hero__tag</code> 里的分类（比如 "生活" / "思考"）</li>
+      <li>修改 <code>article-hero__meta</code> 里的日期和阅读时长</li>
+      <li>把 <code>&lt;article class="article"&gt;</code> 标签里的内容换成你自己写的</li>
+    </ol>
+
+    <h3>正文写作的"小语法"</h3>
+    <p>
+      模板支持的元素都在样式里有对应的精致排版:
+    </p>
+    <ul>
+      <li><code>&lt;p class="lead"&gt;</code> &mdash; 引言段（开头那段加大字号）</li>
+      <li><code>&lt;h2&gt;</code>、<code>&lt;h3&gt;</code> &mdash; 一级 / 二级小标题</li>
+      <li><code>&lt;p&gt;</code> &mdash; 普通段落</li>
+      <li><code>&lt;ul&gt;</code> &lt; <code>&lt;li&gt;</code> &gt; &mdash; 无序列表</li>
+      <li><code>&lt;ol&gt;</code> &mdash; 有序列表（带数字）</li>
+      <li><code>&lt;blockquote&gt;</code> &mdash; 引用块, 适合放一句金句</li>
+      <li><code>&lt;code&gt;</code> &mdash; 行内代码</li>
+      <li><code>&lt;pre&gt;&lt;code&gt;</code> &mdash; 多行代码块</li>
+      <li><code>&lt;hr/&gt;</code> &mdash; 分隔线</li>
+    </ul>
+
+    <h2>第 6 步: 让主页跳转到你的新文章</h2>
+    <p>
+      打开 <code>index.html</code>, 用 Ctrl+F 搜索 <code>post-template.html</code>,
+      会找到 4 处出现这个文件名 (导航栏一处, 三个"查看文章"按钮各一处)。
+      把它们都替换成你的新文件名 <code>post-001.html</code>, 保存提交。
+    </p>
+    <p>等 1 分钟, 刷新主页, 点"查看文章" — 它已经会跳到你的真文章了。</p>
+
+    <h2>第 7 步: 持续更新</h2>
+    <p>之后每写一篇新文章, 流程都一样:</p>
+    <ol>
+      <li>复制 <code>post-template.html</code>, 改名（比如 <code>post-002.html</code>）</li>
+      <li>填内容</li>
+      <li>提交并推送（GitHub Desktop 一键, 或网页直接编辑）</li>
+      <li>1 分钟后线上就更新了</li>
+    </ol>
+
+    <hr/>
+
+    <h2>三、几个进阶技巧</h2>
+
+    <h3>1. 自定义域名（可选）</h3>
+    <p>
+      如果你想用自己买的域名（比如 <code>wyq.com</code>）, 可以在仓库的 Settings &rarr; Pages 里
+      添加 Custom domain, 再去你买域名的服务商后台加一个 CNAME 解析到 <code>你的用户名.github.io</code>。
+      GitHub Pages 会自动给你颁发免费的 HTTPS 证书。
+    </p>
+
+    <h3>2. 改主题色</h3>
+    <p>
+      打开 <code>assets/css/style.css</code>, 找到顶部的:
+    </p>
+    <pre><code>--accent: #0071e3;</code></pre>
+    <p>把这个 16 进制颜色换成你喜欢的, 整站的主蓝就变了。比如:</p>
+    <ul>
+      <li>橘色: <code>#ff6b35</code></li>
+      <li>紫色: <code>#8b5cf6</code></li>
+      <li>绿色: <code>#10b981</code></li>
+      <li>粉色: <code>#ec4899</code></li>
+    </ul>
+
+    <h3>3. 调字号 / 间距</h3>
+    <p>
+      所有重要的字号都用了 <code>clamp()</code>, 比如:
+    </p>
+    <pre><code>.hero__title {
+  font-size: clamp(64px, 11vw, 124px);
+}</code></pre>
+    <p>三个值分别是: 最小、随屏幕缩放、最大。把第三个值改大一点, 大屏上的 Hero 就会更"凶"。</p>
+
+    <h3>4. 备份你的博客</h3>
+    <p>
+      因为所有内容都在 GitHub 上, 它本身就是备份。但建议你偶尔把仓库 Clone 一份到本地硬盘,
+      就算 GitHub 哪天抽风, 你的文字也永远在你手里。
+    </p>
+
+    <hr/>
+
+    <h2>四、最后想说</h2>
+    <p>
+      建一个博客其实并不难。难的是 — 在这个被算法塞满的时代, 还愿意为自己留一处, 不被打扰的角落。
+    </p>
+    <p>
+      如果你也想搭一个属于自己的小站, 这份教程对你有用就好。
+      做好了, 欢迎写信告诉我, 我会很高兴。
+    </p>
+
+    <blockquote>
+      &ldquo;写, 是为了让那些容易被忘记的瞬间, 留下来。&rdquo;
+    </blockquote>
+
+    <p style="color:var(--text-muted); font-size:16px; margin-top:36px;">
+      &mdash; WYQ &nbsp;&middot;&nbsp; 2026 年 5 月 15 日
+    </p>
+  </article>
+
+  <!-- ARTICLE FOOTER -->
+  <div class="article-foot">
+    <a class="btn btn--ghost" href="index.html" style="color:var(--text-soft);">&lsaquo; 返回主页</a>
+    <a class="btn btn--ghost" href="mailto:wyq200707@qq.com">写信给 WYQ</a>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer__inner">
+      <div>&copy; <span data-year>2026</span> WYQ. All rights reserved.</div>
+      <ul class="footer__links">
+        <li><a href="index.html">主页</a></li>
+        <li><a href="post-001.html">文章</a></li>
+      </ul>
+    </div>
+  </footer>
+
+  <script src="assets/js/main.js"></script>
+</body>
+</html>
