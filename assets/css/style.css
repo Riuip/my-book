@@ -235,13 +235,34 @@ button {
   padding: 12px 22px;
   border-radius: 980px;
   font-weight: 400;
-  transition: background-color 0.2s ease, color 0.2s ease;
+  transition: background-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
   cursor: pointer;
 }
-.btn--primary { background: var(--accent); color: #fff; }
-.btn--primary:hover { background: var(--accent-hover); color: #fff; }
-.btn--ghost { color: var(--accent); background: transparent; }
-.btn--ghost:hover { color: var(--accent-hover); }
+.btn--primary {
+  background: var(--accent);
+  color: #fff;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.25) inset,
+              0 4px 16px -4px rgba(0, 113, 227, 0.4),
+              0 0 8px rgba(0, 113, 227, 0.15);
+}
+.btn--primary:hover {
+  background: var(--accent-hover);
+  color: #fff;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.35) inset,
+              0 6px 20px -4px rgba(0, 113, 227, 0.5),
+              0 0 12px rgba(0, 113, 227, 0.25);
+}
+.btn--ghost {
+  color: var(--accent);
+  background: transparent;
+  box-shadow: 0 0 0 1px var(--line-strong) inset,
+              0 0 6px rgba(0, 113, 227, 0.08);
+}
+.btn--ghost:hover {
+  color: var(--accent-hover);
+  box-shadow: 0 0 0 1px var(--accent) inset,
+              0 0 10px rgba(0, 113, 227, 0.18);
+}
 .btn--ghost::after {
   content: '\203A';
   margin-left: 4px;
@@ -607,29 +628,18 @@ button {
   hyphens: none;
   /* Tiny safety padding so the right edge (Q) never gets clipped */
   padding: 0 4px;
-  /* Vivid blue gradient — sits on top of the aurora */
-  background: linear-gradient(135deg,
-              #0a64d4 0%,
-              #0071e3 35%,
-              #2997ff 65%,
-              #5fb5ff 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
+  /* Solid accent blue — no gradient, clean and simple */
+  color: var(--accent);
+  -webkit-text-fill-color: var(--accent);
+  background: none;
   /* Soft halo behind the letters so they pop on busy backgrounds */
   filter: drop-shadow(0 6px 24px rgba(0, 113, 227, 0.30))
           drop-shadow(0 0 1px rgba(0, 113, 227, 0.18));
   margin-bottom: 26px;
 }
 [data-theme="dark"] .hero__title--brand {
-  background: linear-gradient(135deg,
-              #4ba6ff 0%,
-              #2997ff 35%,
-              #5fb5ff 65%,
-              #a3d4ff 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
+  color: var(--accent);
+  -webkit-text-fill-color: var(--accent);
   filter: drop-shadow(0 6px 28px rgba(41, 151, 255, 0.45))
           drop-shadow(0 0 2px rgba(41, 151, 255, 0.30));
 }
@@ -672,7 +682,9 @@ button {
   bottom: 0;
   width: 300px;
   max-width: 85vw;
-  background: var(--bg-elev);
+  background: var(--nav-bg);
+  backdrop-filter: saturate(200%) blur(36px);
+  -webkit-backdrop-filter: saturate(200%) blur(36px);
   border-right: 1px solid var(--line);
   z-index: 10000;
   transform: translateX(-100%);
@@ -1589,18 +1601,16 @@ body.search-open {
 }
 
 /* After typing completes, smoothly fade to gradient */
-/* During typing: solid blue, no gradient, no glow */
+/* During typing and after: solid blue always, no gradient needed */
 #heroTypewriter.typewriter-typing {
+  color: var(--accent) !important;
+  -webkit-text-fill-color: var(--accent) !important;
   background: none !important;
   -webkit-background-clip: unset !important;
   background-clip: unset !important;
-  -webkit-text-fill-color: var(--accent) !important;
-  color: var(--accent) !important;
   filter: none !important;
-  transition: filter 1.2s ease;
 }
-/* After typing: class removed, CSS gradient from .hero__title--brand kicks in.
-   The filter transition makes the glow appear smoothly. */
+/* After typing: same as normal .hero__title--brand (solid blue + glow) */
 #heroTypewriter {
   transition: filter 1.2s ease;
 }
