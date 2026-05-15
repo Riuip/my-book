@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>标签与分类 — WYQ 专属博客</title>
+  <meta name="description" content="按标签和分类浏览 WYQ 博客的全部文章。" />
+  <meta name="theme-color" content="#fbfbfd" media="(prefers-color-scheme: light)" />
+  <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)" />
+  <link rel="stylesheet" href="assets/css/style.css?v=10" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230071e3'/%3E%3Ctext x='50%25' y='62%25' text-anchor='middle' font-family='-apple-system,system-ui,sans-serif' font-weight='700' font-size='14' fill='white'%3EWYQ%3C/text%3E%3C/svg%3E" />
+  <script>
+    (function(){try{var t=localStorage.getItem('wyq-theme');if(t!=='light'&&t!=='dark'){t=window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';}document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
+  </script>
+</head>
+<body>
+
+  <!-- AURORA -->
+  <div class="aurora" aria-hidden="true"></div>
+
+  <!-- NAV -->
+  <nav class="nav">
+    <div class="nav__inner">
+      <a class="nav__brand" href="index.html">
+        <span class="dot"></span>
+        <span>WYQ</span>
+      </a>
+      <ul class="nav__menu">
+        <li><a href="index.html">主页</a></li>
+        <li><a href="post-006.html">文章</a></li>
+        <li><a href="tags.html">分类</a></li>
+        <li><a href="others.html">其他</a></li>
+        <li>
+          <button class="nav__theme" data-theme-toggle aria-label="切换主题">
+            <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+            </svg>
+            <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="4"/>
+              <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/>
+            </svg>
+          </button>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- TAGS PAGE -->
+  <main class="tags-page">
+    <div class="tags-page__inner">
+      <h1 class="tags-page__title reveal">标签与分类</h1>
+      <p class="tags-page__subtitle reveal" data-delay="1">按分类浏览全部文章</p>
+
+      <!-- Tag Cloud -->
+      <div class="tag-cloud reveal" data-delay="2">
+        <a class="tag-cloud__item is-active" data-tag="all" href="#all">全部<span class="tag-cloud__count">6</span></a>
+        <a class="tag-cloud__item" data-tag="life" href="#life">生活<span class="tag-cloud__count">1</span></a>
+        <a class="tag-cloud__item" data-tag="thoughts" href="#thoughts">思考<span class="tag-cloud__count">0</span></a>
+        <a class="tag-cloud__item" data-tag="travel" href="#travel">旅行<span class="tag-cloud__count">0</span></a>
+        <a class="tag-cloud__item" data-tag="tech" href="#tech">技术<span class="tag-cloud__count">4</span></a>
+        <a class="tag-cloud__item" data-tag="meta" href="#meta">起步<span class="tag-cloud__count">1</span></a>
+      </div>
+
+      <!-- 生活 -->
+      <section class="tags-section reveal" data-cat="life">
+        <div class="tags-section__header">
+          <span class="tags-section__dot"></span>
+          <h2 class="tags-section__title">生活</h2>
+          <span class="tags-section__count">1 篇文章</span>
+        </div>
+        <a class="tags-article" href="post-002.html">
+          <span class="tags-article__num">N° 02</span>
+          <span class="tags-article__title">胃寒怎么办: 日常调理与食疗建议</span>
+          <span class="tags-article__date">2026 · 05 · 22</span>
+        </a>
+      </section>
+
+      <!-- 技术 -->
+      <section class="tags-section reveal" data-cat="tech">
+        <div class="tags-section__header">
+          <span class="tags-section__dot"></span>
+          <h2 class="tags-section__title">技术</h2>
+          <span class="tags-section__count">4 篇文章</span>
+        </div>
+        <a class="tags-article" href="post-006.html">
+          <span class="tags-article__num">N° 06</span>
+          <span class="tags-article__title">AI 提示词收藏 (持续更新)</span>
+          <span class="tags-article__date">2026 · 05 · 29</span>
+        </a>
+        <a class="tags-article" href="post-005.html">
+          <span class="tags-article__num">N° 05</span>
+          <span class="tags-article__title">如何去除 AI 味: 完美=不完美</span>
+          <span class="tags-article__date">2026 · 05 · 29</span>
+        </a>
+        <a class="tags-article" href="post-004.html">
+          <span class="tags-article__num">N° 04</span>
+          <span class="tags-article__title">AI 大模型能力测试: 21 道题实测</span>
+          <span class="tags-article__date">2026 · 05 · 29</span>
+        </a>
+        <a class="tags-article" href="post-003.html">
+          <span class="tags-article__num">N° 03</span>
+          <span class="tags-article__title">Web-Omni: 我做了一个 17 合 1 的浏览器插件</span>
+          <span class="tags-article__date">2026 · 05 · 29</span>
+        </a>
+      </section>
+
+      <!-- 起步 -->
+      <section class="tags-section reveal" data-cat="meta">
+        <div class="tags-section__header">
+          <span class="tags-section__dot"></span>
+          <h2 class="tags-section__title">起步</h2>
+          <span class="tags-section__count">1 篇文章</span>
+        </div>
+        <a class="tags-article" href="post-001.html">
+          <span class="tags-article__num">N° 01</span>
+          <span class="tags-article__title">欢迎 & 这个博客是怎么搭出来的</span>
+          <span class="tags-article__date">2026 · 05 · 15</span>
+        </a>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer__inner">
+      <div>&copy; <span data-year>2026</span> WYQ. All rights reserved.</div>
+      <ul class="footer__links">
+        <li><a href="index.html">主页</a></li>
+        <li><a href="post-006.html">文章</a></li>
+        <li><a href="tags.html">分类</a></li>
+        <li><a href="others.html">其他</a></li>
+      </ul>
+    </div>
+  </footer>
+
+  <!-- BACK TO TOP -->
+  <button class="back-to-top" id="back-to-top" aria-label="返回顶部">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <polyline points="18 15 12 9 6 15"/>
+    </svg>
+  </button>
+
+  <script src="assets/js/main.js?v=10"></script>
+  <script src="assets/js/enhancements.js?v=1"></script>
+  <script>
+  // Tag cloud filter
+  (function() {
+    var tags = document.querySelectorAll('.tag-cloud__item');
+    var sections = document.querySelectorAll('.tags-section');
+
+    Array.prototype.forEach.call(tags, function(tag) {
+      tag.addEventListener('click', function(e) {
+        e.preventDefault();
+        var cat = this.getAttribute('data-tag');
+
+        // Update active tag
+        Array.prototype.forEach.call(tags, function(t) { t.classList.remove('is-active'); });
+        this.classList.add('is-active');
+
+        // Show/hide sections
+        Array.prototype.forEach.call(sections, function(sec) {
+          if (cat === 'all' || sec.getAttribute('data-cat') === cat) {
+            sec.style.display = '';
+          } else {
+            sec.style.display = 'none';
+          }
+        });
+      });
+    });
+  })();
+  </script>
+</body>
+</html>
