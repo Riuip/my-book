@@ -1,0 +1,139 @@
+<!doctype html>
+<!--
+  ============================================================
+  ARTICLE TEMPLATE — 复制这个文件改名为 post-xxx.html
+  然后修改：
+    1. <title> 与 article-hero__title
+    2. article-hero__tag (分类)
+    3. article-hero__meta (日期 / 阅读时长)
+    4. <article class="article"> 内的正文
+    5. 在 blog.html 内为这篇文章添加一张 post-card
+
+  正文支持的元素 (style.css 中有匹配样式):
+    p, p.lead, h2, h3, ul/ol/li, blockquote, code, pre, a, hr
+  ============================================================
+-->
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>文章标题 — WYQ 专属博客</title>
+  <meta name="description" content="文章摘要" />
+  <meta name="theme-color" content="#fbfbfd" media="(prefers-color-scheme: light)" />
+  <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)" />
+  <link rel="alternate" type="application/rss+xml" title="WYQ 专属博客" href="rss.xml" />
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230071e3'/%3E%3Ctext x='50%25' y='62%25' text-anchor='middle' font-family='-apple-system,system-ui,sans-serif' font-weight='700' font-size='14' fill='white'%3EWYQ%3C/text%3E%3C/svg%3E" />
+  <script>
+    (function(){try{var t=localStorage.getItem('wyq-theme');if(t!=='light'&&t!=='dark'){t=window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';}document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
+  </script>
+</head>
+<body>
+
+  <nav class="nav">
+    <div class="nav__inner">
+      <a class="nav__brand" href="index.html">
+        <span class="dot"></span>
+        <span>WYQ</span>
+      </a>
+      <ul class="nav__menu">
+        <li><a href="index.html">主页</a></li>
+        <li><a href="blog.html">博客</a></li>
+        <li class="hide-sm"><a href="rss.xml">RSS</a></li>
+        <li>
+          <button class="nav__theme" data-theme-toggle aria-label="切换主题">
+            <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+            </svg>
+            <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="4"/>
+              <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/>
+            </svg>
+          </button>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <header class="article-hero">
+    <div class="article-hero__inner">
+      <span class="article-hero__tag reveal">分 类</span>
+      <h1 class="article-hero__title reveal" data-delay="1">文章标题</h1>
+      <div class="article-hero__meta reveal" data-delay="2">
+        <span>WYQ</span>
+        <span class="dot"></span>
+        <span>2026 · 05 · 22</span>
+        <span class="dot"></span>
+        <span>5 分钟阅读</span>
+      </div>
+    </div>
+  </header>
+
+  <article class="article">
+    <p class="lead">
+      这里写一段引言段落 — 它会以更大、更显著的字号显示, 作为这篇文章的开场。
+    </p>
+
+    <h2>第一节标题</h2>
+    <p>
+      正文段落。在这里写下你的内容。每段用 <code>&lt;p&gt;</code> 包起来即可。
+    </p>
+    <p>
+      支持 <a href="#">链接</a>、<strong>加粗</strong>、<em>斜体</em>，以及行内 <code>code</code>。
+    </p>
+
+    <blockquote>
+      引用块 — 适合放一句你想强调的话。
+    </blockquote>
+
+    <h2>第二节标题</h2>
+    <ul>
+      <li>列表项一</li>
+      <li>列表项二</li>
+      <li>列表项三</li>
+    </ul>
+
+    <h3>子标题</h3>
+    <p>更细粒度的段落标题。</p>
+
+    <pre><code>// 代码块也有合适的样式
+function hello() {
+  console.log("hello");
+}
+</code></pre>
+
+    <hr/>
+
+    <p style="color:var(--text-muted); font-size:16px;">
+      — WYQ &nbsp;·&nbsp; 2026 年 5 月
+    </p>
+  </article>
+
+  <div class="article-foot">
+    <a class="btn btn--ghost" href="blog.html" style="color:var(--text-soft);">‹ 返回博客</a>
+    <a class="btn btn--ghost" href="mailto:wyq200707@qq.com">写信给 WYQ</a>
+  </div>
+
+  <section class="comments" id="comments">
+    <h2 class="comments__head">评论</h2>
+    <p class="comments__hint">
+      评论由 <a href="https://giscus.app" target="_blank" rel="noopener">Giscus</a> 提供 (基于 GitHub Discussions, 完全免费)。
+      想启用？打开 <code>assets/js/main.js</code> 中的 <code>GISCUS</code> 配置区，按注释修改后即可生效。
+    </p>
+    <div id="giscus-container"></div>
+  </section>
+
+  <footer class="footer">
+    <div class="footer__inner">
+      <div>© <span data-year>2026</span> WYQ. All rights reserved.</div>
+      <ul class="footer__links">
+        <li><a href="index.html">主页</a></li>
+        <li><a href="blog.html">博客</a></li>
+        <li><a href="rss.xml">RSS</a></li>
+      </ul>
+    </div>
+  </footer>
+
+  <script src="assets/js/main.js"></script>
+</body>
+</html>
