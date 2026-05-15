@@ -4,10 +4,9 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>WYQ 专属博客</title>
-  <meta name="description" content="WYQ 的个人主页 · 记录生活、思考与日常。" />
+  <meta name="description" content="WYQ 的个人主页。" />
   <meta name="theme-color" content="#fbfbfd" media="(prefers-color-scheme: light)" />
   <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)" />
-  <link rel="alternate" type="application/rss+xml" title="WYQ 专属博客" href="rss.xml" />
   <link rel="stylesheet" href="assets/css/style.css" />
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230071e3'/%3E%3Ctext x='50%25' y='62%25' text-anchor='middle' font-family='-apple-system,system-ui,sans-serif' font-weight='700' font-size='14' fill='white'%3EWYQ%3C/text%3E%3C/svg%3E" />
   <script>
@@ -25,8 +24,7 @@
       </a>
       <ul class="nav__menu">
         <li><a href="index.html">主页</a></li>
-        <li><a href="blog.html">博客</a></li>
-        <li class="hide-sm"><a href="rss.xml" title="RSS 订阅">RSS</a></li>
+        <li><a href="post-template.html">文章</a></li>
         <li>
           <button class="nav__theme" data-theme-toggle aria-label="切换主题">
             <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
@@ -52,17 +50,17 @@
         记录生活、思考与日常。
       </p>
       <div class="hero__actions reveal" data-delay="3">
-        <a class="btn btn--primary btn--lg" href="blog.html">查看博客</a>
+        <a class="btn btn--primary btn--lg" href="post-template.html">查看文章</a>
         <a class="btn btn--ghost btn--lg" href="#about">了解更多</a>
       </div>
     </div>
   </header>
 
-  <!-- TILES — modules introducing me -->
-  <section class="section section--tight" id="about">
+  <!-- TILES — about me -->
+  <section style="padding: 40px 0 80px;" id="about">
     <div class="tiles">
 
-      <!-- Tile 1: large profile / introduction -->
+      <!-- About me (large dark tile) -->
       <article class="tile tile--wide tile--dark reveal">
         <div class="tile__eyebrow">关于我</div>
         <h2 class="tile__title">你好，我是 WYQ。</h2>
@@ -72,15 +70,15 @@
           只是把那些值得留下的瞬间, 安放在文字里。
         </p>
         <div class="tile__actions">
-          <a class="btn btn--primary" href="blog.html">读我的文章</a>
+          <a class="btn btn--primary" href="post-template.html">读我的文章</a>
           <a class="btn btn--ghost" href="mailto:wyq200707@qq.com">联系我</a>
         </div>
       </article>
 
-      <!-- Tile 2: profile card -->
+      <!-- Profile -->
       <article class="tile reveal" data-delay="1">
         <div class="tile__eyebrow">个人资料</div>
-        <h2 class="tile__title" style="font-size:32px;">基本信息</h2>
+        <h2 class="tile__title" style="font-size:30px;">基本信息</h2>
         <div class="profile-grid">
           <div class="profile-row">
             <span>身份</span>
@@ -101,39 +99,15 @@
         </div>
       </article>
 
-      <!-- Tile 3: theme -->
-      <article class="tile reveal" data-delay="2">
-        <div class="tile__icon">🌓</div>
-        <div class="tile__eyebrow">体验</div>
-        <h2 class="tile__title" style="font-size:32px;">暗 / 亮主题</h2>
-        <p class="tile__desc">
-          点击右上角图标随心切换。
-          自动跟随系统设置，并记忆你的偏好。
-        </p>
-      </article>
-
-      <!-- Tile 4: blog CTA (highlight) -->
-      <article class="tile tile--accent reveal" data-delay="3">
+      <!-- Blog jump CTA (highlight) -->
+      <article class="tile tile--wide tile--accent reveal" data-delay="2">
         <div class="tile__eyebrow">Journal</div>
-        <h2 class="tile__title">我的博客文章</h2>
+        <h2 class="tile__title">前往博客文章</h2>
         <p class="tile__desc">
-          搜索、筛选、阅读 — 在博客页查看所有文章, 按分类浏览，或直接订阅 RSS。
+          所有的文章都在这里。点击下方按钮开始阅读。
         </p>
         <div class="tile__actions">
-          <a class="btn btn--primary" href="blog.html">前往博客</a>
-          <a class="btn btn--ghost" href="rss.xml">订阅 RSS</a>
-        </div>
-      </article>
-
-      <!-- Tile 5: contact -->
-      <article class="tile tile--wide reveal" data-delay="4">
-        <div class="tile__eyebrow">联络</div>
-        <h2 class="tile__title">想跟我聊聊？</h2>
-        <p class="tile__desc">
-          邮件是最直接的方式。我会认真读每一封, 也会在能回的时候回。
-        </p>
-        <div class="tile__actions">
-          <a class="btn btn--primary" href="mailto:wyq200707@qq.com">wyq200707@qq.com</a>
+          <a class="btn btn--primary" href="post-template.html">查看文章</a>
         </div>
       </article>
 
@@ -143,11 +117,10 @@
   <!-- FOOTER -->
   <footer class="footer">
     <div class="footer__inner">
-      <div>© <span data-year>2026</span> WYQ. All rights reserved.</div>
+      <div>&copy; <span data-year>2026</span> WYQ. All rights reserved.</div>
       <ul class="footer__links">
         <li><a href="index.html">主页</a></li>
-        <li><a href="blog.html">博客</a></li>
-        <li><a href="rss.xml">RSS</a></li>
+        <li><a href="post-template.html">文章</a></li>
       </ul>
     </div>
   </footer>
