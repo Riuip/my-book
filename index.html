@@ -183,13 +183,8 @@
             cursor.style.opacity = '0';
             setTimeout(function() {
               cursor.remove();
-              // Restore gradient
-              el.style.background = '';
-              el.style.webkitBackgroundClip = '';
-              el.style.backgroundClip = '';
-              el.style.webkitTextFillColor = '';
-              el.style.color = '';
-              el.style.filter = '';
+              // Smoothly fade to gradient: use a CSS class with transition
+              el.classList.add('typewriter-done');
             }, 400);
           }, 1200);
         }
