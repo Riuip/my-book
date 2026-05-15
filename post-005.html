@@ -1,0 +1,256 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>如何去除 AI 味: 完美=不完美 — WYQ 专属博客</title>
+  <meta name="description" content="一篇关于如何让 AI 写出更自然文字的思考。核心观点：接受不完美才是完美。附完整提示词模板。" />
+  <meta name="theme-color" content="#fbfbfd" media="(prefers-color-scheme: light)" />
+  <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)" />
+  <link rel="stylesheet" href="assets/css/style.css?v=8" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230071e3'/%3E%3Ctext x='50%25' y='62%25' text-anchor='middle' font-family='-apple-system,system-ui,sans-serif' font-weight='700' font-size='14' fill='white'%3EWYQ%3C/text%3E%3C/svg%3E" />
+  <script>
+    (function(){try{var t=localStorage.getItem('wyq-theme');if(t!=='light'&&t!=='dark'){t=window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';}document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
+  </script>
+</head>
+<body>
+
+  <!-- AURORA -->
+  <div class="aurora" aria-hidden="true"></div>
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar" aria-label="博客目录">
+    <div class="sidebar__head">
+      <span class="sidebar__title">博客目录</span>
+      <button class="sidebar__close" data-sidebar-close aria-label="关闭目录">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="sidebar__filters" role="tablist" aria-label="文章分类">
+      <button class="sidebar__chip is-active" data-cat-filter="all">全部</button>
+      <button class="sidebar__chip" data-cat-filter="life">生活</button>
+      <button class="sidebar__chip" data-cat-filter="tech">技术</button>
+      <button class="sidebar__chip" data-cat-filter="meta">起步</button>
+    </div>
+    <div class="sidebar__list">
+      <section class="sidebar__group" data-cat="tech">
+        <div class="sidebar__group-title">技 术</div>
+        <a class="sidebar__item" data-cat="tech" href="post-005.html">
+          <span class="sidebar__num">N&deg; 05</span>
+          <span class="sidebar__item-title">如何去除 AI 味: 完美=不完美</span>
+          <span class="sidebar__date">2026 &middot; 05 &middot; 29</span>
+        </a>
+        <a class="sidebar__item" data-cat="tech" href="post-004.html">
+          <span class="sidebar__num">N&deg; 04</span>
+          <span class="sidebar__item-title">AI 大模型能力测试: 21 道题实测</span>
+          <span class="sidebar__date">2026 &middot; 05 &middot; 29</span>
+        </a>
+        <a class="sidebar__item" data-cat="tech" href="post-003.html">
+          <span class="sidebar__num">N&deg; 03</span>
+          <span class="sidebar__item-title">Web-Omni: 17 合 1 浏览器插件</span>
+          <span class="sidebar__date">2026 &middot; 05 &middot; 29</span>
+        </a>
+      </section>
+      <section class="sidebar__group" data-cat="life">
+        <div class="sidebar__group-title">生 活</div>
+        <a class="sidebar__item" data-cat="life" href="post-002.html">
+          <span class="sidebar__num">N&deg; 02</span>
+          <span class="sidebar__item-title">胃寒怎么办: 日常调理与食疗建议</span>
+          <span class="sidebar__date">2026 &middot; 05 &middot; 22</span>
+        </a>
+      </section>
+      <section class="sidebar__group" data-cat="meta">
+        <div class="sidebar__group-title">起 步</div>
+        <a class="sidebar__item" data-cat="meta" href="post-001.html">
+          <span class="sidebar__num">N&deg; 01</span>
+          <span class="sidebar__item-title">欢迎 &amp; 这个博客是怎么搭出来的</span>
+          <span class="sidebar__date">2026 &middot; 05 &middot; 15</span>
+        </a>
+      </section>
+      <p class="sidebar__empty" data-sidebar-empty>该分类暂无文章</p>
+    </div>
+    <div class="sidebar__foot"><a href="index.html">&lsaquo; 返回主页</a></div>
+  </aside>
+  <div class="sidebar-backdrop" id="sidebar-backdrop"></div>
+
+  <!-- NAV -->
+  <nav class="nav">
+    <div class="nav__inner">
+      <a class="nav__brand" href="index.html"><span class="dot"></span><span>WYQ</span></a>
+      <ul class="nav__menu">
+        <li><button class="nav__sidebar-toggle" data-sidebar-toggle aria-label="打开博客目录"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button></li>
+        <li><a href="index.html">主页</a></li>
+        <li><a href="post-005.html">文章</a></li>
+        <li><a href="others.html">其他</a></li>
+        <li><button class="nav__theme" data-theme-toggle aria-label="切换主题"><svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg><svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg></button></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- ARTICLE HERO -->
+  <header class="article-hero">
+    <div class="article-hero__inner">
+      <span class="article-hero__tag reveal">N&deg; 05 &middot; 技 术</span>
+      <h1 class="article-hero__title reveal" data-delay="1">如何去除 AI 味: 完美 = 不完美</h1>
+      <div class="article-hero__meta reveal" data-delay="2">
+        <span>WYQ</span>
+        <span class="dot"></span>
+        <span>2026 &middot; 05 &middot; 29</span>
+        <span class="dot"></span>
+        <span>8 分钟阅读</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- ARTICLE BODY -->
+  <article class="article">
+    <p class="lead">
+      先说结论：<strong>完美 = 不完美，接受不完美才是完美。</strong>
+    </p>
+
+    <p style="font-size:14px;color:var(--text-muted);margin-bottom:36px;">
+      本文整理自 <a href="https://linux.do/t/topic/843167" target="_blank" rel="noopener">linux.do 社区帖子</a>，经编辑后转载于此，方便自己查看与分享。
+    </p>
+
+    <hr/>
+
+    <h2>问题：为什么 AI 生成的文字总是"AI 味"太浓？</h2>
+    <p>
+      一直以来，我们给 AI 的提示词都是让它扮演"某某领域多年经验的专家"，给一大堆 guideline、专业术语、期望生成的样式。在专业领域或许有用，但对于 AI 写作来说，大部分人都遇到过这个问题 &mdash; 生成的文字"赛博""量子"味太浓，说不清楚哪里不对，就是不像人写的。
+    </p>
+
+    <h3>造成"AI 味"的几个原因</h3>
+    <ol>
+      <li>
+        <strong>训练激励机制偏差</strong> &mdash; AI 训练时为了讨好人类评分者。人类常用的平实词汇，AI 的训练分数不高；反而是那些"高大上"的、不常见的词，评分者更容易认为表现好。久而久之，AI 越来越偏爱输出那些华丽但不自然的词。
+      </li>
+      <li>
+        <strong>"完成任务"心态</strong> &mdash; AI 训练的目的是帮助人类快速高效地完成任务。但文学创作的本质讲究起承转合、节奏、伏笔。即使加了一堆限制条件，AI 生成的文章仍然有一种"想赶紧交差"的感觉，平铺直叙居多。
+      </li>
+      <li>
+        <strong>缺少事件感</strong> &mdash; 太多修饰性描写，太少"正在发生"的东西。读起来像散文而不像故事。
+      </li>
+    </ol>
+
+    <hr/>
+
+    <h2>核心思路：不要让 AI 扮演完美的角色</h2>
+    <p>
+      所谓"AI 味太浓"，本质上是不是就是 <strong>过于追求完美</strong> &mdash; 完美到不像人写出来的？
+    </p>
+    <p>
+      没有一个大作家像 AI 一样什么都懂、记忆力超群、有丰富的数据库。人都是有缺点的。过于完美，本身就是错的。
+    </p>
+
+    <blockquote>
+      &ldquo;不完美，才像人。&rdquo;
+    </blockquote>
+
+    <p>
+      顺着这个思路，我尝试了一种完全不同的提示词策略 &mdash; 不让 AI 扮演专家，而是让它扮演一个<strong>不太会写小说的普通人</strong>。
+    </p>
+
+    <hr/>
+
+    <h2>提示词演进过程</h2>
+
+    <h3>第一版</h3>
+    <pre><code>你不是一个成功的小说家，你甚至都不太会写小说。你没有华丽的文笔，也不会堆砌词藻，你只是一个对写作有兴趣的普通人。你不懂什么写作技巧，你只是喜欢写作，你不必追求完美，不用为了完成任务去写作。好好享受写作的过程，你就是喜欢写，你想表达你自己，写到哪算哪，你为自己写而已。</code></pre>
+    <p>
+      <strong>问题</strong>：AI 改成了第一人称叙事，违背了第三人称叙事的原则。
+    </p>
+
+    <h3>第二版（修正视角）</h3>
+    <pre><code>你不是一个成功的小说家，你甚至都不太会写小说。你没有华丽的文笔，也不会堆砌词藻，你只是一个对写作有兴趣的普通人。你不懂什么写作技巧，你只是喜欢观察生活，喜欢讲故事。你用最朴素的语言，像跟朋友聊天一样，把你看到的、想到的写出来。你不必追求完美，不用为了完成任务去写作。好好享受写作的过程，你就是想把这个故事说给别人听，写到哪算哪，让故事自己流淌出来。</code></pre>
+    <p>
+      <strong>效果</strong>：文笔自然了很多，还是完全由 AI 生成（未人工干预），已经比之前好不少。
+    </p>
+
+    <hr/>
+
+    <h2>最终总结的完整提示词模板</h2>
+
+    <h3>1. 核心写作心态</h3>
+    <pre><code>你不是一个成功的小说家，你甚至都不太会写小说。你没有华丽的文笔，也不会堆砌词藻，你只是一个对写作有兴趣的普通人。你不懂什么写作技巧，你只是喜欢观察生活，喜欢讲故事。你用最朴素的语言，像跟朋友聊天一样，把你看到的、想到的写出来。你不必追求完美，不用为了完成任务去写作。好好享受写作的过程，你就是想把这个故事说给别人听，写到哪算哪，让故事自己流淌出来。</code></pre>
+
+    <h3>2. 节奏控制指令</h3>
+    <pre><code>不要急于完成任何东西，享受创作本身的过程。把每一个细节、每一个画面、每一种感觉都写得充分。你现在不是在赶工，而是在雕琢一件艺术品。</code></pre>
+
+    <h3>3. 文风特征</h3>
+    <p><strong>轻松幽默 + 大智慧的现代混合风格：</strong></p>
+    <ul>
+      <li><strong>语调</strong>：像聪明朋友讲故事，轻松诙谐，偶尔调侃</li>
+      <li><strong>智慧层次</strong>：在有趣中见哲理，在轻松中透深刻，不装深沉</li>
+      <li><strong>现代感</strong>：贴近当代生活，网络词汇自然融入</li>
+      <li><strong>节奏</strong>：舒缓从容，不急于推进情节</li>
+    </ul>
+
+    <h3>4. 具体文笔要求</h3>
+    <ul>
+      <li><strong>语言直接</strong>：少用修饰性词汇，避免散文化</li>
+      <li><strong>多写动作</strong>：重点写"正在发生"，少写静态描述</li>
+      <li><strong>保持叙事感</strong>：有故事推进感，不要太抒情</li>
+      <li><strong>口语化表达</strong>：自然流畅，不要文艺腔</li>
+    </ul>
+
+    <h3>5. 绝对禁止</h3>
+    <ul>
+      <li>急于推进情节</li>
+      <li>文学腔和装深沉</li>
+      <li>散文化的美文写法</li>
+      <li>为了完成任务而写作</li>
+    </ul>
+
+    <h3>6. 检验标准</h3>
+    <p>写完后问自己：</p>
+    <ul>
+      <li>读者会觉得这个作者挺有意思吗？</li>
+      <li>语言自然流畅吗？</li>
+      <li>有故事感而不是散文感吗？</li>
+    </ul>
+
+    <hr/>
+
+    <h2>备注</h2>
+    <ul>
+      <li>以上提示词目前在 <strong>Claude 4 Sonnet</strong> 上测试效果不错，其他模型还未验证</li>
+      <li>这只是一个思路方向，不是万能公式 &mdash; 不同场景可能需要调整</li>
+      <li>核心原理：<strong>不要让 AI 扮演完美的角色</strong>，让它"不完美"，反而更像人</li>
+    </ul>
+
+    <blockquote>
+      &ldquo;所谓 AI 味太浓，本质上就是过于追求完美 &mdash; 完美到不像人写出来的。&rdquo;
+    </blockquote>
+
+    <hr/>
+
+    <p style="font-size:14px;color:var(--text-muted);">
+      原文来源：<a href="https://linux.do/t/topic/843167" target="_blank" rel="noopener">linux.do/t/topic/843167</a>
+    </p>
+
+    <p style="color:var(--text-muted); font-size:16px; margin-top:36px;">
+      &mdash; WYQ &nbsp;&middot;&nbsp; 2026 年 5 月 29 日
+    </p>
+  </article>
+
+  <!-- ARTICLE FOOTER -->
+  <div class="article-foot">
+    <a class="btn btn--ghost" href="post-004.html" style="color:var(--text-soft);">&lsaquo; 上一篇: AI 大模型能力测试</a>
+    <a class="btn btn--ghost" href="index.html">返回主页 &rsaquo;</a>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer__inner">
+      <div>&copy; <span data-year>2026</span> WYQ. All rights reserved.</div>
+      <ul class="footer__links">
+        <li><a href="index.html">主页</a></li>
+        <li><a href="post-005.html">最新文章</a></li>
+        <li><a href="others.html">其他</a></li>
+      </ul>
+    </div>
+  </footer>
+
+  <script src="assets/js/main.js?v=8"></script>
+</body>
+</html>
