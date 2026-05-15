@@ -2836,3 +2836,143 @@ body.search-open {
   h2, h3 { page-break-after: avoid; }
   pre, blockquote { page-break-inside: avoid; }
 }
+
+
+
+/* =========================================================
+   NAV DROPDOWN — "文章 ▾" mega-link with submenu
+   - Desktop: hover to open
+   - Touch / keyboard: click to toggle (aria-expanded)
+   - Apple-style frosted card, soft drop animation
+   ========================================================= */
+.nav__has-sub {
+  position: relative;
+}
+.nav__sub-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 8px 12px;
+  font-size: 13px;
+  font-family: inherit;
+  color: var(--text-soft);
+  border-radius: 8px;
+  letter-spacing: -0.01em;
+  cursor: pointer;
+  transition: color 0.2s ease, background-color 0.2s ease;
+}
+.nav__sub-toggle:hover,
+.nav__sub-toggle[aria-expanded="true"],
+.nav__sub-toggle.active {
+  color: var(--text);
+  background: var(--bg-tint);
+}
+.nav__sub-toggle.active {
+  font-weight: 500;
+}
+.nav__sub-toggle__chevron {
+  width: 10px;
+  height: 10px;
+  transition: transform 0.2s ease;
+  opacity: 0.6;
+}
+.nav__sub-toggle:hover .nav__sub-toggle__chevron,
+.nav__sub-toggle[aria-expanded="true"] .nav__sub-toggle__chevron {
+  transform: rotate(180deg);
+  opacity: 1;
+}
+
+.nav__submenu {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%) translateY(-6px);
+  min-width: 220px;
+  padding: 8px;
+  background: color-mix(in srgb, var(--bg-elev) 92%, transparent);
+  backdrop-filter: saturate(200%) blur(36px);
+  -webkit-backdrop-filter: saturate(200%) blur(36px);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  box-shadow: 0 20px 50px -10px rgba(0, 0, 0, 0.18),
+              0 0 0 1px rgba(255, 255, 255, 0.04) inset;
+  opacity: 0;
+  pointer-events: none;
+  visibility: hidden;
+  transition: opacity 0.22s ease, transform 0.22s cubic-bezier(0.2, 0.7, 0.2, 1), visibility 0s linear 0.22s;
+  z-index: 10001;
+}
+.nav__has-sub:hover > .nav__submenu,
+.nav__has-sub:focus-within > .nav__submenu,
+.nav__sub-toggle[aria-expanded="true"] + .nav__submenu {
+  opacity: 1;
+  pointer-events: auto;
+  visibility: visible;
+  transform: translateX(-50%) translateY(0);
+  transition: opacity 0.22s ease, transform 0.22s cubic-bezier(0.2, 0.7, 0.2, 1), visibility 0s linear 0s;
+}
+
+.nav__submenu a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  color: var(--text-soft);
+  border-radius: 10px;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+.nav__submenu a:hover {
+  background: var(--bg-tint);
+  color: var(--text);
+}
+.nav__submenu a.is-active,
+.nav__submenu a.active {
+  color: var(--accent);
+  background: var(--accent-soft);
+}
+.nav__submenu__icon {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  opacity: 0.85;
+}
+.nav__submenu__sep {
+  height: 1px;
+  background: var(--line);
+  margin: 6px 8px;
+}
+
+/* Hover-bridge — invisible filler so the cursor doesn't lose the menu in the gap */
+.nav__has-sub::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  height: 12px;
+  pointer-events: none;
+}
+.nav__has-sub:hover::after,
+.nav__has-sub:focus-within::after {
+  pointer-events: auto;
+}
+
+/* Mobile: submenu becomes inline / full-width when open */
+@media (max-width: 720px) {
+  .nav__submenu {
+    /* still floats, but anchored to viewport edges instead of toggle center */
+    left: 16px;
+    right: 16px;
+    transform: translateY(-6px);
+    min-width: 0;
+    width: auto;
+  }
+  .nav__has-sub:hover > .nav__submenu,
+  .nav__sub-toggle[aria-expanded="true"] + .nav__submenu {
+    transform: translateY(0);
+  }
+  .nav__sub-toggle { padding: 6px 8px; font-size: 12px; }
+}
