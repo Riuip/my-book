@@ -2883,15 +2883,12 @@ body.search-open {
 }
 
 .nav__submenu {
-  position: absolute;
-  top: calc(100% + 8px);
-  left: 50%;
-  transform: translateX(-50%) translateY(-6px);
+  position: fixed;
+  top: 48px;
+  left: auto;
+  right: auto;
   min-width: 220px;
   padding: 8px;
-  /* SOLID background — nested backdrop-filter inside .nav (which already has one)
-     causes Chromium/Safari to drop the panel background in some cases. Use a
-     plain opaque color so the card is always visible. */
   background: var(--bg-elev);
   border: 1px solid var(--line);
   border-radius: 14px;
@@ -2902,7 +2899,8 @@ body.search-open {
   pointer-events: none;
   visibility: hidden;
   transition: opacity 0.22s ease, transform 0.22s cubic-bezier(0.2, 0.7, 0.2, 1), visibility 0s linear 0.22s;
-  z-index: 10001;
+  transform: translateY(-6px);
+  z-index: 100000;
 }
 [data-theme="dark"] .nav__submenu {
   /* Slightly lifted background in dark mode so it doesn't blend into the page */
@@ -2917,7 +2915,7 @@ body.search-open {
   opacity: 1;
   pointer-events: auto;
   visibility: visible;
-  transform: translateX(-50%) translateY(0);
+  transform: translateY(0);
   transition: opacity 0.22s ease, transform 0.22s cubic-bezier(0.2, 0.7, 0.2, 1), visibility 0s linear 0s;
 }
 
@@ -2972,16 +2970,10 @@ body.search-open {
 /* Mobile: submenu becomes inline / full-width when open */
 @media (max-width: 720px) {
   .nav__submenu {
-    /* still floats, but anchored to viewport edges instead of toggle center */
-    left: 16px;
+    left: 16px !important;
     right: 16px;
-    transform: translateY(-6px);
     min-width: 0;
     width: auto;
-  }
-  .nav__has-sub:hover > .nav__submenu,
-  .nav__sub-toggle[aria-expanded="true"] + .nav__submenu {
-    transform: translateY(0);
   }
   .nav__sub-toggle { padding: 6px 8px; font-size: 12px; }
 }
