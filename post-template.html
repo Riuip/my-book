@@ -27,6 +27,9 @@
   <script>
     (function(){try{var t=localStorage.getItem('wyq-theme');if(t!=='light'&&t!=='dark'){t=window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';}document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
   </script>
+  <link rel="alternate" type="application/rss+xml" title="WYQ 专属博客 RSS" href="feed.xml" />
+  <link rel="search" type="application/opensearchdescription+xml" title="WYQ Blog" href="opensearch.xml" />
+  <link rel="manifest" href="manifest.json" />
 </head>
 <body>
 
@@ -257,7 +260,9 @@ function hello() {
       <ul class="footer__links">
         <li><a href="index.html">主页</a></li>
         <li><a href="post-006.html">文章</a></li>
+        <li><a href="archive.html">归档</a></li>
         <li><a href="others.html">其他</a></li>
+        <li><a href="feed.xml">RSS</a></li>
       </ul>
     </div>
   </footer>
@@ -286,6 +291,8 @@ function hello() {
   <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/line-numbers/prism-line-numbers.min.js"></script>
+  <script src="assets/js/posts-data.js?v=1"></script>
   <script src="assets/js/enhancements.js?v=1"></script>
+  <script src="assets/js/extras.js?v=1"></script>
 </body>
 </html>

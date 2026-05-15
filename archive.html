@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="view-transition" content="same-origin" />
+  <title>归档 — WYQ 专属博客</title>
+  <meta name="description" content="按时间倒序浏览 WYQ 专属博客的全部文章。" />
+  <meta name="theme-color" content="#fbfbfd" media="(prefers-color-scheme: light)" />
+  <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)" />
+  <link rel="stylesheet" href="assets/css/style.css?v=11" />
+  <link rel="alternate" type="application/rss+xml" title="WYQ 专属博客 RSS" href="feed.xml" />
+  <link rel="search" type="application/opensearchdescription+xml" title="WYQ Blog" href="opensearch.xml" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230071e3'/%3E%3Ctext x='50%25' y='62%25' text-anchor='middle' font-family='-apple-system,system-ui,sans-serif' font-weight='700' font-size='14' fill='white'%3EWYQ%3C/text%3E%3C/svg%3E" />
+  <script>
+    (function(){try{var t=localStorage.getItem('wyq-theme');if(t!=='light'&&t!=='dark'){t=window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';}document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
+  </script>
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="归档 — WYQ 专属博客" />
+  <meta property="og:description" content="按时间倒序浏览全部文章。" />
+  <meta property="og:url" content="https://riuip.github.io/my-book/archive.html" />
+  <meta property="og:site_name" content="WYQ 专属博客" />
+  <meta property="og:locale" content="zh_CN" />
+  <link rel="canonical" href="https://riuip.github.io/my-book/archive.html" />
+</head>
+<body>
+
+  <div class="aurora" aria-hidden="true"></div>
+
+  <nav class="nav">
+    <div class="nav__inner">
+      <a class="nav__brand" href="index.html">
+        <span class="dot"></span>
+        <span>WYQ</span>
+      </a>
+      <ul class="nav__menu">
+        <li><a href="index.html">主页</a></li>
+        <li><a href="post-006.html">文章</a></li>
+        <li><a href="archive.html">归档</a></li>
+        <li><a href="tags.html">分类</a></li>
+        <li><a href="others.html">其他</a></li>
+        <li>
+          <button class="nav__theme" data-theme-toggle aria-label="切换主题">
+            <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+            <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+          </button>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <main class="archive-page">
+    <div class="archive-page__inner">
+      <h1 class="archive-page__title reveal">归档</h1>
+      <p class="archive-page__subtitle reveal" data-delay="1">
+        全部文章，按时间倒序。共 <span id="archiveCount">0</span> 篇。
+      </p>
+      <div id="archiveList" class="archive-list reveal" data-delay="2"></div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer__inner">
+      <div>&copy; <span data-year>2026</span> WYQ. All rights reserved.</div>
+      <ul class="footer__links">
+        <li><a href="index.html">主页</a></li>
+        <li><a href="archive.html">归档</a></li>
+        <li><a href="tags.html">分类</a></li>
+        <li><a href="feed.xml">RSS</a></li>
+      </ul>
+    </div>
+  </footer>
+
+  <button class="back-to-top" id="back-to-top" aria-label="返回顶部">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <polyline points="18 15 12 9 6 15"/>
+    </svg>
+  </button>
+
+  <script src="assets/js/view-transitions.js?v=1"></script>
+  <script src="assets/js/main.js?v=11"></script>
+  <script src="assets/js/posts-data.js?v=1"></script>
+  <script src="assets/js/enhancements.js?v=2"></script>
+  <script src="assets/js/extras.js?v=1"></script>
+  <script>
+  // Render archive grouped by year-month
+  (function () {
+    var posts = window.WYQ_POSTS || [];
+    var listEl = document.getElementById('archiveList');
+    var countEl = document.getElementById('archiveCount');
+    if (!listEl) return;
+    countEl.textContent = posts.length;
+
+    // Group by yyyy-mm (already sorted newest-first)
+    var groups = {};
+    var order = [];
+    posts.forEach(function (p) {
+      var ym = p.date.substring(0, 7);
+      if (!groups[ym]) { groups[ym] = []; order.push(ym); }
+      groups[ym].push(p);
+    });
+
+    var html = '';
+    order.forEach(function (ym) {
+      var parts = ym.split('-');
+      html += '<section class="archive-group">';
+      html += '<div class="archive-group__title">' +
+                '<span class="archive-group__year">' + parts[0] + '</span>' +
+                '<span class="archive-group__sep">·</span>' +
+                '<span class="archive-group__month">' + parts[1] + ' 月</span>' +
+                '<span class="archive-group__count">' + groups[ym].length + ' 篇</span>' +
+              '</div>';
+      groups[ym].forEach(function (p) {
+        var day = p.date.substring(8, 10);
+        html += '<a class="archive-item" href="' + p.url + '">' +
+                  '<span class="archive-item__day">' + day + '</span>' +
+                  '<span class="archive-item__sep">·</span>' +
+                  '<span class="archive-item__cat" data-cat="' + p.catKey + '">' + p.cat + '</span>' +
+                  '<span class="archive-item__title">' + p.title + '</span>' +
+                '</a>';
+      });
+      html += '</section>';
+    });
+    listEl.innerHTML = html;
+  })();
+  </script>
+</body>
+</html>

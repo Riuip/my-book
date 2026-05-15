@@ -43,6 +43,12 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://riuip.github.io/my-book/archive.html</loc>
+    <lastmod>2026-05-29</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://riuip.github.io/my-book/tags.html</loc>
     <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
