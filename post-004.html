@@ -1,0 +1,239 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>AI 大模型能力测试: 21 道数学与专业题实测 — WYQ 专属博客</title>
+  <meta name="description" content="一份专门用来测试 AI 大模型推理能力的题集, 涵盖组合几何、数列、解析几何、逻辑推理、工程类等 21 道题。" />
+  <meta name="theme-color" content="#fbfbfd" media="(prefers-color-scheme: light)" />
+  <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)" />
+  <link rel="stylesheet" href="assets/css/style.css?v=8" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230071e3'/%3E%3Ctext x='50%25' y='62%25' text-anchor='middle' font-family='-apple-system,system-ui,sans-serif' font-weight='700' font-size='14' fill='white'%3EWYQ%3C/text%3E%3C/svg%3E" />
+  <script>
+    (function(){try{var t=localStorage.getItem('wyq-theme');if(t!=='light'&&t!=='dark'){t=window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';}document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
+  </script>
+  <style>
+    .quiz-table { width: 100%; border-collapse: collapse; margin: 26px 0; font-size: 15px; }
+    .quiz-table th, .quiz-table td { padding: 12px 14px; border: 1px solid var(--line); text-align: left; vertical-align: top; }
+    .quiz-table th { background: var(--bg-tint); font-weight: 600; font-size: 13px; letter-spacing: 0.04em; text-transform: uppercase; color: var(--text-muted); }
+    .quiz-table tr:hover td { background: var(--accent-soft); }
+    .quiz-table .q-num { font-weight: 600; color: var(--accent); white-space: nowrap; }
+    .quiz-table .q-type { font-size: 12px; color: var(--text-muted); white-space: nowrap; }
+    .quiz-table .q-ans { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 14px; color: var(--text); word-break: break-all; }
+    @media (max-width: 720px) {
+      .quiz-table { font-size: 13px; }
+      .quiz-table th, .quiz-table td { padding: 8px 10px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- AURORA -->
+  <div class="aurora" aria-hidden="true"></div>
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar" aria-label="博客目录">
+    <div class="sidebar__head">
+      <span class="sidebar__title">博客目录</span>
+      <button class="sidebar__close" data-sidebar-close aria-label="关闭目录">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="sidebar__filters" role="tablist" aria-label="文章分类">
+      <button class="sidebar__chip is-active" data-cat-filter="all">全部</button>
+      <button class="sidebar__chip" data-cat-filter="life">生活</button>
+      <button class="sidebar__chip" data-cat-filter="tech">技术</button>
+      <button class="sidebar__chip" data-cat-filter="meta">起步</button>
+    </div>
+    <div class="sidebar__list">
+      <section class="sidebar__group" data-cat="tech">
+        <div class="sidebar__group-title">技 术</div>
+        <a class="sidebar__item" data-cat="tech" href="post-004.html">
+          <span class="sidebar__num">N&deg; 04</span>
+          <span class="sidebar__item-title">AI 大模型能力测试: 21 道题实测</span>
+          <span class="sidebar__date">2026 &middot; 05 &middot; 29</span>
+        </a>
+        <a class="sidebar__item" data-cat="tech" href="post-003.html">
+          <span class="sidebar__num">N&deg; 03</span>
+          <span class="sidebar__item-title">Web-Omni: 17 合 1 浏览器插件</span>
+          <span class="sidebar__date">2026 &middot; 05 &middot; 29</span>
+        </a>
+      </section>
+      <section class="sidebar__group" data-cat="life">
+        <div class="sidebar__group-title">生 活</div>
+        <a class="sidebar__item" data-cat="life" href="post-002.html">
+          <span class="sidebar__num">N&deg; 02</span>
+          <span class="sidebar__item-title">胃寒怎么办: 日常调理与食疗建议</span>
+          <span class="sidebar__date">2026 &middot; 05 &middot; 22</span>
+        </a>
+      </section>
+      <section class="sidebar__group" data-cat="meta">
+        <div class="sidebar__group-title">起 步</div>
+        <a class="sidebar__item" data-cat="meta" href="post-001.html">
+          <span class="sidebar__num">N&deg; 01</span>
+          <span class="sidebar__item-title">欢迎 &amp; 这个博客是怎么搭出来的</span>
+          <span class="sidebar__date">2026 &middot; 05 &middot; 15</span>
+        </a>
+      </section>
+      <p class="sidebar__empty" data-sidebar-empty>该分类暂无文章</p>
+    </div>
+    <div class="sidebar__foot"><a href="index.html">&lsaquo; 返回主页</a></div>
+  </aside>
+  <div class="sidebar-backdrop" id="sidebar-backdrop"></div>
+
+  <!-- NAV -->
+  <nav class="nav">
+    <div class="nav__inner">
+      <a class="nav__brand" href="index.html"><span class="dot"></span><span>WYQ</span></a>
+      <ul class="nav__menu">
+        <li><button class="nav__sidebar-toggle" data-sidebar-toggle aria-label="打开博客目录"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button></li>
+        <li><a href="index.html">主页</a></li>
+        <li><a href="post-004.html">文章</a></li>
+        <li><a href="others.html">其他</a></li>
+        <li><button class="nav__theme" data-theme-toggle aria-label="切换主题"><svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg><svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg></button></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- ARTICLE HERO -->
+  <header class="article-hero">
+    <div class="article-hero__inner">
+      <span class="article-hero__tag reveal">N&deg; 04 &middot; 技 术</span>
+      <h1 class="article-hero__title reveal" data-delay="1">AI 大模型能力测试: 21 道数学与专业题实测</h1>
+      <div class="article-hero__meta reveal" data-delay="2">
+        <span>WYQ</span>
+        <span class="dot"></span>
+        <span>2026 &middot; 05 &middot; 29</span>
+        <span class="dot"></span>
+        <span>15 分钟阅读</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- ARTICLE BODY -->
+  <article class="article">
+    <p class="lead">
+      这是我整理的一份 <strong>AI 大模型推理能力测试题集</strong>，共 21 道题，涵盖组合几何、数列、解析几何、逻辑推理、布尔代数、物理、单片机等多个领域。这些题目专门用来检验 AI 模型在数学推理、逻辑判断和专业知识方面的真实水平。
+    </p>
+
+    <blockquote>
+      &ldquo;一个模型能不能真正&lsquo;思考&rsquo;，看它做题就知道了。&rdquo;
+    </blockquote>
+
+    <hr/>
+
+    <h2>关于这份题集</h2>
+    <p>
+      这份题集的设计初衷是：<strong>用不能靠记忆和模板解决的题目，测试 AI 模型的深层推理能力</strong>。
+    </p>
+    <ul>
+      <li><strong>覆盖面广</strong>：从纯数学（组合、几何、数论）到工程应用（单片机定时器、SVM、LED 段码）</li>
+      <li><strong>难度不低</strong>：大部分是竞赛级或大学专业课级别</li>
+      <li><strong>答案明确</strong>：每道题都有唯一确定的答案，方便判断对错</li>
+      <li><strong>防止死记</strong>：许多题需要多步推理，不是简单的知识检索能解决的</li>
+    </ul>
+    <p>
+      你可以拿这份题去测试任何大模型（ChatGPT、Claude、Gemini、DeepSeek 等），看看它们各自能答对几道。
+    </p>
+
+    <hr/>
+
+    <h2>完整题目与答案</h2>
+
+    <p>下面是全部 21 道题。每题标注了题型和标准答案。</p>
+
+    <div style="overflow-x:auto;">
+    <table class="quiz-table">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>题型</th>
+          <th>题目</th>
+          <th>答案</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td class="q-num">1</td><td class="q-type">组合几何</td><td>求具有如下性质的最小正整数 n：将正 n 边形的每一个顶点任意染上红、黄、蓝三种颜色之一，那么这 n 个顶点中一定存在四个同色点，它们是一个等腰梯形的顶点。</td><td class="q-ans">17</td></tr>
+        <tr><td class="q-num">2</td><td class="q-type">组合几何</td><td>在面积为 1 的矩形 ABCD 中（包括边界）有 5 个点，其中任意三点不共线。求以这 5 个点为顶点的所有三角形中，面积不大于 1/4 的三角形的个数的最小值。</td><td class="q-ans">2</td></tr>
+        <tr><td class="q-num">3</td><td class="q-type">排列组合</td><td>将 6 个数 2, 0, 1, 9, 20, 19 按任意次序排成一行，拼成一个 8 位数（首位不为 0），则产生的不同的 8 位数的个数为？</td><td class="q-ans">498</td></tr>
+        <tr><td class="q-num">4</td><td class="q-type">数列</td><td>设实数列 {x_n} 满足：x_0=0, x_2=&radic;[3]{2}&middot;x_1, x_3 是正整数，且 x_{n+1} = (1/&radic;[3]{4})x_n + &radic;[3]{4}x_{n-1} + (1/2)x_{n-2} (n&ge;2)。问：这类数列中最少有多少个整数项？</td><td class="q-ans">5</td></tr>
+        <tr><td class="q-num">5</td><td class="q-type">多项式因式分解</td><td>a&sup2;(b&minus;c) + b&sup2;(a&minus;c) + c&sup2;(a&minus;b) 因式分解</td><td class="q-ans">(a&minus;c)(ab&minus;ac+b&sup2;+bc)</td></tr>
+        <tr><td class="q-num">6</td><td class="q-type">布尔代数</td><td>将与或式 ABC + &overline;A&middot;&overline;B&middot;&overline;C 转换为与非-与非式</td><td class="q-ans"><span style="text-decoration:overline">(<span style="text-decoration:overline">ABC</span>) &middot; (<span style="text-decoration:overline"><span style="text-decoration:overline">A</span>&middot;<span style="text-decoration:overline">B</span>&middot;<span style="text-decoration:overline">C</span></span>)</span></td></tr>
+        <tr><td class="q-num">7</td><td class="q-type">立体几何</td><td>一个棱长为 30cm 的立方体铁块，从 8 个角各去掉一个棱长 10cm 的立方体铁块。然后放入一个底面积为 2500cm&sup2;、原本盛有 20cm 水的容器。放入后水位是多少？</td><td class="q-ans">27 厘米</td></tr>
+        <tr><td class="q-num">8</td><td class="q-type">解析几何</td><td>在平面四边形 ABCD 中，AB=AC=CD=1, &ang;ADC=30&deg;, &ang;DAB=120&deg;。将 &triangle;ACD 沿 AC 翻折至 &triangle;ACP（P 为动点）。求二面角 A-CP-B 的余弦值的最小值。</td><td class="q-ans">&minus;&radic;3/3</td></tr>
+        <tr><td class="q-num">9</td><td class="q-type">递推数列</td><td>设有理数数列 x_1=25/11，x_{k+1} = (1/3)(x_k + 1/x_k &minus; 1)。其中 x_{2025} 可表示为互质正整数 m/n。求 m+n 除以 1000 的余数。</td><td class="q-ans">248</td></tr>
+        <tr><td class="q-num">10</td><td class="q-type">解析几何</td><td>已知过点 A(&minus;1,0)、B(1,0) 的动抛物线的准线始终与圆 x&sup2;+y&sup2;=9 相切。(1) 求焦点轨迹曲线 E 的标准方程；(2) 已知 C(&minus;3,0), D(2,0)，过 D 的动直线与 E 交于 M、N，&triangle;CMN 的外心 Q，问 OQ 与 MN 的斜率之积是否为定值？</td><td class="q-ans">x&sup2;/9 + y&sup2;/8 = 1; 定值 &minus;5</td></tr>
+        <tr><td class="q-num">11</td><td class="q-type">不等式</td><td>给定 n&ge;3，求最小正数 &lambda;，使得对任何 &theta;_i &isin; (0, &pi;/2) 且 tan&theta;_1&middot;tan&theta;_2&middot;&hellip;&middot;tan&theta;_n = 2^{n/2}，有 cos&theta;_1+&hellip;+cos&theta;_n &le; &lambda;。</td><td class="q-ans">n&minus;1</td></tr>
+        <tr><td class="q-num">12</td><td class="q-type">逻辑推理</td><td>Sroan 的保险箱密码是 7 个不同数字。4 次猜测：9062437 / 8593624 / 4286915 / 3450982。每人都猜对了位置不相邻的两个数字。问密码是？</td><td class="q-ans">4053927</td></tr>
+        <tr><td class="q-num">13</td><td class="q-type">支持向量机</td><td>正例：(1,2), (2,3), (3,3)；负例：(2,1), (3,2)。求最大间隔分离超平面及支持向量。</td><td class="q-ans">&minus;x1+2x2&minus;2=0；支持向量 (1,2), (3,3), (3,2)</td></tr>
+        <tr><td class="q-num">14</td><td class="q-type">电子技术基础</td><td>已知 8 段共阳极 LED 数码管要显示字符"5"（a 段为最低位），此时的段码为？</td><td class="q-ans">92H</td></tr>
+        <tr><td class="q-num">15</td><td class="q-type">变质量动力学</td><td>雨滴开始自由下落时质量为 m_0，单位时间凝聚水汽质量为 &lambda;。忽略空气阻力，求经时间 t 下落距离。</td><td class="q-ans">s(t) = gt&sup2;/4 + gm_0t/(2&lambda;) &minus; gm_0&sup2;/(2&lambda;&sup2;)&middot;ln(1+&lambda;t/m_0)</td></tr>
+        <tr><td class="q-num">16</td><td class="q-type">解析几何</td><td>函数 y=(x+1)/(|x|+1) 的图像上有三个不同的点位于同一直线上，且这三点横坐标之和为 0。求直线斜率的取值范围。</td><td class="q-ans">0 &lt; k &lt; 2/9</td></tr>
+        <tr><td class="q-num">17</td><td class="q-type">立体几何</td><td>一个棱长为 6 的正四面体内部有一个任意旋转的正方体，当正方体棱长取得最大值时，正方体外接球表面积是？</td><td class="q-ans">6&pi;</td></tr>
+        <tr><td class="q-num">18</td><td class="q-type">排列问题</td><td>8 个人（含 A、B、C、D），安排在两排各 4 个座位。要求 A 与 B 必须相邻，C 与 D 不相邻。共有多少种排法？</td><td class="q-ans">6528</td></tr>
+        <tr><td class="q-num">19</td><td class="q-type">几何</td><td>&triangle;ABC 中 c=10, cosA/cosB = b/a = 4/3，P 为内切圆上动点，求 PA&sup2;+PB&sup2;+PC&sup2; 的最大值和最小值。</td><td class="q-ans">最大 88，最小 72</td></tr>
+        <tr><td class="q-num">20</td><td class="q-type">单片机定时器</td><td>AT89S51 采用 6MHz 晶振，定时 2ms，用定时器方式 1 时的初值（16 进制）是？</td><td class="q-ans">0xFC18</td></tr>
+        <tr><td class="q-num">21</td><td class="q-type">组合数学</td><td>求最小正整数 t：将 100&times;100 方格纸每格染色，每种颜色不超过 104 格，则存在 1&times;t 或 t&times;1 矩形含至少三种不同颜色。</td><td class="q-ans">12</td></tr>
+      </tbody>
+    </table>
+    </div>
+
+    <hr/>
+
+    <h2>使用建议</h2>
+    <p>你可以这样用这份题集：</p>
+    <ol>
+      <li><strong>横向对比</strong>：拿同一套题喂给不同模型，统计正确率</li>
+      <li><strong>观察推理过程</strong>：不只看最终答案，更看模型是怎么一步步推导的</li>
+      <li><strong>测试稳定性</strong>：同一道题问三次，看答案是否一致</li>
+      <li><strong>分类弱点</strong>：按题型统计，找出模型在哪类问题上最薄弱</li>
+    </ol>
+
+    <h2>我的观察</h2>
+    <p>
+      在实际测试中，我发现：
+    </p>
+    <ul>
+      <li>大多数模型在<strong>纯逻辑推理</strong>（第 12 题）和<strong>组合计数</strong>（第 3、18 题）上最容易出错</li>
+      <li><strong>物理和工程类</strong>（第 15、20 题）需要记住公式 + 正确代入，模型容易在数值计算上犯错</li>
+      <li><strong>几何直觉</strong>（第 7、17 题）对模型来说很难 &mdash; 它们没有"空间感"</li>
+      <li><strong>竞赛级不等式</strong>（第 11 题）是对"数学创造力"的测试，绝大多数模型做不出来</li>
+    </ul>
+
+    <blockquote>
+      &ldquo;AI 能做对多少题不重要，重要的是 &mdash; 它是怎么做错的。那才是真正有趣的地方。&rdquo;
+    </blockquote>
+
+    <hr/>
+
+    <p>
+      如果你也用这份题测过某个模型，欢迎写信告诉我结果：
+      <a href="mailto:wyq200707@qq.com">wyq200707@qq.com</a>
+    </p>
+
+    <p style="color:var(--text-muted); font-size:16px; margin-top:36px;">
+      &mdash; WYQ &nbsp;&middot;&nbsp; 2026 年 5 月 29 日
+    </p>
+  </article>
+
+  <!-- ARTICLE FOOTER -->
+  <div class="article-foot">
+    <a class="btn btn--ghost" href="post-003.html" style="color:var(--text-soft);">&lsaquo; 上一篇: Web-Omni 浏览器插件</a>
+    <a class="btn btn--ghost" href="index.html">返回主页 &rsaquo;</a>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer__inner">
+      <div>&copy; <span data-year>2026</span> WYQ. All rights reserved.</div>
+      <ul class="footer__links">
+        <li><a href="index.html">主页</a></li>
+        <li><a href="post-004.html">最新文章</a></li>
+        <li><a href="others.html">其他</a></li>
+      </ul>
+    </div>
+  </footer>
+
+  <script src="assets/js/main.js?v=8"></script>
+</body>
+</html>
