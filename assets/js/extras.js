@@ -505,22 +505,31 @@
 
 
 /* =========================================================
-   NAV SUBMENU — click / keyboard toggle for "文章 ▾"
-   Hover already opens it via CSS; this enables touch + a11y.
-   Also: when an item inside the submenu is active for current page,
-   mark the parent toggle as active too (breadcrumb hint).
-   Also: position the fixed submenu below the toggle button dynamically.
+   NAV SUBMENU — reparented to <body> so backdrop-filter works
+   independently of .nav's own backdrop-filter (which creates
+   an isolation context that blocks child blur).
+   Hover + click toggle; top border aligns with nav bottom.
    ========================================================= */
 (function navSubmenu() {
   'use strict';
   var toggles = document.querySelectorAll('[data-nav-sub-toggle]');
   if (!toggles.length) return;
 
+  var CLOSE_DELAY = 120; // ms grace period when cursor leaves
+
   // Mark parent toggle as active if any submenu link matches current page
   var file = (window.location.pathname.split('/').pop() || 'index.html').toLowerCase();
+
+  // For each toggle, move its submenu to <body> and wire up interactions
   Array.prototype.forEach.call(toggles, function (t) {
-    var sub = t.parentElement.querySelector('.nav__submenu');
+    var parent = t.parentElement; // .nav__has-sub
+    var sub = parent.querySelector('.nav__submenu');
     if (!sub) return;
+
+    // Move submenu to body so it's outside .nav's backdrop-filter context
+    document.body.appendChild(sub);
+
+    // Check if current page matches any link in submenu
     var links = sub.querySelectorAll('a[href]');
     var hasActive = false;
     Array.prototype.forEach.call(links, function (a) {
@@ -528,74 +537,84 @@
       if (href === file) hasActive = true;
     });
     if (hasActive) t.classList.add('active');
-  });
 
-  // Position the fixed submenu below the toggle
-  function positionSubmenu(toggle) {
-    var sub = toggle.parentElement.querySelector('.nav__submenu');
-    if (!sub) return;
-    var rect = toggle.getBoundingClientRect();
-    var subWidth = sub.offsetWidth || 220;
-    var left = rect.left + rect.width / 2 - subWidth / 2;
-    // Keep it within viewport
-    if (left < 12) left = 12;
-    if (left + subWidth > window.innerWidth - 12) left = window.innerWidth - 12 - subWidth;
-    sub.style.left = left + 'px';
-    sub.style.top = (rect.bottom + 6) + 'px';
-  }
-
-  function closeAll(except) {
-    Array.prototype.forEach.call(toggles, function (t) {
-      if (t !== except) t.setAttribute('aria-expanded', 'false');
-    });
-  }
-
-  Array.prototype.forEach.call(toggles, function (t) {
     t.setAttribute('aria-expanded', 'false');
     t.setAttribute('aria-haspopup', 'true');
 
-    // Position on hover (desktop)
-    t.parentElement.addEventListener('mouseenter', function () {
-      positionSubmenu(t);
-    });
+    var closeTimer = null;
 
+    function position() {
+      var nav = document.querySelector('.nav');
+      var navRect = nav.getBoundingClientRect();
+      var rect = t.getBoundingClientRect();
+      var subWidth = sub.offsetWidth || 220;
+      var left = rect.left + rect.width / 2 - subWidth / 2;
+      if (left < 12) left = 12;
+      if (left + subWidth > window.innerWidth - 12) left = window.innerWidth - 12 - subWidth;
+      sub.style.left = left + 'px';
+      // Align submenu top border with nav bottom border (overlap 1px)
+      sub.style.top = (navRect.bottom - 1) + 'px';
+    }
+
+    function open() {
+      clearTimeout(closeTimer);
+      closeTimer = null;
+      position();
+      sub.classList.add('is-open');
+      t.setAttribute('aria-expanded', 'true');
+    }
+
+    function close() {
+      sub.classList.remove('is-open');
+      t.setAttribute('aria-expanded', 'false');
+    }
+
+    function scheduleClose() {
+      clearTimeout(closeTimer);
+      closeTimer = setTimeout(close, CLOSE_DELAY);
+    }
+
+    // Desktop hover: open when entering toggle or submenu; close with delay
+    parent.addEventListener('mouseenter', open);
+    parent.addEventListener('mouseleave', scheduleClose);
+    sub.addEventListener('mouseenter', function () {
+      clearTimeout(closeTimer);
+      closeTimer = null;
+    });
+    sub.addEventListener('mouseleave', scheduleClose);
+
+    // Click toggle (for touch / a11y)
     t.addEventListener('click', function (e) {
       e.preventDefault();
       e.stopPropagation();
-      var open = t.getAttribute('aria-expanded') === 'true';
-      closeAll(t);
-      if (!open) {
-        positionSubmenu(t);
-        t.setAttribute('aria-expanded', 'true');
+      if (sub.classList.contains('is-open')) {
+        close();
       } else {
-        t.setAttribute('aria-expanded', 'false');
+        open();
       }
     });
 
+    // Keyboard
     t.addEventListener('keydown', function (e) {
-      if (e.key === 'Escape') {
-        t.setAttribute('aria-expanded', 'false');
-        t.focus();
+      if (e.key === 'Escape') { close(); t.focus(); }
+    });
+
+    // Reposition on scroll/resize while open
+    window.addEventListener('scroll', function () {
+      if (sub.classList.contains('is-open')) position();
+    }, { passive: true });
+    window.addEventListener('resize', function () {
+      if (sub.classList.contains('is-open')) position();
+    });
+
+    // Close when clicking outside
+    document.addEventListener('click', function (e) {
+      if (!e.target.closest('.nav__has-sub') && !sub.contains(e.target)) {
+        close();
       }
     });
-  });
-
-  // Reposition on scroll/resize
-  window.addEventListener('scroll', function () {
-    Array.prototype.forEach.call(toggles, function (t) {
-      if (t.getAttribute('aria-expanded') === 'true') positionSubmenu(t);
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') close();
     });
-  }, { passive: true });
-  window.addEventListener('resize', function () {
-    Array.prototype.forEach.call(toggles, function (t) {
-      positionSubmenu(t);
-    });
-  });
-
-  document.addEventListener('click', function (e) {
-    if (!e.target.closest('.nav__has-sub')) closeAll(null);
-  });
-  document.addEventListener('keydown', function (e) {
-    if (e.key === 'Escape') closeAll(null);
   });
 })();
