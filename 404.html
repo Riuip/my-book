@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>页面走丢了 — WYQ 专属博客</title>
+  <meta name="description" content="你访问的页面不存在。" />
+  <meta name="theme-color" content="#fbfbfd" media="(prefers-color-scheme: light)" />
+  <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)" />
+  <link rel="stylesheet" href="assets/css/style.css?v=11" />
+  <link rel="alternate" type="application/rss+xml" title="WYQ 专属博客 RSS" href="feed.xml" />
+  <link rel="search" type="application/opensearchdescription+xml" title="WYQ Blog" href="opensearch.xml" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230071e3'/%3E%3Ctext x='50%25' y='62%25' text-anchor='middle' font-family='-apple-system,system-ui,sans-serif' font-weight='700' font-size='14' fill='white'%3EWYQ%3C/text%3E%3C/svg%3E" />
+  <script>
+    (function(){try{var t=localStorage.getItem('wyq-theme');if(t!=='light'&&t!=='dark'){t=window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';}document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
+  </script>
+  <style>
+    .nf-stage {
+      min-height: 100vh;
+      padding: 130px 22px 80px;
+      display: flex; align-items: center; justify-content: center;
+      text-align: center;
+    }
+    .nf-stage__inner { max-width: 720px; width: 100%; }
+    .nf-code {
+      font-size: clamp(110px, 22vw, 220px);
+      line-height: 1;
+      font-weight: 800;
+      letter-spacing: -0.06em;
+      background: linear-gradient(110deg, #ff5f8a, #ff8a3d, #ffd23d, #6ee7b7, #60a5fa, #a78bfa, #ff5f8a);
+      background-size: 250% 100%;
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: nf-flow 9s linear infinite;
+      filter: drop-shadow(0 8px 32px rgba(160, 100, 255, 0.30));
+      margin-bottom: 16px;
+    }
+    @keyframes nf-flow {
+      from { background-position: 0% 50%; }
+      to   { background-position: 250% 50%; }
+    }
+    .nf-title {
+      font-size: clamp(28px, 4vw, 40px);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      color: var(--text);
+      margin-bottom: 14px;
+    }
+    .nf-sub {
+      font-size: 18px;
+      color: var(--text-soft);
+      margin: 0 auto 32px;
+      max-width: 520px;
+      line-height: 1.55;
+    }
+    .nf-actions {
+      display: inline-flex; flex-wrap: wrap; justify-content: center; gap: 16px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="aurora" aria-hidden="true"></div>
+
+  <nav class="nav">
+    <div class="nav__inner">
+      <a class="nav__brand" href="index.html">
+        <span class="dot"></span>
+        <span>WYQ</span>
+      </a>
+      <ul class="nav__menu">
+        <li><a href="index.html">主页</a></li>
+        <li><a href="post-006.html">文章</a></li>
+        <li><a href="archive.html">归档</a></li>
+        <li><a href="tags.html">分类</a></li>
+        <li>
+          <button class="nav__theme" data-theme-toggle aria-label="切换主题">
+            <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+            <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+          </button>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <main class="nf-stage">
+    <div class="nf-stage__inner">
+      <div class="nf-code">404</div>
+      <h1 class="nf-title">这个页面走丢了</h1>
+      <p class="nf-sub">
+        没事，互联网上每天都有页面在迷路。<br/>
+        要不要回主页看看，或者换个关键词搜搜？
+      </p>
+      <div class="nf-actions">
+        <a class="btn btn--primary btn--lg" href="index.html">回到主页</a>
+        <a class="btn btn--ghost btn--lg" href="search.html">搜索文章</a>
+        <a class="btn btn--ghost btn--lg" href="archive.html">浏览归档</a>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer__inner">
+      <div>&copy; <span data-year>2026</span> WYQ. All rights reserved.</div>
+      <ul class="footer__links">
+        <li><a href="index.html">主页</a></li>
+        <li><a href="archive.html">归档</a></li>
+        <li><a href="tags.html">分类</a></li>
+        <li><a href="feed.xml">RSS</a></li>
+      </ul>
+    </div>
+  </footer>
+
+  <script src="assets/js/view-transitions.js?v=1"></script>
+  <script src="assets/js/main.js?v=11"></script>
+  <script src="assets/js/posts-data.js?v=1"></script>
+  <script src="assets/js/extras.js?v=1"></script>
+</body>
+</html>

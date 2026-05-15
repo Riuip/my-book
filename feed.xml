@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>WYQ 专属博客</title>
+    <link>https://riuip.github.io/my-book/</link>
+    <atom:link href="https://riuip.github.io/my-book/feed.xml" rel="self" type="application/rss+xml"/>
+    <description>WYQ 的个人空间。记录生活、思考与日常。</description>
+    <language>zh-CN</language>
+    <lastBuildDate>Fri, 29 May 2026 00:00:00 +0800</lastBuildDate>
+    <generator>handcrafted</generator>
+
+    <item>
+      <title>AI 提示词收藏: 4 套实用 Prompt 模板</title>
+      <link>https://riuip.github.io/my-book/post-006.html</link>
+      <guid isPermaLink="true">https://riuip.github.io/my-book/post-006.html</guid>
+      <pubDate>Fri, 29 May 2026 00:00:00 +0800</pubDate>
+      <dc:creator>WYQ</dc:creator>
+      <category>技术</category>
+      <description><![CDATA[持续更新的 AI 提示词收藏。包含：元提示词工程师、全能中文助理、论文科普、论文降重 4 套完整模板。]]></description>
+    </item>
+
+    <item>
+      <title>如何去除 AI 味: 完美 = 不完美</title>
+      <link>https://riuip.github.io/my-book/post-005.html</link>
+      <guid isPermaLink="true">https://riuip.github.io/my-book/post-005.html</guid>
+      <pubDate>Fri, 29 May 2026 00:00:00 +0800</pubDate>
+      <dc:creator>WYQ</dc:creator>
+      <category>技术</category>
+      <description><![CDATA[一篇关于如何让 AI 写出更自然文字的思考。核心观点：接受不完美才是完美。附完整提示词模板。]]></description>
+    </item>
+
+    <item>
+      <title>AI 大模型能力测试: 21 道数学与专业题实测</title>
+      <link>https://riuip.github.io/my-book/post-004.html</link>
+      <guid isPermaLink="true">https://riuip.github.io/my-book/post-004.html</guid>
+      <pubDate>Fri, 29 May 2026 00:00:00 +0800</pubDate>
+      <dc:creator>WYQ</dc:creator>
+      <category>技术</category>
+      <description><![CDATA[一份专门用来测试 AI 大模型推理能力的题集, 涵盖组合几何、数列、解析几何、逻辑推理、工程类等 21 道题。]]></description>
+    </item>
+
+    <item>
+      <title>Web-Omni: 我做了一个 17 合 1 的浏览器插件</title>
+      <link>https://riuip.github.io/my-book/post-003.html</link>
+      <guid isPermaLink="true">https://riuip.github.io/my-book/post-003.html</guid>
+      <pubDate>Fri, 29 May 2026 00:00:00 +0800</pubDate>
+      <dc:creator>WYQ</dc:creator>
+      <category>技术</category>
+      <description><![CDATA[Web-Omni 是我做的一个 Chrome 浏览器插件, 把 17 个常用工具集成在一起。本文讲讲它的功能、架构和实现思路。]]></description>
+    </item>
+
+    <item>
+      <title>胃寒怎么办: 日常调理与食疗建议</title>
+      <link>https://riuip.github.io/my-book/post-002.html</link>
+      <guid isPermaLink="true">https://riuip.github.io/my-book/post-002.html</guid>
+      <pubDate>Fri, 22 May 2026 00:00:00 +0800</pubDate>
+      <dc:creator>WYQ</dc:creator>
+      <category>生活</category>
+      <description><![CDATA[关于胃寒的日常调理建议: 饮食、起居、运动, 以及几个简单的食疗小方。]]></description>
+    </item>
+
+    <item>
+      <title>欢迎 &amp; 这个博客是怎么搭出来的</title>
+      <link>https://riuip.github.io/my-book/post-001.html</link>
+      <guid isPermaLink="true">https://riuip.github.io/my-book/post-001.html</guid>
+      <pubDate>Fri, 15 May 2026 00:00:00 +0800</pubDate>
+      <dc:creator>WYQ</dc:creator>
+      <category>起步</category>
+      <description><![CDATA[WYQ 专属博客的第一篇文章 —— 介绍这个博客, 并附上一份从零搭建静态个人博客的详细教程。]]></description>
+    </item>
+
+  </channel>
+</rss>

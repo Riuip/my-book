@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<OpenSearchDescription xmlns="http://a9.com/-/spec/opensearch/1.1/">
+  <ShortName>WYQ Blog</ShortName>
+  <Description>搜索 WYQ 专属博客的所有文章</Description>
+  <InputEncoding>UTF-8</InputEncoding>
+  <Image width="32" height="32" type="image/svg+xml">https://riuip.github.io/my-book/assets/img/icon.svg</Image>
+  <Url type="text/html" method="get"
+       template="https://riuip.github.io/my-book/search.html?q={searchTerms}"/>
+  <Url type="application/opensearchdescription+xml" rel="self"
+       template="https://riuip.github.io/my-book/opensearch.xml"/>
+  <moz:SearchForm xmlns:moz="http://www.mozilla.org/2006/browser/search/">https://riuip.github.io/my-book/search.html</moz:SearchForm>
+</OpenSearchDescription>
