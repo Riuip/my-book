@@ -2889,7 +2889,9 @@ body.search-open {
   right: auto;
   min-width: 220px;
   padding: 8px;
-  background: var(--bg-elev);
+  background: rgba(255, 255, 255, 0.72);
+  -webkit-backdrop-filter: blur(14px) saturate(160%);
+  backdrop-filter: blur(14px) saturate(160%);
   border: 1px solid var(--line);
   border-radius: 14px;
   box-shadow: 0 20px 50px -10px rgba(0, 0, 0, 0.22),
@@ -2902,12 +2904,23 @@ body.search-open {
   transform: translateY(-6px);
   z-index: 100000;
 }
+/* Fallback for browsers without backdrop-filter support */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .nav__submenu {
+    background: var(--bg-elev);
+  }
+}
 [data-theme="dark"] .nav__submenu {
-  /* Slightly lifted background in dark mode so it doesn't blend into the page */
-  background: #2a2a2c;
+  /* Slightly lifted, semi-transparent background in dark mode for the same frosted-glass feel */
+  background: rgba(42, 42, 44, 0.72);
   box-shadow: 0 20px 50px -10px rgba(0, 0, 0, 0.55),
               0 4px 14px -4px rgba(0, 0, 0, 0.40),
               0 0 0 1px rgba(255, 255, 255, 0.06) inset;
+}
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  [data-theme="dark"] .nav__submenu {
+    background: #2a2a2c;
+  }
 }
 .nav__has-sub:hover > .nav__submenu,
 .nav__has-sub:focus-within > .nav__submenu,
