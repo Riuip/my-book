@@ -55,7 +55,7 @@
   <!-- HERO — giant headline like Apple, sits on the animated aurora background -->
   <header class="hero">
     <div class="hero__inner">
-      <h1 class="hero__title hero__title--brand reveal">Hello, I&rsquo;m WYQ</h1>
+      <h1 class="hero__title hero__title--brand reveal" id="heroTypewriter" data-text="Hello, I'm WYQ"></h1>
       <p class="hero__sub reveal" data-delay="1">
         一个属于自己的、慢节奏的角落。<br/>
         记录生活、思考与日常。
@@ -154,5 +154,40 @@
 
   <script src="assets/js/main.js?v=9"></script>
   <script src="assets/js/search.js?v=1"></script>
+  <script>
+  // Typewriter animation for hero title — plays once on page load
+  (function() {
+    var el = document.getElementById('heroTypewriter');
+    if (!el) return;
+    var text = el.getAttribute('data-text') || '';
+    var delay = 500;       // wait 0.5s before starting
+    var speed = 85;        // ms per character
+    var cursor = document.createElement('span');
+    cursor.className = 'typewriter-cursor';
+    cursor.textContent = '|';
+    el.textContent = '';
+    el.appendChild(cursor);
+
+    setTimeout(function() {
+      var i = 0;
+      function type() {
+        if (i < text.length) {
+          var charNode = document.createTextNode(text.charAt(i));
+          el.insertBefore(charNode, cursor);
+          i++;
+          setTimeout(type, speed);
+        } else {
+          // Typing done — blink cursor then remove
+          cursor.classList.add('blink');
+          setTimeout(function() {
+            cursor.style.opacity = '0';
+            setTimeout(function() { cursor.remove(); }, 400);
+          }, 1200);
+        }
+      }
+      type();
+    }, delay);
+  })();
+  </script>
 </body>
 </html>
