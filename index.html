@@ -159,10 +159,17 @@
   (function() {
     var el = document.getElementById('heroTypewriter');
     if (!el) return;
-    // Force visible — override .reveal opacity:0 since typewriter IS the entrance animation
+    // Force visible — override .reveal opacity:0
     el.classList.add('in');
     el.style.opacity = '1';
     el.style.transform = 'none';
+    // Disable gradient text during typing (background-clip:text makes text invisible without bg)
+    el.style.background = 'none';
+    el.style.webkitBackgroundClip = 'unset';
+    el.style.backgroundClip = 'unset';
+    el.style.webkitTextFillColor = 'var(--accent)';
+    el.style.color = 'var(--accent)';
+
     var text = el.getAttribute('data-text') || '';
     var delay = 500;       // wait 0.5s before starting
     var speed = 85;        // ms per character
@@ -181,11 +188,19 @@
           i++;
           setTimeout(type, speed);
         } else {
-          // Typing done — blink cursor then remove
+          // Typing done — restore gradient text style
           cursor.classList.add('blink');
           setTimeout(function() {
             cursor.style.opacity = '0';
-            setTimeout(function() { cursor.remove(); }, 400);
+            setTimeout(function() {
+              cursor.remove();
+              // Restore the gradient text effect
+              el.style.background = '';
+              el.style.webkitBackgroundClip = '';
+              el.style.backgroundClip = '';
+              el.style.webkitTextFillColor = '';
+              el.style.color = '';
+            }, 400);
           }, 1200);
         }
       }
