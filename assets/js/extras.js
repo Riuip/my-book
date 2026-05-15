@@ -509,6 +509,7 @@
    Hover already opens it via CSS; this enables touch + a11y.
    Also: when an item inside the submenu is active for current page,
    mark the parent toggle as active too (breadcrumb hint).
+   Also: position the fixed submenu below the toggle button dynamically.
    ========================================================= */
 (function navSubmenu() {
   'use strict';
@@ -529,6 +530,20 @@
     if (hasActive) t.classList.add('active');
   });
 
+  // Position the fixed submenu below the toggle
+  function positionSubmenu(toggle) {
+    var sub = toggle.parentElement.querySelector('.nav__submenu');
+    if (!sub) return;
+    var rect = toggle.getBoundingClientRect();
+    var subWidth = sub.offsetWidth || 220;
+    var left = rect.left + rect.width / 2 - subWidth / 2;
+    // Keep it within viewport
+    if (left < 12) left = 12;
+    if (left + subWidth > window.innerWidth - 12) left = window.innerWidth - 12 - subWidth;
+    sub.style.left = left + 'px';
+    sub.style.top = (rect.bottom + 6) + 'px';
+  }
+
   function closeAll(except) {
     Array.prototype.forEach.call(toggles, function (t) {
       if (t !== except) t.setAttribute('aria-expanded', 'false');
@@ -539,12 +554,22 @@
     t.setAttribute('aria-expanded', 'false');
     t.setAttribute('aria-haspopup', 'true');
 
+    // Position on hover (desktop)
+    t.parentElement.addEventListener('mouseenter', function () {
+      positionSubmenu(t);
+    });
+
     t.addEventListener('click', function (e) {
       e.preventDefault();
       e.stopPropagation();
       var open = t.getAttribute('aria-expanded') === 'true';
       closeAll(t);
-      t.setAttribute('aria-expanded', open ? 'false' : 'true');
+      if (!open) {
+        positionSubmenu(t);
+        t.setAttribute('aria-expanded', 'true');
+      } else {
+        t.setAttribute('aria-expanded', 'false');
+      }
     });
 
     t.addEventListener('keydown', function (e) {
@@ -552,6 +577,18 @@
         t.setAttribute('aria-expanded', 'false');
         t.focus();
       }
+    });
+  });
+
+  // Reposition on scroll/resize
+  window.addEventListener('scroll', function () {
+    Array.prototype.forEach.call(toggles, function (t) {
+      if (t.getAttribute('aria-expanded') === 'true') positionSubmenu(t);
+    });
+  }, { passive: true });
+  window.addEventListener('resize', function () {
+    Array.prototype.forEach.call(toggles, function (t) {
+      positionSubmenu(t);
     });
   });
 
