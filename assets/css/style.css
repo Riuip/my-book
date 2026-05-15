@@ -2102,3 +2102,60 @@ body.search-open {
     align-self: flex-end;
   }
 }
+
+
+
+/* =========================================================
+   VIEW TRANSITIONS — Smooth page navigation animation
+   Uses the View Transitions API for modern browsers;
+   falls back to instant navigation for older ones.
+   ========================================================= */
+@view-transition {
+  navigation: auto;
+}
+
+::view-transition-old(root) {
+  animation: vt-fade-out 0.25s ease forwards;
+}
+::view-transition-new(root) {
+  animation: vt-fade-in 0.3s ease forwards;
+}
+
+@keyframes vt-fade-out {
+  from { opacity: 1; transform: scale(1); }
+  to   { opacity: 0; transform: scale(0.98); }
+}
+@keyframes vt-fade-in {
+  from { opacity: 0; transform: scale(1.02); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+/* Disable for reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation: none !important;
+  }
+}
+
+/* =========================================================
+   GISCUS COMMENTS — Container styling
+   ========================================================= */
+.comments-section {
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 0 22px 60px;
+}
+.comments-section__title {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 18px;
+  padding-top: 36px;
+  border-top: 1px solid var(--line);
+}
+.giscus {
+  margin-top: 8px;
+}

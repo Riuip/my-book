@@ -5,9 +5,34 @@
    - Back to top button
    - Dark mode transition animation
    - Share buttons
+   - Prism.js auto-setup (line numbers + language class)
    ========================================================= */
 (function () {
   'use strict';
+
+  /* ---------- Prism.js Auto-Setup ---------- */
+  // Add line-numbers class to all <pre> elements and detect language
+  var pres = document.querySelectorAll('.article pre');
+  Array.prototype.forEach.call(pres, function (pre) {
+    pre.classList.add('line-numbers');
+    // If <code> inside doesn't have a language class, default to plaintext
+    var code = pre.querySelector('code');
+    if (code && !code.className.match(/language-/)) {
+      // Try to auto-detect common patterns
+      var text = code.textContent || '';
+      if (text.match(/function\s|var\s|const\s|let\s|=>/)) {
+        code.classList.add('language-javascript');
+      } else if (text.match(/<\w+[\s>]|<\/\w+>/)) {
+        code.classList.add('language-markup');
+      } else if (text.match(/\{[\s\S]*:\s*[^}]+\}/)) {
+        code.classList.add('language-css');
+      } else if (text.match(/^(import|from|def|class|print)\b/m)) {
+        code.classList.add('language-python');
+      } else {
+        code.classList.add('language-plaintext');
+      }
+    }
+  });
 
   /* ---------- Reading Progress Bar ---------- */
   var progressBar = document.getElementById('reading-progress');
@@ -227,3 +252,36 @@
   }
 
 })();
+
+
+
+  /* ---------- Giscus Theme Sync ---------- */
+  // Keep Giscus iframe in sync with the blog's theme
+  function syncGiscusTheme() {
+    var iframe = document.querySelector('iframe.giscus-frame');
+    if (!iframe) return;
+    var theme = document.documentElement.getAttribute('data-theme') === 'dark'
+      ? 'dark' : 'light';
+    iframe.contentWindow.postMessage(
+      { giscus: { setConfig: { theme: theme } } },
+      'https://giscus.app'
+    );
+  }
+
+  // Watch for theme changes
+  var observer = new MutationObserver(function (mutations) {
+    mutations.forEach(function (m) {
+      if (m.attributeName === 'data-theme') {
+        syncGiscusTheme();
+      }
+    });
+  });
+  observer.observe(document.documentElement, { attributes: true });
+
+  // Also sync when Giscus loads
+  window.addEventListener('message', function (e) {
+    if (e.origin !== 'https://giscus.app') return;
+    if (e.data && e.data.giscus && e.data.giscus.discussion) {
+      syncGiscusTheme();
+    }
+  });

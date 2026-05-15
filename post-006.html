@@ -3,11 +3,13 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="view-transition" content="same-origin" />
   <title>AI 提示词收藏: 4 套实用 Prompt 模板 — WYQ 专属博客</title>
   <meta name="description" content="持续更新的 AI 提示词收藏。包含：元提示词工程师、全能中文助理、论文科普、论文降重 4 套完整模板。" />
   <meta name="theme-color" content="#fbfbfd" media="(prefers-color-scheme: light)" />
   <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)" />
-  <link rel="stylesheet" href="assets/css/style.css?v=8" />
+  <link rel="stylesheet" href="assets/css/style.css?v=10" />
+  <link rel="stylesheet" href="assets/css/prism-wyq.css?v=1" />
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230071e3'/%3E%3Ctext x='50%25' y='62%25' text-anchor='middle' font-family='-apple-system,system-ui,sans-serif' font-weight='700' font-size='14' fill='white'%3EWYQ%3C/text%3E%3C/svg%3E" />
   <script>
     (function(){try{var t=localStorage.getItem('wyq-theme');if(t!=='light'&&t!=='dark'){t=window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';}document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
@@ -256,6 +258,27 @@
     </p>
   </article>
 
+  <!-- COMMENTS (Giscus) -->
+  <div class="comments-section">
+    <div class="comments-section__title">评论</div>
+    <script src="https://giscus.app/client.js"
+      data-repo="Riuip/my-book"
+      data-repo-id=""
+      data-category="General"
+      data-category-id=""
+      data-mapping="pathname"
+      data-strict="0"
+      data-reactions-enabled="1"
+      data-emit-metadata="0"
+      data-input-position="top"
+      data-theme="preferred_color_scheme"
+      data-lang="zh-CN"
+      data-loading="lazy"
+      crossorigin="anonymous"
+      async>
+    </script>
+  </div>
+
   <!-- SHARE BUTTONS -->
   <div class="share-section">
     <div class="share-section__title">分享文章</div>
@@ -280,6 +303,7 @@
     </div>
   </footer>
 
+  <script src="assets/js/view-transitions.js?v=1"></script>
   <script src="assets/js/main.js?v=9"></script>
   <script src="assets/js/copy-btn.js?v=1"></script>
   <!-- TOC WIDGET -->
@@ -300,6 +324,9 @@
     </svg>
   </button>
 
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/line-numbers/prism-line-numbers.min.js"></script>
   <script src="assets/js/enhancements.js?v=1"></script>
 </body>
 </html>
