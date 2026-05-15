@@ -2889,18 +2889,27 @@ body.search-open {
   transform: translateX(-50%) translateY(-6px);
   min-width: 220px;
   padding: 8px;
-  background: color-mix(in srgb, var(--bg-elev) 92%, transparent);
-  backdrop-filter: saturate(200%) blur(36px);
-  -webkit-backdrop-filter: saturate(200%) blur(36px);
+  /* SOLID background — nested backdrop-filter inside .nav (which already has one)
+     causes Chromium/Safari to drop the panel background in some cases. Use a
+     plain opaque color so the card is always visible. */
+  background: var(--bg-elev);
   border: 1px solid var(--line);
   border-radius: 14px;
-  box-shadow: 0 20px 50px -10px rgba(0, 0, 0, 0.18),
+  box-shadow: 0 20px 50px -10px rgba(0, 0, 0, 0.22),
+              0 4px 14px -4px rgba(0, 0, 0, 0.10),
               0 0 0 1px rgba(255, 255, 255, 0.04) inset;
   opacity: 0;
   pointer-events: none;
   visibility: hidden;
   transition: opacity 0.22s ease, transform 0.22s cubic-bezier(0.2, 0.7, 0.2, 1), visibility 0s linear 0.22s;
   z-index: 10001;
+}
+[data-theme="dark"] .nav__submenu {
+  /* Slightly lifted background in dark mode so it doesn't blend into the page */
+  background: #2a2a2c;
+  box-shadow: 0 20px 50px -10px rgba(0, 0, 0, 0.55),
+              0 4px 14px -4px rgba(0, 0, 0, 0.40),
+              0 0 0 1px rgba(255, 255, 255, 0.06) inset;
 }
 .nav__has-sub:hover > .nav__submenu,
 .nav__has-sub:focus-within > .nav__submenu,
