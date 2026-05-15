@@ -159,6 +159,10 @@
   (function() {
     var el = document.getElementById('heroTypewriter');
     if (!el) return;
+    // Force visible — override .reveal opacity:0 since typewriter IS the entrance animation
+    el.classList.add('in');
+    el.style.opacity = '1';
+    el.style.transform = 'none';
     var text = el.getAttribute('data-text') || '';
     var delay = 500;       // wait 0.5s before starting
     var speed = 85;        // ms per character
