@@ -29,6 +29,39 @@
 </head>
 <body>
 
+  <!-- SIDEBAR — Blog directory drawer -->
+  <aside class="sidebar" id="sidebar" aria-label="博客目录">
+    <div class="sidebar__head">
+      <span class="sidebar__title">博客目录</span>
+      <button class="sidebar__close" data-sidebar-close aria-label="关闭目录">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="6" x2="6" y2="18"/>
+          <line x1="6" y1="6" x2="18" y2="18"/>
+        </svg>
+      </button>
+    </div>
+    <ul class="sidebar__list">
+      <li>
+        <a class="sidebar__item" href="post-002.html">
+          <span class="sidebar__num">N&deg; 02 &middot; 生活</span>
+          <span class="sidebar__item-title">胃寒怎么办: 日常调理与食疗建议</span>
+          <span class="sidebar__date">2026 &middot; 05 &middot; 22</span>
+        </a>
+      </li>
+      <li>
+        <a class="sidebar__item" href="post-001.html">
+          <span class="sidebar__num">N&deg; 01 &middot; 起步</span>
+          <span class="sidebar__item-title">欢迎 &amp; 这个博客是怎么搭出来的</span>
+          <span class="sidebar__date">2026 &middot; 05 &middot; 15</span>
+        </a>
+      </li>
+    </ul>
+    <div class="sidebar__foot">
+      <a href="index.html">&lsaquo; 返回主页</a>
+    </div>
+  </aside>
+  <div class="sidebar-backdrop" id="sidebar-backdrop"></div>
+
   <!-- NAV -->
   <nav class="nav">
     <div class="nav__inner">
@@ -37,6 +70,15 @@
         <span>WYQ</span>
       </a>
       <ul class="nav__menu">
+        <li>
+          <button class="nav__sidebar-toggle" data-sidebar-toggle aria-label="打开博客目录">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="3" y1="6" x2="21" y2="6"/>
+              <line x1="3" y1="12" x2="21" y2="12"/>
+              <line x1="3" y1="18" x2="21" y2="18"/>
+            </svg>
+          </button>
+        </li>
         <li><a href="index.html">主页</a></li>
         <li><a href="post-002.html">文章</a></li>
         <li>
