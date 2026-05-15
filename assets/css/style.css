@@ -2884,16 +2884,17 @@ body.search-open {
 
 .nav__submenu {
   position: fixed;
-  top: 48px;
+  top: 47px;            /* JS overrides; this matches nav bottom - 1px so the top border overlaps nav's bottom border */
   left: auto;
   right: auto;
   min-width: 220px;
   padding: 8px;
-  background: rgba(255, 255, 255, 0.72);
-  -webkit-backdrop-filter: blur(14px) saturate(160%);
-  backdrop-filter: blur(14px) saturate(160%);
+  background: rgba(255, 255, 255, 0.62);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+          backdrop-filter: blur(20px) saturate(180%);
   border: 1px solid var(--line);
-  border-radius: 14px;
+  /* Square top-left/right so the border line meets the nav's bottom border cleanly */
+  border-radius: 0 0 14px 14px;
   box-shadow: 0 20px 50px -10px rgba(0, 0, 0, 0.22),
               0 4px 14px -4px rgba(0, 0, 0, 0.10),
               0 0 0 1px rgba(255, 255, 255, 0.04) inset;
@@ -2912,7 +2913,7 @@ body.search-open {
 }
 [data-theme="dark"] .nav__submenu {
   /* Slightly lifted, semi-transparent background in dark mode for the same frosted-glass feel */
-  background: rgba(42, 42, 44, 0.72);
+  background: rgba(42, 42, 44, 0.62);
   box-shadow: 0 20px 50px -10px rgba(0, 0, 0, 0.55),
               0 4px 14px -4px rgba(0, 0, 0, 0.40),
               0 0 0 1px rgba(255, 255, 255, 0.06) inset;
@@ -2922,9 +2923,9 @@ body.search-open {
     background: #2a2a2c;
   }
 }
-.nav__has-sub:hover > .nav__submenu,
-.nav__has-sub:focus-within > .nav__submenu,
-.nav__sub-toggle[aria-expanded="true"] + .nav__submenu {
+/* Open state — driven by JS (because submenu is reparented to <body> so
+   pure-CSS sibling/parent selectors no longer apply). */
+.nav__submenu.is-open {
   opacity: 1;
   pointer-events: auto;
   visibility: visible;
