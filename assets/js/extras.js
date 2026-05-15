@@ -501,3 +501,64 @@
       .replace(/'/g, '&#39;');
   }
 })();
+
+
+
+/* =========================================================
+   NAV SUBMENU — click / keyboard toggle for "文章 ▾"
+   Hover already opens it via CSS; this enables touch + a11y.
+   Also: when an item inside the submenu is active for current page,
+   mark the parent toggle as active too (breadcrumb hint).
+   ========================================================= */
+(function navSubmenu() {
+  'use strict';
+  var toggles = document.querySelectorAll('[data-nav-sub-toggle]');
+  if (!toggles.length) return;
+
+  // Mark parent toggle as active if any submenu link matches current page
+  var file = (window.location.pathname.split('/').pop() || 'index.html').toLowerCase();
+  Array.prototype.forEach.call(toggles, function (t) {
+    var sub = t.parentElement.querySelector('.nav__submenu');
+    if (!sub) return;
+    var links = sub.querySelectorAll('a[href]');
+    var hasActive = false;
+    Array.prototype.forEach.call(links, function (a) {
+      var href = (a.getAttribute('href') || '').toLowerCase();
+      if (href === file) hasActive = true;
+    });
+    if (hasActive) t.classList.add('active');
+  });
+
+  function closeAll(except) {
+    Array.prototype.forEach.call(toggles, function (t) {
+      if (t !== except) t.setAttribute('aria-expanded', 'false');
+    });
+  }
+
+  Array.prototype.forEach.call(toggles, function (t) {
+    t.setAttribute('aria-expanded', 'false');
+    t.setAttribute('aria-haspopup', 'true');
+
+    t.addEventListener('click', function (e) {
+      e.preventDefault();
+      e.stopPropagation();
+      var open = t.getAttribute('aria-expanded') === 'true';
+      closeAll(t);
+      t.setAttribute('aria-expanded', open ? 'false' : 'true');
+    });
+
+    t.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') {
+        t.setAttribute('aria-expanded', 'false');
+        t.focus();
+      }
+    });
+  });
+
+  document.addEventListener('click', function (e) {
+    if (!e.target.closest('.nav__has-sub')) closeAll(null);
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') closeAll(null);
+  });
+})();
