@@ -8,7 +8,7 @@
   <meta name="description" content="按时间倒序浏览 WYQ 专属博客的全部文章。" />
   <meta name="theme-color" content="#fbfbfd" media="(prefers-color-scheme: light)" />
   <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)" />
-  <link rel="stylesheet" href="assets/css/style.css?v=11" />
+  <link rel="stylesheet" href="assets/css/style.css?v=12" />
   <link rel="alternate" type="application/rss+xml" title="WYQ 专属博客 RSS" href="feed.xml" />
   <link rel="search" type="application/opensearchdescription+xml" title="WYQ Blog" href="opensearch.xml" />
   <link rel="manifest" href="manifest.json" />
@@ -35,15 +35,51 @@
         <span>WYQ</span>
       </a>
       <ul class="nav__menu">
-        <li><a href="index.html">主页</a></li>
-        <li><a href="post-006.html">文章</a></li>
-        <li><a href="archive.html">归档</a></li>
-        <li><a href="tags.html">分类</a></li>
-        <li><a href="others.html">其他</a></li>
+        <li class="nav__has-sub">
+          <button class="nav__sub-toggle" data-nav-sub-toggle type="button">
+            <span>文章</span>
+            <svg class="nav__sub-toggle__chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <polyline points="6 9 12 15 18 9"/>
+            </svg>
+          </button>
+          <div class="nav__submenu" role="menu">
+            <a href="post-006.html" role="menuitem">
+              <svg class="nav__submenu__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="15" y2="17"/></svg>
+              <span>最新文章</span>
+            </a>
+            <a href="archive.html" role="menuitem">
+              <svg class="nav__submenu__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><polyline points="21 8 21 21 3 21 3 8"/><rect x="1" y="3" width="22" height="5"/><line x1="10" y1="12" x2="14" y2="12"/></svg>
+              <span>归档</span>
+            </a>
+            <a href="tags.html" role="menuitem">
+              <svg class="nav__submenu__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
+              <span>按分类</span>
+            </a>
+            <div class="nav__submenu__sep"></div>
+            <a href="feed.xml" role="menuitem">
+              <svg class="nav__submenu__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11a9 9 0 0 1 9 9"/><path d="M4 4a16 16 0 0 1 16 16"/><circle cx="5" cy="19" r="1"/></svg>
+              <span>RSS 订阅</span>
+            </a>
+          </div>
+        </li>
+        <li><a href="index.html#about">关于</a></li>
+        <li>
+          <button class="nav__search-btn" id="navSearchBtn" aria-label="搜索文章">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="7"/>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+            </svg>
+          </button>
+        </li>
         <li>
           <button class="nav__theme" data-theme-toggle aria-label="切换主题">
-            <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
-            <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+            <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+            </svg>
+            <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="4"/>
+              <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/>
+            </svg>
           </button>
         </li>
       </ul>
@@ -82,7 +118,7 @@
   <script src="assets/js/main.js?v=11"></script>
   <script src="assets/js/posts-data.js?v=1"></script>
   <script src="assets/js/enhancements.js?v=2"></script>
-  <script src="assets/js/extras.js?v=1"></script>
+  <script src="assets/js/extras.js?v=2"></script>
   <script>
   // Render archive grouped by year-month
   (function () {
