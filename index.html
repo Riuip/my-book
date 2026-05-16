@@ -10,7 +10,7 @@
   <meta name="description" content="WYQ 的个人主页。" />
   <meta name="theme-color" content="#fbfbfd" media="(prefers-color-scheme: light)" />
   <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)" />
-  <link rel="stylesheet" href="assets/css/style.css?v=18" />
+  <link rel="stylesheet" href="assets/css/style.css?v=20" />
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230071e3'/%3E%3Ctext x='50%25' y='62%25' text-anchor='middle' font-family='-apple-system,system-ui,sans-serif' font-weight='700' font-size='14' fill='white'%3EWYQ%3C/text%3E%3C/svg%3E" />
   <script>
     (function(){try{var t=localStorage.getItem('wyq-theme');if(t!=='light'&&t!=='dark'){t=window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';}document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
@@ -158,12 +158,33 @@
         <a class="btn btn--primary btn--lg" href="post-006.html">查看最新文章</a>
         <a class="btn btn--ghost btn--lg" href="#about">了解更多</a>
       </div>
+      <div class="hero__now reveal" data-delay="3" aria-live="polite">
+        <span id="nowLine">在写一些东西。</span>
+      </div>
     </div>
   </header>
 
+  <!-- DESK ROW — 正在读 / 正在写 / 正在听 -->
+  <section class="desk-section" aria-label="近况">
+    <div class="desk-section__title">最近</div>
+    <div class="desk-row" id="deskRow"></div>
+  </section>
+
+  <!-- FEATURED POST — auto-pulled from posts-data.js (newest first) -->
+  <section class="featured-section" aria-label="本周新文">
+    <div class="featured-section__title">本周新文</div>
+    <div id="featuredPost"></div>
+  </section>
+
+  <!-- MOOD GROUPS — playful entry points by vibe -->
+  <section class="mood-section" aria-label="按心情看">
+    <div class="mood-section__title">换种方式逛逛</div>
+    <div class="mood-groups" id="moodGroups"></div>
+  </section>
+
   <!-- TILES — about me -->
-  <section style="padding: 40px 0 80px;" id="about">
-    <div class="tiles">
+  <section style="padding: 36px 0 80px;" id="about">
+    <div class="tiles tiles--compact">
 
       <!-- About me (large dark tile) -->
       <article class="tile tile--wide tile--dark reveal">
@@ -207,12 +228,13 @@
       <!-- Blog jump CTA (highlight) -->
       <article class="tile tile--wide tile--accent reveal" data-delay="2">
         <div class="tile__eyebrow">Journal</div>
-        <h2 class="tile__title">前往博客文章</h2>
+        <h2 class="tile__title">看看更多文章</h2>
         <p class="tile__desc">
-          所有的文章都在这里。点击下方按钮开始阅读。
+          归档里按时间倒序排着所有文章, 也可以按分类筛选。
         </p>
         <div class="tile__actions">
-          <a class="btn btn--primary" href="post-006.html">查看最新文章</a>
+          <a class="btn btn--primary" href="archive.html">前往归档</a>
+          <a class="btn btn--ghost" href="tags.html">按分类浏览</a>
         </div>
       </article>
 
@@ -222,7 +244,10 @@
   <!-- FOOTER -->
   <footer class="footer">
     <div class="footer__inner">
-      <div>&copy; <span data-year>2026</span> WYQ. All rights reserved.</div>
+      <div>
+        <div>&copy; <span data-year>2026</span> WYQ. All rights reserved.</div>
+        <div class="site-counters" id="siteCounters" aria-label="站点小数字"></div>
+      </div>
       <ul class="footer__links">
         <li><a href="index.html">主页</a></li>
         <li><a href="post-006.html">文章</a></li>
@@ -262,6 +287,7 @@
   <script src="assets/js/search.js?v=3"></script>
   <script src="assets/js/enhancements.js?v=1"></script>
   <script src="assets/js/extras.js?v=4"></script>
+  <script src="assets/js/home-extras.js?v=1"></script>
   <script>
   // Typewriter animation for hero title — plays once on page load
   (function() {

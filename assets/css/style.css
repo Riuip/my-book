@@ -3165,3 +3165,342 @@ body.search-open {
   background: linear-gradient(135deg, #f5f5f7, #d2d2d7);
   color: #1d1d1f;
 }
+
+
+
+/* =========================================================
+   HOMEPAGE REDESIGN — "personal desk" view
+   - Now line under hero
+   - Desk row (reading / writing / listening)
+   - Featured post hero card
+   - Mood-group cards
+   - Footer site counters
+   Scoped: only used on index.html
+   ========================================================= */
+
+/* ---- "Now" line under hero ---- */
+.hero__now {
+  margin-top: 22px;
+  font-size: 14px;
+  letter-spacing: -0.01em;
+  color: var(--text-muted);
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 16px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--bg-elev) 60%, transparent);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid var(--line);
+  max-width: 92vw;
+}
+.hero__now::before {
+  content: '';
+  display: inline-block;
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: #34c759;
+  box-shadow: 0 0 0 0 rgba(52, 199, 89, 0.6);
+  animation: hero-now-pulse 2.4s ease-out infinite;
+  flex-shrink: 0;
+}
+@keyframes hero-now-pulse {
+  0%   { box-shadow: 0 0 0 0 rgba(52, 199, 89, 0.55); }
+  70%  { box-shadow: 0 0 0 10px rgba(52, 199, 89, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(52, 199, 89, 0); }
+}
+.hero__now span {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: calc(92vw - 60px);
+}
+@media (max-width: 540px) {
+  .hero__now { font-size: 13px; padding: 7px 14px; }
+  .hero__now span { max-width: calc(100vw - 80px); white-space: normal; text-overflow: clip; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero__now::before { animation: none; }
+}
+
+/* ---- Desk row: 正在读 / 写 / 听 ---- */
+.desk-section {
+  max-width: 1024px;
+  margin: 0 auto;
+  padding: 30px 22px 0;
+}
+.desk-section__title {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 14px;
+  padding-left: 6px;
+}
+.desk-row {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: 1fr;
+}
+@media (min-width: 600px) {
+  .desk-row { grid-template-columns: repeat(3, 1fr); }
+}
+.desk-card {
+  position: relative;
+  background: color-mix(in srgb, var(--bg-elev) 70%, transparent);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 18px 18px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+  overflow: hidden;
+}
+@supports not (backdrop-filter: blur(10px)) {
+  .desk-card { background: var(--bg-elev); }
+}
+.desk-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 30px -8px rgba(0, 0, 0, 0.10);
+  border-color: var(--line-strong);
+}
+.desk-card__icon {
+  font-size: 22px;
+  line-height: 1;
+  margin-bottom: 6px;
+}
+.desk-card__label {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--text-muted);
+  text-transform: uppercase;
+}
+.desk-card__title {
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--text);
+  letter-spacing: -0.018em;
+}
+.desk-card__sub {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+.desk-card__link {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+
+/* ---- Featured post (newest) — large hero card ---- */
+.featured-section {
+  max-width: 1024px;
+  margin: 28px auto 0;
+  padding: 0 22px;
+}
+.featured-section__title {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 14px;
+  padding-left: 6px;
+}
+.featured {
+  position: relative;
+  display: block;
+  border-radius: 22px;
+  overflow: hidden;
+  min-height: 320px;
+  color: #fff;
+  isolation: isolate;
+  background: linear-gradient(135deg, var(--c-from, #0071e3) 0%, var(--c-to, #2997ff) 100%);
+  border: 1px solid var(--line);
+  transition: transform 0.4s cubic-bezier(.2,.7,.2,1), box-shadow 0.4s ease;
+}
+.featured:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 30px 60px -18px rgba(0, 0, 0, 0.30);
+  color: #fff;
+}
+.featured__bg {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  opacity: 0.55;
+  z-index: 0;
+  transition: opacity 0.4s ease, transform 0.6s ease;
+}
+.featured:hover .featured__bg { opacity: 0.7; transform: scale(1.03); }
+.featured__fg {
+  position: relative;
+  z-index: 1;
+  padding: 44px 42px 38px;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 320px;
+  text-shadow: 0 1px 24px rgba(0, 0, 0, 0.25);
+}
+.featured__eyebrow {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.92);
+  margin-bottom: 12px;
+}
+.featured__title {
+  font-size: clamp(26px, 3.6vw, 38px);
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: 12px;
+  max-width: 720px;
+}
+.featured__desc {
+  font-size: 16px;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.92);
+  max-width: 640px;
+  margin-bottom: auto;
+}
+.featured__meta {
+  margin-top: 22px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.85);
+  letter-spacing: -0.01em;
+}
+.featured__cta {
+  font-weight: 600;
+  color: #fff;
+  transition: transform 0.25s ease;
+  display: inline-block;
+}
+.featured:hover .featured__cta { transform: translateX(4px); }
+@media (max-width: 540px) {
+  .featured__fg { padding: 28px 24px 24px; min-height: 280px; }
+  .featured { min-height: 280px; }
+}
+
+/* ---- Mood groups: 深夜想说的话 / 周末长文 / 折腾笔记 ---- */
+.mood-section {
+  max-width: 1024px;
+  margin: 28px auto 0;
+  padding: 0 22px;
+}
+.mood-section__title {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 14px;
+  padding-left: 6px;
+}
+.mood-groups {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: 1fr;
+}
+@media (min-width: 720px) {
+  .mood-groups { grid-template-columns: repeat(3, 1fr); }
+}
+.mood {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 18px 20px;
+  border-radius: 16px;
+  background: color-mix(in srgb, var(--bg-elev) 70%, transparent);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid var(--line);
+  color: var(--text);
+  text-decoration: none;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+@supports not (backdrop-filter: blur(10px)) {
+  .mood { background: var(--bg-elev); }
+}
+.mood::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, var(--mood-tint, #0071e3), transparent 70%);
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  pointer-events: none;
+  mix-blend-mode: multiply;
+}
+[data-theme="dark"] .mood::before { mix-blend-mode: screen; }
+.mood:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 14px 36px -10px color-mix(in srgb, var(--mood-tint, #0071e3) 45%, transparent);
+  border-color: color-mix(in srgb, var(--mood-tint, #0071e3) 40%, var(--line));
+  color: var(--text);
+}
+.mood:hover::before { opacity: 0.10; }
+.mood__icon {
+  font-size: 26px;
+  line-height: 1;
+  flex-shrink: 0;
+  filter: drop-shadow(0 2px 6px rgba(0,0,0,0.10));
+}
+.mood__body { flex: 1; min-width: 0; }
+.mood__title {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text);
+  letter-spacing: -0.018em;
+  margin-bottom: 2px;
+}
+.mood__desc {
+  font-size: 13px;
+  color: var(--text-muted);
+  letter-spacing: -0.01em;
+}
+.mood__arrow {
+  font-size: 18px;
+  color: var(--text-muted);
+  flex-shrink: 0;
+  transition: transform 0.3s ease, color 0.3s ease;
+}
+.mood:hover .mood__arrow {
+  transform: translateX(4px);
+  color: var(--mood-tint, var(--accent));
+}
+
+/* ---- Footer site counters (easter egg) ---- */
+.site-counters {
+  font-size: 12.5px;
+  color: var(--text-muted);
+  letter-spacing: -0.01em;
+  margin-top: 8px;
+  font-variant-numeric: tabular-nums;
+}
+.site-counters b {
+  color: var(--text-soft);
+  font-weight: 600;
+  font-feature-settings: "tnum";
+}
+
+/* ---- Tighten spacing on the existing tile grid below the new sections ---- */
+.tiles--compact { padding-top: 8px; }
