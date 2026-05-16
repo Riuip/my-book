@@ -21,7 +21,7 @@
     var results = [];
     for (var i = 0; i < POSTS.length; i++) {
       var post = POSTS[i];
-      var text = (post.title + ' ' + post.desc + ' ' + post.cat).toLowerCase();
+      var text = (post.title + ' ' + post.desc + ' ' + post.cat + ' ' + (post.tags||[]).join(' ') + ' ' + (post.body||'')).toLowerCase();
       var match = true;
       for (var k = 0; k < keywords.length; k++) {
         if (text.indexOf(keywords[k]) === -1) {
@@ -32,6 +32,25 @@
       if (match) results.push(post);
     }
     return results;
+  }
+
+  /* ---------- Body snippet around first matched keyword ---------- */
+  function bodySnippet(body, query, len) {
+    if (!body || !query) return '';
+    len = len || 90;
+    var keywords = query.trim().toLowerCase().split(/\s+/).filter(Boolean);
+    var lower = body.toLowerCase();
+    var hitAt = -1;
+    for (var i = 0; i < keywords.length; i++) {
+      var idx = lower.indexOf(keywords[i]);
+      if (idx !== -1) { hitAt = idx; break; }
+    }
+    if (hitAt === -1) return body.slice(0, len) + (body.length > len ? '…' : '');
+    var start = Math.max(0, hitAt - Math.floor(len / 3));
+    var end = Math.min(body.length, start + len);
+    var prefix = start > 0 ? '…' : '';
+    var suffix = end < body.length ? '…' : '';
+    return prefix + body.slice(start, end) + suffix;
   }
 
   /* ---------- Render results ---------- */
@@ -48,10 +67,14 @@
     var html = '';
     for (var i = 0; i < results.length; i++) {
       var r = results[i];
+      var snippet = r.body ? bodySnippet(r.body, query, 100) : '';
       html += '<a class="search-result" href="' + r.url + '">';
       html += '<span class="search-result__cat">' + r.cat + '</span>';
       html += '<span class="search-result__title">' + highlightText(r.title, query) + '</span>';
       html += '<span class="search-result__desc">' + highlightText(r.desc, query) + '</span>';
+      if (snippet) {
+        html += '<span class="search-result__snippet">' + highlightText(snippet, query) + '</span>';
+      }
       html += '<span class="search-result__date">' + r.date + '</span>';
       html += '</a>';
     }
@@ -188,8 +211,12 @@
     var html = '';
     for (var i = 0; i < results.length; i++) {
       var r = results[i];
+      var snippet = r.body ? bodySnippet(r.body, query, 70) : '';
       html += '<a class="nav-search__item" href="' + r.url + '">';
       html += '<span class="nav-search__item-title">' + highlightText(r.title, query) + '</span>';
+      if (snippet) {
+        html += '<span class="nav-search__item-snippet">' + highlightText(snippet, query) + '</span>';
+      }
       html += '<span class="nav-search__item-cat">' + r.cat + '</span>';
       html += '</a>';
     }

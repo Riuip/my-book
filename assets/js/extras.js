@@ -37,14 +37,19 @@
     // 中文 ~400 字/分钟, 英文 ~220 词/分钟
     var minutes = Math.max(1, Math.round(cn / 400 + en / 220));
 
-    // Find span containing "分钟阅读" or "持续更新" — leave 持续更新 alone
-    var spans = meta.querySelectorAll('span');
-    Array.prototype.forEach.call(spans, function (s) {
-      var t = (s.textContent || '').trim();
-      if (/分钟阅读/.test(t)) {
-        s.textContent = '约 ' + minutes + ' 分钟阅读';
-      }
-    });
+    // Prefer a dedicated marker class for robustness; fall back to text match.
+    var marker = meta.querySelector('[data-reading-time]');
+    if (marker) {
+      marker.textContent = '约 ' + minutes + ' 分钟阅读';
+    } else {
+      var spans = meta.querySelectorAll('span');
+      Array.prototype.forEach.call(spans, function (s) {
+        var t = (s.textContent || '').trim();
+        if (/分钟阅读/.test(t)) {
+          s.textContent = '约 ' + minutes + ' 分钟阅读';
+        }
+      });
+    }
   })();
 
   /* =========================================================
