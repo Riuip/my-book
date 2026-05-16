@@ -3169,6 +3169,80 @@ body.search-open {
 
 
 /* =========================================================
+/* =========================================================
+   GLASS CARDS — site-wide unified frosted look
+   Spec: every card-shaped surface (except the homepage .tile
+   which already has its bigger custom glass treatment) should
+   feel like the same material: a thin pane of frosted glass
+   sitting just above the aurora background.
+
+   Targets:
+     .pn-card           prev/next on article pages
+     .related-card      "you may also like" grid
+     .search-result     /search.html result cards
+     .tags-article      /tags.html category rows
+     .tag-cloud__item   the colored pills at the top of /tags.html
+
+   Light mode: paper-white glass. Dark mode: ink-dark glass.
+   Both are slightly translucent so the aurora bleeds through.
+   ========================================================= */
+
+/* Cards */
+.pn-card,
+.related-card,
+.search-result,
+.tags-article {
+  background: color-mix(in srgb, var(--bg-elev) 70%, transparent);
+  backdrop-filter: saturate(140%) blur(10px);
+  -webkit-backdrop-filter: saturate(140%) blur(10px);
+}
+
+[data-theme="dark"] .pn-card,
+[data-theme="dark"] .related-card,
+[data-theme="dark"] .search-result,
+[data-theme="dark"] .tags-article {
+  background: color-mix(in srgb, var(--bg-elev) 60%, transparent);
+}
+
+/* Pills (smaller, so a lighter blur is enough) */
+.tag-cloud__item {
+  background: color-mix(in srgb, var(--bg-elev) 70%, transparent);
+  backdrop-filter: saturate(140%) blur(8px);
+  -webkit-backdrop-filter: saturate(140%) blur(8px);
+}
+[data-theme="dark"] .tag-cloud__item {
+  background: color-mix(in srgb, var(--bg-elev) 60%, transparent);
+}
+
+/* When a tag pill is hover/active it picks up its category gradient
+   (already defined further up). Gradients drown the blur, so disable
+   backdrop-filter in that state to avoid wasted work and to let the
+   gradient read crisply. */
+.tag-cloud__item:hover,
+.tag-cloud__item.is-active {
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+/* Graceful degradation for browsers without backdrop-filter
+   (older Firefox, some embedded webviews): bump the alpha so the
+   card is still legible without the blur. */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .pn-card,
+  .related-card,
+  .search-result,
+  .tags-article,
+  .tag-cloud__item {
+    background: var(--bg-elev);
+  }
+}
+
+/* Reading progress bar should sit ABOVE the frosted cards on article
+   pages — it was already z-index: 9998 so this is just a safety note,
+   no change required. */
+
+
+/* =========================================================
    HOMEPAGE REDESIGN — "personal desk" view
    - Now line under hero
    - Desk row (reading / writing / listening)
