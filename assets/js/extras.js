@@ -579,17 +579,37 @@
       closeTimer = setTimeout(close, CLOSE_DELAY);
     }
 
-    // Desktop hover: open when entering toggle or submenu; close with delay
-    parent.addEventListener('mouseenter', open);
-    parent.addEventListener('mouseleave', scheduleClose);
+    // Only enable hover-to-open on devices with a real cursor.
+    // On touch devices the synthetic mouseenter+click sequence used to fight
+    // the click toggle, making the menu need two taps to open and impossible
+    // to close from the toggle. (matchMedia is checked at attach time AND
+    // re-checked inside the handlers so a hybrid device that switches modes
+    // still behaves correctly.)
+    var hoverMQ = window.matchMedia
+      ? window.matchMedia('(hover: hover) and (pointer: fine)')
+      : null;
+    function canHover() {
+      return hoverMQ ? hoverMQ.matches : true;
+    }
+
+    parent.addEventListener('mouseenter', function () { if (canHover()) open(); });
+    parent.addEventListener('mouseleave', function () { if (canHover()) scheduleClose(); });
     sub.addEventListener('mouseenter', function () {
+      if (!canHover()) return;
       clearTimeout(closeTimer);
       closeTimer = null;
     });
-    sub.addEventListener('mouseleave', scheduleClose);
+    sub.addEventListener('mouseleave', function () { if (canHover()) scheduleClose(); });
 
-    // Click toggle (for touch / a11y)
-    t.addEventListener('click', function (e) {
+    // Click / tap toggle — primary interaction on touch, also works on
+    // desktop for keyboard / a11y users. We listen for both pointerdown
+    // (immediate, for touch) and click as a fallback. To prevent both
+    // firing on the same tap we mark a short "just handled" window.
+    var lastToggleAt = 0;
+    function toggleMenu(e) {
+      var now = Date.now();
+      if (now - lastToggleAt < 350) return; // de-dupe pointer + click
+      lastToggleAt = now;
       e.preventDefault();
       e.stopPropagation();
       if (sub.classList.contains('is-open')) {
@@ -597,7 +617,8 @@
       } else {
         open();
       }
-    });
+    }
+    t.addEventListener('click', toggleMenu);
 
     // Keyboard
     t.addEventListener('keydown', function (e) {
