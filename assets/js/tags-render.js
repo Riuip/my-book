@@ -50,14 +50,17 @@
   });
   cloudEl.innerHTML = cloudHtml;
 
-  // Render per-category sections — skip empty
+  // Render per-category sections — skip empty.
+  // NOTE: don't use the .reveal class here — main.js snapshots .reveal nodes
+  // on initial load via IntersectionObserver, so dynamically-rendered
+  // sections would never receive the .in class and stay invisible (opacity:0).
   var listHtml = '';
   CATS.forEach(function (c) {
     if (c.key === 'all') return;
     var posts = POSTS.filter(function (p) { return p.catKey === c.key; });
     if (!posts.length) return;
     listHtml +=
-      '<section class="tags-section reveal" data-cat="' + c.key + '">' +
+      '<section class="tags-section" data-cat="' + c.key + '">' +
         '<div class="tags-section__header">' +
           '<span class="tags-section__dot"></span>' +
           '<h2 class="tags-section__title">' + escHtml(c.label) + '</h2>' +
