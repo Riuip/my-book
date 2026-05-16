@@ -3081,3 +3081,87 @@ body.search-open {
   }
   .nav__sub-toggle { padding: 6px 8px; font-size: 12px; }
 }
+
+
+
+/* =========================================================
+   POLISH PASS — soft glow on framed controls + fix "全部" pill
+   - The homepage `.tile` already has an aurora-glow border. We
+     extend the same idea (much softer) to other framed cards
+     and pill controls so they feel like physical objects, not
+     drawings on flat paper.
+   - Glow is intentionally faint by default and only blooms on
+     hover. We do NOT touch:
+       buttons, modal panels, profile rows, archive rows,
+       paragraphs / headings, or anything that's already busy.
+   ========================================================= */
+
+/* Shared glow tokens — kept low-opacity so it never feels heavy. */
+:root {
+  --glow-rim:   inset 0 0 0 1px rgba(255, 255, 255, 0.35);
+  --glow-soft:  0 0 14px -3px rgba(100, 160, 255, 0.18),
+                0 0 4px  0px rgba(160, 130, 255, 0.10);
+  --glow-hover: 0 0 22px -2px rgba(100, 160, 255, 0.32),
+                0 0 8px   0px rgba(160, 130, 255, 0.18);
+}
+[data-theme="dark"] {
+  --glow-rim:   inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+  --glow-soft:  0 0 18px -4px rgba(60, 140, 255, 0.28),
+                0 0 6px  0px rgba(140,  90, 240, 0.18);
+  --glow-hover: 0 0 28px -2px rgba(60, 140, 255, 0.42),
+                0 0 12px  0px rgba(140,  90, 240, 0.28);
+}
+
+/* ---------- Big article cards: prev/next, related, search results, tags ---------- */
+.pn-card,
+.related-card,
+.search-result,
+.tags-article {
+  box-shadow: var(--glow-rim), var(--glow-soft);
+}
+.pn-card:hover,
+.related-card:hover,
+.search-result:hover,
+.tags-article:hover {
+  box-shadow: var(--glow-rim), var(--glow-hover);
+}
+/* The placeholder (already-earliest / already-latest) shouldn't bloom */
+.pn-card--placeholder,
+.pn-card--placeholder:hover {
+  box-shadow: var(--glow-rim);
+}
+
+/* ---------- Tag cloud pills: same idea, but lighter ---------- */
+.tag-cloud__item {
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.30),
+    0 0 8px -2px rgba(100, 160, 255, 0.12);
+}
+[data-theme="dark"] .tag-cloud__item {
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.06),
+    0 0 10px -2px rgba(60, 140, 255, 0.18);
+}
+/* When a pill is :hover OR .is-active it picks up its category gradient,
+   so we DON'T override its box-shadow there — let it keep the existing
+   colored shadow which already feels three-dimensional. */
+
+/* =========================================================
+   FIX: "全部" tag-cloud pill was invisible when active
+   Cause: tag-cloud__item:hover/.is-active sets color:#fff but
+   only specific [data-tag="..."] selectors set a background,
+   and there was no rule for [data-tag="all"]. White text on
+   white card = invisible.
+   Use a neutral dark gradient so it doesn't compete with the
+   category-colored pills; reads as the "default / all" state.
+   ========================================================= */
+.tag-cloud__item[data-tag="all"]:hover,
+.tag-cloud__item[data-tag="all"].is-active {
+  background: linear-gradient(135deg, #1d1d1f, #424245);
+  color: #fff;
+}
+[data-theme="dark"] .tag-cloud__item[data-tag="all"]:hover,
+[data-theme="dark"] .tag-cloud__item[data-tag="all"].is-active {
+  background: linear-gradient(135deg, #f5f5f7, #d2d2d7);
+  color: #1d1d1f;
+}
