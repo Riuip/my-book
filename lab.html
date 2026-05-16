@@ -1,0 +1,765 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="view-transition" content="same-origin" />
+  <title>实验 — WYQ 专属博客</title>
+  <meta name="description" content="WYQ 的实验小项目页面 - 天气 UI 卡片。" />
+  <meta name="theme-color" content="#fbfbfd" media="(prefers-color-scheme: light)" />
+  <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)" />
+  <link rel="stylesheet" href="assets/css/style.css?v=21" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230071e3'/%3E%3Ctext x='50%25' y='62%25' text-anchor='middle' font-family='-apple-system,system-ui,sans-serif' font-weight='700' font-size='14' fill='white'%3EWYQ%3C/text%3E%3C/svg%3E" />
+  <script>
+    (function(){try{var t=localStorage.getItem('wyq-theme');if(t!=='light'&&t!=='dark'){t=window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';}document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
+  </script>
+  <link rel="canonical" href="https://riuip.github.io/my-book/lab.html" />
+
+  <!-- ============================
+       LAB / WEATHER CARD STYLES
+       (inline, self-contained)
+       ============================ -->
+  <style>
+    /* ---------- page wrapper ---------- */
+    .lab-stage {
+      min-height: calc(100vh - 64px - 80px);
+      padding: 80px 24px 64px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 32px;
+      background:
+        radial-gradient(1200px 600px at 10% -10%, rgba(186, 213, 255, 0.35), transparent 60%),
+        radial-gradient(1000px 500px at 110% 10%, rgba(255, 220, 200, 0.30), transparent 60%),
+        radial-gradient(900px 600px at 50% 120%, rgba(220, 210, 255, 0.30), transparent 60%),
+        #ffffff;
+    }
+    .lab-head {
+      max-width: 980px;
+      width: 100%;
+      text-align: center;
+    }
+    .lab-eyebrow {
+      display: inline-block;
+      font-size: 12px;
+      letter-spacing: 0.18em;
+      color: #8a8f9a;
+      text-transform: uppercase;
+      padding: 6px 14px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.7);
+      border: 1px solid rgba(0, 0, 0, 0.06);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+    .lab-title {
+      margin: 14px 0 6px;
+      font-size: clamp(28px, 4vw, 40px);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: #1d1d1f;
+    }
+    .lab-sub {
+      margin: 0;
+      color: #6e7280;
+      font-size: 15px;
+    }
+
+    /* ---------- weather card ---------- */
+    .weather-card {
+      width: 100%;
+      max-width: 980px;
+      background: rgba(255, 255, 255, 0.65);
+      backdrop-filter: blur(28px) saturate(140%);
+      -webkit-backdrop-filter: blur(28px) saturate(140%);
+      border: 1px solid rgba(255, 255, 255, 0.8);
+      border-radius: 28px;
+      box-shadow:
+        0 1px 0 rgba(255, 255, 255, 0.9) inset,
+        0 30px 60px -20px rgba(80, 100, 140, 0.18),
+        0 8px 24px -8px rgba(80, 100, 140, 0.08);
+      padding: 32px 36px;
+      color: #1d1d1f;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+        "Hiragino Sans GB", "Microsoft YaHei", system-ui, sans-serif;
+    }
+
+    /* ---------- header: location + date ---------- */
+    .wc-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 28px;
+    }
+    .wc-loc {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .wc-loc__pin {
+      width: 22px;
+      height: 22px;
+      color: #6b7cff;
+      flex-shrink: 0;
+    }
+    .wc-loc__city {
+      font-size: 22px;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      line-height: 1.1;
+    }
+    .wc-loc__region {
+      font-size: 13px;
+      color: #8a8f9a;
+      margin-top: 3px;
+    }
+    .wc-date {
+      text-align: right;
+      font-size: 13px;
+      color: #8a8f9a;
+    }
+    .wc-date__day {
+      font-size: 15px;
+      color: #1d1d1f;
+      font-weight: 500;
+      margin-bottom: 2px;
+    }
+
+    /* ---------- main grid: left big / right metrics ---------- */
+    .wc-main {
+      display: grid;
+      grid-template-columns: 1.15fr 1fr;
+      gap: 28px;
+      margin-bottom: 28px;
+    }
+
+    /* left: temp + icon */
+    .wc-temp {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+    }
+    .wc-icon-wrap {
+      width: 132px;
+      height: 132px;
+      flex-shrink: 0;
+      filter: drop-shadow(0 12px 24px rgba(255, 190, 110, 0.25))
+              drop-shadow(0 6px 12px rgba(160, 180, 220, 0.18));
+    }
+    .wc-icon-wrap svg { width: 100%; height: 100%; display: block; }
+    .wc-temp__readout {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .wc-temp__num {
+      font-size: clamp(72px, 10vw, 108px);
+      font-weight: 200;
+      line-height: 0.95;
+      letter-spacing: -0.05em;
+      color: #1d1d1f;
+      display: flex;
+      align-items: flex-start;
+    }
+    .wc-temp__num sup {
+      font-size: 0.4em;
+      font-weight: 300;
+      margin-top: 0.35em;
+      margin-left: 4px;
+      color: #6e7280;
+    }
+    .wc-temp__cond {
+      margin-top: 6px;
+      font-size: 16px;
+      color: #4b5563;
+      font-weight: 500;
+    }
+    .wc-temp__range {
+      margin-top: 4px;
+      font-size: 13px;
+      color: #8a8f9a;
+    }
+
+    /* right: 2x2 metrics */
+    .wc-metrics {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 1fr 1fr;
+      gap: 12px;
+    }
+    .metric {
+      background: rgba(255, 255, 255, 0.7);
+      border: 1px solid rgba(220, 225, 235, 0.7);
+      border-radius: 18px;
+      padding: 16px 18px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+    .metric:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 24px -12px rgba(80, 100, 140, 0.22);
+    }
+    .metric__icon {
+      width: 38px;
+      height: 38px;
+      border-radius: 12px;
+      display: grid;
+      place-items: center;
+      flex-shrink: 0;
+    }
+    .metric__icon svg { width: 20px; height: 20px; }
+    .metric--humid .metric__icon { background: #e6f1ff; color: #5b8def; }
+    .metric--wind  .metric__icon { background: #e7f7f0; color: #4cb88a; }
+    .metric--feel  .metric__icon { background: #fff1ec; color: #e8946a; }
+    .metric--vis   .metric__icon { background: #f0ecff; color: #8a7ee0; }
+    .metric__label {
+      font-size: 12px;
+      color: #8a8f9a;
+      letter-spacing: 0.02em;
+    }
+    .metric__value {
+      font-size: 20px;
+      font-weight: 600;
+      color: #1d1d1f;
+      line-height: 1.1;
+      margin-top: 2px;
+    }
+    .metric__value sup {
+      font-size: 0.55em;
+      color: #8a8f9a;
+      font-weight: 500;
+      margin-left: 2px;
+    }
+
+    /* ---------- middle: 3 pastel cards ---------- */
+    .wc-pastel {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      margin-bottom: 28px;
+    }
+    .pastel {
+      border-radius: 20px;
+      padding: 18px 20px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      box-shadow: 0 8px 20px -14px rgba(0, 0, 0, 0.15);
+      border: 1px solid rgba(255, 255, 255, 0.6);
+      transition: transform 0.25s ease;
+    }
+    .pastel:hover { transform: translateY(-2px); }
+    .pastel--uv     { background: linear-gradient(135deg, #fff5d1, #fff8e6); }
+    .pastel--rise   { background: linear-gradient(135deg, #ffe1cc, #fff0e3); }
+    .pastel--set    { background: linear-gradient(135deg, #e8dcff, #f3ebff); }
+    .pastel__icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.7);
+      display: grid;
+      place-items: center;
+      flex-shrink: 0;
+    }
+    .pastel__icon svg { width: 24px; height: 24px; }
+    .pastel--uv   .pastel__icon { color: #d49b1f; }
+    .pastel--rise .pastel__icon { color: #d97a3f; }
+    .pastel--set  .pastel__icon { color: #8a6dd0; }
+    .pastel__label {
+      font-size: 12px;
+      color: #6b6f78;
+      letter-spacing: 0.02em;
+    }
+    .pastel__value {
+      font-size: 20px;
+      font-weight: 600;
+      color: #2a2a30;
+      line-height: 1.1;
+      margin-top: 3px;
+    }
+    .pastel__hint {
+      font-size: 11px;
+      color: #8a8f9a;
+      margin-top: 3px;
+    }
+
+    /* ---------- bottom: hourly forecast ---------- */
+    .wc-hourly {
+      border-top: 1px solid rgba(220, 225, 235, 0.7);
+      padding-top: 22px;
+    }
+    .wc-hourly__title {
+      font-size: 13px;
+      color: #8a8f9a;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-bottom: 14px;
+      font-weight: 500;
+    }
+    .wc-hourly__list {
+      display: grid;
+      grid-template-columns: repeat(8, minmax(0, 1fr));
+      gap: 10px;
+      overflow-x: auto;
+      padding-bottom: 4px;
+      -webkit-overflow-scrolling: touch;
+    }
+    .hour {
+      background: rgba(255, 255, 255, 0.6);
+      border: 1px solid rgba(220, 225, 235, 0.6);
+      border-radius: 16px;
+      padding: 12px 8px 14px;
+      text-align: center;
+      transition: transform 0.25s ease, background 0.25s ease;
+      min-width: 0;
+    }
+    .hour:hover {
+      transform: translateY(-3px);
+      background: rgba(255, 255, 255, 0.85);
+    }
+    .hour--now {
+      background: linear-gradient(160deg, #1d1d1f, #2c2c34);
+      border-color: transparent;
+      color: #fff;
+    }
+    .hour--now .hour__time { color: #cfd2da; }
+    .hour--now .hour__temp { color: #fff; }
+    .hour__time {
+      font-size: 12px;
+      color: #8a8f9a;
+      letter-spacing: 0.02em;
+    }
+    .hour__icon {
+      width: 30px;
+      height: 30px;
+      margin: 8px auto 6px;
+      display: block;
+    }
+    .hour__temp {
+      font-size: 15px;
+      font-weight: 600;
+      color: #1d1d1f;
+    }
+
+    /* ---------- responsive ---------- */
+    @media (max-width: 880px) {
+      .wc-main { grid-template-columns: 1fr; }
+      .wc-pastel { grid-template-columns: 1fr; }
+      .wc-hourly__list { grid-template-columns: repeat(8, 84px); }
+    }
+    @media (max-width: 560px) {
+      .weather-card { padding: 24px 20px; border-radius: 22px; }
+      .wc-temp { gap: 8px; }
+      .wc-icon-wrap { width: 100px; height: 100px; }
+      .wc-metrics { grid-template-columns: 1fr 1fr; }
+      .lab-stage { padding: 64px 14px 48px; }
+    }
+
+    /* dark mode adjustments to keep card visible (light card on dark page) */
+    [data-theme="dark"] .lab-stage {
+      background:
+        radial-gradient(1200px 600px at 10% -10%, rgba(80, 110, 180, 0.25), transparent 60%),
+        radial-gradient(1000px 500px at 110% 10%, rgba(160, 100, 80, 0.18), transparent 60%),
+        #0f1115;
+    }
+    [data-theme="dark"] .lab-title { color: #f5f5f7; }
+    [data-theme="dark"] .lab-eyebrow {
+      background: rgba(30, 32, 38, 0.6);
+      border-color: rgba(255, 255, 255, 0.08);
+      color: #b0b3bb;
+    }
+  </style>
+</head>
+<body class="page-enter">
+
+  <!-- AURORA — site-wide animated background -->
+  <div class="aurora" aria-hidden="true"></div>
+
+  <!-- NAV -->
+  <nav class="nav">
+    <div class="nav__inner">
+      <a class="nav__brand" href="index.html">
+        <span class="dot"></span>
+        <span>WYQ</span>
+      </a>
+      <ul class="nav__menu">
+        <li class="nav__has-sub">
+          <button class="nav__sub-toggle" data-nav-sub-toggle type="button">
+            <span>文章</span>
+            <svg class="nav__sub-toggle__chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <polyline points="6 9 12 15 18 9"/>
+            </svg>
+          </button>
+          <div class="nav__submenu" role="menu">
+            <a href="post-006.html" role="menuitem">
+              <svg class="nav__submenu__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="15" y2="17"/></svg>
+              <span>最新文章</span>
+            </a>
+            <a href="archive.html" role="menuitem">
+              <svg class="nav__submenu__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><polyline points="21 8 21 21 3 21 3 8"/><rect x="1" y="3" width="22" height="5"/><line x1="10" y1="12" x2="14" y2="12"/></svg>
+              <span>归档</span>
+            </a>
+            <a href="tags.html" role="menuitem">
+              <svg class="nav__submenu__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
+              <span>按分类</span>
+            </a>
+            <div class="nav__submenu__sep"></div>
+            <a href="feed.xml" role="menuitem">
+              <svg class="nav__submenu__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11a9 9 0 0 1 9 9"/><path d="M4 4a16 16 0 0 1 16 16"/><circle cx="5" cy="19" r="1"/></svg>
+              <span>RSS 订阅</span>
+            </a>
+          </div>
+        </li>
+        <li><a href="index.html#about">关于</a></li>
+        <li><a href="lab.html" aria-current="page">实验</a></li>
+        <li>
+          <button class="nav__search-btn" id="navSearchBtn" aria-label="搜索文章">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="7"/>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+            </svg>
+          </button>
+        </li>
+        <li>
+          <button class="nav__theme" data-theme-toggle aria-label="切换主题">
+            <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+            </svg>
+            <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="4"/>
+              <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/>
+            </svg>
+          </button>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- ============================
+       LAB STAGE
+       ============================ -->
+  <main class="lab-stage">
+
+    <div class="lab-head">
+      <span class="lab-eyebrow">Lab · 实验项目 01</span>
+      <h1 class="lab-title">天气卡片 · Weather UI</h1>
+      <p class="lab-sub">极简 · 浅色模式 · 毛玻璃 · 柔和投影</p>
+    </div>
+
+    <!-- ============================
+         WEATHER CARD
+         ============================ -->
+    <article class="weather-card" aria-label="天气卡片">
+
+      <!-- HEADER : location + date -->
+      <header class="wc-header">
+        <div class="wc-loc">
+          <svg class="wc-loc__pin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 1 1 18 0z"/>
+            <circle cx="12" cy="10" r="3"/>
+          </svg>
+          <div>
+            <div class="wc-loc__city" id="wcCity">北京</div>
+            <div class="wc-loc__region">中国 · 海淀区</div>
+          </div>
+        </div>
+        <div class="wc-date">
+          <div class="wc-date__day" id="wcWeekday">星期六</div>
+          <div id="wcDate">2026 年 5 月 16 日</div>
+        </div>
+      </header>
+
+      <!-- MAIN : temperature + 2x2 metrics -->
+      <section class="wc-main">
+
+        <!-- LEFT : big icon + giant temp -->
+        <div class="wc-temp">
+          <div class="wc-icon-wrap" aria-hidden="true">
+            <!-- soft duotone sun + cloud icon -->
+            <svg viewBox="0 0 128 128" fill="none">
+              <defs>
+                <linearGradient id="sunGrad" x1="0" x2="1" y1="0" y2="1">
+                  <stop offset="0%"  stop-color="#FFD68A"/>
+                  <stop offset="100%" stop-color="#FFB061"/>
+                </linearGradient>
+                <linearGradient id="cloudGrad" x1="0" x2="0" y1="0" y2="1">
+                  <stop offset="0%"  stop-color="#F4F7FB"/>
+                  <stop offset="100%" stop-color="#D9E2F0"/>
+                </linearGradient>
+              </defs>
+              <!-- sun rays -->
+              <g stroke="#FFC97A" stroke-width="3" stroke-linecap="round" opacity="0.85">
+                <line x1="44" y1="14" x2="44" y2="22"/>
+                <line x1="20" y1="38" x2="28" y2="38"/>
+                <line x1="22" y1="18" x2="28" y2="24"/>
+                <line x1="66" y1="18" x2="60" y2="24"/>
+              </g>
+              <!-- sun -->
+              <circle cx="44" cy="44" r="18" fill="url(#sunGrad)"/>
+              <!-- cloud -->
+              <path d="M40 86c-9 0-16-7-16-16s7-16 16-16c2 0 4 0.4 6 1.1C49 47 58 42 68 42c14 0 25 11 25 25 0 1-0.1 2-0.2 3 6 1 11 6 11 13 0 7-6 13-13 13H40z"
+                    fill="url(#cloudGrad)" stroke="#C8D2E2" stroke-width="1.5"/>
+            </svg>
+          </div>
+          <div class="wc-temp__readout">
+            <div class="wc-temp__num">28<sup>°</sup></div>
+            <div class="wc-temp__cond">晴转多云</div>
+            <div class="wc-temp__range">最高 31° · 最低 19°</div>
+          </div>
+        </div>
+
+        <!-- RIGHT : 2x2 grid -->
+        <div class="wc-metrics">
+
+          <div class="metric metric--humid">
+            <div class="metric__icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M12 3s7 8 7 13a7 7 0 1 1-14 0c0-5 7-13 7-13z"/>
+              </svg>
+            </div>
+            <div>
+              <div class="metric__label">湿度</div>
+              <div class="metric__value">52<sup>%</sup></div>
+            </div>
+          </div>
+
+          <div class="metric metric--wind">
+            <div class="metric__icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M3 8h11a3 3 0 1 0-3-3"/>
+                <path d="M3 14h16a3 3 0 1 1-3 3"/>
+                <path d="M3 11h7"/>
+              </svg>
+            </div>
+            <div>
+              <div class="metric__label">风速</div>
+              <div class="metric__value">12<sup> km/h</sup></div>
+            </div>
+          </div>
+
+          <div class="metric metric--feel">
+            <div class="metric__icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M14 4a2 2 0 0 0-4 0v10.5a4 4 0 1 0 4 0z"/>
+                <line x1="12" y1="9" x2="12" y2="14"/>
+              </svg>
+            </div>
+            <div>
+              <div class="metric__label">体感温度</div>
+              <div class="metric__value">30<sup>°</sup></div>
+            </div>
+          </div>
+
+          <div class="metric metric--vis">
+            <div class="metric__icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/>
+                <circle cx="12" cy="12" r="3"/>
+              </svg>
+            </div>
+            <div>
+              <div class="metric__label">能见度</div>
+              <div class="metric__value">14<sup> km</sup></div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- MIDDLE : 3 pastel cards -->
+      <section class="wc-pastel">
+
+        <div class="pastel pastel--uv">
+          <div class="pastel__icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="12" cy="12" r="4"/>
+              <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/>
+            </svg>
+          </div>
+          <div>
+            <div class="pastel__label">紫外线指数</div>
+            <div class="pastel__value">6 · 偏强</div>
+            <div class="pastel__hint">建议涂防晒</div>
+          </div>
+        </div>
+
+        <div class="pastel pastel--rise">
+          <div class="pastel__icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M17 18a5 5 0 0 0-10 0"/>
+              <line x1="12" y1="2" x2="12" y2="9"/>
+              <line x1="4.22" y1="10.22" x2="5.64" y2="11.64"/>
+              <line x1="1" y1="18" x2="3" y2="18"/>
+              <line x1="21" y1="18" x2="23" y2="18"/>
+              <line x1="18.36" y1="11.64" x2="19.78" y2="10.22"/>
+              <line x1="23" y1="22" x2="1" y2="22"/>
+              <polyline points="8 6 12 2 16 6"/>
+            </svg>
+          </div>
+          <div>
+            <div class="pastel__label">日出</div>
+            <div class="pastel__value">05:12</div>
+            <div class="pastel__hint">今天比昨天早 1 分</div>
+          </div>
+        </div>
+
+        <div class="pastel pastel--set">
+          <div class="pastel__icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M17 18a5 5 0 0 0-10 0"/>
+              <line x1="12" y1="9" x2="12" y2="2"/>
+              <line x1="4.22" y1="10.22" x2="5.64" y2="11.64"/>
+              <line x1="1" y1="18" x2="3" y2="18"/>
+              <line x1="21" y1="18" x2="23" y2="18"/>
+              <line x1="18.36" y1="11.64" x2="19.78" y2="10.22"/>
+              <line x1="23" y1="22" x2="1" y2="22"/>
+              <polyline points="16 5 12 9 8 5"/>
+            </svg>
+          </div>
+          <div>
+            <div class="pastel__label">日落</div>
+            <div class="pastel__value">19:24</div>
+            <div class="pastel__hint">日照 14 小时 12 分</div>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- BOTTOM : hourly forecast -->
+      <section class="wc-hourly">
+        <div class="wc-hourly__title">逐小时预报</div>
+        <div class="wc-hourly__list" id="hourlyList">
+          <!-- 8 hours, populated by JS -->
+        </div>
+      </section>
+
+    </article>
+
+    <p class="lab-sub" style="opacity:0.7;">
+      ※ 数据为静态展示，仅供 UI 设计参考
+    </p>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer__inner">
+      <div>&copy; <span data-year>2026</span> WYQ. All rights reserved.</div>
+      <ul class="footer__links">
+        <li><a href="index.html">主页</a></li>
+        <li><a href="post-006.html">文章</a></li>
+        <li><a href="archive.html">归档</a></li>
+        <li><a href="tags.html">分类</a></li>
+        <li><a href="lab.html">实验</a></li>
+        <li><a href="others.html">其他</a></li>
+        <li><a href="feed.xml">RSS</a></li>
+      </ul>
+    </div>
+  </footer>
+
+  <!-- DESKTOP SEARCH OVERLAY -->
+  <div class="nav-search__overlay" id="navSearchOverlay"></div>
+  <div class="nav-search" id="navSearchBox">
+    <div class="nav-search__inner">
+      <svg class="nav-search__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="11" cy="11" r="8"/>
+        <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+      </svg>
+      <input type="text" class="nav-search__input" id="navSearchInput" placeholder="搜索文章..." autocomplete="off" />
+    </div>
+    <div class="nav-search__results" id="navSearchResults">
+      <p class="nav-search__hint">输入关键词搜索文章...</p>
+    </div>
+  </div>
+
+  <script src="assets/js/view-transitions.js?v=1"></script>
+  <script src="assets/js/main.js?v=10"></script>
+  <script src="assets/js/posts-data.js?v=2"></script>
+  <script src="assets/js/search.js?v=3"></script>
+  <script src="assets/js/extras.js?v=5"></script>
+
+  <!-- ============================
+       WEATHER CARD : DATA + RENDER
+       ============================ -->
+  <script>
+  (function(){
+    // ---- date ----
+    var weekdays = ['星期日','星期一','星期二','星期三','星期四','星期五','星期六'];
+    var d = new Date();
+    var wd = document.getElementById('wcWeekday');
+    var dt = document.getElementById('wcDate');
+    if (wd) wd.textContent = weekdays[d.getDay()];
+    if (dt) dt.textContent = d.getFullYear() + ' 年 ' + (d.getMonth()+1) + ' 月 ' + d.getDate() + ' 日';
+
+    // ---- hourly mock data ----
+    // start from current hour
+    var startHour = d.getHours();
+    var conditions = [
+      { name: 'sun',    temp: 25 },
+      { name: 'sun',    temp: 27 },
+      { name: 'partly', temp: 28 },
+      { name: 'partly', temp: 29 },
+      { name: 'cloud',  temp: 28 },
+      { name: 'cloud',  temp: 26 },
+      { name: 'partly', temp: 24 },
+      { name: 'moon',   temp: 22 }
+    ];
+
+    function iconSvg(kind){
+      switch(kind){
+        case 'sun':
+          return '<svg viewBox="0 0 24 24" fill="none" stroke="#f5b34a" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">'
+               + '<circle cx="12" cy="12" r="4" fill="#ffe1a3" stroke="#f0a43c"/>'
+               + '<g opacity="0.85">'
+               + '<line x1="12" y1="3" x2="12" y2="5"/>'
+               + '<line x1="12" y1="19" x2="12" y2="21"/>'
+               + '<line x1="3" y1="12" x2="5" y2="12"/>'
+               + '<line x1="19" y1="12" x2="21" y2="12"/>'
+               + '<line x1="5.6" y1="5.6" x2="6.9" y2="6.9"/>'
+               + '<line x1="17.1" y1="17.1" x2="18.4" y2="18.4"/>'
+               + '<line x1="5.6" y1="18.4" x2="6.9" y2="17.1"/>'
+               + '<line x1="17.1" y1="6.9" x2="18.4" y2="5.6"/>'
+               + '</g></svg>';
+        case 'partly':
+          return '<svg viewBox="0 0 24 24" fill="none" stroke="#9bb1cf" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">'
+               + '<circle cx="9" cy="9" r="3" fill="#ffe1a3" stroke="#f0a43c"/>'
+               + '<path d="M9 17a4 4 0 0 1 0-8 4 4 0 0 1 3.7 2.5A3.5 3.5 0 1 1 16.5 17H9z" fill="#eef2f8" stroke="#b4c1d6"/>'
+               + '</svg>';
+        case 'cloud':
+          return '<svg viewBox="0 0 24 24" fill="none" stroke="#9bb1cf" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">'
+               + '<path d="M7 18a4 4 0 0 1 0-8 5 5 0 0 1 9.5 1.5A3.5 3.5 0 1 1 17.5 18H7z" fill="#eef2f8" stroke="#b4c1d6"/>'
+               + '</svg>';
+        case 'moon':
+          return '<svg viewBox="0 0 24 24" fill="none" stroke="#8a93b3" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">'
+               + '<path d="M21 12.8A8.5 8.5 0 1 1 11.2 3 6.6 6.6 0 0 0 21 12.8z" fill="#e8ebf5" stroke="#a4afcf"/>'
+               + '</svg>';
+      }
+      return '';
+    }
+
+    function pad2(n){ return n < 10 ? '0'+n : ''+n; }
+
+    var list = document.getElementById('hourlyList');
+    if (list) {
+      var html = '';
+      for (var i = 0; i < 8; i++) {
+        var h = (startHour + i) % 24;
+        var c = conditions[i];
+        var label = (i === 0) ? '现在' : pad2(h) + ':00';
+        var cls = 'hour' + (i === 0 ? ' hour--now' : '');
+        html += '<div class="' + cls + '">'
+              +   '<div class="hour__time">' + label + '</div>'
+              +   '<div class="hour__icon">' + iconSvg(c.name) + '</div>'
+              +   '<div class="hour__temp">' + c.temp + '°</div>'
+              + '</div>';
+      }
+      list.innerHTML = html;
+    }
+  })();
+  </script>
+
+</body>
+</html>
