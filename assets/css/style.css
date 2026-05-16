@@ -1712,8 +1712,20 @@ body.search-open {
   transition: opacity 0.2s ease, background-color 0.2s ease, color 0.2s ease;
 }
 .pre-wrapper:hover .copy-btn,
+.pre-wrapper:focus-within .copy-btn,
 .pre-wrapper .copy-btn.is-copied {
   opacity: 1;
+}
+
+/* Touch devices have no :hover — keep the button visible (slightly muted)
+   so users can actually tap it. Activated form on press still flashes to 1. */
+@media (hover: none) {
+  .pre-wrapper .copy-btn {
+    opacity: 0.85;
+  }
+  .pre-wrapper .copy-btn:active {
+    opacity: 1;
+  }
 }
 
 /* Quiz table copy cell */
@@ -2358,23 +2370,57 @@ body.search-open {
 
 /* ---------- Code language label + folding ---------- */
 .pre-wrapper { position: relative; }
+
+/* Language label sits at TOP-RIGHT, to the LEFT of the copy button.
+   Copy button is at top:10px right:10px (~46px wide), so leave 56px gap. */
 .code-lang-label {
   position: absolute;
-  top: 10px;
-  left: 14px;
-  font-size: 11px;
+  top: 12px;
+  right: 56px;
+  font-size: 10px;
   font-weight: 600;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--text-muted);
-  background: color-mix(in srgb, var(--bg-elev) 80%, transparent);
-  padding: 3px 8px;
-  border-radius: 6px;
+  background: color-mix(in srgb, var(--bg-elev) 85%, transparent);
+  padding: 2px 7px;
+  border-radius: 5px;
   pointer-events: none;
   border: 1px solid var(--line);
-  opacity: 0.85;
+  opacity: 0.6;
+  transition: opacity 0.2s ease;
+  z-index: 1;
+  /* Don't let long codepoint mappings stretch the label */
+  max-width: 40%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
-.pre-wrapper:hover .code-lang-label { opacity: 1; }
+.pre-wrapper:hover .code-lang-label,
+.pre-wrapper:focus-within .code-lang-label {
+  opacity: 0.95;
+}
+
+/* Ensure the FIRST LINE of code never disappears under the language label
+   or the copy button. The label/button together reserve ~32px vertical space.
+   line-numbers plugin adds its own gutter on the LEFT, which is unaffected. */
+.article .pre-wrapper > pre {
+  padding-top: 36px;
+}
+/* On narrow screens shrink the label and tighten label position */
+@media (max-width: 480px) {
+  .code-lang-label {
+    font-size: 9px;
+    padding: 1px 6px;
+    letter-spacing: 0.06em;
+    top: 10px;
+    right: 50px;
+    max-width: 50%;
+  }
+  .article .pre-wrapper > pre {
+    padding-top: 38px;
+  }
+}
 
 /* shift line numbers down a bit so language label doesn't overlap */
 .pre-wrapper--foldable.is-folded pre {
