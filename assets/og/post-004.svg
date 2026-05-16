@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0a0a1f"/>
+      <stop offset="0.6" stop-color="#0071e3"/>
+      <stop offset="1" stop-color="#2997ff"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0.15" cy="0.15" r="0.95">
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0.22"/>
+      <stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <rect width="1200" height="630" fill="url(#glow)"/>
+
+  <g transform="translate(80,80)">
+    <rect width="76" height="76" rx="16" fill="#ffffff" fill-opacity="0.95"/>
+    <text x="38" y="52" text-anchor="middle" font-family="-apple-system,SF Pro Display,Helvetica Neue,Helvetica,Arial,sans-serif" font-weight="800" font-size="30" fill="#0071e3">WYQ</text>
+  </g>
+  <text x="180" y="130" font-family="-apple-system,SF Pro Display,Helvetica Neue,Helvetica,Arial,sans-serif" font-weight="600" font-size="28" fill="#ffffff" fill-opacity="0.85">WYQ 专属博客</text>
+
+  <text x="80" y="270" font-family="-apple-system,SF Pro Display,Helvetica Neue,Helvetica,Arial,sans-serif" font-weight="500" font-size="32" fill="#ffffff" fill-opacity="0.7" letter-spacing="0.05em">N&#176; 04  &#183;  技 术</text>
+  <text x="80" y="380" font-family="-apple-system,SF Pro Display,Helvetica Neue,Helvetica,Arial,sans-serif" font-weight="700" font-size="76" fill="#ffffff" letter-spacing="-2">AI 大模型能力测试</text>
+  <text x="80" y="450" font-family="-apple-system,SF Pro Display,Helvetica Neue,Helvetica,Arial,sans-serif" font-weight="400" font-size="36" fill="#ffffff" fill-opacity="0.78">21 道数学与专业题实测</text>
+
+  <line x1="80" y1="525" x2="220" y2="525" stroke="#ffffff" stroke-width="3" stroke-opacity="0.7"/>
+  <text x="80" y="575" font-family="-apple-system,SF Pro Display,Helvetica Neue,Helvetica,Arial,sans-serif" font-weight="500" font-size="22" fill="#ffffff" fill-opacity="0.7">riuip.github.io/my-book</text>
+</svg>

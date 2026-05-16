@@ -1,0 +1,247 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>WYQ 博客 — 图片资源批量生成器</title>
+<style>
+  :root { color-scheme: light dark; }
+  body { font-family: -apple-system, "PingFang SC", "Microsoft YaHei", system-ui, sans-serif; max-width: 920px; margin: 40px auto; padding: 0 24px 80px; line-height: 1.6; }
+  h1 { font-size: 30px; letter-spacing: -0.022em; }
+  h2 { font-size: 20px; margin-top: 36px; border-bottom: 1px solid rgba(127,127,127,0.2); padding-bottom: 6px; }
+  .row { display: flex; flex-wrap: wrap; gap: 16px; margin: 16px 0; align-items: center; }
+  button { padding: 10px 18px; border-radius: 980px; border: 1px solid rgba(127,127,127,0.3); background: #0071e3; color: #fff; cursor: pointer; font-size: 14px; font-weight: 500; }
+  button.secondary { background: transparent; color: inherit; }
+  button:hover { opacity: 0.9; }
+  .preview-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 16px; }
+  .card { border: 1px solid rgba(127,127,127,0.2); border-radius: 12px; padding: 12px; }
+  .card img { width: 100%; height: auto; border-radius: 6px; background: #f0f0f0; }
+  .card .label { font-size: 12px; color: #6e6e73; margin-top: 8px; word-break: break-all; }
+  code { font-family: ui-monospace, "SF Mono", Menlo, monospace; background: rgba(127,127,127,0.12); padding: 2px 6px; border-radius: 4px; font-size: 13px; }
+  pre { background: rgba(127,127,127,0.10); padding: 14px; border-radius: 10px; overflow: auto; font-size: 13px; }
+  .hint { color: #6e6e73; font-size: 14px; }
+  .ok { color: #10b981; }
+  .err { color: #ef4444; }
+  .progress { font-size: 13px; color: #6e6e73; }
+  @media (prefers-color-scheme: dark) { body { background: #000; color: #f5f5f7; } }
+</style>
+</head>
+<body>
+
+<h1>WYQ 博客 — 图片资源批量生成器</h1>
+<p class="hint">
+  在浏览器里把 SVG 转成 PNG，一键下载全部 OG 图 + PWA 图标。<br/>
+  生成完后把 ZIP 解压到仓库根目录的 <code>assets/og/</code> 和 <code>assets/icons/</code> 即可。
+</p>
+
+<h2>1. 文章 OG 图 (1200×630)</h2>
+<p class="hint">用于微信、Twitter、Telegram 等社交分享卡片。</p>
+<div class="row">
+  <button id="ogAll">下载所有 OG 图 (PNG)</button>
+  <button id="ogZip" class="secondary">打包成 ZIP 下载</button>
+  <span class="progress" id="ogProgress"></span>
+</div>
+<div class="preview-grid" id="ogGrid"></div>
+
+<h2>2. PWA / Apple Touch 图标</h2>
+<p class="hint">192×192 / 512×512 (PWA) + 180×180 (apple-touch-icon)。</p>
+<div class="row">
+  <button id="iconAll">下载所有图标 (PNG)</button>
+  <button id="iconZip" class="secondary">打包成 ZIP 下载</button>
+  <span class="progress" id="iconProgress"></span>
+</div>
+<div class="preview-grid" id="iconGrid"></div>
+
+<h2>3. 用法说明</h2>
+<ol>
+  <li>点上方"下载所有...PNG" — 浏览器会逐个保存为 <code>post-XXX.png</code> 等。</li>
+  <li>把 OG PNG 放到仓库的 <code>assets/og/</code> (与现有 SVG 同名)。</li>
+  <li>把图标 PNG 放到仓库的 <code>assets/icons/</code>。</li>
+  <li>提交 + push，微信/Twitter 分享时会自动生效。</li>
+</ol>
+<p class="hint">提示：站点已经把 SVG 配为 og:image 的兜底；许多平台 (Twitter, Discord, Telegram) 直接支持 SVG。但微信、LinkedIn 较保守，建议生成 PNG 上传。</p>
+
+<!-- Embedded SVG sources (kept tiny) -->
+<div id="svgSources" hidden></div>
+
+<script>
+/* ===== Config ===== */
+const OG_FILES = [
+  { slug: 'default',   path: '../assets/og/default.svg' },
+  { slug: 'post-001',  path: '../assets/og/post-001.svg' },
+  { slug: 'post-002',  path: '../assets/og/post-002.svg' },
+  { slug: 'post-003',  path: '../assets/og/post-003.svg' },
+  { slug: 'post-004',  path: '../assets/og/post-004.svg' },
+  { slug: 'post-005',  path: '../assets/og/post-005.svg' },
+  { slug: 'post-006',  path: '../assets/og/post-006.svg' },
+];
+
+const ICON_DEFS = [
+  { name: 'icon-192.png',          size: 192 },
+  { name: 'icon-512.png',          size: 512 },
+  { name: 'apple-touch-icon.png',  size: 180 },
+  { name: 'icon-maskable-512.png', size: 512, maskable: true },
+];
+
+function makeIconSVG(size, maskable) {
+  const safeArea = maskable ? size * 0.7 : size; // maskable: keep content in central 70%
+  const padding = (size - safeArea) / 2;
+  const radius = maskable ? 0 : Math.round(size * 0.22);
+  const fontSize = Math.round(safeArea * 0.42);
+  const textY = Math.round(size / 2 + fontSize * 0.36);
+  return `<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${size} ${size}" width="${size}" height="${size}">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0a1d3a"/>
+      <stop offset="1" stop-color="#0071e3"/>
+    </linearGradient>
+  </defs>
+  <rect width="${size}" height="${size}" rx="${radius}" fill="url(#g)"/>
+  <text x="${size/2}" y="${textY}" text-anchor="middle"
+        font-family="-apple-system,SF Pro Display,Helvetica Neue,Helvetica,Arial,sans-serif"
+        font-weight="800" font-size="${fontSize}" fill="#ffffff">WYQ</text>
+</svg>`;
+}
+
+/* ===== Helpers ===== */
+function svgToPngBlob(svgText, w, h) {
+  return new Promise((resolve, reject) => {
+    const blob = new Blob([svgText], { type: 'image/svg+xml;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const img = new Image();
+    img.onload = () => {
+      const canvas = document.createElement('canvas');
+      canvas.width = w; canvas.height = h;
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(img, 0, 0, w, h);
+      URL.revokeObjectURL(url);
+      canvas.toBlob(b => b ? resolve(b) : reject(new Error('toBlob failed')), 'image/png');
+    };
+    img.onerror = (e) => { URL.revokeObjectURL(url); reject(e); };
+    img.src = url;
+  });
+}
+
+function downloadBlob(blob, name) {
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = name;
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
+
+async function fetchSvg(path) {
+  const r = await fetch(path);
+  if (!r.ok) throw new Error('fetch failed: ' + path);
+  return r.text();
+}
+
+/* ===== Render previews ===== */
+const ogGrid = document.getElementById('ogGrid');
+OG_FILES.forEach(f => {
+  const card = document.createElement('div');
+  card.className = 'card';
+  card.innerHTML = `<img src="${f.path}" alt="${f.slug}" loading="lazy"/><div class="label">${f.slug}.png (1200×630)</div>`;
+  ogGrid.appendChild(card);
+});
+
+const iconGrid = document.getElementById('iconGrid');
+ICON_DEFS.forEach(def => {
+  const svg = makeIconSVG(def.size, def.maskable);
+  const blob = new Blob([svg], { type: 'image/svg+xml' });
+  const url = URL.createObjectURL(blob);
+  const card = document.createElement('div');
+  card.className = 'card';
+  card.innerHTML = `<img src="${url}" alt="${def.name}" style="max-height:160px;"/><div class="label">${def.name} (${def.size}×${def.size})${def.maskable?' · maskable':''}</div>`;
+  iconGrid.appendChild(card);
+});
+
+/* ===== Action: download OG PNGs individually ===== */
+document.getElementById('ogAll').addEventListener('click', async () => {
+  const prog = document.getElementById('ogProgress');
+  for (let i = 0; i < OG_FILES.length; i++) {
+    const f = OG_FILES[i];
+    prog.textContent = `生成中 ${i+1}/${OG_FILES.length} — ${f.slug}.png`;
+    try {
+      const svg = await fetchSvg(f.path);
+      const blob = await svgToPngBlob(svg, 1200, 630);
+      downloadBlob(blob, f.slug + '.png');
+    } catch (e) {
+      console.error(e);
+      prog.innerHTML = `<span class="err">失败: ${f.slug}</span>`;
+      return;
+    }
+    await new Promise(r => setTimeout(r, 250));
+  }
+  prog.innerHTML = `<span class="ok">完成。请把 PNG 放进 assets/og/</span>`;
+});
+
+/* ===== Action: download icons individually ===== */
+document.getElementById('iconAll').addEventListener('click', async () => {
+  const prog = document.getElementById('iconProgress');
+  for (let i = 0; i < ICON_DEFS.length; i++) {
+    const def = ICON_DEFS[i];
+    prog.textContent = `生成中 ${i+1}/${ICON_DEFS.length} — ${def.name}`;
+    try {
+      const svg = makeIconSVG(def.size, def.maskable);
+      const blob = await svgToPngBlob(svg, def.size, def.size);
+      downloadBlob(blob, def.name);
+    } catch (e) {
+      console.error(e);
+      prog.innerHTML = `<span class="err">失败: ${def.name}</span>`;
+      return;
+    }
+    await new Promise(r => setTimeout(r, 250));
+  }
+  prog.innerHTML = `<span class="ok">完成。请把 PNG 放进 assets/icons/</span>`;
+});
+
+/* ===== Action: ZIP downloads (using JSZip from CDN) ===== */
+async function ensureJSZip() {
+  if (window.JSZip) return window.JSZip;
+  await new Promise((res, rej) => {
+    const s = document.createElement('script');
+    s.src = 'https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js';
+    s.onload = res; s.onerror = rej;
+    document.head.appendChild(s);
+  });
+  return window.JSZip;
+}
+
+document.getElementById('ogZip').addEventListener('click', async () => {
+  const prog = document.getElementById('ogProgress');
+  prog.textContent = '加载 JSZip...';
+  const JSZip = await ensureJSZip();
+  const zip = new JSZip();
+  for (let i = 0; i < OG_FILES.length; i++) {
+    const f = OG_FILES[i];
+    prog.textContent = `打包 ${i+1}/${OG_FILES.length} — ${f.slug}.png`;
+    const svg = await fetchSvg(f.path);
+    const blob = await svgToPngBlob(svg, 1200, 630);
+    zip.file(`og/${f.slug}.png`, blob);
+  }
+  const out = await zip.generateAsync({ type: 'blob' });
+  downloadBlob(out, 'wyq-og-images.zip');
+  prog.innerHTML = `<span class="ok">已生成 ZIP。解压后放到 assets/og/</span>`;
+});
+
+document.getElementById('iconZip').addEventListener('click', async () => {
+  const prog = document.getElementById('iconProgress');
+  prog.textContent = '加载 JSZip...';
+  const JSZip = await ensureJSZip();
+  const zip = new JSZip();
+  for (let i = 0; i < ICON_DEFS.length; i++) {
+    const def = ICON_DEFS[i];
+    prog.textContent = `打包 ${i+1}/${ICON_DEFS.length} — ${def.name}`;
+    const svg = makeIconSVG(def.size, def.maskable);
+    const blob = await svgToPngBlob(svg, def.size, def.size);
+    zip.file(`icons/${def.name}`, blob);
+  }
+  const out = await zip.generateAsync({ type: 'blob' });
+  downloadBlob(out, 'wyq-icons.zip');
+  prog.innerHTML = `<span class="ok">已生成 ZIP。解压后放到 assets/icons/</span>`;
+});
+</script>
+</body>
+</html>

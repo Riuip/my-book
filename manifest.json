@@ -11,16 +11,28 @@
   "lang": "zh-CN",
   "icons": [
     {
-      "src": "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect width='192' height='192' rx='42' fill='%230071e3'/><text x='50%' y='62%' text-anchor='middle' font-family='-apple-system,system-ui,sans-serif' font-weight='700' font-size='84' fill='white'>WYQ</text></svg>",
+      "src": "assets/icons/icon-192.png",
       "sizes": "192x192",
-      "type": "image/svg+xml",
+      "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><rect width='512' height='512' rx='112' fill='%230071e3'/><text x='50%' y='62%' text-anchor='middle' font-family='-apple-system,system-ui,sans-serif' font-weight='700' font-size='220' fill='white'>WYQ</text></svg>",
+      "src": "assets/icons/icon-512.png",
       "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "assets/icons/icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><rect width='512' height='512' rx='112' fill='%230071e3'/><text x='50%' y='62%' text-anchor='middle' font-family='-apple-system,system-ui,sans-serif' font-weight='700' font-size='220' fill='white'>WYQ</text></svg>",
+      "sizes": "any",
       "type": "image/svg+xml",
-      "purpose": "any maskable"
+      "purpose": "any"
     }
   ]
 }
