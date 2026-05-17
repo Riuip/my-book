@@ -5,7 +5,7 @@
    ========================================================= */
 'use strict';
 
-var VERSION = 'wyq-v2-2026-05-15';
+var VERSION = 'wyq-v3-2026-05-17';
 var CORE = [
   './',
   './index.html',
@@ -17,7 +17,13 @@ var CORE = [
   './assets/js/extras.js',
   './assets/js/search.js',
   './assets/js/copy-btn.js',
-  './assets/js/view-transitions.js'
+  './assets/js/view-transitions.js',
+  './lab.html',
+  './dna.html',
+  './share.html',
+  './gradient.html',
+  './pomodoro.html',
+  './md-card.html'
 ];
 
 self.addEventListener('install', function (e) {

@@ -1,0 +1,833 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="view-transition" content="same-origin" />
+  <title>CSS 渐变实验室 — WYQ 专属博客</title>
+  <meta name="description" content="WYQ 的 CSS 渐变实验室 - 在浏览器里实时调试线性 / 径向 / 锥形渐变，一键复制代码。" />
+  <meta name="theme-color" content="#fbfbfd" media="(prefers-color-scheme: light)" />
+  <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)" />
+  <link rel="stylesheet" href="assets/css/style.css?v=21" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230071e3'/%3E%3Ctext x='50%25' y='62%25' text-anchor='middle' font-family='-apple-system,system-ui,sans-serif' font-weight='700' font-size='14' fill='white'%3EWYQ%3C/text%3E%3C/svg%3E" />
+  <script>
+    (function(){try{var t=localStorage.getItem('wyq-theme');if(t!=='light'&&t!=='dark'){t=window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';}document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
+  </script>
+  <link rel="canonical" href="https://riuip.github.io/my-book/gradient.html" />
+
+  <style>
+    /* ---- page wrapper ---- */
+    .grad-stage {
+      min-height: calc(100vh - 64px - 80px);
+      padding: 80px 24px 64px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 28px;
+      background: transparent;
+    }
+    .grad-head { max-width: 1100px; width: 100%; text-align: center; }
+    .grad-eyebrow {
+      display: inline-block;
+      font-size: 12px;
+      letter-spacing: 0.18em;
+      color: #8a8f9a;
+      text-transform: uppercase;
+      padding: 6px 14px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.7);
+      border: 1px solid rgba(0, 0, 0, 0.06);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+    .grad-title {
+      margin: 14px 0 6px;
+      font-size: clamp(28px, 4vw, 40px);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: #1d1d1f;
+    }
+    .grad-sub { margin: 0; color: #6e7280; font-size: 15px; }
+
+    /* ---- main split ---- */
+    .grad-wrap {
+      width: 100%;
+      max-width: 1100px;
+      display: grid;
+      grid-template-columns: 1.15fr 1fr;
+      gap: 22px;
+    }
+
+    /* ---- preview ---- */
+    .grad-preview {
+      border-radius: 28px;
+      min-height: 480px;
+      border: 1px solid rgba(255, 255, 255, 0.7);
+      box-shadow:
+        0 1px 0 rgba(255, 255, 255, 0.9) inset,
+        0 30px 60px -20px rgba(80, 100, 140, 0.18),
+        0 8px 24px -8px rgba(80, 100, 140, 0.08);
+      transition: background 0.25s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    .grad-preview__inner {
+      position: absolute;
+      inset: 0;
+    }
+    .grad-preview__sample {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      padding: 14px 22px;
+      border-radius: 16px;
+      font-size: 13px;
+      letter-spacing: 0.02em;
+      color: #1d1d1f;
+      border: 1px solid rgba(255, 255, 255, 0.6);
+      box-shadow: 0 8px 24px -10px rgba(0, 0, 0, 0.18);
+      pointer-events: none;
+    }
+
+    /* ---- panel ---- */
+    .grad-panel {
+      background: rgba(255, 255, 255, 0.65);
+      backdrop-filter: blur(28px) saturate(140%);
+      -webkit-backdrop-filter: blur(28px) saturate(140%);
+      border: 1px solid rgba(255, 255, 255, 0.8);
+      border-radius: 28px;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      box-shadow:
+        0 1px 0 rgba(255, 255, 255, 0.9) inset,
+        0 30px 60px -20px rgba(80, 100, 140, 0.18);
+    }
+    .grad-section { display: flex; flex-direction: column; gap: 10px; }
+    .grad-section__label {
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      color: #8a8f9a;
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+
+    /* segmented */
+    .seg {
+      display: inline-flex;
+      background: #f4f6fa;
+      border: 1px solid #e6eaf2;
+      border-radius: 12px;
+      padding: 3px;
+      gap: 2px;
+    }
+    .seg button {
+      flex: 1;
+      padding: 7px 12px;
+      font-size: 13px;
+      font-weight: 500;
+      border-radius: 9px;
+      color: #4b5563;
+      background: transparent;
+      transition: background 0.15s ease, color 0.15s ease;
+    }
+    .seg button.is-active {
+      background: #ffffff;
+      color: #1d1d1f;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+    }
+
+    /* slider row */
+    .slider-row {
+      display: grid;
+      grid-template-columns: auto 1fr 56px;
+      align-items: center;
+      gap: 12px;
+    }
+    .slider-row__name { font-size: 13px; color: #4b5563; }
+    .slider-row__val {
+      font-size: 12px;
+      color: #1d1d1f;
+      background: #f4f6fa;
+      border: 1px solid #e6eaf2;
+      border-radius: 8px;
+      padding: 4px 6px;
+      text-align: center;
+      font-variant-numeric: tabular-nums;
+    }
+    input[type=range].grad-range {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 100%;
+      height: 4px;
+      background: linear-gradient(to right, #c7d2e6, #c7d2e6);
+      border-radius: 2px;
+      outline: none;
+    }
+    input[type=range].grad-range::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 18px; height: 18px; border-radius: 50%;
+      background: #ffffff;
+      border: 1px solid #cdd5e3;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.12);
+      cursor: pointer;
+    }
+    input[type=range].grad-range::-moz-range-thumb {
+      width: 18px; height: 18px; border-radius: 50%;
+      background: #ffffff;
+      border: 1px solid #cdd5e3;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.12);
+      cursor: pointer;
+    }
+
+    /* stops */
+    .stops { display: flex; flex-direction: column; gap: 8px; }
+    .stop {
+      display: grid;
+      grid-template-columns: 36px 1fr 60px 28px;
+      align-items: center;
+      gap: 10px;
+      padding: 8px;
+      background: #f7f9fc;
+      border: 1px solid #e6eaf2;
+      border-radius: 12px;
+    }
+    .stop__color {
+      width: 36px; height: 36px;
+      border-radius: 10px;
+      border: 1px solid rgba(0,0,0,0.1);
+      cursor: pointer;
+      padding: 0;
+      overflow: hidden;
+      position: relative;
+    }
+    .stop__color input[type=color] {
+      position: absolute;
+      inset: -4px;
+      width: calc(100% + 8px);
+      height: calc(100% + 8px);
+      border: none;
+      cursor: pointer;
+      padding: 0;
+      background: none;
+    }
+    .stop__pos {
+      font-size: 12px;
+      color: #1d1d1f;
+      font-variant-numeric: tabular-nums;
+      background: #ffffff;
+      border: 1px solid #e6eaf2;
+      border-radius: 8px;
+      padding: 5px;
+      text-align: center;
+    }
+    .stop__del {
+      width: 28px; height: 28px;
+      border-radius: 8px;
+      background: #ffffff;
+      border: 1px solid #e6eaf2;
+      color: #8a8f9a;
+      display: grid;
+      place-items: center;
+      transition: background 0.15s ease, color 0.15s ease;
+    }
+    .stop__del:hover { background: #fff0f0; color: #d9534f; }
+    .stop__del:disabled { opacity: 0.35; cursor: not-allowed; }
+    .stop__del svg { width: 14px; height: 14px; }
+
+    .grad-add {
+      align-self: flex-start;
+      font-size: 13px;
+      padding: 8px 14px;
+      background: #ffffff;
+      border: 1px solid #e6eaf2;
+      border-radius: 999px;
+      color: #1d1d1f;
+      transition: background 0.15s ease;
+    }
+    .grad-add:hover { background: #f4f6fa; }
+
+    /* presets */
+    .presets {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+      gap: 8px;
+    }
+    .preset {
+      height: 56px;
+      border-radius: 12px;
+      border: 1px solid rgba(0,0,0,0.06);
+      cursor: pointer;
+      transition: transform 0.2s ease;
+      padding: 0;
+    }
+    .preset:hover { transform: translateY(-2px); }
+
+    /* code */
+    .grad-code {
+      background: #1d1d1f;
+      color: #f5f5f7;
+      border-radius: 14px;
+      padding: 16px 18px;
+      font-family: ui-monospace, SF Mono, Menlo, Consolas, monospace;
+      font-size: 13px;
+      line-height: 1.55;
+      white-space: pre-wrap;
+      word-break: break-all;
+      letter-spacing: 0.01em;
+    }
+    .grad-actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .grad-btn {
+      font-size: 13px;
+      padding: 9px 16px;
+      border-radius: 999px;
+      background: #1d1d1f;
+      color: #ffffff;
+      transition: background 0.15s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .grad-btn:hover { background: #000000; }
+    .grad-btn--ghost {
+      background: #ffffff;
+      color: #1d1d1f;
+      border: 1px solid #e6eaf2;
+    }
+    .grad-btn--ghost:hover { background: #f4f6fa; }
+    .grad-btn svg { width: 14px; height: 14px; }
+    .grad-toast {
+      position: fixed;
+      bottom: 32px;
+      left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      background: #1d1d1f;
+      color: #fff;
+      font-size: 13px;
+      padding: 10px 18px;
+      border-radius: 999px;
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.25s ease;
+      z-index: 1000;
+    }
+    .grad-toast.is-show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    @media (max-width: 880px) {
+      .grad-wrap { grid-template-columns: 1fr; }
+      .grad-preview { min-height: 320px; }
+    }
+    @media (max-width: 560px) {
+      .grad-stage { padding: 64px 14px 48px; }
+      .grad-panel { padding: 18px; border-radius: 22px; }
+    }
+
+    [data-theme="dark"] .grad-title { color: #f5f5f7; }
+    [data-theme="dark"] .grad-eyebrow {
+      background: rgba(30, 32, 38, 0.6);
+      border-color: rgba(255, 255, 255, 0.08);
+      color: #b0b3bb;
+    }
+    [data-theme="dark"] .grad-panel {
+      background: rgba(28, 30, 36, 0.65);
+      border-color: rgba(255, 255, 255, 0.08);
+    }
+    [data-theme="dark"] .seg { background: #1f2128; border-color: #2a2d36; }
+    [data-theme="dark"] .seg button { color: #b0b3bb; }
+    [data-theme="dark"] .seg button.is-active { background: #2a2d36; color: #f5f5f7; }
+    [data-theme="dark"] .slider-row__name { color: #b0b3bb; }
+    [data-theme="dark"] .slider-row__val,
+    [data-theme="dark"] .stop,
+    [data-theme="dark"] .stop__pos,
+    [data-theme="dark"] .stop__del,
+    [data-theme="dark"] .grad-add,
+    [data-theme="dark"] .grad-btn--ghost {
+      background: #1f2128; border-color: #2a2d36; color: #f5f5f7;
+    }
+    [data-theme="dark"] .grad-add:hover,
+    [data-theme="dark"] .grad-btn--ghost:hover { background: #2a2d36; }
+    [data-theme="dark"] .grad-preview__sample {
+      background: rgba(28,30,36,0.85);
+      color: #f5f5f7;
+      border-color: rgba(255,255,255,0.08);
+    }
+  </style>
+</head>
+<body class="page-enter">
+
+  <div class="aurora" aria-hidden="true"></div>
+  <nav class="nav">
+    <div class="nav__inner">
+      <a class="nav__brand" href="index.html">
+        <span class="dot"></span>
+        <span>WYQ</span>
+      </a>
+      <ul class="nav__menu">
+        <li class="nav__has-sub">
+          <button class="nav__sub-toggle" data-nav-sub-toggle type="button">
+            <span>文章</span>
+            <svg class="nav__sub-toggle__chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <polyline points="6 9 12 15 18 9"/>
+            </svg>
+          </button>
+          <div class="nav__submenu" role="menu">
+            <a href="post-006.html" role="menuitem">
+              <svg class="nav__submenu__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="15" y2="17"/></svg>
+              <span>最新文章</span>
+            </a>
+            <a href="archive.html" role="menuitem">
+              <svg class="nav__submenu__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><polyline points="21 8 21 21 3 21 3 8"/><rect x="1" y="3" width="22" height="5"/><line x1="10" y1="12" x2="14" y2="12"/></svg>
+              <span>归档</span>
+            </a>
+            <a href="tags.html" role="menuitem">
+              <svg class="nav__submenu__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
+              <span>按分类</span>
+            </a>
+            <div class="nav__submenu__sep"></div>
+            <a href="feed.xml" role="menuitem">
+              <svg class="nav__submenu__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11a9 9 0 0 1 9 9"/><path d="M4 4a16 16 0 0 1 16 16"/><circle cx="5" cy="19" r="1"/></svg>
+              <span>RSS 订阅</span>
+            </a>
+          </div>
+        </li>
+        <li class="nav__has-sub">
+          <button class="nav__sub-toggle" data-nav-sub-toggle type="button">
+            <span>实验</span>
+            <svg class="nav__sub-toggle__chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <polyline points="6 9 12 15 18 9"/>
+            </svg>
+          </button>
+          <div class="nav__submenu" role="menu">
+            <a href="lab.html" role="menuitem">
+              <svg class="nav__submenu__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8" cy="9" r="3"/><path d="M16.5 17a3.5 3.5 0 0 0 0-7 4.5 4.5 0 0 0-8.5 0"/></svg>
+              <span>天气卡片</span>
+            </a>
+            <a href="dna.html" role="menuitem">
+              <svg class="nav__submenu__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 3c0 6 16 12 16 18"/><path d="M20 3c0 6-16 12-16 18"/><line x1="6" y1="7" x2="18" y2="7"/><line x1="6" y1="17" x2="18" y2="17"/></svg>
+              <span>博客 DNA</span>
+            </a>
+            <a href="share.html" role="menuitem">
+              <svg class="nav__submenu__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+              <span>分享</span>
+            </a>
+            <div class="nav__submenu__sep"></div>
+            <a href="gradient.html" role="menuitem" aria-current="page">
+              <svg class="nav__submenu__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3a14.5 14.5 0 0 1 0 18"/></svg>
+              <span>渐变实验室</span>
+            </a>
+            <a href="pomodoro.html" role="menuitem">
+              <svg class="nav__submenu__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="13" r="8"/><path d="M9 2h6"/><path d="M12 8v5l3 2"/></svg>
+              <span>极简番茄钟</span>
+            </a>
+            <a href="md-card.html" role="menuitem">
+              <svg class="nav__submenu__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M7 9l2 4 2-2 2 2 2-4"/></svg>
+              <span>Markdown 卡片</span>
+            </a>
+          </div>
+        </li>
+        <li><a href="index.html#about">关于</a></li>
+        <li>
+          <button class="nav__search-btn" id="navSearchBtn" aria-label="搜索文章">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="7"/>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+            </svg>
+          </button>
+        </li>
+        <li>
+          <button class="nav__theme" data-theme-toggle aria-label="切换主题">
+            <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+            </svg>
+            <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="4"/>
+              <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/>
+            </svg>
+          </button>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <main class="grad-stage">
+
+    <div class="grad-head">
+      <span class="grad-eyebrow">Lab · 实验项目 04</span>
+      <h1 class="grad-title">CSS 渐变实验室</h1>
+      <p class="grad-sub">线性 · 径向 · 锥形 — 实时调试，一键复制 CSS</p>
+    </div>
+
+    <div class="grad-wrap">
+
+      <!-- LEFT: live preview -->
+      <div class="grad-preview" id="gradPreview">
+        <div class="grad-preview__inner" id="gradInner"></div>
+        <div class="grad-preview__sample" id="gradSample">Aa · 预览文字</div>
+      </div>
+
+      <!-- RIGHT: control panel -->
+      <div class="grad-panel">
+
+        <div class="grad-section">
+          <span class="grad-section__label">渐变类型</span>
+          <div class="seg" id="gradType">
+            <button data-type="linear" class="is-active">线性</button>
+            <button data-type="radial">径向</button>
+            <button data-type="conic">锥形</button>
+          </div>
+        </div>
+
+        <div class="grad-section" id="angleSection">
+          <span class="grad-section__label">角度</span>
+          <div class="slider-row">
+            <span class="slider-row__name">deg</span>
+            <input type="range" class="grad-range" id="gradAngle" min="0" max="360" value="135" />
+            <span class="slider-row__val" id="gradAngleVal">135°</span>
+          </div>
+        </div>
+
+        <div class="grad-section" id="radialSection" hidden>
+          <span class="grad-section__label">形状 / 中心</span>
+          <div class="seg" id="radialShape">
+            <button data-shape="ellipse" class="is-active">椭圆</button>
+            <button data-shape="circle">圆形</button>
+          </div>
+          <div class="slider-row" style="margin-top:8px;">
+            <span class="slider-row__name">X</span>
+            <input type="range" class="grad-range" id="gradPosX" min="0" max="100" value="50" />
+            <span class="slider-row__val" id="gradPosXVal">50%</span>
+          </div>
+          <div class="slider-row">
+            <span class="slider-row__name">Y</span>
+            <input type="range" class="grad-range" id="gradPosY" min="0" max="100" value="50" />
+            <span class="slider-row__val" id="gradPosYVal">50%</span>
+          </div>
+        </div>
+
+        <div class="grad-section">
+          <span class="grad-section__label">色标 (Color Stops)</span>
+          <div class="stops" id="gradStops"></div>
+          <button class="grad-add" id="gradAddStop">+ 添加色标</button>
+        </div>
+
+        <div class="grad-section">
+          <span class="grad-section__label">预设</span>
+          <div class="presets" id="gradPresets"></div>
+        </div>
+
+        <div class="grad-section">
+          <span class="grad-section__label">CSS 代码</span>
+          <pre class="grad-code" id="gradCode">background: ;</pre>
+          <div class="grad-actions">
+            <button class="grad-btn" id="copyCode">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+              复制 CSS
+            </button>
+            <button class="grad-btn grad-btn--ghost" id="copyValue">仅渐变值</button>
+            <button class="grad-btn grad-btn--ghost" id="randomGrad">🎲 随机</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <p class="grad-sub" style="opacity:0.7;">
+      ※ 所有计算在浏览器内完成 · 无网络请求
+    </p>
+
+  </main>
+
+  <div class="grad-toast" id="gradToast">已复制</div>
+
+  <footer class="footer">
+    <div class="footer__inner">
+      <div>&copy; <span data-year>2026</span> WYQ. All rights reserved.</div>
+      <ul class="footer__links">
+        <li><a href="index.html">主页</a></li>
+        <li><a href="post-006.html">文章</a></li>
+        <li><a href="archive.html">归档</a></li>
+        <li><a href="tags.html">分类</a></li>
+        <li><a href="lab.html">实验</a></li>
+        <li><a href="others.html">其他</a></li>
+        <li><a href="feed.xml">RSS</a></li>
+      </ul>
+    </div>
+  </footer>
+
+  <div class="nav-search__overlay" id="navSearchOverlay"></div>
+  <div class="nav-search" id="navSearchBox">
+    <div class="nav-search__inner">
+      <svg class="nav-search__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="11" cy="11" r="8"/>
+        <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+      </svg>
+      <input type="text" class="nav-search__input" id="navSearchInput" placeholder="搜索文章..." autocomplete="off" />
+    </div>
+    <div class="nav-search__results" id="navSearchResults">
+      <p class="nav-search__hint">输入关键词搜索文章...</p>
+    </div>
+  </div>
+
+  <script src="assets/js/view-transitions.js?v=1"></script>
+  <script src="assets/js/main.js?v=10"></script>
+  <script src="assets/js/posts-data.js?v=2"></script>
+  <script src="assets/js/search.js?v=3"></script>
+  <script src="assets/js/extras.js?v=5"></script>
+
+  <script>
+  (function(){
+    'use strict';
+
+    var state = {
+      type: 'linear',
+      angle: 135,
+      shape: 'ellipse',
+      posX: 50,
+      posY: 50,
+      stops: [
+        { color: '#ffd1ff', pos: 0 },
+        { color: '#fad0c4', pos: 50 },
+        { color: '#a1c4fd', pos: 100 }
+      ]
+    };
+
+    var PRESETS = [
+      { name: '日出',     type: 'linear', angle: 135, stops: [{ color:'#ff9a9e', pos:0 }, { color:'#fad0c4', pos:100 }] },
+      { name: '海风',     type: 'linear', angle: 120, stops: [{ color:'#a1c4fd', pos:0 }, { color:'#c2e9fb', pos:100 }] },
+      { name: '紫雾',     type: 'linear', angle: 135, stops: [{ color:'#667eea', pos:0 }, { color:'#764ba2', pos:100 }] },
+      { name: '柠檬',     type: 'linear', angle: 90,  stops: [{ color:'#fbc2eb', pos:0 }, { color:'#a6c1ee', pos:100 }] },
+      { name: '极光',     type: 'linear', angle: 135, stops: [{ color:'#84fab0', pos:0 }, { color:'#8fd3f4', pos:100 }] },
+      { name: '桃花',     type: 'linear', angle: 135, stops: [{ color:'#ffecd2', pos:0 }, { color:'#fcb69f', pos:100 }] },
+      { name: '日落',     type: 'linear', angle: 200, stops: [{ color:'#ff5858', pos:0 }, { color:'#f09819', pos:100 }] },
+      { name: '深海',     type: 'linear', angle: 160, stops: [{ color:'#0f2027', pos:0 }, { color:'#203a43', pos:50 }, { color:'#2c5364', pos:100 }] },
+      { name: '聚光',     type: 'radial', shape: 'circle', posX: 50, posY: 50, stops: [{ color:'#ffffff', pos:0 }, { color:'#a1c4fd', pos:100 }] },
+      { name: '彩虹',     type: 'conic', angle: 0, stops: [{ color:'#ff6b6b', pos:0 }, { color:'#ffd93d', pos:25 }, { color:'#6bcb77', pos:50 }, { color:'#4d96ff', pos:75 }, { color:'#ff6b6b', pos:100 }] }
+    ];
+
+    function $(id){ return document.getElementById(id); }
+
+    function buildGradient(s){
+      var stops = s.stops.slice().sort(function(a,b){ return a.pos - b.pos; });
+      var stopStr = stops.map(function(st){ return st.color + ' ' + st.pos + '%'; }).join(', ');
+      if (s.type === 'linear') {
+        return 'linear-gradient(' + s.angle + 'deg, ' + stopStr + ')';
+      }
+      if (s.type === 'radial') {
+        return 'radial-gradient(' + s.shape + ' at ' + s.posX + '% ' + s.posY + '%, ' + stopStr + ')';
+      }
+      // conic
+      return 'conic-gradient(from ' + s.angle + 'deg at ' + s.posX + '% ' + s.posY + '%, ' + stopStr + ')';
+    }
+
+    function render(){
+      var grad = buildGradient(state);
+      $('gradInner').style.background = grad;
+      $('gradCode').textContent = 'background: ' + grad + ';';
+
+      // angle / radial sections visibility
+      $('angleSection').hidden = (state.type === 'radial');
+      $('radialSection').hidden = (state.type === 'linear');
+      // conic uses angle + position; toggle individual rows
+      if (state.type === 'conic') {
+        $('angleSection').hidden = false;
+        $('radialSection').hidden = false;
+      }
+
+      // value labels
+      $('gradAngleVal').textContent = state.angle + '°';
+      $('gradAngle').value = state.angle;
+      $('gradPosXVal').textContent = state.posX + '%';
+      $('gradPosX').value = state.posX;
+      $('gradPosYVal').textContent = state.posY + '%';
+      $('gradPosY').value = state.posY;
+
+      // type seg
+      Array.prototype.forEach.call(document.querySelectorAll('#gradType button'), function(b){
+        b.classList.toggle('is-active', b.dataset.type === state.type);
+      });
+      Array.prototype.forEach.call(document.querySelectorAll('#radialShape button'), function(b){
+        b.classList.toggle('is-active', b.dataset.shape === state.shape);
+      });
+
+      renderStops();
+    }
+
+    function renderStops(){
+      var html = '';
+      state.stops.forEach(function(st, i){
+        html += '<div class="stop" data-i="' + i + '">' +
+          '<div class="stop__color" style="background:' + st.color + '">' +
+            '<input type="color" data-i="' + i + '" value="' + st.color + '" />' +
+          '</div>' +
+          '<input type="range" class="grad-range" data-pos="' + i + '" min="0" max="100" value="' + st.pos + '" />' +
+          '<input type="text" class="stop__pos" data-text="' + i + '" value="' + st.pos + '%" />' +
+          '<button class="stop__del" data-del="' + i + '" ' + (state.stops.length <= 2 ? 'disabled' : '') + ' aria-label="删除">' +
+            '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>' +
+          '</button>' +
+        '</div>';
+      });
+      $('gradStops').innerHTML = html;
+    }
+
+    function renderPresets(){
+      var html = '';
+      PRESETS.forEach(function(p, i){
+        html += '<button class="preset" data-pi="' + i + '" title="' + p.name + '" style="background:' + buildGradient(Object.assign({ angle: p.angle || 135, shape: p.shape || 'ellipse', posX: p.posX || 50, posY: p.posY || 50 }, p)) + '"></button>';
+      });
+      $('gradPresets').innerHTML = html;
+    }
+
+    function showToast(msg){
+      var t = $('gradToast');
+      t.textContent = msg || '已复制';
+      t.classList.add('is-show');
+      clearTimeout(t._timer);
+      t._timer = setTimeout(function(){ t.classList.remove('is-show'); }, 1400);
+    }
+
+    function copyText(text, label){
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(function(){ showToast(label || '已复制'); });
+        return;
+      }
+      var ta = document.createElement('textarea');
+      ta.value = text;
+      ta.style.position = 'fixed';
+      ta.style.opacity = '0';
+      document.body.appendChild(ta);
+      ta.select();
+      try { document.execCommand('copy'); showToast(label || '已复制'); } catch(e){}
+      document.body.removeChild(ta);
+    }
+
+    function randomColor(){
+      var h = Math.floor(Math.random() * 360);
+      var s = 65 + Math.floor(Math.random() * 25);
+      var l = 60 + Math.floor(Math.random() * 20);
+      return hslToHex(h, s, l);
+    }
+    function hslToHex(h, s, l){
+      s /= 100; l /= 100;
+      var k = function(n){ return (n + h / 30) % 12; };
+      var a = s * Math.min(l, 1 - l);
+      var f = function(n){
+        var c = l - a * Math.max(-1, Math.min(k(n) - 3, Math.min(9 - k(n), 1)));
+        return Math.round(255 * c).toString(16).padStart(2, '0');
+      };
+      return '#' + f(0) + f(8) + f(4);
+    }
+
+    // ---- bindings ----
+    document.getElementById('gradType').addEventListener('click', function(e){
+      var b = e.target.closest('button[data-type]');
+      if (!b) return;
+      state.type = b.dataset.type;
+      render();
+    });
+    document.getElementById('radialShape').addEventListener('click', function(e){
+      var b = e.target.closest('button[data-shape]');
+      if (!b) return;
+      state.shape = b.dataset.shape;
+      render();
+    });
+    $('gradAngle').addEventListener('input', function(){ state.angle = +this.value; render(); });
+    $('gradPosX').addEventListener('input', function(){ state.posX = +this.value; render(); });
+    $('gradPosY').addEventListener('input', function(){ state.posY = +this.value; render(); });
+
+    $('gradStops').addEventListener('input', function(e){
+      var t = e.target;
+      if (t.matches('input[type=color]')) {
+        var i = +t.dataset.i;
+        if (state.stops[i]) state.stops[i].color = t.value;
+        render();
+      } else if (t.matches('input[type=range][data-pos]')) {
+        var j = +t.dataset.pos;
+        if (state.stops[j]) {
+          state.stops[j].pos = +t.value;
+          $('gradInner').style.background = buildGradient(state);
+          $('gradCode').textContent = 'background: ' + buildGradient(state) + ';';
+          var posInput = $('gradStops').querySelector('input[data-text="' + j + '"]');
+          if (posInput) posInput.value = t.value + '%';
+        }
+      }
+    });
+    $('gradStops').addEventListener('change', function(e){
+      if (e.target.matches('input[data-text]')) {
+        var i = +e.target.dataset.text;
+        var v = parseInt(e.target.value, 10);
+        if (!isNaN(v) && state.stops[i]) {
+          state.stops[i].pos = Math.max(0, Math.min(100, v));
+          render();
+        } else if (state.stops[i]) {
+          e.target.value = state.stops[i].pos + '%';
+        }
+      }
+    });
+    $('gradStops').addEventListener('click', function(e){
+      var del = e.target.closest('button[data-del]');
+      if (!del || del.disabled) return;
+      var i = +del.dataset.del;
+      state.stops.splice(i, 1);
+      render();
+    });
+
+    $('gradAddStop').addEventListener('click', function(){
+      var lastPos = state.stops.length ? state.stops[state.stops.length - 1].pos : 50;
+      var newPos = Math.min(100, lastPos + 20);
+      state.stops.push({ color: randomColor(), pos: newPos });
+      render();
+    });
+
+    $('gradPresets').addEventListener('click', function(e){
+      var b = e.target.closest('button[data-pi]');
+      if (!b) return;
+      var p = PRESETS[+b.dataset.pi];
+      state.type  = p.type;
+      state.angle = (p.angle != null) ? p.angle : 135;
+      state.shape = p.shape || 'ellipse';
+      state.posX  = (p.posX != null) ? p.posX : 50;
+      state.posY  = (p.posY != null) ? p.posY : 50;
+      state.stops = p.stops.map(function(s){ return { color: s.color, pos: s.pos }; });
+      render();
+    });
+
+    $('copyCode').addEventListener('click', function(){
+      copyText($('gradCode').textContent, '已复制 CSS');
+    });
+    $('copyValue').addEventListener('click', function(){
+      copyText(buildGradient(state), '已复制渐变值');
+    });
+    $('randomGrad').addEventListener('click', function(){
+      var n = 2 + Math.floor(Math.random() * 3);
+      var stops = [];
+      for (var i = 0; i < n; i++){
+        stops.push({ color: randomColor(), pos: Math.round((100 / (n - 1)) * i) });
+      }
+      var types = ['linear','linear','linear','radial','conic'];
+      state.type  = types[Math.floor(Math.random() * types.length)];
+      state.angle = Math.floor(Math.random() * 360);
+      state.posX  = Math.floor(20 + Math.random() * 60);
+      state.posY  = Math.floor(20 + Math.random() * 60);
+      state.stops = stops;
+      render();
+    });
+
+    // init
+    renderPresets();
+    render();
+  })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,820 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="view-transition" content="same-origin" />
+  <title>极简番茄钟 — WYQ 专属博客</title>
+  <meta name="description" content="WYQ 的极简番茄钟 - 25/5 节奏，呼吸光圈，无干扰专注工具。" />
+  <meta name="theme-color" content="#fbfbfd" media="(prefers-color-scheme: light)" />
+  <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)" />
+  <link rel="stylesheet" href="assets/css/style.css?v=21" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230071e3'/%3E%3Ctext x='50%25' y='62%25' text-anchor='middle' font-family='-apple-system,system-ui,sans-serif' font-weight='700' font-size='14' fill='white'%3EWYQ%3C/text%3E%3C/svg%3E" />
+  <script>
+    (function(){try{var t=localStorage.getItem('wyq-theme');if(t!=='light'&&t!=='dark'){t=window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';}document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
+  </script>
+  <link rel="canonical" href="https://riuip.github.io/my-book/pomodoro.html" />
+
+  <style>
+    .pomo-stage {
+      min-height: calc(100vh - 64px - 80px);
+      padding: 80px 24px 64px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 28px;
+      background: transparent;
+    }
+    .pomo-head { max-width: 720px; width: 100%; text-align: center; }
+    .pomo-eyebrow {
+      display: inline-block;
+      font-size: 12px;
+      letter-spacing: 0.18em;
+      color: #8a8f9a;
+      text-transform: uppercase;
+      padding: 6px 14px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.7);
+      border: 1px solid rgba(0, 0, 0, 0.06);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+    .pomo-title {
+      margin: 14px 0 6px;
+      font-size: clamp(28px, 4vw, 40px);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: #1d1d1f;
+    }
+    .pomo-sub { margin: 0; color: #6e7280; font-size: 15px; }
+
+    /* mode tabs */
+    .mode-tabs {
+      display: inline-flex;
+      background: rgba(255, 255, 255, 0.7);
+      border: 1px solid rgba(0, 0, 0, 0.06);
+      border-radius: 14px;
+      padding: 4px;
+      gap: 2px;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+    .mode-tabs button {
+      padding: 9px 20px;
+      font-size: 13px;
+      font-weight: 500;
+      border-radius: 10px;
+      color: #4b5563;
+      transition: background 0.2s ease, color 0.2s ease;
+    }
+    .mode-tabs button.is-active {
+      background: #1d1d1f;
+      color: #ffffff;
+      box-shadow: 0 4px 12px -4px rgba(0,0,0,0.25);
+    }
+    [data-theme="dark"] .mode-tabs button.is-active { background: #ffffff; color: #1d1d1f; }
+
+    /* dial */
+    .dial-wrap {
+      position: relative;
+      width: min(420px, 80vw);
+      aspect-ratio: 1;
+      display: grid;
+      place-items: center;
+    }
+    .dial {
+      width: 100%;
+      height: 100%;
+      transform: rotate(-90deg);
+    }
+    .dial__bg {
+      fill: none;
+      stroke: rgba(0,0,0,0.06);
+      stroke-width: 6;
+    }
+    .dial__progress {
+      fill: none;
+      stroke-width: 6;
+      stroke-linecap: round;
+      transition: stroke-dashoffset 0.5s linear, stroke 0.4s ease;
+    }
+    [data-theme="dark"] .dial__bg { stroke: rgba(255,255,255,0.08); }
+
+    .dial__center {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+    .dial__time {
+      font-size: clamp(56px, 12vw, 88px);
+      font-weight: 200;
+      letter-spacing: -0.04em;
+      color: #1d1d1f;
+      font-variant-numeric: tabular-nums;
+      line-height: 1;
+    }
+    [data-theme="dark"] .dial__time { color: #f5f5f7; }
+    .dial__label {
+      margin-top: 10px;
+      font-size: 13px;
+      letter-spacing: 0.12em;
+      color: #8a8f9a;
+      text-transform: uppercase;
+    }
+    .dial__round {
+      margin-top: 6px;
+      font-size: 12px;
+      color: #8a8f9a;
+    }
+
+    /* breathing pulse when running */
+    .dial-wrap.is-running::before {
+      content: "";
+      position: absolute;
+      inset: 8%;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255,140,90,0.12), transparent 70%);
+      animation: pomoBreath 4s ease-in-out infinite;
+      pointer-events: none;
+    }
+    .dial-wrap.is-running.mode-short::before { background: radial-gradient(circle, rgba(90,180,255,0.14), transparent 70%); }
+    .dial-wrap.is-running.mode-long::before  { background: radial-gradient(circle, rgba(140,120,220,0.14), transparent 70%); }
+    @keyframes pomoBreath {
+      0%, 100% { transform: scale(1);   opacity: 0.7; }
+      50%      { transform: scale(1.06); opacity: 1;  }
+    }
+
+    /* controls */
+    .pomo-controls {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .pomo-btn {
+      font-size: 14px;
+      padding: 12px 28px;
+      border-radius: 999px;
+      background: #1d1d1f;
+      color: #ffffff;
+      transition: background 0.15s ease, transform 0.15s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      min-width: 130px;
+      justify-content: center;
+    }
+    .pomo-btn:hover { background: #000000; transform: translateY(-1px); }
+    .pomo-btn--ghost {
+      background: rgba(255,255,255,0.7);
+      color: #1d1d1f;
+      border: 1px solid rgba(0,0,0,0.08);
+    }
+    .pomo-btn--ghost:hover { background: rgba(255,255,255,0.95); }
+    .pomo-btn svg { width: 16px; height: 16px; }
+    [data-theme="dark"] .pomo-btn { background: #ffffff; color: #1d1d1f; }
+    [data-theme="dark"] .pomo-btn:hover { background: #e8e8eb; }
+    [data-theme="dark"] .pomo-btn--ghost {
+      background: rgba(28,30,36,0.7);
+      color: #f5f5f7;
+      border-color: rgba(255,255,255,0.08);
+    }
+    [data-theme="dark"] .pomo-btn--ghost:hover { background: rgba(28,30,36,0.95); }
+
+    /* stats */
+    .pomo-stats {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(120px, 1fr));
+      gap: 12px;
+      max-width: 540px;
+      width: 100%;
+    }
+    .pomo-stat {
+      background: rgba(255, 255, 255, 0.65);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.7);
+      border-radius: 18px;
+      padding: 16px 18px;
+      text-align: center;
+    }
+    .pomo-stat__num {
+      font-size: 28px;
+      font-weight: 600;
+      color: #1d1d1f;
+      letter-spacing: -0.02em;
+      font-variant-numeric: tabular-nums;
+    }
+    .pomo-stat__label {
+      font-size: 11px;
+      color: #8a8f9a;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-top: 4px;
+    }
+    [data-theme="dark"] .pomo-stat {
+      background: rgba(28,30,36,0.6);
+      border-color: rgba(255,255,255,0.06);
+    }
+    [data-theme="dark"] .pomo-stat__num { color: #f5f5f7; }
+
+    /* settings */
+    .pomo-set {
+      max-width: 540px;
+      width: 100%;
+      background: rgba(255, 255, 255, 0.65);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.7);
+      border-radius: 18px;
+      padding: 18px 20px;
+    }
+    [data-theme="dark"] .pomo-set {
+      background: rgba(28,30,36,0.6);
+      border-color: rgba(255,255,255,0.06);
+    }
+    .pomo-set summary {
+      cursor: pointer;
+      font-size: 13px;
+      color: #4b5563;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      list-style: none;
+    }
+    .pomo-set summary::-webkit-details-marker { display: none; }
+    .pomo-set summary svg {
+      width: 14px; height: 14px;
+      transition: transform 0.2s ease;
+    }
+    .pomo-set[open] summary svg { transform: rotate(90deg); }
+    [data-theme="dark"] .pomo-set summary { color: #b0b3bb; }
+    .pomo-set__rows { margin-top: 14px; display: flex; flex-direction: column; gap: 10px; }
+    .pomo-set__row {
+      display: grid;
+      grid-template-columns: 1fr auto auto auto;
+      align-items: center;
+      gap: 10px;
+      font-size: 13px;
+      color: #4b5563;
+    }
+    [data-theme="dark"] .pomo-set__row { color: #d2d2d7; }
+    .pomo-set__row input[type=number] {
+      width: 72px;
+      padding: 6px 10px;
+      border: 1px solid #e6eaf2;
+      border-radius: 8px;
+      background: #ffffff;
+      font: inherit;
+      color: inherit;
+      text-align: center;
+    }
+    [data-theme="dark"] .pomo-set__row input[type=number] {
+      background: #1f2128; border-color: #2a2d36; color: #f5f5f7;
+    }
+    .pomo-set__row span { font-size: 12px; color: #8a8f9a; }
+
+    /* sound toggle */
+    .sound-toggle {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      color: #4b5563;
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.7);
+      border: 1px solid rgba(0,0,0,0.06);
+    }
+    [data-theme="dark"] .sound-toggle {
+      background: rgba(28,30,36,0.6);
+      border-color: rgba(255,255,255,0.06);
+      color: #d2d2d7;
+    }
+    .sound-toggle input { accent-color: #1d1d1f; }
+    [data-theme="dark"] .sound-toggle input { accent-color: #ffffff; }
+
+    @media (max-width: 560px) {
+      .pomo-stage { padding: 64px 14px 48px; gap: 20px; }
+      .dial__time { font-size: 60px; }
+      .pomo-stats { grid-template-columns: 1fr 1fr 1fr; }
+      .pomo-stat { padding: 12px; }
+      .pomo-stat__num { font-size: 22px; }
+    }
+
+    [data-theme="dark"] .pomo-title { color: #f5f5f7; }
+    [data-theme="dark"] .pomo-eyebrow {
+      background: rgba(30, 32, 38, 0.6);
+      border-color: rgba(255, 255, 255, 0.08);
+      color: #b0b3bb;
+    }
+    [data-theme="dark"] .mode-tabs {
+      background: rgba(30,32,38,0.6);
+      border-color: rgba(255,255,255,0.08);
+    }
+  </style>
+</head>
+<body class="page-enter">
+
+  <div class="aurora" aria-hidden="true"></div>
+  <nav class="nav">
+    <div class="nav__inner">
+      <a class="nav__brand" href="index.html">
+        <span class="dot"></span>
+        <span>WYQ</span>
+      </a>
+      <ul class="nav__menu">
+        <li class="nav__has-sub">
+          <button class="nav__sub-toggle" data-nav-sub-toggle type="button">
+            <span>文章</span>
+            <svg class="nav__sub-toggle__chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <polyline points="6 9 12 15 18 9"/>
+            </svg>
+          </button>
+          <div class="nav__submenu" role="menu">
+            <a href="post-006.html" role="menuitem">
+              <svg class="nav__submenu__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="15" y2="17"/></svg>
+              <span>最新文章</span>
+            </a>
+            <a href="archive.html" role="menuitem">
+              <svg class="nav__submenu__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><polyline points="21 8 21 21 3 21 3 8"/><rect x="1" y="3" width="22" height="5"/><line x1="10" y1="12" x2="14" y2="12"/></svg>
+              <span>归档</span>
+            </a>
+            <a href="tags.html" role="menuitem">
+              <svg class="nav__submenu__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
+              <span>按分类</span>
+            </a>
+            <div class="nav__submenu__sep"></div>
+            <a href="feed.xml" role="menuitem">
+              <svg class="nav__submenu__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11a9 9 0 0 1 9 9"/><path d="M4 4a16 16 0 0 1 16 16"/><circle cx="5" cy="19" r="1"/></svg>
+              <span>RSS 订阅</span>
+            </a>
+          </div>
+        </li>
+        <li class="nav__has-sub">
+          <button class="nav__sub-toggle" data-nav-sub-toggle type="button">
+            <span>实验</span>
+            <svg class="nav__sub-toggle__chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <polyline points="6 9 12 15 18 9"/>
+            </svg>
+          </button>
+          <div class="nav__submenu" role="menu">
+            <a href="lab.html" role="menuitem">
+              <svg class="nav__submenu__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8" cy="9" r="3"/><path d="M16.5 17a3.5 3.5 0 0 0 0-7 4.5 4.5 0 0 0-8.5 0"/></svg>
+              <span>天气卡片</span>
+            </a>
+            <a href="dna.html" role="menuitem">
+              <svg class="nav__submenu__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 3c0 6 16 12 16 18"/><path d="M20 3c0 6-16 12-16 18"/><line x1="6" y1="7" x2="18" y2="7"/><line x1="6" y1="17" x2="18" y2="17"/></svg>
+              <span>博客 DNA</span>
+            </a>
+            <a href="share.html" role="menuitem">
+              <svg class="nav__submenu__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+              <span>分享</span>
+            </a>
+            <div class="nav__submenu__sep"></div>
+            <a href="gradient.html" role="menuitem">
+              <svg class="nav__submenu__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3a14.5 14.5 0 0 1 0 18"/></svg>
+              <span>渐变实验室</span>
+            </a>
+            <a href="pomodoro.html" role="menuitem" aria-current="page">
+              <svg class="nav__submenu__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="13" r="8"/><path d="M9 2h6"/><path d="M12 8v5l3 2"/></svg>
+              <span>极简番茄钟</span>
+            </a>
+            <a href="md-card.html" role="menuitem">
+              <svg class="nav__submenu__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M7 9l2 4 2-2 2 2 2-4"/></svg>
+              <span>Markdown 卡片</span>
+            </a>
+          </div>
+        </li>
+        <li><a href="index.html#about">关于</a></li>
+        <li>
+          <button class="nav__search-btn" id="navSearchBtn" aria-label="搜索文章">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="7"/>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+            </svg>
+          </button>
+        </li>
+        <li>
+          <button class="nav__theme" data-theme-toggle aria-label="切换主题">
+            <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+            </svg>
+            <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="4"/>
+              <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/>
+            </svg>
+          </button>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <main class="pomo-stage">
+
+    <div class="pomo-head">
+      <span class="pomo-eyebrow">Lab · 实验项目 05</span>
+      <h1 class="pomo-title">极简番茄钟</h1>
+      <p class="pomo-sub">25 分钟专注 · 5 分钟休息 · 呼吸光圈陪你进入心流</p>
+    </div>
+
+    <div class="mode-tabs" role="tablist">
+      <button data-mode="focus" class="is-active" role="tab">专注</button>
+      <button data-mode="short" role="tab">短休</button>
+      <button data-mode="long" role="tab">长休</button>
+    </div>
+
+    <div class="dial-wrap" id="dialWrap">
+      <svg class="dial" viewBox="0 0 200 200">
+        <circle class="dial__bg" cx="100" cy="100" r="92" />
+        <circle class="dial__progress" id="dialProgress" cx="100" cy="100" r="92"
+                stroke="#ff8c5a"
+                stroke-dasharray="578.05" stroke-dashoffset="0" />
+      </svg>
+      <div class="dial__center">
+        <div class="dial__time" id="dialTime">25:00</div>
+        <div class="dial__label" id="dialLabel">FOCUS</div>
+        <div class="dial__round" id="dialRound">第 1 轮 · 共 4 轮</div>
+      </div>
+    </div>
+
+    <div class="pomo-controls">
+      <button class="pomo-btn" id="btnStart">
+        <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="6 4 20 12 6 20 6 4"/></svg>
+        <span id="btnStartText">开始</span>
+      </button>
+      <button class="pomo-btn pomo-btn--ghost" id="btnReset">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg>
+        重置
+      </button>
+      <button class="pomo-btn pomo-btn--ghost" id="btnSkip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 4 15 12 5 20 5 4"/><line x1="19" y1="5" x2="19" y2="19"/></svg>
+        跳过
+      </button>
+    </div>
+
+    <label class="sound-toggle">
+      <input type="checkbox" id="soundToggle" checked />
+      <span>结束时提示音</span>
+    </label>
+
+    <div class="pomo-stats">
+      <div class="pomo-stat">
+        <div class="pomo-stat__num" id="statToday">0</div>
+        <div class="pomo-stat__label">今日番茄</div>
+      </div>
+      <div class="pomo-stat">
+        <div class="pomo-stat__num" id="statTotal">0</div>
+        <div class="pomo-stat__label">累计番茄</div>
+      </div>
+      <div class="pomo-stat">
+        <div class="pomo-stat__num" id="statMin">0</div>
+        <div class="pomo-stat__label">今日分钟</div>
+      </div>
+    </div>
+
+    <details class="pomo-set">
+      <summary>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+        自定义时长
+      </summary>
+      <div class="pomo-set__rows">
+        <div class="pomo-set__row">
+          <span>专注</span>
+          <input type="number" id="setFocus" min="1" max="120" value="25" />
+          <span>分钟</span>
+          <span></span>
+        </div>
+        <div class="pomo-set__row">
+          <span>短休</span>
+          <input type="number" id="setShort" min="1" max="60" value="5" />
+          <span>分钟</span>
+          <span></span>
+        </div>
+        <div class="pomo-set__row">
+          <span>长休</span>
+          <input type="number" id="setLong" min="1" max="60" value="15" />
+          <span>分钟</span>
+          <span></span>
+        </div>
+        <div class="pomo-set__row">
+          <span>每几轮长休</span>
+          <input type="number" id="setRounds" min="2" max="10" value="4" />
+          <span>轮</span>
+          <span></span>
+        </div>
+      </div>
+    </details>
+
+    <p class="pomo-sub" style="opacity:0.7;">
+      ※ 数据保存在浏览器本地 · 关闭页面也不会丢失
+    </p>
+
+  </main>
+
+  <footer class="footer">
+    <div class="footer__inner">
+      <div>&copy; <span data-year>2026</span> WYQ. All rights reserved.</div>
+      <ul class="footer__links">
+        <li><a href="index.html">主页</a></li>
+        <li><a href="post-006.html">文章</a></li>
+        <li><a href="archive.html">归档</a></li>
+        <li><a href="tags.html">分类</a></li>
+        <li><a href="lab.html">实验</a></li>
+        <li><a href="others.html">其他</a></li>
+        <li><a href="feed.xml">RSS</a></li>
+      </ul>
+    </div>
+  </footer>
+
+  <div class="nav-search__overlay" id="navSearchOverlay"></div>
+  <div class="nav-search" id="navSearchBox">
+    <div class="nav-search__inner">
+      <svg class="nav-search__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="11" cy="11" r="8"/>
+        <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+      </svg>
+      <input type="text" class="nav-search__input" id="navSearchInput" placeholder="搜索文章..." autocomplete="off" />
+    </div>
+    <div class="nav-search__results" id="navSearchResults">
+      <p class="nav-search__hint">输入关键词搜索文章...</p>
+    </div>
+  </div>
+
+  <script src="assets/js/view-transitions.js?v=1"></script>
+  <script src="assets/js/main.js?v=10"></script>
+  <script src="assets/js/posts-data.js?v=2"></script>
+  <script src="assets/js/search.js?v=3"></script>
+  <script src="assets/js/extras.js?v=5"></script>
+
+  <script>
+  (function(){
+    'use strict';
+
+    var STORE_KEY = 'wyq-pomo-stats';
+    var SET_KEY   = 'wyq-pomo-settings';
+    var COLOR = {
+      focus: '#ff8c5a',
+      short: '#5ab4ef',
+      long:  '#8c7adf'
+    };
+    var LABEL = {
+      focus: '专注',
+      short: '短休',
+      long:  '长休'
+    };
+
+    var settings = loadSettings();
+    var stats = loadStats();
+    var state = {
+      mode: 'focus',
+      remaining: settings.focus * 60,
+      total: settings.focus * 60,
+      running: false,
+      round: 1,         // 1..rounds
+      tickerEnd: 0      // ms timestamp when phase ends
+    };
+    var rafId = null;
+    var audioCtx = null;
+
+    var $ = function(id){ return document.getElementById(id); };
+    var dialWrap   = $('dialWrap');
+    var dialProg   = $('dialProgress');
+    var dialTime   = $('dialTime');
+    var dialLabel  = $('dialLabel');
+    var dialRound  = $('dialRound');
+    var btnStart   = $('btnStart');
+    var btnStartTx = $('btnStartText');
+    var btnReset   = $('btnReset');
+    var btnSkip    = $('btnSkip');
+    var soundTog   = $('soundToggle');
+    var modeTabs   = document.querySelector('.mode-tabs');
+
+    var DASH_LEN = 2 * Math.PI * 92; // ~578.05
+
+    function loadStats(){
+      try {
+        var raw = localStorage.getItem(STORE_KEY);
+        var s = raw ? JSON.parse(raw) : {};
+        var todayKey = new Date().toISOString().slice(0,10);
+        if (s.day !== todayKey) { s.day = todayKey; s.today = 0; s.todayMin = 0; }
+        if (typeof s.total !== 'number') s.total = 0;
+        return s;
+      } catch(e){ return { day: new Date().toISOString().slice(0,10), today: 0, todayMin: 0, total: 0 }; }
+    }
+    function saveStats(){
+      try { localStorage.setItem(STORE_KEY, JSON.stringify(stats)); } catch(e){}
+    }
+
+    function loadSettings(){
+      try {
+        var raw = localStorage.getItem(SET_KEY);
+        var s = raw ? JSON.parse(raw) : {};
+        return {
+          focus:  +s.focus  || 25,
+          short:  +s.short  || 5,
+          long:   +s.long   || 15,
+          rounds: +s.rounds || 4
+        };
+      } catch(e){ return { focus:25, short:5, long:15, rounds:4 }; }
+    }
+    function saveSettings(){
+      try { localStorage.setItem(SET_KEY, JSON.stringify(settings)); } catch(e){}
+    }
+
+    function pad2(n){ return n < 10 ? '0' + n : '' + n; }
+    function fmtMS(s){
+      s = Math.max(0, Math.round(s));
+      var m = Math.floor(s / 60);
+      var sec = s % 60;
+      return pad2(m) + ':' + pad2(sec);
+    }
+
+    function applyMode(mode, autoStart){
+      state.mode = mode;
+      state.running = false;
+      cancelAnimationFrame(rafId);
+      var minutes = settings[mode];
+      state.total = minutes * 60;
+      state.remaining = state.total;
+      Array.prototype.forEach.call(modeTabs.querySelectorAll('button'), function(b){
+        b.classList.toggle('is-active', b.dataset.mode === mode);
+      });
+      dialProg.setAttribute('stroke', COLOR[mode]);
+      dialLabel.textContent = LABEL[mode].toUpperCase();
+      dialWrap.classList.remove('mode-short','mode-long');
+      if (mode === 'short') dialWrap.classList.add('mode-short');
+      if (mode === 'long')  dialWrap.classList.add('mode-long');
+      dialWrap.classList.remove('is-running');
+      btnStartTx.textContent = '开始';
+      btnStart.querySelector('svg').innerHTML = '<polygon points="6 4 20 12 6 20 6 4"/>';
+      renderDial();
+      renderStats();
+      if (autoStart) toggleStart();
+    }
+
+    function renderDial(){
+      dialTime.textContent = fmtMS(state.remaining);
+      var pct = state.total > 0 ? state.remaining / state.total : 0;
+      dialProg.setAttribute('stroke-dasharray', DASH_LEN);
+      dialProg.setAttribute('stroke-dashoffset', DASH_LEN * (1 - pct));
+      var rounds = settings.rounds;
+      dialRound.textContent = '第 ' + state.round + ' 轮 · 共 ' + rounds + ' 轮';
+      // tab title shows time (subtle)
+      try {
+        document.title = (state.running ? fmtMS(state.remaining) + ' · ' : '') + '极简番茄钟 — WYQ';
+      } catch(e){}
+    }
+
+    function renderStats(){
+      $('statToday').textContent = stats.today || 0;
+      $('statTotal').textContent = stats.total || 0;
+      $('statMin').textContent   = stats.todayMin || 0;
+    }
+
+    function toggleStart(){
+      if (state.running) {
+        // pause
+        state.running = false;
+        cancelAnimationFrame(rafId);
+        dialWrap.classList.remove('is-running');
+        btnStartTx.textContent = '继续';
+        btnStart.querySelector('svg').innerHTML = '<polygon points="6 4 20 12 6 20 6 4"/>';
+        return;
+      }
+      // start
+      state.running = true;
+      state.tickerEnd = Date.now() + state.remaining * 1000;
+      dialWrap.classList.add('is-running');
+      btnStartTx.textContent = '暂停';
+      btnStart.querySelector('svg').innerHTML = '<rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/>';
+      tick();
+    }
+
+    function tick(){
+      if (!state.running) return;
+      var rem = (state.tickerEnd - Date.now()) / 1000;
+      state.remaining = Math.max(0, rem);
+      renderDial();
+      if (rem <= 0) {
+        finishPhase();
+        return;
+      }
+      rafId = requestAnimationFrame(tick);
+    }
+
+    function finishPhase(){
+      state.running = false;
+      cancelAnimationFrame(rafId);
+      dialWrap.classList.remove('is-running');
+      playChime();
+
+      if (state.mode === 'focus') {
+        // count tomato
+        var todayKey = new Date().toISOString().slice(0,10);
+        if (stats.day !== todayKey) { stats.day = todayKey; stats.today = 0; stats.todayMin = 0; }
+        stats.today    = (stats.today || 0) + 1;
+        stats.total    = (stats.total || 0) + 1;
+        stats.todayMin = (stats.todayMin || 0) + settings.focus;
+        saveStats();
+        renderStats();
+
+        // decide next mode
+        var nextRound = state.round;
+        var nextMode  = (state.round % settings.rounds === 0) ? 'long' : 'short';
+        if (nextMode === 'long') {
+          // reset round counter after long break completes
+        }
+        applyMode(nextMode, true);
+      } else {
+        // break finished -> next focus
+        if (state.mode === 'long') {
+          state.round = 1;
+        } else {
+          state.round = Math.min(settings.rounds, state.round + 1);
+        }
+        applyMode('focus', false);
+      }
+    }
+
+    function resetCurrent(){
+      state.running = false;
+      cancelAnimationFrame(rafId);
+      state.remaining = state.total;
+      dialWrap.classList.remove('is-running');
+      btnStartTx.textContent = '开始';
+      btnStart.querySelector('svg').innerHTML = '<polygon points="6 4 20 12 6 20 6 4"/>';
+      renderDial();
+    }
+
+    function skipCurrent(){
+      // jump to phase end without counting tomato unless focus already mostly done.
+      // For minimal behavior: just trigger finishPhase as if done (so it counts).
+      state.remaining = 0;
+      state.tickerEnd = Date.now();
+      finishPhase();
+    }
+
+    function playChime(){
+      if (!soundTog.checked) return;
+      try {
+        if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        var ctx = audioCtx;
+        var now = ctx.currentTime;
+        // soft 2-note chime
+        [880, 660].forEach(function(freq, i){
+          var osc = ctx.createOscillator();
+          var gain = ctx.createGain();
+          osc.type = 'sine';
+          osc.frequency.value = freq;
+          gain.gain.setValueAtTime(0, now + i * 0.25);
+          gain.gain.linearRampToValueAtTime(0.18, now + i * 0.25 + 0.04);
+          gain.gain.exponentialRampToValueAtTime(0.0001, now + i * 0.25 + 0.6);
+          osc.connect(gain).connect(ctx.destination);
+          osc.start(now + i * 0.25);
+          osc.stop(now + i * 0.25 + 0.65);
+        });
+      } catch(e){}
+    }
+
+    // ---- bindings ----
+    modeTabs.addEventListener('click', function(e){
+      var b = e.target.closest('button[data-mode]');
+      if (!b) return;
+      applyMode(b.dataset.mode, false);
+    });
+    btnStart.addEventListener('click', toggleStart);
+    btnReset.addEventListener('click', resetCurrent);
+    btnSkip.addEventListener('click',  skipCurrent);
+
+    ['setFocus','setShort','setLong','setRounds'].forEach(function(id){
+      var el = $(id);
+      el.value = settings[id.replace('set','').toLowerCase()];
+      el.addEventListener('change', function(){
+        var key = id.replace('set','').toLowerCase();
+        var v = parseInt(el.value, 10);
+        if (isNaN(v) || v < 1) v = settings[key];
+        settings[key] = v;
+        saveSettings();
+        if (!state.running) applyMode(state.mode, false);
+        else renderDial();
+      });
+    });
+
+    document.addEventListener('keydown', function(e){
+      if (e.target.matches('input,textarea')) return;
+      if (e.code === 'Space') { e.preventDefault(); toggleStart(); }
+      if (e.key === 'r' || e.key === 'R') resetCurrent();
+    });
+
+    // init
+    applyMode('focus', false);
+  })();
+  </script>
+</body>
+</html>
