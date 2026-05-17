@@ -393,11 +393,193 @@
     .hour__icon { width: 30px; height: 30px; margin: 8px auto 6px; display: block; }
     .hour__temp { font-size: 15px; font-weight: 600; color: #1d1d1f; }
 
+    /* ---------- precipitation bar ---------- */
+    .wc-precip {
+      margin-top: 14px;
+      padding: 14px 0 6px;
+      border-top: 1px solid rgba(220, 225, 235, 0.7);
+    }
+    .wc-precip__title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 12px;
+      color: #8a8f9a;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      font-weight: 500;
+      margin-bottom: 10px;
+    }
+    .wc-precip__title span:last-child { color: #5b8def; font-weight: 600; }
+    .wc-precip__bars {
+      display: grid;
+      grid-template-columns: repeat(24, 1fr);
+      gap: 2px;
+      align-items: end;
+      height: 38px;
+    }
+    .wc-precip__bar {
+      background: linear-gradient(to top, #5b8def 0%, #9ec5f0 100%);
+      border-radius: 3px 3px 1px 1px;
+      min-height: 2px;
+      transition: opacity 0.2s ease;
+      opacity: 0.85;
+    }
+    .wc-precip__bar.is-now { background: linear-gradient(to top, #1d1d1f, #4b5563); opacity: 1; }
+    .wc-precip__bar.is-empty { background: rgba(195, 205, 220, 0.25); }
+    .wc-precip__axis {
+      display: flex;
+      justify-content: space-between;
+      font-size: 10px;
+      color: #8a8f9a;
+      letter-spacing: 0.04em;
+      margin-top: 6px;
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* ---------- AQI block ---------- */
+    .wc-aqi {
+      margin-top: 18px;
+      padding: 16px 18px;
+      background: rgba(255, 255, 255, 0.7);
+      border: 1px solid rgba(220, 225, 235, 0.7);
+      border-radius: 18px;
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      align-items: center;
+      gap: 16px;
+    }
+    .wc-aqi__num {
+      font-size: 36px;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      color: #1d1d1f;
+      line-height: 1;
+      font-variant-numeric: tabular-nums;
+      min-width: 60px;
+      text-align: center;
+    }
+    .wc-aqi__bar {
+      flex: 1;
+      height: 6px;
+      border-radius: 999px;
+      background: linear-gradient(to right, #4cb88a 0%, #f5b34a 33%, #e8946a 50%, #d45151 66%, #8a4cb8 83%, #6a2b6a 100%);
+      position: relative;
+    }
+    .wc-aqi__bar-marker {
+      position: absolute;
+      top: -4px;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: #ffffff;
+      border: 3px solid #1d1d1f;
+      transform: translateX(-50%);
+      transition: left 0.4s ease;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.18);
+    }
+    .wc-aqi__lvl {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      min-width: 70px;
+    }
+    .wc-aqi__lvl-name { font-size: 14px; font-weight: 600; color: #1d1d1f; }
+    .wc-aqi__lvl-pm   { font-size: 11px; color: #8a8f9a; margin-top: 2px; font-variant-numeric: tabular-nums; }
+
+    /* ---------- 7-day forecast ---------- */
+    .wc-daily {
+      margin-top: 18px;
+      padding-top: 18px;
+      border-top: 1px solid rgba(220, 225, 235, 0.7);
+    }
+    .wc-daily__title {
+      font-size: 13px;
+      color: #8a8f9a;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+      font-weight: 500;
+    }
+    .wc-daily__list { display: flex; flex-direction: column; }
+    .day {
+      display: grid;
+      grid-template-columns: 70px 32px 50px 1fr 50px;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 4px;
+      border-bottom: 1px solid rgba(220, 225, 235, 0.5);
+    }
+    .day:last-child { border-bottom: none; }
+    .day__name { font-size: 14px; color: #1d1d1f; font-weight: 500; }
+    .day__name.is-today { font-weight: 600; }
+    .day__icon { width: 28px; height: 28px; }
+    .day__min  { font-size: 13px; color: #8a8f9a; text-align: right; font-variant-numeric: tabular-nums; }
+    .day__max  { font-size: 13px; color: #1d1d1f; font-weight: 600; text-align: right; font-variant-numeric: tabular-nums; }
+    .day__range {
+      position: relative;
+      height: 6px;
+      background: rgba(195, 205, 220, 0.35);
+      border-radius: 999px;
+      overflow: hidden;
+    }
+    .day__range-fill {
+      position: absolute;
+      top: 0; bottom: 0;
+      background: linear-gradient(to right, #5b8def, #f5b34a, #e8946a);
+      border-radius: 999px;
+    }
+
+    /* ---------- card actions (share / locate) ---------- */
+    .wc-actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-top: 8px;
+    }
+    .wc-action-btn {
+      font-size: 13px;
+      padding: 9px 16px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.7);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(0,0,0,0.06);
+      color: #1d1d1f;
+      transition: background 0.15s ease, transform 0.15s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .wc-action-btn:hover { background: rgba(255,255,255,0.95); transform: translateY(-1px); }
+    .wc-action-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+    .wc-action-btn svg { width: 14px; height: 14px; }
+    .wc-toast {
+      position: fixed;
+      bottom: 32px;
+      left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      background: #1d1d1f;
+      color: #fff;
+      font-size: 13px;
+      padding: 10px 18px;
+      border-radius: 999px;
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.25s ease;
+      z-index: 1000;
+    }
+    .wc-toast.is-show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
     /* ---------- responsive ---------- */
     @media (max-width: 880px) {
       .wc-main { grid-template-columns: 1fr; }
       .wc-pastel { grid-template-columns: 1fr; }
       .wc-hourly__list { grid-template-columns: repeat(8, 84px); }
+      .wc-aqi { grid-template-columns: auto 1fr; gap: 12px; }
+      .wc-aqi__lvl { grid-column: 1 / -1; align-items: flex-start; flex-direction: row; gap: 10px; }
+      .day { grid-template-columns: 64px 28px 44px 1fr 44px; gap: 8px; font-size: 13px; }
     }
     @media (max-width: 560px) {
       .weather-card { padding: 24px 20px; border-radius: 22px; }
@@ -476,9 +658,17 @@
               <span>分享</span>
             </a>
             <div class="nav__submenu__sep"></div>
-            <a role="menuitem" aria-disabled="true" style="opacity:0.5;cursor:default;">
-              <svg class="nav__submenu__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 3v4M3 5h4M19 17v4M17 19h4M14 4l1.5 4 4 1.5-4 1.5L14 15l-1.5-4-4-1.5 4-1.5z"/></svg>
-              <span>更多 · 即将推出</span>
+            <a href="gradient.html" role="menuitem">
+              <svg class="nav__submenu__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3a14.5 14.5 0 0 1 0 18"/></svg>
+              <span>渐变实验室</span>
+            </a>
+            <a href="pomodoro.html" role="menuitem">
+              <svg class="nav__submenu__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="13" r="8"/><path d="M9 2h6"/><path d="M12 8v5l3 2"/></svg>
+              <span>极简番茄钟</span>
+            </a>
+            <a href="md-card.html" role="menuitem">
+              <svg class="nav__submenu__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M7 9l2 4 2-2 2 2 2-4"/></svg>
+              <span>Markdown 卡片</span>
             </a>
           </div>
         </li>
@@ -714,15 +904,59 @@
         <div class="wc-hourly__list" id="hourlyList">
           <!-- populated by JS -->
         </div>
+
+        <!-- precipitation probability bar -->
+        <div class="wc-precip">
+          <div class="wc-precip__title">
+            <span>未来 24 小时降水概率</span>
+            <span id="wcPrecipMax">峰值 --%</span>
+          </div>
+          <div class="wc-precip__bars" id="precipBars"></div>
+          <div class="wc-precip__axis">
+            <span>现在</span><span>+6h</span><span>+12h</span><span>+18h</span><span>+24h</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- AQI -->
+      <section class="wc-aqi" id="wcAqiBlock" style="display:none;">
+        <div class="wc-aqi__num" id="wcAqiNum">--</div>
+        <div class="wc-aqi__bar"><div class="wc-aqi__bar-marker" id="wcAqiMarker" style="left:0%;"></div></div>
+        <div class="wc-aqi__lvl">
+          <div class="wc-aqi__lvl-name" id="wcAqiName">--</div>
+          <div class="wc-aqi__lvl-pm" id="wcAqiPm">PM2.5 --</div>
+        </div>
+      </section>
+
+      <!-- 7-day forecast -->
+      <section class="wc-daily">
+        <div class="wc-daily__title">未来 7 日预报</div>
+        <div class="wc-daily__list" id="dailyList">
+          <!-- populated by JS -->
+        </div>
       </section>
 
     </article>
+
+    <!-- card actions -->
+    <div class="wc-actions">
+      <button class="wc-action-btn" id="btnLocate" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg>
+        使用我的位置
+      </button>
+      <button class="wc-action-btn" id="btnShare" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        <span id="btnShareText">导出为图片</span>
+      </button>
+    </div>
 
     <p class="lab-sub" style="opacity:0.7;">
       ※ 数据来源：<a href="https://open-meteo.com/" target="_blank" rel="noopener" style="color:inherit;">Open-Meteo</a> · 免费天气 API
     </p>
 
   </main>
+
+  <div class="wc-toast" id="wcToast">已复制</div>
 
   <!-- FOOTER -->
   <footer class="footer">
@@ -760,6 +994,9 @@
   <script src="assets/js/posts-data.js?v=2"></script>
   <script src="assets/js/search.js?v=3"></script>
   <script src="assets/js/extras.js?v=5"></script>
+
+  <!-- html-to-image: used to export the weather card as PNG -->
+  <script src="https://cdn.jsdelivr.net/npm/html-to-image@1.11.11/dist/html-to-image.min.js"></script>
 
   <!-- ============================
        WEATHER : DATA + RENDER
@@ -1007,13 +1244,35 @@
       var url = 'https://api.open-meteo.com/v1/forecast' +
         '?latitude=' + lat + '&longitude=' + lon +
         '&current=temperature_2m,relative_humidity_2m,apparent_temperature,is_day,weather_code,wind_speed_10m,visibility' +
-        '&hourly=temperature_2m,weather_code,is_day' +
-        '&daily=temperature_2m_max,temperature_2m_min,sunrise,sunset,uv_index_max' +
-        '&timezone=auto&past_days=1&forecast_days=2';
+        '&hourly=temperature_2m,weather_code,is_day,precipitation_probability' +
+        '&daily=temperature_2m_max,temperature_2m_min,sunrise,sunset,uv_index_max,weather_code,precipitation_probability_max' +
+        '&timezone=auto&past_days=1&forecast_days=8';
       return fetch(url).then(function(r){
         if (!r.ok) throw new Error('获取天气失败');
         return r.json();
       });
+    }
+
+    function fetchAir(lat, lon){
+      var url = 'https://air-quality-api.open-meteo.com/v1/air-quality' +
+        '?latitude=' + lat + '&longitude=' + lon +
+        '&current=us_aqi,pm2_5,pm10' +
+        '&timezone=auto';
+      return fetch(url).then(function(r){
+        if (!r.ok) throw new Error('air fail');
+        return r.json();
+      }).catch(function(){ return null; });
+    }
+
+    // AQI level meta — uses US AQI scale
+    function aqiMeta(aqi){
+      if (aqi == null || isNaN(aqi)) return { name: '--', color: '#8a8f9a', pos: 0 };
+      if (aqi <= 50)  return { name: '优',     color: '#4cb88a', pos: aqi / 300 * 100 };
+      if (aqi <= 100) return { name: '良',     color: '#f5b34a', pos: aqi / 300 * 100 };
+      if (aqi <= 150) return { name: '轻度',   color: '#e8946a', pos: aqi / 300 * 100 };
+      if (aqi <= 200) return { name: '中度',   color: '#d45151', pos: aqi / 300 * 100 };
+      if (aqi <= 300) return { name: '重度',   color: '#8a4cb8', pos: aqi / 300 * 100 };
+      return { name: '严重', color: '#6a2b6a', pos: 100 };
     }
 
     // ----- render -----
@@ -1108,17 +1367,93 @@
       }
       $('hourlyList').innerHTML = html;
 
+      // ---- precipitation probability (next 24h) ----
+      var probs = hourly.precipitation_probability || [];
+      var bars = '';
+      var maxProb = 0;
+      for (var k = 0; k < 24; k++) {
+        var pi = startIdx + k;
+        var p = (probs[pi] != null) ? probs[pi] : 0;
+        if (p > maxProb) maxProb = p;
+        var h = Math.max(2, Math.round(p * 0.36)); // up to ~36px tall
+        var cls = 'wc-precip__bar' + (k === 0 ? ' is-now' : '') + (p < 1 ? ' is-empty' : '');
+        bars += '<div class="' + cls + '" style="height:' + h + 'px;" title="' + p + '%"></div>';
+      }
+      $('precipBars').innerHTML = bars;
+      $('wcPrecipMax').textContent = '峰值 ' + Math.round(maxProb) + '%';
+
+      // ---- 7-day forecast ----
+      var dTimes  = daily.time || [];
+      var dCodes  = daily.weather_code || [];
+      var dMax    = daily.temperature_2m_max || [];
+      var dMin    = daily.temperature_2m_min || [];
+      var weekdays = ['日','一','二','三','四','五','六'];
+
+      // global min/max across visible days for the range bars
+      var visStart = todayIdx;
+      var visEnd   = Math.min(dTimes.length, todayIdx + 7);
+      var gMin = Infinity, gMax = -Infinity;
+      for (var ii = visStart; ii < visEnd; ii++) {
+        if (dMin[ii] < gMin) gMin = dMin[ii];
+        if (dMax[ii] > gMax) gMax = dMax[ii];
+      }
+      var gSpan = Math.max(1, gMax - gMin);
+
+      var dHtml = '';
+      for (var di = visStart; di < visEnd; di++) {
+        var dDate = new Date(dTimes[di]);
+        var isToday = (di === todayIdx);
+        var dName = isToday ? '今天' : '周' + weekdays[dDate.getDay()];
+        var dKind = codeToKind(dCodes[di], true);
+        var dHi   = Math.round(dMax[di]);
+        var dLo   = Math.round(dMin[di]);
+        var leftPct  = ((dMin[di] - gMin) / gSpan) * 100;
+        var widthPct = Math.max(8, ((dMax[di] - dMin[di]) / gSpan) * 100);
+        dHtml += '<div class="day">' +
+          '<div class="day__name' + (isToday ? ' is-today' : '') + '">' + dName +
+            (isToday ? '' : ' <span style="color:#8a8f9a;font-weight:400;font-size:11px;">' + (dDate.getMonth()+1) + '/' + dDate.getDate() + '</span>') +
+          '</div>' +
+          '<div class="day__icon">' + hourIconSvg(dKind) + '</div>' +
+          '<div class="day__min">' + dLo + '°</div>' +
+          '<div class="day__range"><div class="day__range-fill" style="left:' + leftPct + '%;width:' + widthPct + '%;"></div></div>' +
+          '<div class="day__max">' + dHi + '°</div>' +
+        '</div>';
+      }
+      $('dailyList').innerHTML = dHtml;
+
       // status
       var now = new Date();
       setStatus('更新于 ' + pad2(now.getHours()) + ':' + pad2(now.getMinutes()), false);
+    }
+
+    function renderAir(air){
+      var block = $('wcAqiBlock');
+      if (!air || !air.current || air.current.us_aqi == null) {
+        block.style.display = 'none';
+        return;
+      }
+      block.style.display = 'grid';
+      var aqi  = Math.round(air.current.us_aqi);
+      var pm25 = air.current.pm2_5;
+      var meta = aqiMeta(aqi);
+      $('wcAqiNum').textContent  = aqi;
+      $('wcAqiNum').style.color  = meta.color;
+      $('wcAqiName').textContent = meta.name;
+      $('wcAqiName').style.color = meta.color;
+      $('wcAqiPm').textContent   = 'PM2.5 ' + (pm25 != null ? Math.round(pm25 * 10) / 10 : '--') + ' μg/m³';
+      $('wcAqiMarker').style.left = Math.max(0, Math.min(100, meta.pos)) + '%';
+      $('wcAqiMarker').style.borderColor = meta.color;
     }
 
     function loadAndRender(city){
       renderCity(city);
       $('weatherCard').classList.add('is-loading');
       setStatus('加载中...', false);
-      fetchWeather(city.lat, city.lon).then(function(data){
-        renderWeather(data, city);
+      var weatherP = fetchWeather(city.lat, city.lon);
+      var airP     = fetchAir(city.lat, city.lon);
+      Promise.all([weatherP, airP]).then(function(arr){
+        renderWeather(arr[0], city);
+        renderAir(arr[1]);
         $('weatherCard').classList.remove('is-loading');
       }).catch(function(err){
         $('weatherCard').classList.remove('is-loading');
@@ -1222,6 +1557,94 @@
         }
       });
     });
+
+    // ----- locate (geolocation + reverse geocode) -----
+    function reverseGeocode(lat, lon){
+      var url = 'https://geocoding-api.open-meteo.com/v1/reverse?latitude=' + lat + '&longitude=' + lon + '&language=zh&format=json';
+      return fetch(url).then(function(r){ return r.ok ? r.json() : null; }).catch(function(){ return null; });
+    }
+
+    var btnLocate = $('btnLocate');
+    if (btnLocate) {
+      btnLocate.addEventListener('click', function(){
+        if (!navigator.geolocation) { showToast('浏览器不支持定位'); return; }
+        var orig = btnLocate.innerHTML;
+        btnLocate.disabled = true;
+        btnLocate.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/></svg> 定位中...';
+        navigator.geolocation.getCurrentPosition(function(pos){
+          var lat = pos.coords.latitude;
+          var lon = pos.coords.longitude;
+          reverseGeocode(lat, lon).then(function(g){
+            var first = g && g.results && g.results[0];
+            var city = {
+              name: first ? first.name : '当前位置',
+              region: first ? ((first.country || '中国') + (first.admin1 ? ' · ' + first.admin1 : '')) : '我的位置',
+              lat: lat, lon: lon
+            };
+            saveCity(city);
+            loadAndRender(city);
+          }).catch(function(){
+            loadAndRender({ name: '当前位置', region: '我的位置', lat: lat, lon: lon });
+          }).then(function(){
+            btnLocate.disabled = false;
+            btnLocate.innerHTML = orig;
+          });
+        }, function(){
+          btnLocate.disabled = false;
+          btnLocate.innerHTML = orig;
+          showToast('无法获取位置，请检查权限');
+        }, { timeout: 8000, maximumAge: 5 * 60 * 1000 });
+      });
+    }
+
+    // ----- share as PNG -----
+    function showToast(msg){
+      var t = $('wcToast');
+      if (!t) return;
+      t.textContent = msg;
+      t.classList.add('is-show');
+      clearTimeout(t._timer);
+      t._timer = setTimeout(function(){ t.classList.remove('is-show'); }, 1600);
+    }
+
+    var btnShare = $('btnShare');
+    if (btnShare) {
+      btnShare.addEventListener('click', function(){
+        if (!window.htmlToImage) { showToast('图像库尚未加载'); return; }
+        var card = $('weatherCard');
+        if (!card) return;
+        var txt = $('btnShareText');
+        var orig = txt ? txt.textContent : '';
+        if (txt) txt.textContent = '生成中...';
+        btnShare.disabled = true;
+        var rect = card.getBoundingClientRect();
+        var pixelRatio = Math.max(2, Math.min(3, 1080 / rect.width));
+        window.htmlToImage.toPng(card, {
+          pixelRatio: pixelRatio,
+          cacheBust: true,
+          backgroundColor: null,
+          // city panel must not appear in screenshot
+          filter: function(node){
+            if (!node || !node.classList) return true;
+            return !node.classList.contains('city-panel');
+          }
+        }).then(function(dataUrl){
+          var a = document.createElement('a');
+          a.href = dataUrl;
+          a.download = 'wyq-weather-' + Date.now() + '.png';
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+          showToast('已导出 PNG');
+        }).catch(function(err){
+          console.error(err);
+          showToast('导出失败');
+        }).then(function(){
+          if (txt) txt.textContent = orig;
+          btnShare.disabled = false;
+        });
+      });
+    }
 
     // ----- init -----
     renderDate();

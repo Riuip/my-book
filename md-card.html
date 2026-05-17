@@ -1,0 +1,855 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="view-transition" content="same-origin" />
+  <title>Markdown 卡片 — WYQ 专属博客</title>
+  <meta name="description" content="WYQ 的 Markdown 卡片生成器 - 把笔记 / 摘录变成可分享的小红书风格图片。" />
+  <meta name="theme-color" content="#fbfbfd" media="(prefers-color-scheme: light)" />
+  <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)" />
+  <link rel="stylesheet" href="assets/css/style.css?v=21" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230071e3'/%3E%3Ctext x='50%25' y='62%25' text-anchor='middle' font-family='-apple-system,system-ui,sans-serif' font-weight='700' font-size='14' fill='white'%3EWYQ%3C/text%3E%3C/svg%3E" />
+  <script>
+    (function(){try{var t=localStorage.getItem('wyq-theme');if(t!=='light'&&t!=='dark'){t=window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';}document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
+  </script>
+  <link rel="canonical" href="https://riuip.github.io/my-book/md-card.html" />
+
+  <style>
+    .mc-stage {
+      min-height: calc(100vh - 64px - 80px);
+      padding: 80px 24px 64px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 24px;
+      background: transparent;
+    }
+    .mc-head { max-width: 1200px; width: 100%; text-align: center; }
+    .mc-eyebrow {
+      display: inline-block;
+      font-size: 12px;
+      letter-spacing: 0.18em;
+      color: #8a8f9a;
+      text-transform: uppercase;
+      padding: 6px 14px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.7);
+      border: 1px solid rgba(0, 0, 0, 0.06);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+    .mc-title {
+      margin: 14px 0 6px;
+      font-size: clamp(28px, 4vw, 40px);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: #1d1d1f;
+    }
+    .mc-sub { margin: 0; color: #6e7280; font-size: 15px; }
+
+    .mc-wrap {
+      width: 100%;
+      max-width: 1200px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 22px;
+      align-items: start;
+    }
+
+    /* ---- editor ---- */
+    .mc-editor {
+      background: rgba(255, 255, 255, 0.65);
+      backdrop-filter: blur(28px) saturate(140%);
+      -webkit-backdrop-filter: blur(28px) saturate(140%);
+      border: 1px solid rgba(255, 255, 255, 0.8);
+      border-radius: 24px;
+      padding: 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      box-shadow: 0 30px 60px -20px rgba(80, 100, 140, 0.18);
+      position: sticky;
+      top: 64px;
+    }
+    .mc-editor__toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+    }
+    .mc-tool-label {
+      font-size: 11px;
+      letter-spacing: 0.06em;
+      color: #8a8f9a;
+      text-transform: uppercase;
+      margin-right: 4px;
+    }
+    .mc-chip {
+      font-size: 12px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: #ffffff;
+      border: 1px solid #e6eaf2;
+      color: #4b5563;
+      transition: all 0.15s ease;
+    }
+    .mc-chip:hover { background: #f4f6fa; }
+    .mc-chip.is-active {
+      background: #1d1d1f;
+      border-color: #1d1d1f;
+      color: #ffffff;
+    }
+    [data-theme="dark"] .mc-chip {
+      background: #1f2128; border-color: #2a2d36; color: #d2d2d7;
+    }
+    [data-theme="dark"] .mc-chip:hover { background: #2a2d36; }
+    [data-theme="dark"] .mc-chip.is-active {
+      background: #ffffff; border-color: #ffffff; color: #1d1d1f;
+    }
+
+    .mc-textarea {
+      width: 100%;
+      min-height: 320px;
+      padding: 14px 16px;
+      border: 1px solid #e6eaf2;
+      border-radius: 14px;
+      background: #ffffff;
+      font-family: ui-monospace, SF Mono, Menlo, Consolas, "Microsoft YaHei", monospace;
+      font-size: 14px;
+      line-height: 1.7;
+      color: #1d1d1f;
+      resize: vertical;
+      outline: none;
+      transition: border-color 0.2s ease;
+    }
+    .mc-textarea:focus { border-color: #5b8def; }
+    [data-theme="dark"] .mc-textarea {
+      background: #1f2128; border-color: #2a2d36; color: #f5f5f7;
+    }
+
+    .mc-input-row {
+      display: grid;
+      grid-template-columns: 80px 1fr;
+      align-items: center;
+      gap: 10px;
+    }
+    .mc-input-row label { font-size: 12px; color: #8a8f9a; }
+    .mc-input-row input {
+      padding: 8px 12px;
+      border: 1px solid #e6eaf2;
+      border-radius: 10px;
+      background: #ffffff;
+      font: inherit;
+      font-size: 13px;
+      color: #1d1d1f;
+      outline: none;
+    }
+    [data-theme="dark"] .mc-input-row input {
+      background: #1f2128; border-color: #2a2d36; color: #f5f5f7;
+    }
+
+    .mc-actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .mc-btn {
+      font-size: 13px;
+      padding: 10px 18px;
+      border-radius: 999px;
+      background: #1d1d1f;
+      color: #ffffff;
+      transition: background 0.15s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .mc-btn:hover { background: #000000; }
+    .mc-btn--ghost {
+      background: #ffffff;
+      color: #1d1d1f;
+      border: 1px solid #e6eaf2;
+    }
+    .mc-btn--ghost:hover { background: #f4f6fa; }
+    .mc-btn svg { width: 14px; height: 14px; }
+    .mc-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+    [data-theme="dark"] .mc-btn { background: #ffffff; color: #1d1d1f; }
+    [data-theme="dark"] .mc-btn:hover { background: #e8e8eb; }
+    [data-theme="dark"] .mc-btn--ghost {
+      background: #1f2128; border-color: #2a2d36; color: #f5f5f7;
+    }
+    [data-theme="dark"] .mc-btn--ghost:hover { background: #2a2d36; }
+
+    /* ---- preview pane ---- */
+    .mc-preview-pane {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 14px;
+    }
+    .mc-card-wrap {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      padding: 18px;
+      background: rgba(255, 255, 255, 0.5);
+      border: 1px dashed rgba(0,0,0,0.10);
+      border-radius: 24px;
+    }
+    [data-theme="dark"] .mc-card-wrap {
+      background: rgba(28,30,36,0.4);
+      border-color: rgba(255,255,255,0.10);
+    }
+
+    /* THE CARD ITSELF — fixed pixel size for export */
+    .mc-card {
+      width: 540px;
+      min-height: 540px;
+      padding: 56px 48px 44px;
+      border-radius: 28px;
+      box-sizing: border-box;
+      font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", system-ui, sans-serif;
+      color: #1d1d1f;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 30px 60px -20px rgba(80, 100, 140, 0.25);
+    }
+    .mc-card__title {
+      font-size: 28px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 22px;
+      line-height: 1.3;
+    }
+    .mc-card__body {
+      font-size: 17px;
+      line-height: 1.78;
+      flex: 1;
+      letter-spacing: 0.005em;
+    }
+    .mc-card__body h1,
+    .mc-card__body h2,
+    .mc-card__body h3 {
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin: 18px 0 10px;
+      line-height: 1.35;
+    }
+    .mc-card__body h1 { font-size: 24px; }
+    .mc-card__body h2 { font-size: 21px; }
+    .mc-card__body h3 { font-size: 18px; }
+    .mc-card__body p { margin: 12px 0; }
+    .mc-card__body ul,
+    .mc-card__body ol { margin: 12px 0; padding-left: 22px; }
+    .mc-card__body li { margin: 6px 0; }
+    .mc-card__body strong { font-weight: 700; }
+    .mc-card__body em { font-style: italic; }
+    .mc-card__body a { color: inherit; border-bottom: 1px solid currentColor; }
+    .mc-card__body code {
+      font-family: ui-monospace, SF Mono, Menlo, Consolas, monospace;
+      font-size: 0.92em;
+      padding: 2px 6px;
+      border-radius: 5px;
+      background: rgba(0,0,0,0.06);
+    }
+    .mc-card__body pre {
+      background: rgba(0,0,0,0.06);
+      border-radius: 12px;
+      padding: 14px 16px;
+      overflow-x: auto;
+      margin: 14px 0;
+      font-size: 14px;
+      line-height: 1.55;
+    }
+    .mc-card__body pre code { background: none; padding: 0; }
+    .mc-card__body blockquote {
+      border-left: 3px solid currentColor;
+      padding: 4px 0 4px 14px;
+      opacity: 0.85;
+      margin: 14px 0;
+      font-style: italic;
+    }
+    .mc-card__body hr {
+      border: none;
+      border-top: 1px solid currentColor;
+      opacity: 0.2;
+      margin: 18px 0;
+    }
+    .mc-card__footer {
+      margin-top: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      font-size: 12px;
+      letter-spacing: 0.04em;
+      opacity: 0.7;
+      border-top: 1px solid rgba(0,0,0,0.08);
+      padding-top: 16px;
+    }
+    .mc-card__brand {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 600;
+    }
+    .mc-card__brand-dot {
+      width: 18px; height: 18px;
+      border-radius: 4px;
+      background: #0071e3;
+      color: #fff;
+      display: grid;
+      place-items: center;
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0;
+    }
+
+    /* ---- THEMES (choose one applies a class to .mc-card) ---- */
+    .theme-cream {
+      background: linear-gradient(160deg, #fff8e8, #fff1d6 60%, #ffe9c0);
+      color: #4a3520;
+    }
+    .theme-cream .mc-card__brand-dot { background: #d49b1f; }
+    .theme-cream .mc-card__footer { border-color: rgba(74,53,32,0.18); }
+
+    .theme-mint {
+      background: linear-gradient(160deg, #e8f7ee, #d6f1e3 60%, #c0e9d4);
+      color: #1f4a36;
+    }
+    .theme-mint .mc-card__brand-dot { background: #4cb88a; }
+    .theme-mint .mc-card__footer { border-color: rgba(31,74,54,0.18); }
+
+    .theme-rose {
+      background: linear-gradient(160deg, #ffe9ee, #ffd6e0 60%, #ffc0d2);
+      color: #5a2030;
+    }
+    .theme-rose .mc-card__brand-dot { background: #e8568a; }
+    .theme-rose .mc-card__footer { border-color: rgba(90,32,48,0.18); }
+
+    .theme-sky {
+      background: linear-gradient(160deg, #e6f1ff, #d6e7ff 60%, #c0d8ff);
+      color: #1a3766;
+    }
+    .theme-sky .mc-card__brand-dot { background: #5b8def; }
+    .theme-sky .mc-card__footer { border-color: rgba(26,55,102,0.18); }
+
+    .theme-night {
+      background: linear-gradient(160deg, #1a1c24, #14151c 60%, #0e0f15);
+      color: #e8eaf0;
+    }
+    .theme-night .mc-card__brand-dot { background: #8c7adf; }
+    .theme-night .mc-card__body code { background: rgba(255,255,255,0.10); }
+    .theme-night .mc-card__body pre  { background: rgba(255,255,255,0.06); }
+    .theme-night .mc-card__footer { border-color: rgba(255,255,255,0.10); }
+
+    .theme-paper {
+      background: #fafaf6;
+      color: #2a2a2a;
+      box-shadow: 0 30px 60px -20px rgba(80, 80, 80, 0.20);
+    }
+    .theme-paper .mc-card__brand-dot { background: #1d1d1f; }
+    .theme-paper .mc-card__footer { border-color: rgba(0,0,0,0.10); }
+
+    /* ---- ratio variants ---- */
+    .ratio-square  { width: 540px; min-height: 540px; }
+    .ratio-portrait { width: 540px; min-height: 720px; }   /* 3:4 */
+    .ratio-story   { width: 540px; min-height: 960px; }    /* 9:16 */
+
+    /* toast */
+    .mc-toast {
+      position: fixed;
+      bottom: 32px;
+      left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      background: #1d1d1f;
+      color: #fff;
+      font-size: 13px;
+      padding: 10px 18px;
+      border-radius: 999px;
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.25s ease;
+      z-index: 1000;
+    }
+    .mc-toast.is-show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    @media (max-width: 980px) {
+      .mc-wrap { grid-template-columns: 1fr; }
+      .mc-editor { position: relative; top: 0; }
+      .mc-card { width: 100%; max-width: 540px; }
+      .ratio-square, .ratio-portrait, .ratio-story { width: 100%; max-width: 540px; }
+    }
+    @media (max-width: 560px) {
+      .mc-stage { padding: 64px 14px 48px; }
+      .mc-editor { padding: 14px; border-radius: 20px; }
+      .mc-card { padding: 36px 28px 28px; border-radius: 22px; }
+      .mc-card__title { font-size: 22px; }
+      .mc-card__body { font-size: 15px; line-height: 1.72; }
+    }
+
+    [data-theme="dark"] .mc-title { color: #f5f5f7; }
+    [data-theme="dark"] .mc-eyebrow {
+      background: rgba(30, 32, 38, 0.6);
+      border-color: rgba(255, 255, 255, 0.08);
+      color: #b0b3bb;
+    }
+    [data-theme="dark"] .mc-editor {
+      background: rgba(28, 30, 36, 0.65);
+      border-color: rgba(255, 255, 255, 0.08);
+    }
+  </style>
+</head>
+<body class="page-enter">
+
+  <div class="aurora" aria-hidden="true"></div>
+  <nav class="nav">
+    <div class="nav__inner">
+      <a class="nav__brand" href="index.html">
+        <span class="dot"></span>
+        <span>WYQ</span>
+      </a>
+      <ul class="nav__menu">
+        <li class="nav__has-sub">
+          <button class="nav__sub-toggle" data-nav-sub-toggle type="button">
+            <span>文章</span>
+            <svg class="nav__sub-toggle__chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <polyline points="6 9 12 15 18 9"/>
+            </svg>
+          </button>
+          <div class="nav__submenu" role="menu">
+            <a href="post-006.html" role="menuitem">
+              <svg class="nav__submenu__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="15" y2="17"/></svg>
+              <span>最新文章</span>
+            </a>
+            <a href="archive.html" role="menuitem">
+              <svg class="nav__submenu__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><polyline points="21 8 21 21 3 21 3 8"/><rect x="1" y="3" width="22" height="5"/><line x1="10" y1="12" x2="14" y2="12"/></svg>
+              <span>归档</span>
+            </a>
+            <a href="tags.html" role="menuitem">
+              <svg class="nav__submenu__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
+              <span>按分类</span>
+            </a>
+            <div class="nav__submenu__sep"></div>
+            <a href="feed.xml" role="menuitem">
+              <svg class="nav__submenu__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11a9 9 0 0 1 9 9"/><path d="M4 4a16 16 0 0 1 16 16"/><circle cx="5" cy="19" r="1"/></svg>
+              <span>RSS 订阅</span>
+            </a>
+          </div>
+        </li>
+        <li class="nav__has-sub">
+          <button class="nav__sub-toggle" data-nav-sub-toggle type="button">
+            <span>实验</span>
+            <svg class="nav__sub-toggle__chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <polyline points="6 9 12 15 18 9"/>
+            </svg>
+          </button>
+          <div class="nav__submenu" role="menu">
+            <a href="lab.html" role="menuitem">
+              <svg class="nav__submenu__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8" cy="9" r="3"/><path d="M16.5 17a3.5 3.5 0 0 0 0-7 4.5 4.5 0 0 0-8.5 0"/></svg>
+              <span>天气卡片</span>
+            </a>
+            <a href="dna.html" role="menuitem">
+              <svg class="nav__submenu__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 3c0 6 16 12 16 18"/><path d="M20 3c0 6-16 12-16 18"/><line x1="6" y1="7" x2="18" y2="7"/><line x1="6" y1="17" x2="18" y2="17"/></svg>
+              <span>博客 DNA</span>
+            </a>
+            <a href="share.html" role="menuitem">
+              <svg class="nav__submenu__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+              <span>分享</span>
+            </a>
+            <div class="nav__submenu__sep"></div>
+            <a href="gradient.html" role="menuitem">
+              <svg class="nav__submenu__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3a14.5 14.5 0 0 1 0 18"/></svg>
+              <span>渐变实验室</span>
+            </a>
+            <a href="pomodoro.html" role="menuitem">
+              <svg class="nav__submenu__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="13" r="8"/><path d="M9 2h6"/><path d="M12 8v5l3 2"/></svg>
+              <span>极简番茄钟</span>
+            </a>
+            <a href="md-card.html" role="menuitem" aria-current="page">
+              <svg class="nav__submenu__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M7 9l2 4 2-2 2 2 2-4"/></svg>
+              <span>Markdown 卡片</span>
+            </a>
+          </div>
+        </li>
+        <li><a href="index.html#about">关于</a></li>
+        <li>
+          <button class="nav__search-btn" id="navSearchBtn" aria-label="搜索文章">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="7"/>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+            </svg>
+          </button>
+        </li>
+        <li>
+          <button class="nav__theme" data-theme-toggle aria-label="切换主题">
+            <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+            </svg>
+            <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="4"/>
+              <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/>
+            </svg>
+          </button>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <main class="mc-stage">
+
+    <div class="mc-head">
+      <span class="mc-eyebrow">Lab · 实验项目 06</span>
+      <h1 class="mc-title">Markdown → 卡片</h1>
+      <p class="mc-sub">把笔记 / 摘录 / 短文写成 Markdown · 一键导出小红书风格图片</p>
+    </div>
+
+    <div class="mc-wrap">
+
+      <!-- LEFT: editor -->
+      <div class="mc-editor">
+
+        <div class="mc-editor__toolbar">
+          <span class="mc-tool-label">主题</span>
+          <button class="mc-chip" data-theme="theme-cream">奶油</button>
+          <button class="mc-chip" data-theme="theme-mint">薄荷</button>
+          <button class="mc-chip" data-theme="theme-rose">蜜桃</button>
+          <button class="mc-chip" data-theme="theme-sky">天青</button>
+          <button class="mc-chip" data-theme="theme-paper">米纸</button>
+          <button class="mc-chip" data-theme="theme-night">夜色</button>
+        </div>
+
+        <div class="mc-editor__toolbar">
+          <span class="mc-tool-label">尺寸</span>
+          <button class="mc-chip" data-ratio="ratio-square">方形 1:1</button>
+          <button class="mc-chip" data-ratio="ratio-portrait">竖版 3:4</button>
+          <button class="mc-chip" data-ratio="ratio-story">故事 9:16</button>
+        </div>
+
+        <div class="mc-input-row">
+          <label for="mcTitle">标题</label>
+          <input type="text" id="mcTitle" placeholder="给这张卡片起个标题（可留空）" value="今天的小思考" />
+        </div>
+
+        <div class="mc-input-row">
+          <label for="mcSign">署名</label>
+          <input type="text" id="mcSign" placeholder="底部署名" value="@WYQ" />
+        </div>
+
+        <textarea class="mc-textarea" id="mcText" spellcheck="false">当我们谈论极简的时候，我们谈论的是 **取舍**，而不是空无。
+
+> 删除一切多余 — 然后再删一些。
+
+最近在重构这个博客，发现一条规律：
+
+1. 每多一个组件，维护成本不是 +1，而是 ×N
+2. 真正的好设计，是**让人忘记设计的存在**
+3. 留白比内容重要
+
+`less is more` 不是一句口号，而是一种纪律。</textarea>
+
+        <div class="mc-actions">
+          <button class="mc-btn" id="mcExport">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            <span id="mcExportText">导出 PNG</span>
+          </button>
+          <button class="mc-btn mc-btn--ghost" id="mcCopy">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            复制图片
+          </button>
+          <button class="mc-btn mc-btn--ghost" id="mcSample">示例文本</button>
+        </div>
+
+      </div>
+
+      <!-- RIGHT: live preview -->
+      <div class="mc-preview-pane">
+        <div class="mc-card-wrap">
+          <article class="mc-card theme-cream ratio-square" id="mcCard">
+            <h2 class="mc-card__title" id="mcCardTitle">今天的小思考</h2>
+            <div class="mc-card__body" id="mcCardBody"></div>
+            <div class="mc-card__footer">
+              <span class="mc-card__brand">
+                <span class="mc-card__brand-dot">W</span>
+                <span>WYQ 专属博客</span>
+              </span>
+              <span id="mcCardSign">@WYQ</span>
+            </div>
+          </article>
+        </div>
+        <p class="mc-sub" style="opacity:0.7;">
+          ※ 导出为 1080px 高清 PNG · 完全在浏览器中渲染
+        </p>
+      </div>
+    </div>
+
+  </main>
+
+  <div class="mc-toast" id="mcToast">已复制</div>
+
+  <footer class="footer">
+    <div class="footer__inner">
+      <div>&copy; <span data-year>2026</span> WYQ. All rights reserved.</div>
+      <ul class="footer__links">
+        <li><a href="index.html">主页</a></li>
+        <li><a href="post-006.html">文章</a></li>
+        <li><a href="archive.html">归档</a></li>
+        <li><a href="tags.html">分类</a></li>
+        <li><a href="lab.html">实验</a></li>
+        <li><a href="others.html">其他</a></li>
+        <li><a href="feed.xml">RSS</a></li>
+      </ul>
+    </div>
+  </footer>
+
+  <div class="nav-search__overlay" id="navSearchOverlay"></div>
+  <div class="nav-search" id="navSearchBox">
+    <div class="nav-search__inner">
+      <svg class="nav-search__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="11" cy="11" r="8"/>
+        <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+      </svg>
+      <input type="text" class="nav-search__input" id="navSearchInput" placeholder="搜索文章..." autocomplete="off" />
+    </div>
+    <div class="nav-search__results" id="navSearchResults">
+      <p class="nav-search__hint">输入关键词搜索文章...</p>
+    </div>
+  </div>
+
+  <script src="assets/js/view-transitions.js?v=1"></script>
+  <script src="assets/js/main.js?v=10"></script>
+  <script src="assets/js/posts-data.js?v=2"></script>
+  <script src="assets/js/search.js?v=3"></script>
+  <script src="assets/js/extras.js?v=5"></script>
+
+  <!-- html-to-image: lightweight, no external rasterizer needed -->
+  <script src="https://cdn.jsdelivr.net/npm/html-to-image@1.11.11/dist/html-to-image.min.js"></script>
+
+  <script>
+  (function(){
+    'use strict';
+
+    var THEMES = ['theme-cream','theme-mint','theme-rose','theme-sky','theme-paper','theme-night'];
+    var RATIOS = ['ratio-square','ratio-portrait','ratio-story'];
+    var current = { theme: 'theme-cream', ratio: 'ratio-square' };
+
+    var $ = function(id){ return document.getElementById(id); };
+
+    // ---------- minimal markdown parser (safe, no external lib) ----------
+    function escapeHTML(str){
+      return str.replace(/[&<>"]/g, function(c){
+        return { '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;' }[c];
+      });
+    }
+    function inline(text){
+      // already-escaped HTML expected
+      // code spans first
+      text = text.replace(/`([^`]+)`/g, function(_, c){ return '<code>' + c + '</code>'; });
+      // bold ** and __
+      text = text.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+      text = text.replace(/__([^_]+)__/g, '<strong>$1</strong>');
+      // italic *text* and _text_
+      text = text.replace(/(^|[\s])\*([^*\n]+)\*(?=[\s.,;:!?]|$)/g, '$1<em>$2</em>');
+      text = text.replace(/(^|[\s])_([^_\n]+)_(?=[\s.,;:!?]|$)/g, '$1<em>$2</em>');
+      // links [t](u)
+      text = text.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>');
+      return text;
+    }
+    function md2html(src){
+      var lines = src.replace(/\r\n/g, '\n').split('\n');
+      var out = [];
+      var i = 0;
+      while (i < lines.length) {
+        var line = lines[i];
+
+        // fenced code
+        if (/^```/.test(line)) {
+          var lang = line.replace(/^```/, '').trim();
+          i++;
+          var code = [];
+          while (i < lines.length && !/^```/.test(lines[i])) { code.push(lines[i]); i++; }
+          i++; // skip closing
+          out.push('<pre><code' + (lang ? ' class="lang-' + escapeHTML(lang) + '"' : '') + '>' + escapeHTML(code.join('\n')) + '</code></pre>');
+          continue;
+        }
+
+        // hr
+        if (/^\s*---+\s*$/.test(line)) { out.push('<hr/>'); i++; continue; }
+
+        // headings
+        var h = line.match(/^(#{1,6})\s+(.+)$/);
+        if (h) {
+          var level = Math.min(h[1].length, 3);
+          out.push('<h' + level + '>' + inline(escapeHTML(h[2])) + '</h' + level + '>');
+          i++; continue;
+        }
+
+        // blockquote (consume continuous)
+        if (/^>\s?/.test(line)) {
+          var bq = [];
+          while (i < lines.length && /^>\s?/.test(lines[i])) {
+            bq.push(lines[i].replace(/^>\s?/, ''));
+            i++;
+          }
+          out.push('<blockquote>' + inline(escapeHTML(bq.join(' '))) + '</blockquote>');
+          continue;
+        }
+
+        // unordered list
+        if (/^\s*[-*]\s+/.test(line)) {
+          var ul = [];
+          while (i < lines.length && /^\s*[-*]\s+/.test(lines[i])) {
+            ul.push('<li>' + inline(escapeHTML(lines[i].replace(/^\s*[-*]\s+/, ''))) + '</li>');
+            i++;
+          }
+          out.push('<ul>' + ul.join('') + '</ul>');
+          continue;
+        }
+
+        // ordered list
+        if (/^\s*\d+\.\s+/.test(line)) {
+          var ol = [];
+          while (i < lines.length && /^\s*\d+\.\s+/.test(lines[i])) {
+            ol.push('<li>' + inline(escapeHTML(lines[i].replace(/^\s*\d+\.\s+/, ''))) + '</li>');
+            i++;
+          }
+          out.push('<ol>' + ol.join('') + '</ol>');
+          continue;
+        }
+
+        // empty line -> paragraph break
+        if (/^\s*$/.test(line)) { i++; continue; }
+
+        // paragraph (consume until blank / structural)
+        var para = [line]; i++;
+        while (i < lines.length && !/^\s*$/.test(lines[i]) &&
+               !/^(#|>|```|\s*[-*]\s+|\s*\d+\.\s+|\s*---+\s*$)/.test(lines[i])) {
+          para.push(lines[i]); i++;
+        }
+        out.push('<p>' + inline(escapeHTML(para.join(' '))) + '</p>');
+      }
+      return out.join('\n');
+    }
+
+    // ---------- render ----------
+    var card = $('mcCard');
+    function applyTheme(t){
+      THEMES.forEach(function(c){ card.classList.remove(c); });
+      card.classList.add(t);
+      current.theme = t;
+      Array.prototype.forEach.call(document.querySelectorAll('.mc-chip[data-theme]'), function(b){
+        b.classList.toggle('is-active', b.dataset.theme === t);
+      });
+    }
+    function applyRatio(r){
+      RATIOS.forEach(function(c){ card.classList.remove(c); });
+      card.classList.add(r);
+      current.ratio = r;
+      Array.prototype.forEach.call(document.querySelectorAll('.mc-chip[data-ratio]'), function(b){
+        b.classList.toggle('is-active', b.dataset.ratio === r);
+      });
+    }
+    function renderCard(){
+      var title = $('mcTitle').value.trim();
+      var titleEl = $('mcCardTitle');
+      if (title) { titleEl.textContent = title; titleEl.style.display = ''; }
+      else { titleEl.style.display = 'none'; }
+      $('mcCardBody').innerHTML = md2html($('mcText').value);
+      $('mcCardSign').textContent = $('mcSign').value || '';
+    }
+
+    function showToast(msg){
+      var t = $('mcToast');
+      t.textContent = msg;
+      t.classList.add('is-show');
+      clearTimeout(t._timer);
+      t._timer = setTimeout(function(){ t.classList.remove('is-show'); }, 1600);
+    }
+
+    // ---------- export ----------
+    function exportPNG(){
+      if (!window.htmlToImage) { showToast('图像库尚未加载'); return; }
+      var btn = $('mcExport');
+      var txt = $('mcExportText');
+      var orig = txt.textContent;
+      txt.textContent = '生成中...';
+      btn.disabled = true;
+      var rect = card.getBoundingClientRect();
+      // produce ~1080px wide for high quality
+      var pixelRatio = Math.max(1, Math.min(3, 1080 / rect.width));
+      window.htmlToImage.toPng(card, {
+        pixelRatio: pixelRatio,
+        cacheBust: true,
+        backgroundColor: null
+      }).then(function(dataUrl){
+        var a = document.createElement('a');
+        a.href = dataUrl;
+        a.download = 'wyq-card-' + Date.now() + '.png';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        showToast('已导出 PNG');
+      }).catch(function(err){
+        console.error(err);
+        showToast('导出失败');
+      }).then(function(){
+        txt.textContent = orig;
+        btn.disabled = false;
+      });
+    }
+
+    function copyPNG(){
+      if (!window.htmlToImage) { showToast('图像库尚未加载'); return; }
+      if (!navigator.clipboard || !window.ClipboardItem) {
+        showToast('浏览器不支持复制图片');
+        return;
+      }
+      var rect = card.getBoundingClientRect();
+      var pixelRatio = Math.max(1, Math.min(3, 1080 / rect.width));
+      window.htmlToImage.toBlob(card, {
+        pixelRatio: pixelRatio,
+        cacheBust: true,
+        backgroundColor: null
+      }).then(function(blob){
+        if (!blob) throw new Error('no blob');
+        return navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })]);
+      }).then(function(){
+        showToast('已复制到剪贴板');
+      }).catch(function(){
+        showToast('复制失败，请改用导出');
+      });
+    }
+
+    // ---------- bindings ----------
+    document.querySelectorAll('.mc-chip[data-theme]').forEach(function(b){
+      b.addEventListener('click', function(){ applyTheme(b.dataset.theme); });
+    });
+    document.querySelectorAll('.mc-chip[data-ratio]').forEach(function(b){
+      b.addEventListener('click', function(){ applyRatio(b.dataset.ratio); });
+    });
+    ['mcText','mcTitle','mcSign'].forEach(function(id){
+      $(id).addEventListener('input', renderCard);
+    });
+    $('mcExport').addEventListener('click', exportPNG);
+    $('mcCopy').addEventListener('click', copyPNG);
+    $('mcSample').addEventListener('click', function(){
+      $('mcTitle').value = '今天的小思考';
+      $('mcSign').value = '@WYQ';
+      $('mcText').value = '当我们谈论极简的时候，我们谈论的是 **取舍**，而不是空无。\n\n> 删除一切多余 — 然后再删一些。\n\n最近在重构这个博客，发现一条规律：\n\n1. 每多一个组件，维护成本不是 +1，而是 ×N\n2. 真正的好设计，是**让人忘记设计的存在**\n3. 留白比内容重要\n\n`less is more` 不是一句口号，而是一种纪律。';
+      renderCard();
+    });
+
+    // init
+    applyTheme('theme-cream');
+    applyRatio('ratio-square');
+    renderCard();
+  })();
+  </script>
+</body>
+</html>
