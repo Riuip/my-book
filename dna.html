@@ -1,0 +1,873 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="view-transition" content="same-origin" />
+  <title>博客 DNA — WYQ 专属博客</title>
+  <meta name="description" content="WYQ 博客的写作指纹 - 通过分析全部文章自动生成的写作 DNA 卡片。" />
+  <meta name="theme-color" content="#fbfbfd" media="(prefers-color-scheme: light)" />
+  <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)" />
+  <link rel="stylesheet" href="assets/css/style.css?v=21" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230071e3'/%3E%3Ctext x='50%25' y='62%25' text-anchor='middle' font-family='-apple-system,system-ui,sans-serif' font-weight='700' font-size='14' fill='white'%3EWYQ%3C/text%3E%3C/svg%3E" />
+  <script>
+    (function(){try{var t=localStorage.getItem('wyq-theme');if(t!=='light'&&t!=='dark'){t=window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';}document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
+  </script>
+  <link rel="canonical" href="https://riuip.github.io/my-book/dna.html" />
+
+  <!-- ============================
+       BLOG DNA STYLES (inline, self-contained)
+       ============================ -->
+  <style>
+    .dna-stage {
+      min-height: calc(100vh - 64px - 80px);
+      padding: 80px 24px 64px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 28px;
+      background: transparent; /* let global aurora show through */
+    }
+    .dna-head { max-width: 1080px; width: 100%; text-align: center; }
+    .dna-eyebrow {
+      display: inline-block;
+      font-size: 12px;
+      letter-spacing: 0.18em;
+      color: var(--text-muted, #8a8f9a);
+      text-transform: uppercase;
+      padding: 6px 14px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.7);
+      border: 1px solid rgba(0, 0, 0, 0.06);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+    [data-theme="dark"] .dna-eyebrow {
+      background: rgba(30, 32, 38, 0.6);
+      border-color: rgba(255, 255, 255, 0.08);
+    }
+    .dna-title {
+      margin: 14px 0 6px;
+      font-size: clamp(28px, 4vw, 40px);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--text, #1d1d1f);
+    }
+    .dna-sub { margin: 0; color: var(--text-muted, #6e7280); font-size: 15px; }
+    .dna-actions { margin-top: 18px; display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+
+    /* ---------- DNA card (single big card, capturable as PNG) ---------- */
+    .dna-card {
+      width: 100%;
+      max-width: 1080px;
+      background: rgba(255, 255, 255, 0.65);
+      backdrop-filter: blur(28px) saturate(140%);
+      -webkit-backdrop-filter: blur(28px) saturate(140%);
+      border: 1px solid rgba(255, 255, 255, 0.8);
+      border-radius: 28px;
+      box-shadow:
+        0 1px 0 rgba(255, 255, 255, 0.9) inset,
+        0 30px 60px -20px rgba(80, 100, 140, 0.18),
+        0 8px 24px -8px rgba(80, 100, 140, 0.08);
+      padding: 36px 40px;
+      color: var(--text, #1d1d1f);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+        "Hiragino Sans GB", "Microsoft YaHei", system-ui, sans-serif;
+    }
+    [data-theme="dark"] .dna-card {
+      background: rgba(28, 30, 36, 0.7);
+      border-color: rgba(255, 255, 255, 0.08);
+    }
+
+    /* card header */
+    .dna-card__head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding-bottom: 22px;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+      margin-bottom: 26px;
+    }
+    [data-theme="dark"] .dna-card__head { border-bottom-color: rgba(255, 255, 255, 0.06); }
+    .dna-card__brand { display: flex; align-items: center; gap: 12px; }
+    .dna-card__logo {
+      width: 38px; height: 38px; border-radius: 10px;
+      background: #0071e3; color: #fff;
+      display: grid; place-items: center;
+      font-size: 13px; font-weight: 700; letter-spacing: 0.02em;
+    }
+    .dna-card__t1 { font-size: 16px; font-weight: 600; line-height: 1.1; }
+    .dna-card__t2 { font-size: 12px; color: var(--text-muted, #8a8f9a); margin-top: 2px; }
+    .dna-card__date { font-size: 12px; color: var(--text-muted, #8a8f9a); text-align: right; }
+
+    /* hero numbers row */
+    .dna-stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-bottom: 26px;
+    }
+    .stat {
+      padding: 18px 18px;
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.5);
+      border: 1px solid rgba(220, 225, 235, 0.7);
+    }
+    [data-theme="dark"] .stat {
+      background: rgba(40, 42, 50, 0.5);
+      border-color: rgba(255, 255, 255, 0.06);
+    }
+    .stat__num {
+      font-size: clamp(28px, 4vw, 40px);
+      font-weight: 700;
+      line-height: 1;
+      letter-spacing: -0.03em;
+    }
+    .stat__num sup {
+      font-size: 0.42em;
+      font-weight: 500;
+      color: var(--text-muted, #8a8f9a);
+      margin-left: 3px;
+    }
+    .stat__label {
+      font-size: 12px;
+      color: var(--text-muted, #8a8f9a);
+      margin-top: 8px;
+      letter-spacing: 0.04em;
+    }
+    .stat--blue   .stat__num { color: #5b8def; }
+    .stat--green  .stat__num { color: #4cb88a; }
+    .stat--orange .stat__num { color: #e8946a; }
+    .stat--purple .stat__num { color: #8a7ee0; }
+
+    /* grid: word cloud + radar/distribution */
+    .dna-grid {
+      display: grid;
+      grid-template-columns: 1.3fr 1fr;
+      gap: 18px;
+      margin-bottom: 22px;
+    }
+    .panel {
+      background: rgba(255, 255, 255, 0.5);
+      border: 1px solid rgba(220, 225, 235, 0.7);
+      border-radius: 18px;
+      padding: 18px 20px;
+    }
+    [data-theme="dark"] .panel {
+      background: rgba(40, 42, 50, 0.5);
+      border-color: rgba(255, 255, 255, 0.06);
+    }
+    .panel__title {
+      font-size: 12px;
+      color: var(--text-muted, #8a8f9a);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-bottom: 14px;
+      font-weight: 500;
+    }
+
+    /* word cloud */
+    .wordcloud {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px 10px;
+      align-items: center;
+      min-height: 200px;
+    }
+    .wordcloud__item {
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: rgba(91, 141, 239, 0.08);
+      color: #5b8def;
+      font-weight: 500;
+      transition: transform 0.15s ease, background 0.15s ease;
+      cursor: default;
+      user-select: none;
+    }
+    .wordcloud__item:hover { transform: translateY(-1px); }
+    /* color tiers — driven by rank */
+    .wordcloud__item.t1 { background: rgba(91, 141, 239, 0.16); color: #2e5fd0; font-size: 26px; font-weight: 700; }
+    .wordcloud__item.t2 { background: rgba(138, 126, 224, 0.14); color: #6e5fcf; font-size: 22px; font-weight: 600; }
+    .wordcloud__item.t3 { background: rgba(76, 184, 138, 0.14); color: #2f8e63; font-size: 18px; font-weight: 600; }
+    .wordcloud__item.t4 { background: rgba(232, 148, 106, 0.14); color: #c4632e; font-size: 16px; }
+    .wordcloud__item.t5 { background: rgba(180, 180, 200, 0.16); color: #5b6172; font-size: 14px; }
+
+    /* sentence-length bar chart */
+    .bars { display: flex; flex-direction: column; gap: 8px; }
+    .bar-row { display: grid; grid-template-columns: 80px 1fr 40px; align-items: center; gap: 10px; font-size: 13px; }
+    .bar-row__label { color: var(--text-muted, #8a8f9a); }
+    .bar-row__track { background: rgba(0, 0, 0, 0.05); border-radius: 999px; height: 10px; overflow: hidden; }
+    [data-theme="dark"] .bar-row__track { background: rgba(255, 255, 255, 0.06); }
+    .bar-row__fill { height: 100%; border-radius: inherit; transition: width 1.1s cubic-bezier(0.2, 0.8, 0.2, 1); }
+    .bar-row--short  .bar-row__fill { background: linear-gradient(90deg, #6ee7b7, #4cb88a); }
+    .bar-row--medium .bar-row__fill { background: linear-gradient(90deg, #93c5fd, #5b8def); }
+    .bar-row--long   .bar-row__fill { background: linear-gradient(90deg, #c4b5fd, #8a7ee0); }
+    .bar-row--epic   .bar-row__fill { background: linear-gradient(90deg, #fcd34d, #e8946a); }
+    .bar-row__num { text-align: right; font-variant-numeric: tabular-nums; color: var(--text, #1d1d1f); font-weight: 600; }
+
+    /* category breakdown — donut style segmented bar */
+    .cats { display: flex; flex-direction: column; gap: 10px; margin-top: 10px; }
+    .cat-bar { display: flex; height: 14px; border-radius: 999px; overflow: hidden; background: rgba(0, 0, 0, 0.05); }
+    [data-theme="dark"] .cat-bar { background: rgba(255, 255, 255, 0.06); }
+    .cat-seg { height: 100%; transition: width 1s ease; }
+    .cat-seg--life     { background: #ffd68a; }
+    .cat-seg--thoughts { background: #c4b5fd; }
+    .cat-seg--travel   { background: #6ee7b7; }
+    .cat-seg--tech     { background: #93c5fd; }
+    .cat-seg--meta     { background: #f9a8a8; }
+    .cat-legend { display: flex; flex-wrap: wrap; gap: 8px 14px; font-size: 12px; color: var(--text-muted, #8a8f9a); }
+    .cat-legend__dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 5px; vertical-align: middle; }
+
+    /* mood spectrum */
+    .mood { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+    .mood__cell {
+      padding: 14px 12px;
+      border-radius: 14px;
+      text-align: center;
+      background: rgba(255, 255, 255, 0.5);
+      border: 1px solid rgba(220, 225, 235, 0.7);
+    }
+    [data-theme="dark"] .mood__cell {
+      background: rgba(40, 42, 50, 0.5);
+      border-color: rgba(255, 255, 255, 0.06);
+    }
+    .mood__cell svg { width: 22px; height: 22px; opacity: 0.85; }
+    .mood__num { font-size: 18px; font-weight: 700; margin-top: 6px; line-height: 1; }
+    .mood__label { font-size: 11px; color: var(--text-muted, #8a8f9a); margin-top: 4px; letter-spacing: 0.04em; }
+
+    /* heatmap (months produced) */
+    .heatmap { margin-top: 20px; }
+    .heatmap__grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 4px;
+      margin-top: 10px;
+    }
+    .heat-cell {
+      aspect-ratio: 1 / 1;
+      border-radius: 5px;
+      background: rgba(0, 0, 0, 0.05);
+    }
+    [data-theme="dark"] .heat-cell { background: rgba(255, 255, 255, 0.05); }
+    .heat-cell.l1 { background: rgba(91, 141, 239, 0.20); }
+    .heat-cell.l2 { background: rgba(91, 141, 239, 0.40); }
+    .heat-cell.l3 { background: rgba(91, 141, 239, 0.65); }
+    .heat-cell.l4 { background: rgba(91, 141, 239, 0.90); }
+    .heatmap__labels {
+      display: grid; grid-template-columns: repeat(12, 1fr); gap: 4px;
+      font-size: 10px; color: var(--text-muted, #8a8f9a);
+      margin-top: 6px; text-align: center;
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* footer of card */
+    .dna-card__foot {
+      margin-top: 26px;
+      padding-top: 18px;
+      border-top: 1px solid rgba(0, 0, 0, 0.06);
+      display: flex; align-items: center; justify-content: space-between;
+      font-size: 12px;
+      color: var(--text-muted, #8a8f9a);
+    }
+    [data-theme="dark"] .dna-card__foot { border-top-color: rgba(255, 255, 255, 0.06); }
+    .dna-card__sig {
+      font-family: ui-monospace, "SF Mono", Menlo, monospace;
+      letter-spacing: 0.04em;
+    }
+
+    /* responsive */
+    @media (max-width: 880px) {
+      .dna-stats { grid-template-columns: repeat(2, 1fr); }
+      .dna-grid { grid-template-columns: 1fr; }
+      .mood { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 560px) {
+      .dna-card { padding: 26px 22px; border-radius: 22px; }
+      .dna-card__head { flex-direction: column; align-items: flex-start; gap: 8px; }
+      .dna-stage { padding: 64px 14px 48px; }
+    }
+
+    /* small share button styles */
+    .btn-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 9px 16px;
+      border-radius: 999px;
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      background: rgba(255, 255, 255, 0.7);
+      color: var(--text, #1d1d1f);
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      backdrop-filter: blur(10px);
+      transition: background 0.2s ease, transform 0.2s ease;
+      text-decoration: none;
+    }
+    .btn-pill:hover { background: rgba(255, 255, 255, 0.95); transform: translateY(-1px); }
+    .btn-pill--primary {
+      background: #0071e3;
+      color: #fff;
+      border-color: transparent;
+    }
+    .btn-pill--primary:hover { background: #0058b8; }
+    .btn-pill svg { width: 14px; height: 14px; }
+    [data-theme="dark"] .btn-pill {
+      background: rgba(40, 42, 50, 0.7);
+      border-color: rgba(255, 255, 255, 0.08);
+      color: #f5f5f7;
+    }
+  </style>
+</head>
+<body class="page-enter">
+
+  <!-- AURORA -->
+  <div class="aurora" aria-hidden="true"></div>
+
+  <!-- NAV -->
+  <nav class="nav">
+    <div class="nav__inner">
+      <a class="nav__brand" href="index.html">
+        <span class="dot"></span>
+        <span>WYQ</span>
+      </a>
+      <ul class="nav__menu">
+        <li class="nav__has-sub">
+          <button class="nav__sub-toggle" data-nav-sub-toggle type="button">
+            <span>文章</span>
+            <svg class="nav__sub-toggle__chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <polyline points="6 9 12 15 18 9"/>
+            </svg>
+          </button>
+          <div class="nav__submenu" role="menu">
+            <a href="post-006.html" role="menuitem">
+              <svg class="nav__submenu__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="15" y2="17"/></svg>
+              <span>最新文章</span>
+            </a>
+            <a href="archive.html" role="menuitem">
+              <svg class="nav__submenu__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><polyline points="21 8 21 21 3 21 3 8"/><rect x="1" y="3" width="22" height="5"/><line x1="10" y1="12" x2="14" y2="12"/></svg>
+              <span>归档</span>
+            </a>
+            <a href="tags.html" role="menuitem">
+              <svg class="nav__submenu__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
+              <span>按分类</span>
+            </a>
+            <div class="nav__submenu__sep"></div>
+            <a href="feed.xml" role="menuitem">
+              <svg class="nav__submenu__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11a9 9 0 0 1 9 9"/><path d="M4 4a16 16 0 0 1 16 16"/><circle cx="5" cy="19" r="1"/></svg>
+              <span>RSS 订阅</span>
+            </a>
+          </div>
+        </li>
+        <li class="nav__has-sub">
+          <button class="nav__sub-toggle" data-nav-sub-toggle type="button">
+            <span>实验</span>
+            <svg class="nav__sub-toggle__chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <polyline points="6 9 12 15 18 9"/>
+            </svg>
+          </button>
+          <div class="nav__submenu" role="menu">
+            <a href="lab.html" role="menuitem">
+              <svg class="nav__submenu__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8" cy="9" r="3"/><path d="M16.5 17a3.5 3.5 0 0 0 0-7 4.5 4.5 0 0 0-8.5 0"/></svg>
+              <span>天气卡片</span>
+            </a>
+            <a href="dna.html" role="menuitem" aria-current="page">
+              <svg class="nav__submenu__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 3c0 6 16 12 16 18"/><path d="M20 3c0 6-16 12-16 18"/><line x1="6" y1="7" x2="18" y2="7"/><line x1="6" y1="17" x2="18" y2="17"/></svg>
+              <span>博客 DNA</span>
+            </a>
+            <div class="nav__submenu__sep"></div>
+            <a role="menuitem" aria-disabled="true" style="opacity:0.5;cursor:default;">
+              <svg class="nav__submenu__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 3v4M3 5h4M19 17v4M17 19h4M14 4l1.5 4 4 1.5-4 1.5L14 15l-1.5-4-4-1.5 4-1.5z"/></svg>
+              <span>更多 · 即将推出</span>
+            </a>
+          </div>
+        </li>
+        <li><a href="index.html#about">关于</a></li>
+        <li>
+          <button class="nav__search-btn" id="navSearchBtn" aria-label="搜索文章">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="7"/>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+            </svg>
+          </button>
+        </li>
+        <li>
+          <button class="nav__theme" data-theme-toggle aria-label="切换主题">
+            <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+            </svg>
+            <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="4"/>
+              <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/>
+            </svg>
+          </button>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- ============================
+       DNA STAGE
+       ============================ -->
+  <main class="dna-stage">
+
+    <div class="dna-head">
+      <span class="dna-eyebrow">Lab · 实验项目 02</span>
+      <h1 class="dna-title">博客 DNA · 写作指纹</h1>
+      <p class="dna-sub">扫描全部文章生成的写作画像 · 完全基于浏览器内计算 · 无网络请求</p>
+    </div>
+
+    <!-- ============================
+         DNA CARD (capturable)
+         ============================ -->
+    <article class="dna-card" id="dnaCard" aria-label="博客 DNA 卡片">
+
+      <header class="dna-card__head">
+        <div class="dna-card__brand">
+          <div class="dna-card__logo">WYQ</div>
+          <div>
+            <div class="dna-card__t1">WYQ 专属博客 · DNA</div>
+            <div class="dna-card__t2">基于全部已发布文章自动生成</div>
+          </div>
+        </div>
+        <div class="dna-card__date">
+          <div id="dnaDate">2026 · 05 · 17</div>
+          <div id="dnaPostsRange" style="margin-top:2px;">--</div>
+        </div>
+      </header>
+
+      <!-- HERO STATS -->
+      <section class="dna-stats">
+        <div class="stat stat--blue">
+          <div class="stat__num"><span id="statPosts">0</span></div>
+          <div class="stat__label">已发布文章</div>
+        </div>
+        <div class="stat stat--green">
+          <div class="stat__num"><span id="statChars">0</span></div>
+          <div class="stat__label">总字数</div>
+        </div>
+        <div class="stat stat--orange">
+          <div class="stat__num"><span id="statAvgChars">0</span></div>
+          <div class="stat__label">平均篇幅</div>
+        </div>
+        <div class="stat stat--purple">
+          <div class="stat__num"><span id="statRichness">0</span><sup>%</sup></div>
+          <div class="stat__label">词汇丰富度</div>
+        </div>
+      </section>
+
+      <!-- MAIN GRID -->
+      <section class="dna-grid">
+
+        <div class="panel">
+          <div class="panel__title">Top 高频实词</div>
+          <div class="wordcloud" id="wordcloud"></div>
+        </div>
+
+        <div>
+          <div class="panel" style="margin-bottom:14px;">
+            <div class="panel__title">句长分布</div>
+            <div class="bars" id="sentenceBars"></div>
+          </div>
+          <div class="panel">
+            <div class="panel__title">分类构成</div>
+            <div class="cat-bar" id="catBar"></div>
+            <div class="cat-legend" id="catLegend" style="margin-top:10px;"></div>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- MOOD spectrum -->
+      <section class="panel">
+        <div class="panel__title">情绪光谱 — 标点指纹</div>
+        <div class="mood" id="moodSpectrum"></div>
+      </section>
+
+      <!-- HEATMAP of months -->
+      <section class="panel heatmap" style="margin-top:18px;">
+        <div class="panel__title">写作热力图 · 当年</div>
+        <div class="heatmap__grid" id="heatGrid"></div>
+        <div class="heatmap__labels" id="heatLabels"></div>
+      </section>
+
+      <footer class="dna-card__foot">
+        <div class="dna-card__sig" id="dnaSig">DNA-WYQ-XXXXXX</div>
+        <div>riuip.github.io/my-book</div>
+      </footer>
+
+    </article>
+
+    <div class="dna-actions">
+      <button class="btn-pill btn-pill--primary" id="dnaShareBtn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/>
+          <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
+        </svg>
+        <span>分享 / 复制链接</span>
+      </button>
+      <a class="btn-pill" href="archive.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="21 8 21 21 3 21 3 8"/><rect x="1" y="3" width="22" height="5"/><line x1="10" y1="12" x2="14" y2="12"/>
+        </svg>
+        <span>看所有文章</span>
+      </a>
+    </div>
+
+    <p class="dna-sub" style="opacity:0.7;font-size:12px;">
+      ※ 全部计算在你浏览器内完成，零网络请求
+    </p>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer__inner">
+      <div>&copy; <span data-year>2026</span> WYQ. All rights reserved.</div>
+      <ul class="footer__links">
+        <li><a href="index.html">主页</a></li>
+        <li><a href="post-006.html">文章</a></li>
+        <li><a href="archive.html">归档</a></li>
+        <li><a href="tags.html">分类</a></li>
+        <li><a href="lab.html">实验</a></li>
+        <li><a href="others.html">其他</a></li>
+        <li><a href="feed.xml">RSS</a></li>
+      </ul>
+    </div>
+  </footer>
+
+  <!-- DESKTOP SEARCH OVERLAY -->
+  <div class="nav-search__overlay" id="navSearchOverlay"></div>
+  <div class="nav-search" id="navSearchBox">
+    <div class="nav-search__inner">
+      <svg class="nav-search__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="11" cy="11" r="8"/>
+        <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+      </svg>
+      <input type="text" class="nav-search__input" id="navSearchInput" placeholder="搜索文章..." autocomplete="off" />
+    </div>
+    <div class="nav-search__results" id="navSearchResults">
+      <p class="nav-search__hint">输入关键词搜索文章...</p>
+    </div>
+  </div>
+
+  <script src="assets/js/view-transitions.js?v=1"></script>
+  <script src="assets/js/main.js?v=10"></script>
+  <script src="assets/js/posts-data.js?v=2"></script>
+  <script src="assets/js/search.js?v=3"></script>
+  <script src="assets/js/extras.js?v=5"></script>
+
+  <!-- ============================
+       BLOG DNA — analyzer + render
+       ============================ -->
+  <script>
+  (function () {
+    'use strict';
+
+    // Chinese stop-words list — function words that bloat any cloud
+    var STOP = new Set((
+      '的 了 和 是 就 都 而 及 與 与 著 或 一个 一個 没 沒 有 在 也 不 你 我 他 她 它 我们 我們 ' +
+      '你们 他們 她们 它们 这 这个 这些 这种 这样 那 那个 那些 那种 那样 比 给 給 把 被 让 ' +
+      '让 让我 让我们 还 還 都 又 但 但是 不过 不過 因为 因爲 因為 所以 如果 虽然 雖然 ' +
+      '即使 哪怕 然后 然後 再 再说 还是 還是 而且 并且 並且 或者 跟 同 像 似乎 应该 應該 ' +
+      '可以 可能 也许 也許 一些 一点 一點 一下 一下子 一直 一定 一切 现在 現在 时候 時候 ' +
+      '事情 之前 之后 之後 上 下 中 里 裡 外 内 内部 內部 之 大 小 多 少 长 長 短 高 低 老 新 ' +
+      '会 會 要 想 看 走 来 來 去 起 起来 起來 上去 上来 上來 出去 进 進 出 入 离 離 ' +
+      '什么 甚麼 怎么 怎麼 为什么 为什麽 為什麼 哪 哪里 哪裡 谁 誰 几 幾 多少 多 ' +
+      '吗 呢 啊 哦 嗯 哈 哈哈 嘛 吧 啦 喏 哟 唷 噢 嘿 哇 哎 唉 ' +
+      '其 其他 其它 此 这次 這次 那次 那 这 一 二 三 四 五 六 七 八 九 十 百 千 万 萬 ' +
+      '为 為 与 與 至 到 从 從 由 向 朝 ' +
+      'on of in to is it as at be we he or so do an by ' +
+      'the and for not but you they his she are was were has have had can will would could ' +
+      'this that these those who what when where why how which too very just only also ' +
+      'a am no yes if then than else from with into out up down off over under about ' +
+      'one two three four five six seven eight nine ten my your our its their him her them me us ' +
+      'i io ii iii'
+    ).split(/\s+/));
+
+    function $(id){ return document.getElementById(id); }
+    function pad2(n){ return n < 10 ? '0' + n : '' + n; }
+
+    // ----- analyze -----
+    function analyze(posts) {
+      // join all bodies
+      var allText = posts.map(function (p) { return p.body || ''; }).join(' ');
+      var titles = posts.map(function (p) { return p.title || ''; }).join(' ');
+      var fullText = titles + ' ' + allText;
+
+      // total chars (CJK + ASCII letters)
+      var charCount = (fullText.match(/[\u4e00-\u9fff\u3400-\u4dbfA-Za-z]/g) || []).length;
+
+      // sentences split — split on Chinese & English terminators
+      var sentences = fullText.split(/[。！？!?\n]+/).filter(function (s) {
+        return /[\u4e00-\u9fffA-Za-z]/.test(s) && s.trim().length > 1;
+      });
+      var sentenceCount = sentences.length;
+      var avgSentenceLen = sentenceCount ? Math.round(charCount / sentenceCount) : 0;
+
+      // sentence length buckets (CJK chars per sentence)
+      var buckets = { short: 0, medium: 0, long: 0, epic: 0 };
+      sentences.forEach(function (s) {
+        var n = (s.match(/[\u4e00-\u9fff\u3400-\u4dbfA-Za-z]/g) || []).length;
+        if (n < 10) buckets.short++;
+        else if (n < 25) buckets.medium++;
+        else if (n < 50) buckets.long++;
+        else buckets.epic++;
+      });
+
+      // word frequency — extract CJK 2-grams (heuristic chinese tokenization)
+      // and english words >= 2 chars
+      var freq = {};
+      // CJK 2-grams
+      var cjkChunks = fullText.match(/[\u4e00-\u9fff\u3400-\u4dbf]+/g) || [];
+      cjkChunks.forEach(function (chunk) {
+        for (var i = 0; i + 2 <= chunk.length; i++) {
+          var bigram = chunk.substr(i, 2);
+          if (STOP.has(bigram)) continue;
+          freq[bigram] = (freq[bigram] || 0) + 1;
+        }
+        // also collect 3-grams that look like proper nouns / phrases (boost score)
+        for (var j = 0; j + 3 <= chunk.length; j++) {
+          var trigram = chunk.substr(j, 3);
+          if (STOP.has(trigram)) continue;
+          // 3-grams get a bonus weight via separate map
+          freq[trigram] = (freq[trigram] || 0) + 1;
+        }
+      });
+      // English words
+      var enWords = fullText.toLowerCase().match(/[a-z][a-z0-9_-]{1,}/g) || [];
+      enWords.forEach(function (w) {
+        if (STOP.has(w)) return;
+        if (w.length < 2) return;
+        if (/^\d+$/.test(w)) return;
+        freq[w] = (freq[w] || 0) + 1;
+      });
+
+      // post-process: remove n-grams that are sub-strings of higher-count n-grams (keep longer)
+      // simple version: sort entries by count desc, then dedupe overlap
+      var entries = Object.keys(freq).map(function (k) { return [k, freq[k]]; });
+      // filter min count
+      entries = entries.filter(function (e) {
+        if (e[1] < 2) return false;
+        // drop bigrams whose count == count of any trigram containing them (subset)
+        return true;
+      });
+      // dedupe: if a 2-gram is fully contained in a 3-gram with count >= half of bigram, drop the bigram
+      var byCount = entries.slice().sort(function (a, b) { return b[1] - a[1]; });
+      var keep = [];
+      var seenSubstr = {};
+      byCount.forEach(function (e) {
+        var w = e[0];
+        var c = e[1];
+        // is `w` a substring of any longer token already kept with comparable count?
+        var redundant = false;
+        for (var i = 0; i < keep.length; i++) {
+          var bigger = keep[i][0];
+          if (bigger.length > w.length && bigger.indexOf(w) !== -1 && keep[i][1] * 2 >= c) {
+            redundant = true; break;
+          }
+          // reverse: if w is longer and contains a bigger one already kept
+          if (w.length > bigger.length && w.indexOf(bigger) !== -1) {
+            // remove the smaller one if its count is similar
+            if (c * 2 >= keep[i][1]) {
+              keep.splice(i, 1); i--;
+            }
+          }
+        }
+        if (!redundant) keep.push(e);
+      });
+
+      var topWords = keep.slice(0, 30);
+
+      // vocabulary richness — type/token ratio (English-only token set + CJK bigram set)
+      var allTokens = enWords.length + cjkChunks.reduce(function (acc, c) { return acc + Math.max(0, c.length - 1); }, 0);
+      var uniqueTokens = Object.keys(freq).length;
+      var richness = allTokens ? Math.round((uniqueTokens / allTokens) * 100) : 0;
+
+      // mood / punctuation indicators
+      var exclamCount = (fullText.match(/[!！]/g) || []).length;
+      var questCount = (fullText.match(/[?？]/g) || []).length;
+      var commaCount = (fullText.match(/[，,]/g) || []).length;
+      var quoteCount = (fullText.match(/[“”""「」『』]/g) || []).length / 2;
+
+      // category breakdown
+      var byCat = {};
+      posts.forEach(function (p) {
+        var k = p.catKey || 'other';
+        byCat[k] = (byCat[k] || 0) + 1;
+      });
+
+      // monthly heatmap (current year)
+      var nowYear = new Date().getFullYear();
+      var monthCount = new Array(12).fill(0);
+      posts.forEach(function (p) {
+        if (!p.date) return;
+        var parts = p.date.split('-');
+        if (+parts[0] !== nowYear) return;
+        var m = +parts[1] - 1;
+        if (m >= 0 && m < 12) monthCount[m]++;
+      });
+
+      // date range
+      var dates = posts.map(function (p) { return p.date; }).filter(Boolean).sort();
+      var firstDate = dates[0] || '';
+      var lastDate = dates[dates.length - 1] || '';
+
+      return {
+        postsCount: posts.length,
+        charCount: charCount,
+        avgChars: posts.length ? Math.round(charCount / posts.length) : 0,
+        avgSentenceLen: avgSentenceLen,
+        sentenceCount: sentenceCount,
+        sentenceBuckets: buckets,
+        topWords: topWords,
+        richness: richness,
+        exclamCount: exclamCount,
+        questCount: questCount,
+        commaCount: commaCount,
+        quoteCount: Math.round(quoteCount),
+        byCat: byCat,
+        monthCount: monthCount,
+        firstDate: firstDate,
+        lastDate: lastDate,
+        uniqueTokens: uniqueTokens
+      };
+    }
+
+    // ----- render -----
+    function render(d) {
+      // header date + range
+      var now = new Date();
+      $('dnaDate').textContent = now.getFullYear() + ' · ' + pad2(now.getMonth()+1) + ' · ' + pad2(now.getDate());
+      $('dnaPostsRange').textContent = (d.firstDate || '?') + ' → ' + (d.lastDate || '?');
+
+      // stats
+      $('statPosts').textContent = d.postsCount;
+      $('statChars').textContent = d.charCount.toLocaleString('zh-CN');
+      $('statAvgChars').textContent = d.avgChars.toLocaleString('zh-CN');
+      $('statRichness').textContent = d.richness;
+
+      // word cloud
+      var cloud = '';
+      d.topWords.forEach(function (w, i) {
+        var tier = i < 3 ? 't1'
+                 : i < 8 ? 't2'
+                 : i < 14 ? 't3'
+                 : i < 22 ? 't4' : 't5';
+        cloud += '<span class="wordcloud__item ' + tier + '" title="出现 ' + w[1] + ' 次">' + w[0] + '</span>';
+      });
+      if (!d.topWords.length) cloud = '<span style="color:var(--text-muted);">未抽取到关键词</span>';
+      $('wordcloud').innerHTML = cloud;
+
+      // sentence bars
+      var b = d.sentenceBuckets;
+      var maxB = Math.max(b.short, b.medium, b.long, b.epic, 1);
+      var barLabels = [
+        ['short',  '短句 (<10字)', b.short],
+        ['medium', '中句 (10-25)', b.medium],
+        ['long',   '长句 (25-50)', b.long],
+        ['epic',   '巨长 (>50)',  b.epic]
+      ];
+      var barsHtml = '';
+      barLabels.forEach(function (row) {
+        var pct = (row[2] / maxB) * 100;
+        barsHtml += '<div class="bar-row bar-row--' + row[0] + '">' +
+                      '<div class="bar-row__label">' + row[1] + '</div>' +
+                      '<div class="bar-row__track"><div class="bar-row__fill" style="width:0%" data-target="' + pct + '"></div></div>' +
+                      '<div class="bar-row__num">' + row[2] + '</div>' +
+                    '</div>';
+      });
+      $('sentenceBars').innerHTML = barsHtml;
+      // animate
+      requestAnimationFrame(function () {
+        var fills = document.querySelectorAll('#sentenceBars .bar-row__fill');
+        fills.forEach(function (el) { el.style.width = el.getAttribute('data-target') + '%'; });
+      });
+
+      // category bar
+      var catNames = { life:'生活', thoughts:'思考', travel:'旅行', tech:'技术', meta:'起步', other:'其他' };
+      var catKeys = Object.keys(d.byCat);
+      var totalCats = catKeys.reduce(function (s, k) { return s + d.byCat[k]; }, 0);
+      var catSegHtml = '';
+      var catLegHtml = '';
+      catKeys.forEach(function (k) {
+        var pct = (d.byCat[k] / totalCats) * 100;
+        catSegHtml += '<div class="cat-seg cat-seg--' + k + '" style="width:' + pct.toFixed(1) + '%" title="' + catNames[k] + '：' + d.byCat[k] + ' 篇"></div>';
+        catLegHtml += '<span><span class="cat-legend__dot" style="background:' + catColor(k) + '"></span>' +
+                      catNames[k] + ' · ' + d.byCat[k] + '</span>';
+      });
+      $('catBar').innerHTML = catSegHtml;
+      $('catLegend').innerHTML = catLegHtml;
+
+      // mood spectrum
+      var moods = [
+        { k: 'exclam', label: '感叹', value: d.exclamCount, icon: '<svg viewBox="0 0 24 24" fill="none" stroke="#e8946a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="3" x2="12" y2="14"/><circle cx="12" cy="19" r="1.2" fill="#e8946a"/></svg>' },
+        { k: 'quest',  label: '提问', value: d.questCount,  icon: '<svg viewBox="0 0 24 24" fill="none" stroke="#5b8def" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 0 1 5 0c0 1.5-2.5 2-2.5 4"/><circle cx="12" cy="17" r="0.8" fill="#5b8def"/></svg>' },
+        { k: 'comma',  label: '停顿', value: d.commaCount,  icon: '<svg viewBox="0 0 24 24" fill="none" stroke="#8a7ee0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="12" x2="18" y2="12"/><line x1="6" y1="16" x2="11" y2="16"/></svg>' },
+        { k: 'quote',  label: '引述', value: d.quoteCount,  icon: '<svg viewBox="0 0 24 24" fill="none" stroke="#4cb88a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21c3 0 6-2 6-8V3H3v8h4"/><path d="M15 21c3 0 6-2 6-8V3h-6v8h4"/></svg>' }
+      ];
+      $('moodSpectrum').innerHTML = moods.map(function (m) {
+        return '<div class="mood__cell">' + m.icon +
+               '<div class="mood__num">' + m.value.toLocaleString() + '</div>' +
+               '<div class="mood__label">' + m.label + '</div></div>';
+      }).join('');
+
+      // heatmap
+      var max = Math.max.apply(null, d.monthCount, 1);
+      var heatHtml = '';
+      var labelHtml = '';
+      d.monthCount.forEach(function (n, i) {
+        var lvl = n === 0 ? '' :
+                  n / max < 0.25 ? 'l1' :
+                  n / max < 0.5  ? 'l2' :
+                  n / max < 0.75 ? 'l3' : 'l4';
+        heatHtml += '<div class="heat-cell ' + lvl + '" title="' + (i+1) + ' 月 · ' + n + ' 篇"></div>';
+        labelHtml += '<span>' + (i+1) + '</span>';
+      });
+      $('heatGrid').innerHTML = heatHtml;
+      $('heatLabels').innerHTML = labelHtml;
+
+      // signature — based on stable hash of first/last dates + post count
+      var sig = (d.postsCount + '-' + d.charCount + '-' + d.lastDate)
+        .split('').reduce(function (a, c) { return ((a << 5) - a + c.charCodeAt(0)) | 0; }, 0);
+      $('dnaSig').textContent = 'DNA-WYQ-' + Math.abs(sig).toString(36).toUpperCase().padStart(6, '0').slice(0, 6);
+    }
+
+    function catColor(k) {
+      return ({
+        life:'#ffd68a', thoughts:'#c4b5fd', travel:'#6ee7b7',
+        tech:'#93c5fd', meta:'#f9a8a8', other:'#cbd5e1'
+      })[k] || '#cbd5e1';
+    }
+
+    // ----- share button -----
+    $('dnaShareBtn').addEventListener('click', function () {
+      var url = window.location.href;
+      if (navigator.share) {
+        navigator.share({ title: '我的博客 DNA · WYQ', url: url }).catch(function(){});
+      } else if (navigator.clipboard) {
+        navigator.clipboard.writeText(url).then(function () {
+          var btn = document.getElementById('dnaShareBtn');
+          var orig = btn.innerHTML;
+          btn.innerHTML = '<span>✓ 已复制链接</span>';
+          setTimeout(function () { btn.innerHTML = orig; }, 1800);
+        });
+      } else {
+        prompt('复制此链接：', url);
+      }
+    });
+
+    // ----- init -----
+    var posts = window.WYQ_POSTS || [];
+    if (!posts.length) {
+      $('wordcloud').innerHTML = '<span style="color:var(--text-muted);">没有可分析的文章</span>';
+      return;
+    }
+    var data = analyze(posts);
+    render(data);
+  })();
+  </script>
+
+</body>
+</html>
