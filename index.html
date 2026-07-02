@@ -12,8 +12,19 @@
   <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)" />
   <link rel="stylesheet" href="assets/css/style.css?v=21" />
   <style id="native-nav-menu-fix">
-    .nav, .nav__inner, .nav__menu, .nav__menu > li, details.nav__has-sub { overflow: visible !important; }
-    details.nav__has-sub { position: relative !important; display: block !important; }
+    .nav,
+    .nav__inner,
+    .nav__menu,
+    .nav__menu > li,
+    details.nav__has-sub {
+      overflow: visible !important;
+    }
+
+    details.nav__has-sub {
+      position: relative !important;
+      display: block !important;
+    }
+
     details.nav__has-sub > summary.nav__sub-toggle {
       list-style: none !important;
       cursor: pointer !important;
@@ -24,17 +35,38 @@
       border-radius: 999px !important;
       color: var(--text-soft) !important;
       user-select: none !important;
+      transition: background .2s ease, color .2s ease, box-shadow .2s ease, transform .2s ease !important;
     }
-    details.nav__has-sub > summary.nav__sub-toggle::-webkit-details-marker { display: none !important; }
+
+    details.nav__has-sub > summary.nav__sub-toggle::-webkit-details-marker {
+      display: none !important;
+    }
+
+    details.nav__has-sub > summary.nav__sub-toggle:hover,
+    details.nav__has-sub.is-visible > summary.nav__sub-toggle,
     details.nav__has-sub[open] > summary.nav__sub-toggle {
       background: rgba(255,255,255,.58) !important;
       color: var(--text) !important;
       box-shadow: inset 0 1px 0 rgba(255,255,255,.62) !important;
     }
+
+    [data-theme="dark"] details.nav__has-sub > summary.nav__sub-toggle:hover,
+    [data-theme="dark"] details.nav__has-sub.is-visible > summary.nav__sub-toggle,
     [data-theme="dark"] details.nav__has-sub[open] > summary.nav__sub-toggle {
       background: rgba(255,255,255,.10) !important;
       box-shadow: none !important;
     }
+
+    details.nav__has-sub .nav__sub-toggle__chevron {
+      transition: transform .28s cubic-bezier(.2,.7,.2,1) !important;
+      transform-origin: 50% 50% !important;
+    }
+
+    details.nav__has-sub.is-visible .nav__sub-toggle__chevron,
+    details.nav__has-sub[open] .nav__sub-toggle__chevron {
+      transform: rotate(180deg) !important;
+    }
+
     details.nav__has-sub > .nav__submenu {
       display: block !important;
       position: absolute !important;
@@ -44,31 +76,63 @@
       min-width: 270px !important;
       padding: 12px !important;
       border-radius: 28px !important;
-      background: rgba(251,251,253,.84) !important;
-      border: 1px solid rgba(255,255,255,.62) !important;
-      box-shadow: 0 24px 70px rgba(0,0,0,.20), inset 0 1px 0 rgba(255,255,255,.72) !important;
-      backdrop-filter: saturate(200%) blur(32px) !important;
-      -webkit-backdrop-filter: saturate(200%) blur(32px) !important;
+      background: linear-gradient(135deg, rgba(255,255,255,.86), rgba(246,248,255,.72)) !important;
+      border: 1px solid rgba(255,255,255,.66) !important;
+      box-shadow: 0 24px 70px rgba(0,0,0,.20), inset 0 1px 0 rgba(255,255,255,.78) !important;
+      backdrop-filter: saturate(210%) blur(36px) !important;
+      -webkit-backdrop-filter: saturate(210%) blur(36px) !important;
       opacity: 0 !important;
       visibility: hidden !important;
       pointer-events: none !important;
-      transform: translateY(-8px) scale(.96) !important;
+      transform: translateY(-12px) scale(.94) !important;
+      filter: blur(12px) saturate(170%) brightness(1.08) !important;
       transform-origin: 90% 0 !important;
-      transition: opacity .22s ease, visibility .22s ease, transform .28s cubic-bezier(.2,.7,.2,1) !important;
+      transition:
+        opacity .20s ease,
+        visibility .20s ease,
+        transform .30s cubic-bezier(.16,.84,.28,1),
+        filter .26s ease !important;
       z-index: 10020 !important;
+      overflow: hidden !important;
     }
-    details.nav__has-sub[open] > .nav__submenu {
+
+    details.nav__has-sub > .nav__submenu::before {
+      content: "" !important;
+      position: absolute !important;
+      inset: -40% !important;
+      background:
+        radial-gradient(circle at 20% 10%, rgba(0,113,227,.16), transparent 34%),
+        radial-gradient(circle at 88% 18%, rgba(191,90,242,.14), transparent 36%),
+        radial-gradient(circle at 50% 120%, rgba(90,200,250,.12), transparent 42%) !important;
+      opacity: .95 !important;
+      pointer-events: none !important;
+    }
+
+    details.nav__has-sub.is-visible[open] > .nav__submenu {
       opacity: 1 !important;
       visibility: visible !important;
       pointer-events: auto !important;
       transform: translateY(0) scale(1) !important;
+      filter: blur(0) saturate(100%) brightness(1) !important;
     }
+
+    details.nav__has-sub.is-closing[open] > .nav__submenu {
+      opacity: 0 !important;
+      visibility: visible !important;
+      pointer-events: none !important;
+      transform: translateY(-12px) scale(.94) !important;
+      filter: blur(14px) saturate(190%) brightness(1.12) !important;
+    }
+
     [data-theme="dark"] details.nav__has-sub > .nav__submenu {
-      background: rgba(22,22,24,.84) !important;
+      background: linear-gradient(135deg, rgba(22,22,24,.86), rgba(30,32,44,.72)) !important;
       border-color: rgba(255,255,255,.13) !important;
-      box-shadow: 0 24px 70px rgba(0,0,0,.50), inset 0 1px 0 rgba(255,255,255,.08) !important;
+      box-shadow: 0 24px 70px rgba(0,0,0,.52), inset 0 1px 0 rgba(255,255,255,.08) !important;
     }
+
     details.nav__has-sub > .nav__submenu a {
+      position: relative !important;
+      z-index: 1 !important;
       display: flex !important;
       align-items: center !important;
       gap: 12px !important;
@@ -76,18 +140,31 @@
       border-radius: 18px !important;
       color: var(--text-soft) !important;
       background: transparent !important;
+      transition: background .18s ease, color .18s ease, transform .18s ease !important;
     }
+
     details.nav__has-sub > .nav__submenu a:hover {
       color: var(--accent) !important;
       background: rgba(0,113,227,.12) !important;
+      transform: translateY(-1px) !important;
     }
-    @media(max-width:720px){ details.nav__has-sub > .nav__submenu{ right:-8px !important; min-width:230px !important; } }
+
+    [data-theme="dark"] details.nav__has-sub > .nav__submenu a:hover {
+      background: rgba(41,151,255,.16) !important;
+    }
+
+    @media(max-width:720px){
+      details.nav__has-sub > .nav__submenu{
+        right:-8px !important;
+        min-width:230px !important;
+        border-radius:24px !important;
+      }
+    }
   </style>
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230071e3'/%3E%3Ctext x='50%25' y='62%25' text-anchor='middle' font-family='-apple-system,system-ui,sans-serif' font-weight='700' font-size='14' fill='white'%3EWYQ%3C/text%3E%3C/svg%3E" />
   <script>
     (function(){try{var t=localStorage.getItem('wyq-theme');if(t!=='light'&&t!=='dark'){t=window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';}document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
   </script>
-  <!-- SEO: Open Graph -->
   <meta property="og:type" content="website" />
   <meta property="og:title" content="WYQ 专属博客" />
   <meta property="og:description" content="WYQ 的个人空间。记录生活、思考与日常。" />
@@ -100,40 +177,17 @@
   <meta property="og:image:height" content="630" />
   <meta property="og:image" content="https://riuip.github.io/my-book/assets/og/default.svg" />
   <meta property="og:image:type" content="image/svg+xml" />
-  <!-- SEO: Twitter Card -->
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="WYQ 专属博客" />
   <meta name="twitter:description" content="WYQ 的个人空间。记录生活、思考与日常。" />
   <meta name="twitter:image" content="https://riuip.github.io/my-book/assets/og/default.png" />
-  <!-- SEO: Canonical -->
   <link rel="canonical" href="https://riuip.github.io/my-book/" />
   <link rel="alternate" type="application/rss+xml" title="WYQ 专属博客 RSS" href="feed.xml" />
   <link rel="search" type="application/opensearchdescription+xml" title="WYQ Blog" href="opensearch.xml" />
   <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png" />
   <link rel="manifest" href="manifest.json" />
-  <!-- SEO: JSON-LD Structured Data -->
   <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@graph": [
-      {
-        "@type": "WebSite",
-        "@id": "https://riuip.github.io/my-book/#website",
-        "url": "https://riuip.github.io/my-book/",
-        "name": "WYQ 专属博客",
-        "description": "WYQ 的个人空间。记录生活、思考与日常。",
-        "inLanguage": "zh-CN",
-        "publisher": { "@id": "https://riuip.github.io/my-book/#person" },
-        "potentialAction": {
-          "@type": "SearchAction",
-          "target": { "@type": "EntryPoint", "urlTemplate": "https://riuip.github.io/my-book/search.html?q={search_term_string}" },
-          "query-input": "required name=search_term_string"
-        }
-      },
-      { "@type": "Person", "@id": "https://riuip.github.io/my-book/#person", "name": "WYQ", "url": "https://riuip.github.io/my-book/", "email": "wyq200707@qq.com", "sameAs": ["https://github.com/Riuip"] },
-      { "@type": "Blog", "@id": "https://riuip.github.io/my-book/#blog", "url": "https://riuip.github.io/my-book/", "name": "WYQ 专属博客", "inLanguage": "zh-CN", "author": { "@id": "https://riuip.github.io/my-book/#person" }, "publisher": { "@id": "https://riuip.github.io/my-book/#person" } }
-    ]
-  }
+  {"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://riuip.github.io/my-book/#website","url":"https://riuip.github.io/my-book/","name":"WYQ 专属博客","description":"WYQ 的个人空间。记录生活、思考与日常。","inLanguage":"zh-CN","publisher":{"@id":"https://riuip.github.io/my-book/#person"},"potentialAction":{"@type":"SearchAction","target":{"@type":"EntryPoint","urlTemplate":"https://riuip.github.io/my-book/search.html?q={search_term_string}"},"query-input":"required name=search_term_string"}},{"@type":"Person","@id":"https://riuip.github.io/my-book/#person","name":"WYQ","url":"https://riuip.github.io/my-book/","email":"wyq200707@qq.com","sameAs":["https://github.com/Riuip"]},{"@type":"Blog","@id":"https://riuip.github.io/my-book/#blog","url":"https://riuip.github.io/my-book/","name":"WYQ 专属博客","inLanguage":"zh-CN","author":{"@id":"https://riuip.github.io/my-book/#person"},"publisher":{"@id":"https://riuip.github.io/my-book/#person"}}]}
   </script>
 </head>
 <body class="page-enter">
@@ -215,8 +269,41 @@
   <button class="back-to-top" id="back-to-top" aria-label="返回顶部"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg></button>
 
   <script src="assets/js/view-transitions.js?v=1"></script>
-  <script src="assets/js/main.js?v=14"></script>
-  <script>document.addEventListener('toggle',function(e){if(e.target.matches('details.nav__has-sub')&&e.target.open){document.querySelectorAll('details.nav__has-sub[open]').forEach(function(d){if(d!==e.target)d.removeAttribute('open');});}},true);</script>
+  <script src="assets/js/main.js?v=15"></script>
+  <script>
+  (function(){
+    var ANIM_MS = 260;
+    function allMenus(){ return Array.prototype.slice.call(document.querySelectorAll('details.nav__has-sub')); }
+    function openMenu(d){
+      closeMenus(d);
+      d.classList.remove('is-closing');
+      d.setAttribute('open','');
+      requestAnimationFrame(function(){ d.classList.add('is-open','is-visible'); });
+    }
+    function closeMenu(d){
+      if(!d || !d.hasAttribute('open')) return;
+      d.classList.remove('is-visible');
+      d.classList.add('is-closing');
+      window.setTimeout(function(){
+        d.classList.remove('is-open','is-closing');
+        d.removeAttribute('open');
+      }, ANIM_MS);
+    }
+    function closeMenus(except){ allMenus().forEach(function(d){ if(d!==except) closeMenu(d); }); }
+    allMenus().forEach(function(d){
+      var summary = d.querySelector('summary');
+      if(!summary) return;
+      summary.addEventListener('click', function(e){
+        e.preventDefault();
+        e.stopPropagation();
+        if(d.classList.contains('is-visible')) closeMenu(d);
+        else openMenu(d);
+      });
+    });
+    document.addEventListener('click', function(e){ if(!e.target.closest('details.nav__has-sub')) closeMenus(); });
+    document.addEventListener('keydown', function(e){ if(e.key==='Escape') closeMenus(); });
+  })();
+  </script>
   <script src="assets/js/posts-data.js?v=2"></script>
   <script src="assets/js/search.js?v=3"></script>
   <script src="assets/js/enhancements.js?v=1"></script>
