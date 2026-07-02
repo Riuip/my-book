@@ -383,7 +383,51 @@
   </button>
 
   <script src="assets/js/view-transitions.js?v=1"></script>
-  <script src="assets/js/main.js?v=10"></script>
+  <script src="assets/js/main.js?v=13"></script>
+  <script>
+  // Emergency nav menu fix: inline, no cache dependency.
+  (function(){
+    function setMenu(li, open){
+      var btn = li && li.querySelector('[data-nav-sub-toggle]');
+      var menu = li && li.querySelector('.nav__submenu');
+      if (!li || !menu) return;
+      li.classList.toggle('is-open', !!open);
+      if (btn) btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+      menu.style.setProperty('display','block','important');
+      menu.style.setProperty('position','absolute','important');
+      menu.style.setProperty('top','calc(100% + 12px)','important');
+      menu.style.setProperty('right','0','important');
+      menu.style.setProperty('z-index','10020','important');
+      if (open) {
+        menu.style.setProperty('opacity','1','important');
+        menu.style.setProperty('visibility','visible','important');
+        menu.style.setProperty('pointer-events','auto','important');
+        menu.style.setProperty('transform','translateY(0) scale(1)','important');
+      } else {
+        menu.style.setProperty('opacity','0','important');
+        menu.style.setProperty('visibility','hidden','important');
+        menu.style.setProperty('pointer-events','none','important');
+        menu.style.setProperty('transform','translateY(-8px) scale(.96)','important');
+      }
+    }
+    function closeAll(except){
+      document.querySelectorAll('.nav__has-sub').forEach(function(li){ if(li!==except) setMenu(li,false); });
+    }
+    document.querySelectorAll('[data-nav-sub-toggle]').forEach(function(btn){
+      btn.setAttribute('aria-expanded','false');
+      btn.addEventListener('click', function(e){
+        e.preventDefault();
+        e.stopPropagation();
+        var li = btn.closest('.nav__has-sub');
+        var open = !li.classList.contains('is-open');
+        closeAll(li);
+        setMenu(li, open);
+      }, true);
+    });
+    document.addEventListener('click', function(e){ if(!e.target.closest('.nav__has-sub')) closeAll(); });
+    document.addEventListener('keydown', function(e){ if(e.key==='Escape') closeAll(); });
+  })();
+  </script>
   <script src="assets/js/posts-data.js?v=2"></script>
   <script src="assets/js/search.js?v=3"></script>
   <script src="assets/js/enhancements.js?v=1"></script>
