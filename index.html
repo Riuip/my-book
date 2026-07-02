@@ -11,6 +11,78 @@
   <meta name="theme-color" content="#fbfbfd" media="(prefers-color-scheme: light)" />
   <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)" />
   <link rel="stylesheet" href="assets/css/style.css?v=21" />
+  <style id="native-nav-menu-fix">
+    .nav, .nav__inner, .nav__menu, .nav__menu > li, details.nav__has-sub { overflow: visible !important; }
+    details.nav__has-sub { position: relative !important; display: block !important; }
+    details.nav__has-sub > summary.nav__sub-toggle {
+      list-style: none !important;
+      cursor: pointer !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      gap: 4px !important;
+      padding: 8px 13px !important;
+      border-radius: 999px !important;
+      color: var(--text-soft) !important;
+      user-select: none !important;
+    }
+    details.nav__has-sub > summary.nav__sub-toggle::-webkit-details-marker { display: none !important; }
+    details.nav__has-sub[open] > summary.nav__sub-toggle {
+      background: rgba(255,255,255,.58) !important;
+      color: var(--text) !important;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.62) !important;
+    }
+    [data-theme="dark"] details.nav__has-sub[open] > summary.nav__sub-toggle {
+      background: rgba(255,255,255,.10) !important;
+      box-shadow: none !important;
+    }
+    details.nav__has-sub > .nav__submenu {
+      display: block !important;
+      position: absolute !important;
+      top: calc(100% + 12px) !important;
+      right: 0 !important;
+      left: auto !important;
+      min-width: 270px !important;
+      padding: 12px !important;
+      border-radius: 28px !important;
+      background: rgba(251,251,253,.84) !important;
+      border: 1px solid rgba(255,255,255,.62) !important;
+      box-shadow: 0 24px 70px rgba(0,0,0,.20), inset 0 1px 0 rgba(255,255,255,.72) !important;
+      backdrop-filter: saturate(200%) blur(32px) !important;
+      -webkit-backdrop-filter: saturate(200%) blur(32px) !important;
+      opacity: 0 !important;
+      visibility: hidden !important;
+      pointer-events: none !important;
+      transform: translateY(-8px) scale(.96) !important;
+      transform-origin: 90% 0 !important;
+      transition: opacity .22s ease, visibility .22s ease, transform .28s cubic-bezier(.2,.7,.2,1) !important;
+      z-index: 10020 !important;
+    }
+    details.nav__has-sub[open] > .nav__submenu {
+      opacity: 1 !important;
+      visibility: visible !important;
+      pointer-events: auto !important;
+      transform: translateY(0) scale(1) !important;
+    }
+    [data-theme="dark"] details.nav__has-sub > .nav__submenu {
+      background: rgba(22,22,24,.84) !important;
+      border-color: rgba(255,255,255,.13) !important;
+      box-shadow: 0 24px 70px rgba(0,0,0,.50), inset 0 1px 0 rgba(255,255,255,.08) !important;
+    }
+    details.nav__has-sub > .nav__submenu a {
+      display: flex !important;
+      align-items: center !important;
+      gap: 12px !important;
+      padding: 13px 14px !important;
+      border-radius: 18px !important;
+      color: var(--text-soft) !important;
+      background: transparent !important;
+    }
+    details.nav__has-sub > .nav__submenu a:hover {
+      color: var(--accent) !important;
+      background: rgba(0,113,227,.12) !important;
+    }
+    @media(max-width:720px){ details.nav__has-sub > .nav__submenu{ right:-8px !important; min-width:230px !important; } }
+  </style>
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230071e3'/%3E%3Ctext x='50%25' y='62%25' text-anchor='middle' font-family='-apple-system,system-ui,sans-serif' font-weight='700' font-size='14' fill='white'%3EWYQ%3C/text%3E%3C/svg%3E" />
   <script>
     (function(){try{var t=localStorage.getItem('wyq-theme');if(t!=='light'&&t!=='dark'){t=window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';}document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
@@ -54,423 +126,102 @@
         "publisher": { "@id": "https://riuip.github.io/my-book/#person" },
         "potentialAction": {
           "@type": "SearchAction",
-          "target": {
-            "@type": "EntryPoint",
-            "urlTemplate": "https://riuip.github.io/my-book/search.html?q={search_term_string}"
-          },
+          "target": { "@type": "EntryPoint", "urlTemplate": "https://riuip.github.io/my-book/search.html?q={search_term_string}" },
           "query-input": "required name=search_term_string"
         }
       },
-      {
-        "@type": "Person",
-        "@id": "https://riuip.github.io/my-book/#person",
-        "name": "WYQ",
-        "url": "https://riuip.github.io/my-book/",
-        "email": "wyq200707@qq.com",
-        "sameAs": ["https://github.com/Riuip"]
-      },
-      {
-        "@type": "Blog",
-        "@id": "https://riuip.github.io/my-book/#blog",
-        "url": "https://riuip.github.io/my-book/",
-        "name": "WYQ 专属博客",
-        "inLanguage": "zh-CN",
-        "author": { "@id": "https://riuip.github.io/my-book/#person" },
-        "publisher": { "@id": "https://riuip.github.io/my-book/#person" }
-      }
+      { "@type": "Person", "@id": "https://riuip.github.io/my-book/#person", "name": "WYQ", "url": "https://riuip.github.io/my-book/", "email": "wyq200707@qq.com", "sameAs": ["https://github.com/Riuip"] },
+      { "@type": "Blog", "@id": "https://riuip.github.io/my-book/#blog", "url": "https://riuip.github.io/my-book/", "name": "WYQ 专属博客", "inLanguage": "zh-CN", "author": { "@id": "https://riuip.github.io/my-book/#person" }, "publisher": { "@id": "https://riuip.github.io/my-book/#person" } }
     ]
   }
   </script>
 </head>
 <body class="page-enter">
 
-  <!-- AURORA — animated blue/white/purple gradient (whole site) -->
   <div class="aurora" aria-hidden="true"></div>
 
-  <!-- NAV -->
   <nav class="nav">
     <div class="nav__inner">
-      <a class="nav__brand" href="index.html">
-        <span class="dot"></span>
-        <span>WYQ</span>
-      </a>
+      <a class="nav__brand" href="index.html"><span class="dot"></span><span>WYQ</span></a>
       <ul class="nav__menu">
-        <li class="nav__has-sub">
-          <button class="nav__sub-toggle" data-nav-sub-toggle type="button">
-            <span>文章</span>
-            <svg class="nav__sub-toggle__chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <polyline points="6 9 12 15 18 9"/>
-            </svg>
-          </button>
-          <div class="nav__submenu" role="menu">
-            <a href="post-006.html" role="menuitem">
-              <svg class="nav__submenu__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="15" y2="17"/></svg>
-              <span>最新文章</span>
-            </a>
-            <a href="archive.html" role="menuitem">
-              <svg class="nav__submenu__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><polyline points="21 8 21 21 3 21 3 8"/><rect x="1" y="3" width="22" height="5"/><line x1="10" y1="12" x2="14" y2="12"/></svg>
-              <span>归档</span>
-            </a>
-            <a href="tags.html" role="menuitem">
-              <svg class="nav__submenu__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
-              <span>按分类</span>
-            </a>
-            <div class="nav__submenu__sep"></div>
-            <a href="feed.xml" role="menuitem">
-              <svg class="nav__submenu__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11a9 9 0 0 1 9 9"/><path d="M4 4a16 16 0 0 1 16 16"/><circle cx="5" cy="19" r="1"/></svg>
-              <span>RSS 订阅</span>
-            </a>
-          </div>
+        <li>
+          <details class="nav__has-sub">
+            <summary class="nav__sub-toggle">
+              <span>文章</span>
+              <svg class="nav__sub-toggle__chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+            </summary>
+            <div class="nav__submenu" role="menu">
+              <a href="post-006.html" role="menuitem"><svg class="nav__submenu__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="15" y2="17"/></svg><span>最新文章</span></a>
+              <a href="archive.html" role="menuitem"><svg class="nav__submenu__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><polyline points="21 8 21 21 3 21 3 8"/><rect x="1" y="3" width="22" height="5"/><line x1="10" y1="12" x2="14" y2="12"/></svg><span>归档</span></a>
+              <a href="tags.html" role="menuitem"><svg class="nav__submenu__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg><span>按分类</span></a>
+              <div class="nav__submenu__sep"></div>
+              <a href="feed.xml" role="menuitem"><svg class="nav__submenu__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11a9 9 0 0 1 9 9"/><path d="M4 4a16 16 0 0 1 16 16"/><circle cx="5" cy="19" r="1"/></svg><span>RSS 订阅</span></a>
+            </div>
+          </details>
         </li>
-        <li class="nav__has-sub">
-          <button class="nav__sub-toggle" data-nav-sub-toggle type="button">
-            <span>实验</span>
-            <svg class="nav__sub-toggle__chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <polyline points="6 9 12 15 18 9"/>
-            </svg>
-          </button>
-          <div class="nav__submenu" role="menu">
-            <a href="lab.html" role="menuitem">
-              <svg class="nav__submenu__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8" cy="9" r="3"/><path d="M16.5 17a3.5 3.5 0 0 0 0-7 4.5 4.5 0 0 0-8.5 0"/></svg>
-              <span>天气卡片</span>
-            </a>
-            <a href="dna.html" role="menuitem">
-              <svg class="nav__submenu__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 3c0 6 16 12 16 18"/><path d="M20 3c0 6-16 12-16 18"/><line x1="6" y1="7" x2="18" y2="7"/><line x1="6" y1="17" x2="18" y2="17"/></svg>
-              <span>博客 DNA</span>
-            </a>
-            <a href="share.html" role="menuitem">
-              <svg class="nav__submenu__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
-              <span>分享</span>
-            </a>
-            <div class="nav__submenu__sep"></div>
-            <a href="gradient.html" role="menuitem">
-              <svg class="nav__submenu__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3a14.5 14.5 0 0 1 0 18"/></svg>
-              <span>渐变实验室</span>
-            </a>
-            <a href="pomodoro.html" role="menuitem">
-              <svg class="nav__submenu__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="13" r="8"/><path d="M9 2h6"/><path d="M12 8v5l3 2"/></svg>
-              <span>极简番茄钟</span>
-            </a>
-            <a href="md-card.html" role="menuitem">
-              <svg class="nav__submenu__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M7 9l2 4 2-2 2 2 2-4"/></svg>
-              <span>Markdown 卡片</span>
-            </a>
-          </div>
+        <li>
+          <details class="nav__has-sub">
+            <summary class="nav__sub-toggle">
+              <span>实验</span>
+              <svg class="nav__sub-toggle__chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+            </summary>
+            <div class="nav__submenu" role="menu">
+              <a href="lab.html" role="menuitem"><svg class="nav__submenu__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8" cy="9" r="3"/><path d="M16.5 17a3.5 3.5 0 0 0 0-7 4.5 4.5 0 0 0-8.5 0"/></svg><span>天气卡片</span></a>
+              <a href="dna.html" role="menuitem"><svg class="nav__submenu__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 3c0 6 16 12 16 18"/><path d="M20 3c0 6-16 12-16 18"/><line x1="6" y1="7" x2="18" y2="7"/><line x1="6" y1="17" x2="18" y2="17"/></svg><span>博客 DNA</span></a>
+              <a href="share.html" role="menuitem"><svg class="nav__submenu__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg><span>分享</span></a>
+              <div class="nav__submenu__sep"></div>
+              <a href="gradient.html" role="menuitem"><svg class="nav__submenu__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3a14.5 14.5 0 0 1 0 18"/></svg><span>渐变实验室</span></a>
+              <a href="pomodoro.html" role="menuitem"><svg class="nav__submenu__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="13" r="8"/><path d="M9 2h6"/><path d="M12 8v5l3 2"/></svg><span>极简番茄钟</span></a>
+              <a href="md-card.html" role="menuitem"><svg class="nav__submenu__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M7 9l2 4 2-2 2 2 2-4"/></svg><span>Markdown 卡片</span></a>
+            </div>
+          </details>
         </li>
         <li><a href="index.html#about">关于</a></li>
-        <li>
-          <button class="nav__search-btn" id="navSearchBtn" aria-label="搜索文章">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="11" cy="11" r="7"/>
-              <line x1="21" y1="21" x2="16.65" y2="16.65"/>
-            </svg>
-          </button>
-        </li>
-        <li>
-          <button class="nav__theme" data-theme-toggle aria-label="切换主题">
-            <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
-            </svg>
-            <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="12" cy="12" r="4"/>
-              <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/>
-            </svg>
-          </button>
-        </li>
+        <li><button class="nav__search-btn" id="navSearchBtn" aria-label="搜索文章"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></button></li>
+        <li><button class="nav__theme" data-theme-toggle aria-label="切换主题"><svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg><svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg></button></li>
       </ul>
     </div>
   </nav>
 
-  <!-- HERO — giant headline like Apple, sits on the animated aurora background -->
   <header class="hero">
     <div class="hero__inner">
       <h1 class="hero__title hero__title--brand typewriter-typing" id="heroTypewriter" data-text="Hello, I'm WYQ"></h1>
-      <p class="hero__sub reveal" data-delay="1">
-        一个属于自己的、慢节奏的角落。<br/>
-        记录生活、思考与日常。
-      </p>
-      <div class="hero__actions reveal" data-delay="2">
-        <a class="btn btn--primary btn--lg" href="post-006.html">查看最新文章</a>
-        <a class="btn btn--ghost btn--lg" href="#about">了解更多</a>
-      </div>
-      <div class="hero__now reveal" data-delay="3" aria-live="polite">
-        <span id="nowLine">在写一些东西。</span>
-      </div>
+      <p class="hero__sub reveal" data-delay="1">一个属于自己的、慢节奏的角落。<br/>记录生活、思考与日常。</p>
+      <div class="hero__actions reveal" data-delay="2"><a class="btn btn--primary btn--lg" href="post-006.html">查看最新文章</a><a class="btn btn--ghost btn--lg" href="#about">了解更多</a></div>
+      <div class="hero__now reveal" data-delay="3" aria-live="polite"><span id="nowLine">在写一些东西。</span></div>
     </div>
   </header>
 
-  <!-- DESK ROW — 正在读 / 正在写 / 正在听 -->
-  <section class="desk-section" aria-label="近况">
-    <div class="desk-section__title">最近</div>
-    <div class="desk-row" id="deskRow"></div>
-  </section>
+  <section class="desk-section" aria-label="近况"><div class="desk-section__title">最近</div><div class="desk-row" id="deskRow"></div></section>
+  <section class="featured-section" aria-label="本周新文"><div class="featured-section__title">本周新文</div><div id="featuredPost"></div></section>
+  <section class="mood-section" aria-label="按心情看"><div class="mood-section__title">换种方式逛逛</div><div class="mood-groups" id="moodGroups"></div></section>
 
-  <!-- FEATURED POST — auto-pulled from posts-data.js (newest first) -->
-  <section class="featured-section" aria-label="本周新文">
-    <div class="featured-section__title">本周新文</div>
-    <div id="featuredPost"></div>
-  </section>
-
-  <!-- MOOD GROUPS — playful entry points by vibe -->
-  <section class="mood-section" aria-label="按心情看">
-    <div class="mood-section__title">换种方式逛逛</div>
-    <div class="mood-groups" id="moodGroups"></div>
-  </section>
-
-  <!-- TILES — about me -->
   <section style="padding: 36px 0 80px;" id="about">
     <div class="tiles tiles--compact">
-
-      <!-- About me (large dark tile) -->
-      <article class="tile tile--wide tile--dark reveal">
-        <div class="tile__eyebrow">关于我</div>
-        <h2 class="tile__title">你好，我是 WYQ。</h2>
-        <p class="tile__desc">
-          我喜欢记录, 喜欢慢慢地把生活整理成可以被回头翻阅的样子。
-          这里是我的私人空间, 没有焦虑的算法, 也没有刻意的曝光,
-          只是把那些值得留下的瞬间, 安放在文字里。
-        </p>
-        <div class="tile__actions">
-          <a class="btn btn--primary" href="post-006.html">读我的最新文章</a>
-          <a class="btn btn--ghost" href="mailto:wyq200707@qq.com">联系我</a>
-        </div>
-      </article>
-
-      <!-- Profile -->
-      <article class="tile reveal" data-delay="1">
-        <div class="tile__eyebrow">个人资料</div>
-        <h2 class="tile__title" style="font-size:30px;">基本信息</h2>
-        <div class="profile-grid">
-          <div class="profile-row">
-            <span>身份</span>
-            <span>WYQ</span>
-          </div>
-          <div class="profile-row">
-            <span>记录</span>
-            <span>生活 · 思考 · 旅行 · 技术</span>
-          </div>
-          <div class="profile-row">
-            <span>更新</span>
-            <span>一周一更</span>
-          </div>
-          <div class="profile-row">
-            <span>联络</span>
-            <span style="font-size:14px;">wyq200707@qq.com</span>
-          </div>
-        </div>
-      </article>
-
-      <!-- Blog jump CTA (highlight) -->
-      <article class="tile tile--wide tile--accent reveal" data-delay="2">
-        <div class="tile__eyebrow">Journal</div>
-        <h2 class="tile__title">看看更多文章</h2>
-        <p class="tile__desc">
-          归档里按时间倒序排着所有文章, 也可以按分类筛选。
-        </p>
-        <div class="tile__actions">
-          <a class="btn btn--primary" href="archive.html">前往归档</a>
-          <a class="btn btn--ghost" href="tags.html">按分类浏览</a>
-        </div>
-      </article>
-
+      <article class="tile tile--wide tile--dark reveal"><div class="tile__eyebrow">关于我</div><h2 class="tile__title">你好，我是 WYQ。</h2><p class="tile__desc">我喜欢记录, 喜欢慢慢地把生活整理成可以被回头翻阅的样子。这里是我的私人空间, 没有焦虑的算法, 也没有刻意的曝光, 只是把那些值得留下的瞬间, 安放在文字里。</p><div class="tile__actions"><a class="btn btn--primary" href="post-006.html">读我的最新文章</a><a class="btn btn--ghost" href="mailto:wyq200707@qq.com">联系我</a></div></article>
+      <article class="tile reveal" data-delay="1"><div class="tile__eyebrow">个人资料</div><h2 class="tile__title" style="font-size:30px;">基本信息</h2><div class="profile-grid"><div class="profile-row"><span>身份</span><span>WYQ</span></div><div class="profile-row"><span>记录</span><span>生活 · 思考 · 旅行 · 技术</span></div><div class="profile-row"><span>更新</span><span>一周一更</span></div><div class="profile-row"><span>联络</span><span style="font-size:14px;">wyq200707@qq.com</span></div></div></article>
+      <article class="tile tile--wide tile--accent reveal" data-delay="2"><div class="tile__eyebrow">Journal</div><h2 class="tile__title">看看更多文章</h2><p class="tile__desc">归档里按时间倒序排着所有文章, 也可以按分类筛选。</p><div class="tile__actions"><a class="btn btn--primary" href="archive.html">前往归档</a><a class="btn btn--ghost" href="tags.html">按分类浏览</a></div></article>
     </div>
   </section>
 
-  <!-- LAB ENTRY — small subtle links to experimental projects -->
   <section class="lab-tease" aria-label="其他测试项目">
-    <style>
-      .lab-tease {
-        padding: 0 0 28px;
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-        gap: 10px;
-      }
-      .lab-tease__link {
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        font-size: 12px;
-        color: #8a8f9a;
-        letter-spacing: 0.04em;
-        padding: 7px 14px;
-        border-radius: 999px;
-        background: rgba(255, 255, 255, 0.5);
-        border: 1px solid rgba(0, 0, 0, 0.06);
-        backdrop-filter: blur(8px);
-        -webkit-backdrop-filter: blur(8px);
-        text-decoration: none;
-        transition: color 0.2s ease, background 0.2s ease, transform 0.2s ease;
-      }
-      .lab-tease__link:hover {
-        color: #1d1d1f;
-        background: rgba(255, 255, 255, 0.85);
-        transform: translateY(-1px);
-      }
-      .lab-tease__dot {
-        width: 6px; height: 6px; border-radius: 50%;
-        box-shadow: 0 0 8px rgba(184, 167, 255, 0.5);
-      }
-      .lab-tease__dot--w { background: linear-gradient(135deg, #ffd68a, #b8a7ff); }
-      .lab-tease__dot--d { background: linear-gradient(135deg, #6ee7b7, #5b8def); }
-      .lab-tease__dot--s { background: linear-gradient(135deg, #ff6b6b, #c53b3b); }
-      [data-theme="dark"] .lab-tease__link {
-        background: rgba(30, 32, 38, 0.5);
-        border-color: rgba(255, 255, 255, 0.08);
-        color: #8a8f9a;
-      }
-      [data-theme="dark"] .lab-tease__link:hover {
-        color: #f5f5f7;
-        background: rgba(40, 42, 50, 0.8);
-      }
-    </style>
-    <a class="lab-tease__link" href="lab.html">
-      <span class="lab-tease__dot lab-tease__dot--w" aria-hidden="true"></span>
-      天气卡片
-      <span aria-hidden="true">→</span>
-    </a>
-    <a class="lab-tease__link" href="dna.html">
-      <span class="lab-tease__dot lab-tease__dot--d" aria-hidden="true"></span>
-      博客 DNA
-      <span aria-hidden="true">→</span>
-    </a>
-    <a class="lab-tease__link" href="share.html">
-      <span class="lab-tease__dot lab-tease__dot--s" aria-hidden="true"></span>
-      分享
-      <span aria-hidden="true">→</span>
-    </a>
+    <style>.lab-tease{padding:0 0 28px;display:flex;flex-wrap:wrap;justify-content:center;gap:10px}.lab-tease__link{display:inline-flex;align-items:center;gap:8px;font-size:12px;color:#8a8f9a;letter-spacing:.04em;padding:7px 14px;border-radius:999px;background:rgba(255,255,255,.5);border:1px solid rgba(0,0,0,.06);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);text-decoration:none;transition:color .2s ease,background .2s ease,transform .2s ease}.lab-tease__link:hover{color:#1d1d1f;background:rgba(255,255,255,.85);transform:translateY(-1px)}.lab-tease__dot{width:6px;height:6px;border-radius:50%;box-shadow:0 0 8px rgba(184,167,255,.5)}.lab-tease__dot--w{background:linear-gradient(135deg,#ffd68a,#b8a7ff)}.lab-tease__dot--d{background:linear-gradient(135deg,#6ee7b7,#5b8def)}.lab-tease__dot--s{background:linear-gradient(135deg,#ff6b6b,#c53b3b)}[data-theme="dark"] .lab-tease__link{background:rgba(30,32,38,.5);border-color:rgba(255,255,255,.08);color:#8a8f9a}[data-theme="dark"] .lab-tease__link:hover{color:#f5f5f7;background:rgba(40,42,50,.8)}</style>
+    <a class="lab-tease__link" href="lab.html"><span class="lab-tease__dot lab-tease__dot--w" aria-hidden="true"></span>天气卡片<span aria-hidden="true">→</span></a><a class="lab-tease__link" href="dna.html"><span class="lab-tease__dot lab-tease__dot--d" aria-hidden="true"></span>博客 DNA<span aria-hidden="true">→</span></a><a class="lab-tease__link" href="share.html"><span class="lab-tease__dot lab-tease__dot--s" aria-hidden="true"></span>分享<span aria-hidden="true">→</span></a>
   </section>
 
-  <!-- FOOTER -->
-  <footer class="footer">
-    <div class="footer__inner">
-      <div>
-        <div>&copy; <span data-year>2026</span> WYQ. All rights reserved.</div>
-        <div class="site-counters" id="siteCounters" aria-label="站点小数字"></div>
-      </div>
-      <ul class="footer__links">
-        <li><a href="index.html">主页</a></li>
-        <li><a href="post-006.html">文章</a></li>
-        <li><a href="archive.html">归档</a></li>
-        <li><a href="tags.html">分类</a></li>
-        <li><a href="lab.html">实验</a></li>
-        <li><a href="others.html">其他</a></li>
-        <li><a href="feed.xml">RSS</a></li>
-      </ul>
-    </div>
-  </footer>
+  <footer class="footer"><div class="footer__inner"><div><div>&copy; <span data-year>2026</span> WYQ. All rights reserved.</div><div class="site-counters" id="siteCounters" aria-label="站点小数字"></div></div><ul class="footer__links"><li><a href="index.html">主页</a></li><li><a href="post-006.html">文章</a></li><li><a href="archive.html">归档</a></li><li><a href="tags.html">分类</a></li><li><a href="lab.html">实验</a></li><li><a href="others.html">其他</a></li><li><a href="feed.xml">RSS</a></li></ul></div></footer>
 
-  <!-- DESKTOP SEARCH OVERLAY -->
-  <div class="nav-search__overlay" id="navSearchOverlay"></div>
-  <div class="nav-search" id="navSearchBox">
-    <div class="nav-search__inner">
-      <svg class="nav-search__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <circle cx="11" cy="11" r="8"/>
-        <line x1="21" y1="21" x2="16.65" y2="16.65"/>
-      </svg>
-      <input type="text" class="nav-search__input" id="navSearchInput" placeholder="搜索文章..." autocomplete="off" />
-    </div>
-    <div class="nav-search__results" id="navSearchResults">
-      <p class="nav-search__hint">输入关键词搜索文章...</p>
-    </div>
-  </div>
-
-  <!-- BACK TO TOP -->
-  <button class="back-to-top" id="back-to-top" aria-label="返回顶部">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <polyline points="18 15 12 9 6 15"/>
-    </svg>
-  </button>
+  <div class="nav-search__overlay" id="navSearchOverlay"></div><div class="nav-search" id="navSearchBox"><div class="nav-search__inner"><svg class="nav-search__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><input type="text" class="nav-search__input" id="navSearchInput" placeholder="搜索文章..." autocomplete="off" /></div><div class="nav-search__results" id="navSearchResults"><p class="nav-search__hint">输入关键词搜索文章...</p></div></div>
+  <button class="back-to-top" id="back-to-top" aria-label="返回顶部"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg></button>
 
   <script src="assets/js/view-transitions.js?v=1"></script>
-  <script src="assets/js/main.js?v=13"></script>
-  <script>
-  // Emergency nav menu fix: inline, no cache dependency.
-  (function(){
-    function setMenu(li, open){
-      var btn = li && li.querySelector('[data-nav-sub-toggle]');
-      var menu = li && li.querySelector('.nav__submenu');
-      if (!li || !menu) return;
-      li.classList.toggle('is-open', !!open);
-      if (btn) btn.setAttribute('aria-expanded', open ? 'true' : 'false');
-      menu.style.setProperty('display','block','important');
-      menu.style.setProperty('position','absolute','important');
-      menu.style.setProperty('top','calc(100% + 12px)','important');
-      menu.style.setProperty('right','0','important');
-      menu.style.setProperty('z-index','10020','important');
-      if (open) {
-        menu.style.setProperty('opacity','1','important');
-        menu.style.setProperty('visibility','visible','important');
-        menu.style.setProperty('pointer-events','auto','important');
-        menu.style.setProperty('transform','translateY(0) scale(1)','important');
-      } else {
-        menu.style.setProperty('opacity','0','important');
-        menu.style.setProperty('visibility','hidden','important');
-        menu.style.setProperty('pointer-events','none','important');
-        menu.style.setProperty('transform','translateY(-8px) scale(.96)','important');
-      }
-    }
-    function closeAll(except){
-      document.querySelectorAll('.nav__has-sub').forEach(function(li){ if(li!==except) setMenu(li,false); });
-    }
-    document.querySelectorAll('[data-nav-sub-toggle]').forEach(function(btn){
-      btn.setAttribute('aria-expanded','false');
-      btn.addEventListener('click', function(e){
-        e.preventDefault();
-        e.stopPropagation();
-        var li = btn.closest('.nav__has-sub');
-        var open = !li.classList.contains('is-open');
-        closeAll(li);
-        setMenu(li, open);
-      }, true);
-    });
-    document.addEventListener('click', function(e){ if(!e.target.closest('.nav__has-sub')) closeAll(); });
-    document.addEventListener('keydown', function(e){ if(e.key==='Escape') closeAll(); });
-  })();
-  </script>
+  <script src="assets/js/main.js?v=14"></script>
+  <script>document.addEventListener('toggle',function(e){if(e.target.matches('details.nav__has-sub')&&e.target.open){document.querySelectorAll('details.nav__has-sub[open]').forEach(function(d){if(d!==e.target)d.removeAttribute('open');});}},true);</script>
   <script src="assets/js/posts-data.js?v=2"></script>
   <script src="assets/js/search.js?v=3"></script>
   <script src="assets/js/enhancements.js?v=1"></script>
   <script src="assets/js/extras.js?v=5"></script>
   <script src="assets/js/home-extras.js?v=1"></script>
-  <script>
-  // Typewriter animation for hero title — plays once on page load
-  (function() {
-    var el = document.getElementById('heroTypewriter');
-    if (!el) return;
-
-    var text = el.getAttribute('data-text') || '';
-    var delay = 500;
-    var speed = 85;
-    var cursor = document.createElement('span');
-    cursor.className = 'typewriter-cursor';
-    cursor.textContent = '|';
-    el.textContent = '';
-    el.appendChild(cursor);
-
-    setTimeout(function() {
-      var i = 0;
-      function type() {
-        if (i < text.length) {
-          var charNode = document.createTextNode(text.charAt(i));
-          el.insertBefore(charNode, cursor);
-          i++;
-          setTimeout(type, speed);
-        } else {
-          cursor.classList.add('blink');
-          setTimeout(function() {
-            cursor.style.opacity = '0';
-            setTimeout(function() {
-              cursor.remove();
-              // Remove typing state — CSS transition handles smooth gradient appearance
-              el.classList.remove('typewriter-typing');
-            }, 400);
-          }, 1200);
-        }
-      }
-      type();
-    }, delay);
-  })();
-  </script>
+  <script>(function(){var el=document.getElementById('heroTypewriter');if(!el)return;var text=el.getAttribute('data-text')||'';var delay=500;var speed=85;var cursor=document.createElement('span');cursor.className='typewriter-cursor';cursor.textContent='|';el.textContent='';el.appendChild(cursor);setTimeout(function(){var i=0;function type(){if(i<text.length){var charNode=document.createTextNode(text.charAt(i));el.insertBefore(charNode,cursor);i++;setTimeout(type,speed);}else{cursor.classList.add('blink');setTimeout(function(){cursor.style.opacity='0';setTimeout(function(){cursor.remove();el.classList.remove('typewriter-typing');},400);},1200);}}type();},delay);})();</script>
 </body>
 </html>
