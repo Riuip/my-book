@@ -168,35 +168,63 @@
 
   function injectTimeCardStyle() {
     if ($('#time-card-style')) return;
-    document.head.appendChild(el('style', { id: 'time-card-style', html: '\
-      #liveTimeCard.tile--time{position:relative;overflow:hidden;min-height:318px;display:flex;flex-direction:column;justify-content:space-between;}\
-      #liveTimeCard.tile--time::before{content:"";position:absolute;right:-84px;top:-98px;width:230px;height:230px;border-radius:50%;background:radial-gradient(circle,rgba(0,113,227,.20),rgba(191,90,242,.12) 48%,transparent 68%);pointer-events:none;}\
-      .time-card__body{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:16px;margin-top:4px;text-align:center;}\
-      .time-clock{position:relative;width:138px;height:138px;border-radius:50%;background:rgba(255,255,255,.58);border:1px solid rgba(0,0,0,.08);box-shadow:inset 0 1px 0 rgba(255,255,255,.78),0 18px 42px rgba(0,0,0,.08);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);}\
-      .time-clock__ring{position:absolute;inset:10px;border-radius:50%;border:1px solid rgba(0,0,0,.06);}\
-      .time-clock__tick{position:absolute;width:4px;height:4px;border-radius:50%;background:rgba(29,29,31,.38);}\
-      .time-clock__tick--12{top:15px;left:50%;transform:translateX(-50%);}\
-      .time-clock__tick--3{top:50%;right:15px;transform:translateY(-50%);}\
-      .time-clock__tick--6{bottom:15px;left:50%;transform:translateX(-50%);}\
-      .time-clock__tick--9{top:50%;left:15px;transform:translateY(-50%);}\
-      .time-clock__hand{position:absolute;left:50%;bottom:50%;border-radius:999px;transform-origin:50% 100%;transform:translateX(-50%) rotate(0deg);background:#1d1d1f;box-shadow:0 2px 8px rgba(0,0,0,.16);}\
-      .time-clock__hand--hour{width:5px;height:35px;}\
-      .time-clock__hand--minute{width:3px;height:49px;background:#0071e3;}\
-      .time-clock__hand--second{width:2px;height:53px;background:#ff3b30;}\
-      .time-clock__dot{position:absolute;left:50%;top:50%;width:10px;height:10px;border-radius:50%;background:#0071e3;border:2px solid rgba(255,255,255,.92);transform:translate(-50%,-50%);box-shadow:0 3px 10px rgba(0,113,227,.35);}\
-      .time-card__digital{font-size:36px;line-height:1;font-weight:700;letter-spacing:-.04em;font-variant-numeric:tabular-nums;color:#1d1d1f;}\
-      .time-card__date{margin-top:8px;font-size:13px;color:#86868b;}\
-      .time-card__zone{display:inline-flex;align-items:center;gap:6px;margin-top:2px;padding:7px 12px;border-radius:999px;font-size:12px;color:#6e6e73;background:rgba(0,113,227,.08);border:1px solid rgba(0,113,227,.12);}\
-      @media(max-width:720px){#liveTimeCard.tile--time{min-height:288px}.time-clock{width:126px;height:126px}.time-card__digital{font-size:32px}}\
-      [data-theme="dark"] .time-clock{background:rgba(30,32,38,.58);border-color:rgba(255,255,255,.10);box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 18px 42px rgba(0,0,0,.28);}\
-      [data-theme="dark"] .time-clock__ring{border-color:rgba(255,255,255,.08);}\
-      [data-theme="dark"] .time-clock__tick{background:rgba(245,245,247,.45);}\
-      [data-theme="dark"] .time-clock__hand{background:#f5f5f7;}\
-      [data-theme="dark"] .time-clock__hand--minute{background:#2997ff;}\
-      [data-theme="dark"] .time-card__digital{color:#f5f5f7;}\
-      [data-theme="dark"] .time-card__date{color:#a1a1a6;}\
-      [data-theme="dark"] .time-card__zone{color:#c7c7cc;background:rgba(41,151,255,.12);border-color:rgba(41,151,255,.18);}\
-    ' }));
+    var style = el('style', { id: 'time-card-style' });
+    style.textContent = [
+      '#liveTimeCard.tile--time{',
+      '  --time-a:rgba(235,246,255,.86);',
+      '  --time-b:rgba(255,255,255,.90);',
+      '  --time-glow:rgba(0,113,227,.22);',
+      '  --time-glow-2:rgba(191,90,242,.14);',
+      '  --time-accent:#0071e3;',
+      '  --time-accent-2:#ff3b30;',
+      '  --time-text:#1d1d1f;',
+      '  --time-muted:#7a7f8a;',
+      '  position:relative;overflow:hidden;min-height:318px;display:flex;flex-direction:column;justify-content:space-between;',
+      '  background:linear-gradient(135deg,var(--time-b),var(--time-a))!important;',
+      '  transition:background .85s ease,color .45s ease,box-shadow .35s ease,transform .3s ease;',
+      '}',
+      '#liveTimeCard.tile--time::before{content:"";position:absolute;right:-84px;top:-98px;width:260px;height:260px;border-radius:50%;background:radial-gradient(circle,var(--time-glow),var(--time-glow-2) 48%,transparent 70%);pointer-events:none;transition:background .85s ease,transform .85s ease;}',
+      '#liveTimeCard.tile--time::after{content:"";position:absolute;left:42px;bottom:42px;width:120px;height:120px;border-radius:50%;background:radial-gradient(circle,var(--time-glow),transparent 68%);opacity:.34;filter:blur(2px);pointer-events:none;transition:background .85s ease,opacity .85s ease,transform .85s ease;}',
+      '#liveTimeCard.time--morning{--time-a:rgba(255,239,196,.88);--time-b:rgba(220,245,255,.92);--time-glow:rgba(255,188,85,.34);--time-glow-2:rgba(94,196,255,.18);--time-accent:#ff9f0a;--time-accent-2:#007aff;}',
+      '#liveTimeCard.time--day{--time-a:rgba(215,238,255,.88);--time-b:rgba(255,255,255,.94);--time-glow:rgba(0,113,227,.23);--time-glow-2:rgba(90,200,250,.18);--time-accent:#0071e3;--time-accent-2:#ff3b30;}',
+      '#liveTimeCard.time--evening{--time-a:rgba(244,220,255,.90);--time-b:rgba(255,232,207,.92);--time-glow:rgba(255,149,0,.30);--time-glow-2:rgba(191,90,242,.22);--time-accent:#bf5af2;--time-accent-2:#ff9500;}',
+      '#liveTimeCard.time--night{--time-a:rgba(25,32,66,.94);--time-b:rgba(55,38,83,.92);--time-glow:rgba(105,130,255,.34);--time-glow-2:rgba(191,90,242,.22);--time-accent:#7aa7ff;--time-accent-2:#bf5af2;--time-text:#f5f5f7;--time-muted:#c3c8da;border-color:rgba(255,255,255,.12)!important;box-shadow:0 18px 48px rgba(32,30,70,.32)!important;}',
+      '#liveTimeCard.time--night::after{opacity:.55;transform:translate(24px,-14px) scale(1.16);}',
+      '#liveTimeCard.time--morning::before{transform:translate(-12px,10px) scale(1.06);}',
+      '#liveTimeCard.time--evening::before{transform:translate(-20px,18px) scale(1.12);}',
+      '#liveTimeCard .tile__eyebrow{color:var(--time-muted)!important;transition:color .45s ease;}',
+      '.time-card__body{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:16px;margin-top:4px;text-align:center;}',
+      '.time-clock{position:relative;width:138px;height:138px;border-radius:50%;background:rgba(255,255,255,.58);border:1px solid rgba(0,0,0,.08);box-shadow:inset 0 1px 0 rgba(255,255,255,.78),0 18px 42px rgba(0,0,0,.08);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);transition:background .85s ease,border-color .45s ease,box-shadow .45s ease;}',
+      '#liveTimeCard.time--night .time-clock{background:rgba(255,255,255,.10);border-color:rgba(255,255,255,.16);box-shadow:inset 0 1px 0 rgba(255,255,255,.12),0 18px 42px rgba(0,0,0,.28);}',
+      '.time-clock__ring{position:absolute;inset:10px;border-radius:50%;border:1px solid rgba(0,0,0,.06);transition:border-color .45s ease;}',
+      '#liveTimeCard.time--night .time-clock__ring{border-color:rgba(255,255,255,.16);}',
+      '.time-clock__tick{position:absolute;width:4px;height:4px;border-radius:50%;background:rgba(29,29,31,.38);transition:background .45s ease;}',
+      '#liveTimeCard.time--night .time-clock__tick{background:rgba(255,255,255,.58);}',
+      '.time-clock__tick--12{top:15px;left:50%;transform:translateX(-50%);}',
+      '.time-clock__tick--3{top:50%;right:15px;transform:translateY(-50%);}',
+      '.time-clock__tick--6{bottom:15px;left:50%;transform:translateX(-50%);}',
+      '.time-clock__tick--9{top:50%;left:15px;transform:translateY(-50%);}',
+      '.time-clock__hand{position:absolute;left:50%;bottom:50%;border-radius:999px;transform-origin:50% 100%;transform:translateX(-50%) rotate(0deg);background:var(--time-text);box-shadow:0 2px 8px rgba(0,0,0,.16);transition:background .45s ease;}',
+      '.time-clock__hand--hour{width:5px;height:35px;}',
+      '.time-clock__hand--minute{width:3px;height:49px;background:var(--time-accent);}',
+      '.time-clock__hand--second{width:2px;height:53px;background:var(--time-accent-2);}',
+      '.time-clock__dot{position:absolute;left:50%;top:50%;width:10px;height:10px;border-radius:50%;background:var(--time-accent);border:2px solid rgba(255,255,255,.92);transform:translate(-50%,-50%);box-shadow:0 3px 10px var(--time-glow);transition:background .45s ease,box-shadow .45s ease;}',
+      '.time-card__digital{font-size:36px;line-height:1;font-weight:700;letter-spacing:-.04em;font-variant-numeric:tabular-nums;color:var(--time-text);transition:color .45s ease;}',
+      '.time-card__date{margin-top:8px;font-size:13px;color:var(--time-muted);transition:color .45s ease;}',
+      '.time-card__zone{display:inline-flex;align-items:center;gap:6px;margin-top:2px;padding:7px 12px;border-radius:999px;font-size:12px;color:var(--time-muted);background:color-mix(in srgb,var(--time-accent) 10%,transparent);border:1px solid color-mix(in srgb,var(--time-accent) 18%,transparent);transition:color .45s ease,background .45s ease,border-color .45s ease;}',
+      '@media(max-width:720px){#liveTimeCard.tile--time{min-height:288px}.time-clock{width:126px;height:126px}.time-card__digital{font-size:32px}}',
+      '[data-theme="dark"] #liveTimeCard:not(.time--night) .time-clock{background:rgba(30,32,38,.58);border-color:rgba(255,255,255,.10);box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 18px 42px rgba(0,0,0,.28);}',
+      '[data-theme="dark"] #liveTimeCard:not(.time--night) .time-clock__ring{border-color:rgba(255,255,255,.08);}',
+      '[data-theme="dark"] #liveTimeCard:not(.time--night) .time-clock__tick{background:rgba(245,245,247,.45);}'
+    ].join('\n');
+    document.head.appendChild(style);
+  }
+
+  function timeMood(hour) {
+    if (hour >= 5 && hour < 11) return { key: 'morning', text: '清晨光线 · 实时更新' };
+    if (hour >= 11 && hour < 17) return { key: 'day', text: '白天模式 · 实时更新' };
+    if (hour >= 17 && hour < 21) return { key: 'evening', text: '傍晚暖光 · 实时更新' };
+    return { key: 'night', text: '夜间星光 · 实时更新' };
   }
 
   function mountTimeCard() {
@@ -216,6 +244,7 @@
       el('span', { class: 'time-clock__dot' })
     ]);
 
+    var zone = el('div', { id: 'timeCardZone', class: 'time-card__zone', text: '本地时间 · 实时更新' });
     var card = el('article', { id: 'liveTimeCard', class: 'tile tile--time reveal', 'data-delay': '2' }, [
       el('div', { class: 'tile__eyebrow', text: '现在时间' }),
       el('div', { class: 'time-card__body' }, [
@@ -224,7 +253,7 @@
           el('div', { id: 'timeCardDigital', class: 'time-card__digital', text: '--:--:--' }),
           el('div', { id: 'timeCardDate', class: 'time-card__date', text: '正在读取本地时间' })
         ]),
-        el('div', { class: 'time-card__zone', text: '本地时间 · 实时更新' })
+        zone
       ])
     ]);
 
@@ -239,12 +268,21 @@
     var secondHand = $('#timeClockSecond');
     var digital = $('#timeCardDigital');
     var dateLine = $('#timeCardDate');
+    var zoneLine = $('#timeCardZone');
+    var currentMood = '';
 
     function tick() {
       var now = new Date();
       var h = now.getHours();
       var m = now.getMinutes();
       var s = now.getSeconds();
+      var mood = timeMood(h);
+      if (mood.key !== currentMood) {
+        card.classList.remove('time--morning', 'time--day', 'time--evening', 'time--night');
+        card.classList.add('time--' + mood.key);
+        currentMood = mood.key;
+      }
+      if (zoneLine) zoneLine.textContent = mood.text;
       if (digital) digital.textContent = pad(h) + ':' + pad(m) + ':' + pad(s);
       if (dateLine) dateLine.textContent = now.getFullYear() + ' 年 ' + (now.getMonth() + 1) + ' 月 ' + now.getDate() + ' 日 · ' + week[now.getDay()];
       if (hourHand) hourHand.style.transform = 'translateX(-50%) rotate(' + ((h % 12) * 30 + m * 0.5) + 'deg)';
