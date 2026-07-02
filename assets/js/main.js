@@ -58,7 +58,7 @@
       '.nav-menu-portal a:hover{color:var(--accent)!important;background:rgba(0,113,227,.12)!important;transform:translateY(-1px)!important;}',
       '[data-theme="dark"] .nav-menu-portal a:hover{background:rgba(41,151,255,.16)!important;}',
       '.nav-menu-portal .nav__submenu__sep{position:relative!important;z-index:2!important;}',
-      '.nav__submenu:not(.nav-menu-portal){display:none!important;}',
+      'body .nav details.nav__has-sub > .nav__submenu:not(.nav-menu-portal),body .nav details.nav__has-sub[open] > .nav__submenu:not(.nav-menu-portal),body .nav details.nav__has-sub.is-visible > .nav__submenu:not(.nav-menu-portal),body .nav .nav__submenu[aria-hidden="true"]{display:none!important;opacity:0!important;visibility:hidden!important;pointer-events:none!important;transform:none!important;filter:none!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;}',
 
       '.nav-search{top:84px!important;width:min(calc(100% - 32px),900px)!important;max-width:none!important;border-radius:30px!important;background:rgba(251,251,253,.74)!important;border:1px solid rgba(255,255,255,.62)!important;box-shadow:0 28px 80px rgba(0,0,0,.24),inset 0 1px 0 rgba(255,255,255,.74)!important;backdrop-filter:saturate(200%) blur(34px)!important;-webkit-backdrop-filter:saturate(200%) blur(34px)!important;overflow:hidden!important;}',
       '[data-theme="dark"] .nav-search{background:rgba(22,22,24,.72)!important;border-color:rgba(255,255,255,.13)!important;}',
@@ -111,6 +111,10 @@
       portal.setAttribute('aria-hidden', 'true');
       document.body.appendChild(portal);
       menu.setAttribute('aria-hidden', 'true');
+      menu.style.setProperty('display', 'none', 'important');
+      menu.style.setProperty('visibility', 'hidden', 'important');
+      menu.style.setProperty('opacity', '0', 'important');
+      menu.style.setProperty('pointer-events', 'none', 'important');
 
       function positionPortal() {
         var rect = summary.getBoundingClientRect();
@@ -145,6 +149,7 @@
       function open() {
         closeOthers();
         details.setAttribute('open', '');
+        menu.style.setProperty('display', 'none', 'important');
         positionPortal();
         portal.classList.remove('is-closing');
         portal.setAttribute('aria-hidden', 'false');
@@ -164,8 +169,6 @@
       }, true);
 
       portal.addEventListener('click', function (e) { e.stopPropagation(); });
-      portal.addEventListener('mouseenter', function () { portal.classList.add('is-hovering'); });
-      portal.addEventListener('mouseleave', function () { portal.classList.remove('is-hovering'); });
       window.addEventListener('scroll', function () {
         if (details.classList.contains('is-visible')) positionPortal();
       }, { passive: true });
