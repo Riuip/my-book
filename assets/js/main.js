@@ -7,6 +7,67 @@
 (function () {
   'use strict';
 
+  /* ---------- Floating rounded nav ---------- */
+  function injectFloatingNavStyle() {
+    if (document.getElementById('floating-nav-style')) return;
+    var style = document.createElement('style');
+    style.id = 'floating-nav-style';
+    style.textContent = [
+      '.nav{',
+      '  top:12px!important;',
+      '  left:50%!important;',
+      '  right:auto!important;',
+      '  width:min(calc(100% - 32px),1180px)!important;',
+      '  height:54px!important;',
+      '  transform:translateX(-50%)!important;',
+      '  background:transparent!important;',
+      '  border-bottom:0!important;',
+      '  box-shadow:none!important;',
+      '  backdrop-filter:none!important;',
+      '  -webkit-backdrop-filter:none!important;',
+      '  pointer-events:none;',
+      '}',
+      '.nav__inner{',
+      '  width:100%!important;',
+      '  max-width:none!important;',
+      '  height:100%!important;',
+      '  margin:0!important;',
+      '  padding:0 24px!important;',
+      '  border-radius:999px;',
+      '  background:rgba(251,251,253,.72);',
+      '  border:1px solid rgba(255,255,255,.56);',
+      '  box-shadow:0 12px 34px rgba(0,0,0,.10), inset 0 1px 0 rgba(255,255,255,.70);',
+      '  backdrop-filter:saturate(200%) blur(32px);',
+      '  -webkit-backdrop-filter:saturate(200%) blur(32px);',
+      '  pointer-events:auto;',
+      '  transition:background .3s ease,border-color .3s ease,box-shadow .3s ease;',
+      '}',
+      '[data-theme="dark"] .nav__inner{',
+      '  background:rgba(22,22,24,.66);',
+      '  border-color:rgba(255,255,255,.12);',
+      '  box-shadow:0 12px 38px rgba(0,0,0,.42), inset 0 1px 0 rgba(255,255,255,.08);',
+      '}',
+      '.nav__menu a:hover,.nav__theme:hover,.nav__search-btn:hover,.nav__sub-toggle:hover{',
+      '  background:rgba(255,255,255,.52);',
+      '}',
+      '[data-theme="dark"] .nav__menu a:hover,[data-theme="dark"] .nav__theme:hover,[data-theme="dark"] .nav__search-btn:hover,[data-theme="dark"] .nav__sub-toggle:hover{',
+      '  background:rgba(255,255,255,.10);',
+      '}',
+      '@media(max-width:720px){',
+      '  .nav{top:10px!important;width:calc(100% - 20px)!important;height:50px!important;}',
+      '  .nav__inner{padding:0 14px!important;}',
+      '  .nav__brand{font-size:17px;}',
+      '  .nav__menu a,.nav__sub-toggle{padding-left:8px!important;padding-right:8px!important;}',
+      '}',
+      '@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))){',
+      '  .nav__inner{background:rgba(251,251,253,.92);}',
+      '  [data-theme="dark"] .nav__inner{background:rgba(22,22,24,.92);}',
+      '}'
+    ].join('\n');
+    document.head.appendChild(style);
+  }
+  injectFloatingNavStyle();
+
   /* ---------- Theme ---------- */
   var STORAGE_KEY = 'wyq-theme';
   var root = document.documentElement;
