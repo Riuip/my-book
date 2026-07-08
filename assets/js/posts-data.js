@@ -93,7 +93,6 @@
     }
   ];
 
-  /* ---------- Helpers ---------- */
   function currentFile() {
     var f = (window.location.pathname.split('/').pop() || '').toLowerCase();
     return f || 'index.html';
@@ -128,14 +127,12 @@
       if (POSTS[k].catKey === cur.catKey) sameCat.push(POSTS[k]);
       else others.push(POSTS[k]);
     }
-    var combined = sameCat.concat(others);
-    return combined.slice(0, max);
+    return sameCat.concat(others).slice(0, max);
   }
 
   function searchPosts(query) {
     if (!query || !query.trim()) return [];
-    var q = query.trim().toLowerCase();
-    var keywords = q.split(/\s+/);
+    var keywords = query.trim().toLowerCase().split(/\s+/);
     var results = [];
     for (var i = 0; i < POSTS.length; i++) {
       var p = POSTS[i];
@@ -149,7 +146,6 @@
     return results;
   }
 
-  /* ---------- Expose ---------- */
   window.WYQ_POSTS = POSTS;
   window.WYQ_POSTS_API = {
     currentFile: currentFile,
@@ -158,4 +154,88 @@
     getRelated: getRelated,
     searchPosts: searchPosts
   };
+
+  function updateHomeLatestLinks() {
+    if (currentFile() !== 'index.html') return;
+    var latestUrl = POSTS[0].url;
+    var links = document.querySelectorAll('a[href="post-006.html"], a[href="./post-006.html"], a[href$="/post-006.html"]');
+    Array.prototype.forEach.call(links, function (a) {
+      a.setAttribute('href', latestUrl);
+    });
+  }
+
+  function protectPost007() {
+    if (currentFile() !== 'post-007.html') return;
+
+    var css =
+      'html,body,.article,.doc-sheet{-webkit-user-select:none!important;-moz-user-select:none!important;-ms-user-select:none!important;user-select:none!important;-webkit-touch-callout:none!important;}' +
+      'img,svg{pointer-events:none!important;}' +
+      '.protect-shield{position:fixed;inset:0;background:#000;z-index:2147483647;display:none;align-items:center;justify-content:center;color:#111;font-size:14px;}' +
+      '.protect-shield.is-on{display:flex!important;}' +
+      '@media print{html,body{background:#000!important;}body>*{visibility:hidden!important;}.protect-shield{display:block!important;visibility:visible!important;}}';
+
+    var style = document.createElement('style');
+    style.id = 'post-007-protection-style';
+    style.textContent = css;
+    document.head.appendChild(style);
+
+    var shield = document.getElementById('protectShield');
+    if (!shield) {
+      shield = document.createElement('div');
+      shield.id = 'protectShield';
+      shield.className = 'protect-shield';
+      shield.setAttribute('aria-hidden', 'true');
+      document.body.appendChild(shield);
+    }
+
+    var timer = null;
+    function show(ms) {
+      shield.classList.add('is-on');
+      if (timer) clearTimeout(timer);
+      if (ms) timer = setTimeout(hide, ms);
+    }
+    function hide() {
+      shield.classList.remove('is-on');
+    }
+
+    ['copy', 'cut', 'contextmenu', 'selectstart', 'dragstart'].forEach(function (type) {
+      document.addEventListener(type, function (e) {
+        e.preventDefault();
+        show(900);
+      }, true);
+    });
+
+    document.addEventListener('keydown', function (e) {
+      var key = (e.key || '').toLowerCase();
+      var blockedCombo = (e.ctrlKey || e.metaKey) && ['c', 'x', 's', 'p', 'u'].indexOf(key) !== -1;
+      var blockedDev = e.key === 'F12' || ((e.ctrlKey || e.metaKey) && e.shiftKey && ['i', 'j', 'c'].indexOf(key) !== -1);
+      if (e.key === 'PrintScreen') show(2500);
+      if (blockedCombo || blockedDev) {
+        e.preventDefault();
+        e.stopPropagation();
+        show(1200);
+      }
+    }, true);
+
+    window.addEventListener('keyup', function (e) {
+      if (e.key === 'PrintScreen') {
+        show(2500);
+        try {
+          if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText('');
+        } catch (_) {}
+      }
+    }, true);
+
+    window.addEventListener('blur', function () { show(); });
+    window.addEventListener('focus', function () { setTimeout(hide, 650); });
+    document.addEventListener('visibilitychange', function () {
+      if (document.hidden) show();
+      else setTimeout(hide, 650);
+    });
+    window.addEventListener('beforeprint', function () { show(); });
+    window.addEventListener('afterprint', function () { setTimeout(hide, 600); });
+  }
+
+  updateHomeLatestLinks();
+  protectPost007();
 })();
