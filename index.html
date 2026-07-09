@@ -72,6 +72,30 @@
     details.nav__has-sub > .nav__submenu a:hover { color: var(--accent) !important; background: rgba(0,113,227,.12) !important; transform: translateY(-1px) !important; }
     [data-theme="dark"] details.nav__has-sub > .nav__submenu a:hover { background: rgba(41,151,255,.16) !important; }
     @media(max-width:720px){ details.nav__has-sub > .nav__submenu { right:-8px !important; min-width:230px !important; border-radius:24px !important; } }
+
+    /* ========== 修复搜索框位置 ========== */
+    .nav-search {
+      position: fixed !important;
+      top: 85px !important;
+      right: 24px !important;
+      left: auto !important;
+      z-index: 10040 !important;
+      width: 360px !important;
+      max-width: calc(100vw - 48px) !important;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.18) !important;
+      border-radius: 20px !important;
+      overflow: hidden !important;
+    }
+    .nav-search__overlay {
+      position: fixed !important;
+      inset: 0 !important;
+      z-index: 10035 !important;
+      background: rgba(0,0,0,0.25) !important;
+      backdrop-filter: blur(6px) !important;
+    }
+    @media (max-width: 480px) {
+      .nav-search { width: calc(100vw - 32px) !important; right: 16px !important; top: 75px !important; }
+    }
   </style>
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230071e3'/%3E%3Ctext x='50%25' y='62%25' text-anchor='middle' font-family='-apple-system,system-ui,sans-serif' font-weight='700' font-size='14' fill='white'%3EWYQ%3C/text%3E%3C/svg%3E" />
   <script>(function(){try{var t=localStorage.getItem('wyq-theme');if(t!=='light'&&t!=='dark'){t=window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';}document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
@@ -157,18 +181,10 @@
   <section class="desk-section" aria-label="近况"><div class="desk-section__title">最近</div><div class="desk-row" id="deskRow"></div></section>
   <section class="featured-section" aria-label="本周新文"><div class="featured-section__title">本周新文</div><div id="featuredPost"></div></section>
 
-  <!-- 优化后的限定文章卡片（渐变 + 更大 + 与其他卡片同风格） -->
   <section id="limited-articles" class="featured-section" aria-label="限定文章">
     <div class="featured-section__title">限定文章</div>
     <div style="max-width: 760px; margin: 28px auto 0;">
-      <div style="
-        background: linear-gradient(145deg, #f3e8ff 0%, #e0f2fe 100%);
-        border-radius: 28px;
-        padding: 60px 48px;
-        text-align: center;
-        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.08);
-        border: 1px solid rgba(255,255,255,0.6);
-      ">
+      <div style="background: linear-gradient(145deg, #f3e8ff 0%, #e0f2fe 100%); border-radius: 28px; padding: 60px 48px; text-align: center; box-shadow: 0 12px 40px rgba(0,0,0,0.08); border: 1px solid rgba(255,255,255,0.6);">
         <p style="font-size: 26px; font-weight: 600; margin: 0 0 16px; color: #1f2937;">尽情期待</p>
         <p style="font-size: 16px; color: #4b5563; margin: 0; opacity: 0.9;">更多内容即将上线，敬请期待～</p>
       </div>
@@ -196,7 +212,15 @@
 
   <footer class="footer"><div class="footer__inner"><div><div>&copy; <span data-year>2026</span> WYQ. All rights reserved.</div><div class="site-counters" id="siteCounters" aria-label="站点小数字"></div></div><ul class="footer__links"><li><a href="index.html">主页</a></li><li><a href="post-006.html">文章</a></li><li><a href="archive.html">归档</a></li><li><a href="tags.html">分类</a></li><li><a href="lab.html">实验</a></li><li><a href="others.html">其他</a></li><li><a href="feed.xml">RSS</a></li></ul></div></footer>
 
-  <div class="nav-search__overlay" id="navSearchOverlay"></div><div class="nav-search" id="navSearchBox"><div class="nav-search__inner"><svg class="nav-search__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><input type="text" class="nav-search__input" id="navSearchInput" placeholder="搜索文章..." autocomplete="off" /></div><div class="nav-search__results" id="navSearchResults"><p class="nav-search__hint">输入关键词搜索文章...</p></div></div>
+  <div class="nav-search__overlay" id="navSearchOverlay"></div>
+  <div class="nav-search" id="navSearchBox">
+    <div class="nav-search__inner">
+      <svg class="nav-search__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input type="text" class="nav-search__input" id="navSearchInput" placeholder="搜索文章..." autocomplete="off" />
+    </div>
+    <div class="nav-search__results" id="navSearchResults"><p class="nav-search__hint">输入关键词搜索文章...</p></div>
+  </div>
+
   <button class="back-to-top" id="back-to-top" aria-label="返回顶部"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg></button>
 
   <script src="assets/js/view-transitions.js?v=1"></script>
