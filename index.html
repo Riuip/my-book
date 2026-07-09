@@ -52,7 +52,7 @@
 
     [data-theme="dark"] details.nav__has-sub > summary.nav__sub-toggle:hover,
     [data-theme="dark"] details.nav__has-sub.is-visible > summary.nav__sub-toggle,
-    [data-theme="dark"] details.nav__has-sub[open] > summary.nav__sub-toggle {
+    details.nav__has-sub[open] > summary.nav__sub-toggle {
       background: rgba(255,255,255,.10) !important;
       box-shadow: none !important;
     }
@@ -222,7 +222,6 @@
             <div class="nav__submenu" role="menu">
               <a href="lab.html" role="menuitem"><svg class="nav__submenu__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8" cy="9" r="3"/><path d="M16.5 17a3.5 3.5 0 0 0 0-7 4.5 4.5 0 0 0-8.5 0"/></svg><span>天气卡片</span></a>
               <a href="dna.html" role="menuitem"><svg class="nav__submenu__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 3c0 6 16 12 16 18"/><path d="M20 3c0 6-16 12-16 18"/><line x1="6" y1="7" x2="18" y2="7"/><line x1="6" y1="17" x2="18" y2="17"/></svg><span>博客 DNA</span></a>
-              <a href="share.html" role="menuitem"><svg class="nav__submenu__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg><span>分享</span></a>
               <div class="nav__submenu__sep"></div>
               <a href="gradient.html" role="menuitem"><svg class="nav__submenu__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3a14.5 14.5 0 0 1 0 18"/></svg><span>渐变实验室</span></a>
               <a href="pomodoro.html" role="menuitem"><svg class="nav__submenu__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="13" r="8"/><path d="M9 2h6"/><path d="M12 8v5l3 2"/></svg><span>极简番茄钟</span></a>
@@ -248,6 +247,16 @@
 
   <section class="desk-section" aria-label="近况"><div class="desk-section__title">最近</div><div class="desk-row" id="deskRow"></div></section>
   <section class="featured-section" aria-label="本周新文"><div class="featured-section__title">本周新文</div><div id="featuredPost"></div></section>
+
+  <!-- 新增：限定文章板块 -->
+  <section class="limited-section" aria-label="限定文章">
+    <div class="featured-section__title">限定文章</div>
+    <div style="max-width: 680px; margin: 24px auto; padding: 48px 32px; background: rgba(255,255,255,0.65); border-radius: 24px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.06);">
+      <p style="font-size: 22px; color: var(--text); margin: 0; font-weight: 500;">尽情期待</p>
+      <p style="font-size: 15px; color: var(--text-soft); margin-top: 12px; opacity: 0.8;">更多内容即将上线，敬请期待～</p>
+    </div>
+  </section>
+
   <section class="mood-section" aria-label="按心情看"><div class="mood-section__title">换种方式逛逛</div><div class="mood-groups" id="moodGroups"></div></section>
 
   <section style="padding: 36px 0 80px;" id="about">
@@ -260,7 +269,11 @@
 
   <section class="lab-tease" aria-label="其他测试项目">
     <style>.lab-tease{padding:0 0 28px;display:flex;flex-wrap:wrap;justify-content:center;gap:10px}.lab-tease__link{display:inline-flex;align-items:center;gap:8px;font-size:12px;color:#8a8f9a;letter-spacing:.04em;padding:7px 14px;border-radius:999px;background:rgba(255,255,255,.5);border:1px solid rgba(0,0,0,.06);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);text-decoration:none;transition:color .2s ease,background .2s ease,transform .2s ease}.lab-tease__link:hover{color:#1d1d1f;background:rgba(255,255,255,.85);transform:translateY(-1px)}.lab-tease__dot{width:6px;height:6px;border-radius:50%;box-shadow:0 0 8px rgba(184,167,255,.5)}.lab-tease__dot--w{background:linear-gradient(135deg,#ffd68a,#b8a7ff)}.lab-tease__dot--d{background:linear-gradient(135deg,#6ee7b7,#5b8def)}.lab-tease__dot--s{background:linear-gradient(135deg,#ff6b6b,#c53b3b)}[data-theme="dark"] .lab-tease__link{background:rgba(30,32,38,.5);border-color:rgba(255,255,255,.08);color:#8a8f9a}[data-theme="dark"] .lab-tease__link:hover{color:#f5f5f7;background:rgba(40,42,50,.8)}</style>
-    <a class="lab-tease__link" href="lab.html"><span class="lab-tease__dot lab-tease__dot--w" aria-hidden="true"></span>天气卡片<span aria-hidden="true">→</span></a><a class="lab-tease__link" href="dna.html"><span class="lab-tease__dot lab-tease__dot--d" aria-hidden="true"></span>博客 DNA<span aria-hidden="true">→</span></a><a class="lab-tease__link" href="share.html"><span class="lab-tease__dot lab-tease__dot--s" aria-hidden="true"></span>分享<span aria-hidden="true">→</span></a>
+    <a class="lab-tease__link" href="lab.html"><span class="lab-tease__dot lab-tease__dot--w" aria-hidden="true"></span>天气卡片<span aria-hidden="true">→</span></a>
+    <a class="lab-tease__link" href="dna.html"><span class="lab-tease__dot lab-tease__dot--d" aria-hidden="true"></span>博客 DNA<span aria-hidden="true">→</span></a>
+    <a class="lab-tease__link" href="gradient.html"><span class="lab-tease__dot lab-tease__dot--s" aria-hidden="true"></span>渐变实验室<span aria-hidden="true">→</span></a>
+    <a class="lab-tease__link" href="pomodoro.html"><span class="lab-tease__dot lab-tease__dot--w" aria-hidden="true"></span>极简番茄钟<span aria-hidden="true">→</span></a>
+    <a class="lab-tease__link" href="md-card.html"><span class="lab-tease__dot lab-tease__dot--d" aria-hidden="true"></span>Markdown 卡片<span aria-hidden="true">→</span></a>
   </section>
 
   <footer class="footer"><div class="footer__inner"><div><div>&copy; <span data-year>2026</span> WYQ. All rights reserved.</div><div class="site-counters" id="siteCounters" aria-label="站点小数字"></div></div><ul class="footer__links"><li><a href="index.html">主页</a></li><li><a href="post-006.html">文章</a></li><li><a href="archive.html">归档</a></li><li><a href="tags.html">分类</a></li><li><a href="lab.html">实验</a></li><li><a href="others.html">其他</a></li><li><a href="feed.xml">RSS</a></li></ul></div></footer>
