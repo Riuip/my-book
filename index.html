@@ -13,8 +13,7 @@
   <link rel="stylesheet" href="assets/css/style.css?v=21" />
   <style id="native-nav-menu-fix">
     /* 强制搜索框定位 */
-    .nav-search,
-    #navSearchBox {
+    .nav-search, #navSearchBox {
       position: fixed !important;
       top: 85px !important;
       right: 24px !important;
@@ -28,8 +27,7 @@
       border-radius: 20px !important;
       overflow: hidden !important;
     }
-    .nav-search__overlay,
-    #navSearchOverlay {
+    .nav-search__overlay, #navSearchOverlay {
       position: fixed !important;
       inset: 0 !important;
       z-index: 10045 !important;
@@ -49,7 +47,9 @@
 </head>
 <body class="page-enter">
 
-  <!-- 导航栏（保持不变） -->
+  <div class="aurora" aria-hidden="true"></div>
+
+  <!-- 导航 -->
   <nav class="nav">
     <div class="nav__inner">
       <a class="nav__brand" href="index.html"><span class="dot"></span><span>WYQ</span></a>
@@ -93,25 +93,128 @@
     </div>
   </nav>
 
-  <!-- 其他内容保持不变（hero、限定文章等） -->
-  <!-- ...（为节省篇幅，这里省略了和你上次一样的主体内容） -->
+  <!-- Hero -->
+  <header class="hero">
+    <div class="hero__inner">
+      <h1 class="hero__title hero__title--brand typewriter-typing" id="heroTypewriter" data-text="Hello, I'm WYQ"></h1>
+      <p class="hero__sub reveal" data-delay="1">一个属于自己的、慢节奏的角落。<br/>记录生活、思考与日常。</p>
+      <div class="hero__actions reveal" data-delay="2">
+        <a class="btn btn--primary btn--lg" href="post-006.html">查看最新文章</a>
+        <a class="btn btn--ghost btn--lg" href="#about">了解更多</a>
+      </div>
+      <div class="hero__now reveal" data-delay="3" aria-live="polite"><span id="nowLine">在写一些东西。</span></div>
+    </div>
+  </header>
 
-  <!-- 搜索相关 -->
+  <section class="desk-section" aria-label="近况"><div class="desk-section__title">最近</div><div class="desk-row" id="deskRow"></div></section>
+  <section class="featured-section" aria-label="本周新文"><div class="featured-section__title">本周新文</div><div id="featuredPost"></div></section>
+
+  <!-- 限定文章 -->
+  <section id="limited-articles" class="featured-section" aria-label="限定文章">
+    <div class="featured-section__title">限定文章</div>
+    <div style="max-width: 760px; margin: 28px auto 0;">
+      <div style="background: linear-gradient(145deg, #f3e8ff 0%, #e0f2fe 100%); border-radius: 28px; padding: 60px 48px; text-align: center; box-shadow: 0 12px 40px rgba(0,0,0,0.08); border: 1px solid rgba(255,255,255,0.6);">
+        <p style="font-size: 26px; font-weight: 600; margin: 0 0 16px; color: #1f2937;">尽情期待</p>
+        <p style="font-size: 16px; color: #4b5563; margin: 0; opacity: 0.9;">更多内容即将上线，敬请期待～</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="mood-section" aria-label="按心情看"><div class="mood-section__title">换种方式逛逛</div><div class="mood-groups" id="moodGroups"></div></section>
+
+  <!-- About -->
+  <section style="padding: 36px 0 80px;" id="about">
+    <div class="tiles tiles--compact">
+      <article class="tile tile--wide tile--dark reveal">
+        <div class="tile__eyebrow">关于我</div>
+        <h2 class="tile__title">你好，我是 WYQ。</h2>
+        <p class="tile__desc">我喜欢记录, 喜欢慢慢地把生活整理成可以被回头翻阅的样子。这里是我的私人空间, 没有焦虑的算法, 也没有刻意的曝光, 只是把那些值得留下的瞬间, 安放在文字里。</p>
+        <div class="tile__actions">
+          <a class="btn btn--primary" href="post-006.html">读我的最新文章</a>
+          <a class="btn btn--ghost" href="mailto:wyq200707@qq.com">联系我</a>
+        </div>
+      </article>
+      <article class="tile reveal" data-delay="1">
+        <div class="tile__eyebrow">个人资料</div>
+        <h2 class="tile__title" style="font-size:30px;">基本信息</h2>
+        <div class="profile-grid">
+          <div class="profile-row"><span>身份</span><span>WYQ</span></div>
+          <div class="profile-row"><span>记录</span><span>生活 · 思考 · 旅行 · 技术</span></div>
+          <div class="profile-row"><span>更新</span><span>一周一更</span></div>
+          <div class="profile-row"><span>联络</span><span style="font-size:14px;">wyq200707@qq.com</span></div>
+        </div>
+      </article>
+      <article class="tile tile--wide tile--accent reveal" data-delay="2">
+        <div class="tile__eyebrow">Journal</div>
+        <h2 class="tile__title">看看更多文章</h2>
+        <p class="tile__desc">归档里按时间倒序排着所有文章, 也可以按分类筛选。</p>
+        <div class="tile__actions">
+          <a class="btn btn--primary" href="archive.html">前往归档</a>
+          <a class="btn btn--ghost" href="tags.html">按分类浏览</a>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- Lab -->
+  <section class="lab-tease" aria-label="其他测试项目">
+    <style>.lab-tease{padding:0 0 28px;display:flex;flex-wrap:wrap;justify-content:center;gap:10px}.lab-tease__link{display:inline-flex;align-items:center;gap:8px;font-size:12px;color:#8a8f9a;letter-spacing:.04em;padding:7px 14px;border-radius:999px;background:rgba(255,255,255,.5);border:1px solid rgba(0,0,0,.06);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);text-decoration:none;transition:color .2s ease,background .2s ease,transform .2s ease}.lab-tease__link:hover{color:#1d1d1f;background:rgba(255,255,255,.85);transform:translateY(-1px)}.lab-tease__dot{width:6px;height:6px;border-radius:50%;box-shadow:0 0 8px rgba(184,167,255,.5)}.lab-tease__dot--w{background:linear-gradient(135deg,#ffd68a,#b8a7ff)}.lab-tease__dot--d{background:linear-gradient(135deg,#6ee7b7,#5b8def)}.lab-tease__dot--s{background:linear-gradient(135deg,#ff6b6b,#c53b3b)}[data-theme="dark"] .lab-tease__link{background:rgba(30,32,38,.5);border-color:rgba(255,255,255,.08);color:#8a8f9a}[data-theme="dark"] .lab-tease__link:hover{color:#f5f5f7;background:rgba(40,42,50,.8)}</style>
+    <a class="lab-tease__link" href="lab.html"><span class="lab-tease__dot lab-tease__dot--w" aria-hidden="true"></span>天气卡片<span aria-hidden="true">→</span></a>
+    <a class="lab-tease__link" href="dna.html"><span class="lab-tease__dot lab-tease__dot--d" aria-hidden="true"></span>博客 DNA<span aria-hidden="true">→</span></a>
+    <a class="lab-tease__link" href="gradient.html"><span class="lab-tease__dot lab-tease__dot--s" aria-hidden="true"></span>渐变实验室<span aria-hidden="true">→</span></a>
+    <a class="lab-tease__link" href="pomodoro.html"><span class="lab-tease__dot lab-tease__dot--w" aria-hidden="true"></span>极简番茄钟<span aria-hidden="true">→</span></a>
+    <a class="lab-tease__link" href="md-card.html"><span class="lab-tease__dot lab-tease__dot--d" aria-hidden="true"></span>Markdown 卡片<span aria-hidden="true">→</span></a>
+  </section>
+
+  <footer class="footer">
+    <div class="footer__inner">
+      <div><div>&copy; <span data-year>2026</span> WYQ. All rights reserved.</div><div class="site-counters" id="siteCounters" aria-label="站点小数字"></div></div>
+      <ul class="footer__links">
+        <li><a href="index.html">主页</a></li>
+        <li><a href="post-006.html">文章</a></li>
+        <li><a href="archive.html">归档</a></li>
+        <li><a href="tags.html">分类</a></li>
+        <li><a href="lab.html">实验</a></li>
+        <li><a href="others.html">其他</a></li>
+        <li><a href="feed.xml">RSS</a></li>
+      </ul>
+    </div>
+  </footer>
+
+  <!-- 搜索 -->
   <div class="nav-search__overlay" id="navSearchOverlay"></div>
   <div class="nav-search" id="navSearchBox">
     <div class="nav-search__inner">
       <input type="text" class="nav-search__input" id="navSearchInput" placeholder="搜索文章..." autocomplete="off" />
     </div>
-    <div class="nav-search__results" id="navSearchResults"></div>
+    <div class="nav-search__results" id="navSearchResults"><p class="nav-search__hint">输入关键词搜索文章...</p></div>
   </div>
 
+  <button class="back-to-top" id="back-to-top" aria-label="返回顶部"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg></button>
+
+  <!-- Scripts -->
+  <script src="assets/js/view-transitions.js?v=1"></script>
+  <script src="assets/js/main.js?v=15"></script>
   <script>
-  // 强制修复搜索框位置（兜底脚本）
-  function forceSearchBoxPosition() {
+  (function(){
+    var ANIM_MS = 260;
+    function allMenus(){ return Array.prototype.slice.call(document.querySelectorAll('details.nav__has-sub')); }
+    function openMenu(d){ closeMenus(d); d.classList.remove('is-closing'); d.setAttribute('open',''); requestAnimationFrame(function(){ d.classList.add('is-open','is-visible'); }); }
+    function closeMenu(d){ if(!d || !d.hasAttribute('open')) return; d.classList.remove('is-visible'); d.classList.add('is-closing'); window.setTimeout(function(){ d.classList.remove('is-open','is-closing'); d.removeAttribute('open'); }, ANIM_MS); }
+    function closeMenus(except){ allMenus().forEach(function(d){ if(d!==except) closeMenu(d); }); }
+    allMenus().forEach(function(d){ var summary = d.querySelector('summary'); if(!summary) return; summary.addEventListener('click', function(e){ e.preventDefault(); e.stopPropagation(); if(d.classList.contains('is-visible')) closeMenu(d); else openMenu(d); }); });
+    document.addEventListener('click', function(e){ if(!e.target.closest('details.nav__has-sub')) closeMenus(); });
+    document.addEventListener('keydown', function(e){ if(e.key==='Escape') closeMenus(); });
+  })();
+  </script>
+
+  <!-- 强制搜索框定位脚本 -->
+  <script>
+  function forceSearchPosition() {
     const box = document.getElementById('navSearchBox');
     if (!box) return;
 
-    const applyPosition = () => {
+    const fix = () => {
       box.style.setProperty('position', 'fixed', 'important');
       box.style.setProperty('top', '85px', 'important');
       box.style.setProperty('right', '24px', 'important');
@@ -120,30 +223,27 @@
       box.style.setProperty('z-index', '10050', 'important');
     };
 
-    // 初始 + 点击搜索按钮时强制执行
-    const searchBtn = document.getElementById('navSearchBtn');
-    if (searchBtn) {
-      searchBtn.addEventListener('click', () => {
-        setTimeout(applyPosition, 50);
-        setTimeout(applyPosition, 200);
-      });
+    const btn = document.getElementById('navSearchBtn');
+    if (btn) {
+      btn.addEventListener('click', () => setTimeout(fix, 80));
     }
 
-    // 监听 class 变化（JS 可能通过添加 class 显示搜索框）
     const observer = new MutationObserver(() => {
-      if (box.style.display !== 'none' && box.offsetParent !== null) {
-        applyPosition();
-      }
+      if (box.offsetParent !== null) fix();
     });
     observer.observe(box, { attributes: true, attributeFilter: ['style', 'class'] });
   }
-
-  window.addEventListener('load', forceSearchBoxPosition);
+  window.addEventListener('load', forceSearchPosition);
   </script>
 
-  <!-- 其他脚本保持不变 -->
+  <script src="assets/js/posts-data.js?v=2"></script>
   <script src="assets/js/search.js?v=3"></script>
-  <!-- ... 其他 JS ... -->
+  <script src="assets/js/enhancements.js?v=1"></script>
+  <script src="assets/js/extras.js?v=5"></script>
+  <script src="assets/js/home-extras.js?v=1"></script>
 
+  <script>
+  (function(){var el=document.getElementById('heroTypewriter');if(!el)return;var text=el.getAttribute('data-text')||'';var delay=500;var speed=85;var cursor=document.createElement('span');cursor.className='typewriter-cursor';cursor.textContent='|';el.textContent='';el.appendChild(cursor);setTimeout(function(){var i=0;function type(){if(i<text.length){var charNode=document.createTextNode(text.charAt(i));el.insertBefore(charNode,cursor);i++;setTimeout(type,speed);}else{cursor.classList.add('blink');setTimeout(function(){cursor.style.opacity='0';setTimeout(function(){cursor.remove();el.classList.remove('typewriter-typing');},400);},1200);}}type();},delay);})();
+  </script>
 </body>
 </html>
