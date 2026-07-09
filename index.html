@@ -157,13 +157,20 @@
   <section class="desk-section" aria-label="近况"><div class="desk-section__title">最近</div><div class="desk-row" id="deskRow"></div></section>
   <section class="featured-section" aria-label="本周新文"><div class="featured-section__title">本周新文</div><div id="featuredPost"></div></section>
 
-  <!-- 修复后的限定文章板块 -->
+  <!-- 优化后的限定文章卡片（渐变 + 更大 + 与其他卡片同风格） -->
   <section id="limited-articles" class="featured-section" aria-label="限定文章">
     <div class="featured-section__title">限定文章</div>
-    <div style="max-width:680px;margin:24px auto 0;">
-      <div style="background:rgba(255,255,255,0.72);border-radius:24px;padding:52px 40px;text-align:center;box-shadow:0 10px 30px rgba(0,0,0,0.06);">
-        <p style="font-size:24px;font-weight:600;margin:0 0 14px;color:var(--text);">尽情期待</p>
-        <p style="font-size:15px;color:var(--text-soft);margin:0;opacity:0.85;">更多内容即将上线，敬请期待～</p>
+    <div style="max-width: 760px; margin: 28px auto 0;">
+      <div style="
+        background: linear-gradient(145deg, #f3e8ff 0%, #e0f2fe 100%);
+        border-radius: 28px;
+        padding: 60px 48px;
+        text-align: center;
+        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.08);
+        border: 1px solid rgba(255,255,255,0.6);
+      ">
+        <p style="font-size: 26px; font-weight: 600; margin: 0 0 16px; color: #1f2937;">尽情期待</p>
+        <p style="font-size: 16px; color: #4b5563; margin: 0; opacity: 0.9;">更多内容即将上线，敬请期待～</p>
       </div>
     </div>
   </section>
