@@ -10,7 +10,7 @@
   <meta name="description" content="WYQ 的个人主页。记录生活、思考、技术与日常。" />
   <meta name="theme-color" content="#fbfbfd" media="(prefers-color-scheme: light)" />
   <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)" />
-  <link rel="stylesheet" href="assets/css/style.css?v=22" />
+  <link rel="stylesheet" href="assets/css/style.css?v=23" />
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230071e3'/%3E%3Ctext x='50%25' y='62%25' text-anchor='middle' font-family='-apple-system,system-ui,sans-serif' font-weight='700' font-size='14' fill='white'%3EWYQ%3C/text%3E%3C/svg%3E" />
   <link rel="canonical" href="https://riuip.github.io/my-book/" />
   <link rel="alternate" type="application/rss+xml" title="WYQ 专属博客 RSS" href="feed.xml" />
@@ -35,15 +35,22 @@
     .hero { min-height: 82vh; display: flex; align-items: center; }
     .hero__inner { width: 100%; }
     .home-section { padding: 64px 22px; }
-    .home-section__title { max-width: 1024px; margin: 0 auto 24px; font-size: clamp(26px, 3vw, 36px); line-height: 1.15; font-weight: 700; letter-spacing: -0.03em; color: var(--text); }
-    .home-section__subtitle { max-width: 1024px; margin: -12px auto 32px; color: var(--text-muted); font-size: 17px; }
-    .limited-card { max-width: 1024px; margin: 0 auto; display: grid; gap: 18px; grid-template-columns: minmax(0, 1fr); }
-    .limited-card__inner { position: relative; overflow: hidden; border-radius: 28px; border: 1px solid var(--line); background: color-mix(in srgb, var(--bg-elev) 82%, transparent); padding: clamp(32px, 6vw, 64px); box-shadow: var(--shadow-lg); backdrop-filter: blur(24px) saturate(150%); -webkit-backdrop-filter: blur(24px) saturate(150%); }
+    #limited-articles { padding-top: 48px; padding-bottom: 40px; }
+    .home-section__head { width: min(1024px, 100%); margin: 0 auto 20px; display: grid; grid-template-columns: minmax(180px, .36fr) minmax(0, .64fr); align-items: end; gap: 32px; }
+    .home-section__title { margin: 0; font-size: clamp(26px, 3vw, 36px); line-height: 1.15; font-weight: 700; letter-spacing: -0.03em; color: var(--text); }
+    .home-section__subtitle { margin: 0; color: var(--text-muted); font-size: 16px; line-height: 1.6; }
+    .limited-card { width: min(1024px, 100%); margin: 0 auto; }
+    .limited-card__inner { position: relative; display: grid; grid-template-columns: 168px minmax(0, 1fr); overflow: hidden; border: 1px solid var(--line); border-radius: 28px; background: color-mix(in srgb, var(--bg-elev) 82%, transparent); box-shadow: var(--shadow-lg); backdrop-filter: blur(24px) saturate(150%); -webkit-backdrop-filter: blur(24px) saturate(150%); }
     .limited-card__inner::before { content: ""; position: absolute; inset: -30%; pointer-events: none; background: radial-gradient(circle at 18% 20%, rgba(0,113,227,.18), transparent 38%), radial-gradient(circle at 84% 16%, rgba(191,90,242,.16), transparent 38%), radial-gradient(circle at 50% 110%, rgba(52,199,89,.12), transparent 42%); }
-    .limited-card__content { position: relative; z-index: 1; }
-    .limited-card__eyebrow { display: inline-flex; margin-bottom: 14px; padding: 6px 14px; border-radius: 999px; background: var(--accent-soft); color: var(--accent); font-size: 13px; font-weight: 600; }
-    .limited-card__title { margin: 0 0 12px; font-size: clamp(30px, 4.5vw, 54px); line-height: 1.05; letter-spacing: -0.04em; color: var(--text); }
-    .limited-card__desc { max-width: 650px; margin: 0 0 24px; color: var(--text-soft); font-size: 19px; line-height: 1.55; }
+    .limited-card__rail, .limited-card__content { position: relative; z-index: 1; }
+    .limited-card__rail { display: flex; flex-direction: column; justify-content: space-between; padding: 28px; border-right: 1px solid var(--line); background: color-mix(in srgb, var(--bg-elev) 40%, transparent); }
+    .limited-card__rail span { color: var(--text-muted); font-size: 11px; font-weight: 700; letter-spacing: .16em; }
+    .limited-card__rail strong { color: var(--accent); font-size: 46px; line-height: 1; letter-spacing: -.06em; }
+    .limited-card__content { padding: 30px 38px 32px; }
+    .limited-card__eyebrow { display: inline-flex; margin-bottom: 10px; padding: 5px 12px; border-radius: 999px; background: var(--accent-soft); color: var(--accent); font-size: 12px; font-weight: 600; }
+    .limited-card__title { margin: 0 0 8px; color: var(--text); font-size: clamp(32px, 4vw, 42px); line-height: 1.08; letter-spacing: -.04em; }
+    .limited-card__desc { max-width: 650px; margin: 0 0 18px; color: var(--text-soft); font-size: 16px; line-height: 1.65; }
+    .limited-card__actions { display: flex; flex-wrap: wrap; justify-content: flex-start; gap: 10px; width: max-content; max-width: 100%; }
     .home-mini-links { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; padding: 0 22px 46px; }
     .home-mini-link { display: inline-flex; align-items: center; gap: 8px; padding: 8px 14px; border: 1px solid var(--line); border-radius: 999px; color: var(--text-muted); background: color-mix(in srgb, var(--bg-elev) 76%, transparent); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); font-size: 13px; }
     .home-mini-link:hover { color: var(--accent); transform: translateY(-1px); }
@@ -55,7 +62,26 @@
     .nav-search__input { width: 100%; border: 1px solid var(--line); border-radius: 14px; background: var(--bg-tint); color: var(--text); font: inherit; padding: 11px 12px; outline: none; }
     .nav-search__results { margin-top: 14px; max-height: 320px; overflow: auto; color: var(--text-muted); font-size: 14px; }
     .nav-search__hint { text-align: center; padding: 18px 8px; }
-    @media (max-width: 720px) { .hero { min-height: auto; } .home-section { padding: 48px 18px; } .nav-search { top: 76px; right: 12px; width: calc(100vw - 24px); } }
+    @media (max-width: 720px) {
+      .hero { min-height: auto; }
+      .home-section { padding: 48px 18px; }
+      #limited-articles { padding-top: 38px; padding-bottom: 32px; }
+      .home-section__head { grid-template-columns: 1fr; gap: 8px; margin-bottom: 18px; }
+      .home-section__title { font-size: 28px; }
+      .home-section__subtitle { font-size: 15px; }
+      .limited-card__inner { grid-template-columns: 1fr; border-radius: 22px; }
+      .limited-card__rail { min-height: 0; flex-direction: row; align-items: center; padding: 14px 20px; border-right: 0; border-bottom: 1px solid var(--line); }
+      .limited-card__rail strong { font-size: 22px; }
+      .limited-card__content { padding: 24px 20px 22px; }
+      .limited-card__title { font-size: 32px; }
+      .limited-card__desc { margin-bottom: 18px; font-size: 16px; }
+      .limited-card__actions { width: 100%; }
+      .nav-search { top: 76px; right: 12px; width: calc(100vw - 24px); }
+    }
+    @media (max-width: 430px) {
+      .limited-card__actions { display: grid; grid-template-columns: 1fr; }
+      .limited-card__actions .btn { width: 100%; justify-content: center; }
+    }
   </style>
 
   <meta property="og:type" content="website" />
@@ -148,15 +174,21 @@
   </section>
 
   <section id="limited-articles" class="home-section" aria-label="限定文章">
-    <h2 class="home-section__title">限定文章</h2>
-    <p class="home-section__subtitle">给一些特别内容预留的位置，之后可以继续扩展成合集或专栏。</p>
+    <div class="home-section__head">
+      <h2 class="home-section__title">限定文章</h2>
+      <p class="home-section__subtitle">给一些特别内容预留的位置，之后可以继续扩展成合集或专栏。</p>
+    </div>
     <div class="limited-card reveal">
       <article class="limited-card__inner">
+        <div class="limited-card__rail" aria-hidden="true">
+          <span>LIMITED</span>
+          <strong>01</strong>
+        </div>
         <div class="limited-card__content">
           <div class="limited-card__eyebrow">Coming Soon</div>
-          <h3 class="limited-card__title">尽情期待</h3>
+          <h3 class="limited-card__title">敬请期待</h3>
           <p class="limited-card__desc">更多内容即将上线。先从最新文章、归档和分类开始逛逛，也可以用右上角搜索快速找到文章。</p>
-          <div class="hero__actions" style="justify-content:flex-start;width:auto;">
+          <div class="limited-card__actions">
             <a class="btn btn--primary" href="archive.html">查看归档</a>
             <a class="btn btn--ghost" href="tags.html">按分类浏览</a>
           </div>
