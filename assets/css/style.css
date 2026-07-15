@@ -4165,7 +4165,6 @@ html[data-birthday="active"] body .mood:nth-child(3) {
   background: linear-gradient(135deg, rgba(201, 71, 153, .34), rgba(238, 145, 92, .28)) !important;
 }
 
-html[data-birthday="active"] body .desk-card__icon,
 html[data-birthday="active"] body .mood__icon,
 html[data-birthday="active"] body .featured__eyebrow,
 html[data-birthday="active"] body .time-clock,
@@ -4174,6 +4173,14 @@ html[data-birthday="active"] body .time-card__badge {
   border-color: rgba(255, 231, 166, .28) !important;
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, .20) !important;
   color: #ffe69b !important;
+}
+
+html[data-birthday="active"] body .desk-card__icon {
+  width: max-content !important;
+  padding: 0 !important;
+  background: transparent !important;
+  border-color: transparent !important;
+  box-shadow: none !important;
 }
 
 html[data-birthday="active"] .desk-card__label,
