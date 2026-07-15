@@ -5,11 +5,11 @@
    ========================================================= */
 'use strict';
 
-var VERSION = 'wyq-v5-2026-07-16-birthday';
+var VERSION = 'wyq-v6-2026-07-16-full-birthday';
 var CORE = [
   './',
   './index.html',
-  './assets/css/style.css?v=24',
+  './assets/css/style.css?v=25',
   './assets/css/prism-wyq.css',
   './assets/js/main.js?v=16',
   './assets/js/enhancements.js?v=2',
