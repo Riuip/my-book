@@ -3269,21 +3269,6 @@ body.search-open {
   border: 1px solid var(--line);
   max-width: 92vw;
 }
-.hero__now::before {
-  content: '';
-  display: inline-block;
-  width: 7px; height: 7px;
-  border-radius: 50%;
-  background: #34c759;
-  box-shadow: 0 0 0 0 rgba(52, 199, 89, 0.6);
-  animation: hero-now-pulse 2.4s ease-out infinite;
-  flex-shrink: 0;
-}
-@keyframes hero-now-pulse {
-  0%   { box-shadow: 0 0 0 0 rgba(52, 199, 89, 0.55); }
-  70%  { box-shadow: 0 0 0 10px rgba(52, 199, 89, 0); }
-  100% { box-shadow: 0 0 0 0 rgba(52, 199, 89, 0); }
-}
 .hero__now span {
   white-space: nowrap;
   overflow: hidden;
@@ -3294,10 +3279,6 @@ body.search-open {
   .hero__now { font-size: 13px; padding: 7px 14px; }
   .hero__now span { max-width: calc(100vw - 80px); white-space: normal; text-overflow: clip; }
 }
-@media (prefers-reduced-motion: reduce) {
-  .hero__now::before { animation: none; }
-}
-
 /* ---- Desk row: 正在读 / 写 / 听 ---- */
 .desk-section {
   max-width: 1024px;
