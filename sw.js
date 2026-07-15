@@ -5,7 +5,7 @@
    ========================================================= */
 'use strict';
 
-var VERSION = 'wyq-v3-2026-05-17';
+var VERSION = 'wyq-v4-2026-07-15';
 var CORE = [
   './',
   './index.html',
@@ -20,7 +20,7 @@ var CORE = [
   './assets/js/view-transitions.js',
   './lab.html',
   './dna.html',
-  './share.html',
+  './others.html',
   './gradient.html',
   './pomodoro.html',
   './md-card.html'
