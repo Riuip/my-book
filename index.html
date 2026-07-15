@@ -10,7 +10,22 @@
   <meta name="description" content="WYQ 的个人主页。记录生活、思考、技术与日常。" />
   <meta name="theme-color" content="#fbfbfd" media="(prefers-color-scheme: light)" />
   <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)" />
-  <link rel="stylesheet" href="assets/css/style.css?v=23" />
+  <script>
+    (function () {
+      try {
+        var values = new URLSearchParams(location.search).getAll('birthday').map(function (value) {
+          return String(value || '').toLowerCase();
+        });
+        if (values.indexOf('off') !== -1) return;
+        var shifted = new Date(Date.now() + 8 * 60 * 60 * 1000);
+        var isBirthday = shifted.getUTCMonth() === 6 && shifted.getUTCDate() === 16;
+        if (values.indexOf('preview') !== -1 || isBirthday) {
+          document.documentElement.setAttribute('data-birthday', 'active');
+        }
+      } catch (e) {}
+    })();
+  </script>
+  <link rel="stylesheet" href="assets/css/style.css?v=24" />
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230071e3'/%3E%3Ctext x='50%25' y='62%25' text-anchor='middle' font-family='-apple-system,system-ui,sans-serif' font-weight='700' font-size='14' fill='white'%3EWYQ%3C/text%3E%3C/svg%3E" />
   <link rel="canonical" href="https://riuip.github.io/my-book/" />
   <link rel="alternate" type="application/rss+xml" title="WYQ 专属博客 RSS" href="feed.xml" />
@@ -36,9 +51,9 @@
     .hero__inner { width: 100%; }
     .home-section { padding: 64px 22px; }
     #limited-articles { padding-top: 48px; padding-bottom: 40px; }
-    .home-section__head { width: min(1024px, 100%); margin: 0 auto 20px; display: grid; grid-template-columns: minmax(180px, .36fr) minmax(0, .64fr); align-items: end; gap: 32px; }
+    .home-section__head { width: min(1024px, 100%); margin: 0 auto 20px; display: flex; flex-direction: column; align-items: flex-start; gap: 8px; }
     .home-section__title { margin: 0; font-size: clamp(26px, 3vw, 36px); line-height: 1.15; font-weight: 700; letter-spacing: -0.03em; color: var(--text); }
-    .home-section__subtitle { margin: 0; color: var(--text-muted); font-size: 16px; line-height: 1.6; }
+    .home-section__subtitle { max-width: 680px; margin: 0; color: var(--text-muted); font-size: 16px; line-height: 1.6; }
     .limited-card { width: min(1024px, 100%); margin: 0 auto; }
     .limited-card__inner { position: relative; display: grid; grid-template-columns: 168px minmax(0, 1fr); overflow: hidden; border: 1px solid var(--line); border-radius: 28px; background: color-mix(in srgb, var(--bg-elev) 82%, transparent); box-shadow: var(--shadow-lg); backdrop-filter: blur(24px) saturate(150%); -webkit-backdrop-filter: blur(24px) saturate(150%); }
     .limited-card__inner::before { content: ""; position: absolute; inset: -30%; pointer-events: none; background: radial-gradient(circle at 18% 20%, rgba(0,113,227,.18), transparent 38%), radial-gradient(circle at 84% 16%, rgba(191,90,242,.16), transparent 38%), radial-gradient(circle at 50% 110%, rgba(52,199,89,.12), transparent 42%); }
@@ -66,7 +81,7 @@
       .hero { min-height: auto; }
       .home-section { padding: 48px 18px; }
       #limited-articles { padding-top: 38px; padding-bottom: 32px; }
-      .home-section__head { grid-template-columns: 1fr; gap: 8px; margin-bottom: 18px; }
+      .home-section__head { gap: 6px; margin-bottom: 18px; }
       .home-section__title { font-size: 28px; }
       .home-section__subtitle { font-size: 15px; }
       .limited-card__inner { grid-template-columns: 1fr; border-radius: 22px; }
@@ -152,14 +167,40 @@
   </nav>
 
   <header class="hero hero--blue">
+    <canvas class="birthday-fireworks" id="birthdayFireworks" aria-hidden="true"></canvas>
     <div class="hero__inner">
-      <h1 class="hero__title hero__title--brand typewriter-typing" id="heroTypewriter" data-text="Hello, I'm WYQ">Hello, I'm WYQ</h1>
-      <p class="hero__sub reveal" data-delay="1">一个属于自己的、慢节奏的角落。<br />记录生活、思考、技术与日常。</p>
-      <div class="hero__actions reveal" data-delay="2">
-        <a class="btn btn--primary btn--lg" href="post-007.html">查看最新文章</a>
-        <a class="btn btn--ghost btn--lg" href="#about">了解更多</a>
+      <div class="hero__default" id="defaultHero" aria-hidden="false">
+        <h1 class="hero__title hero__title--brand typewriter-typing" id="heroTypewriter" data-text="Hello, I'm WYQ">Hello, I'm WYQ</h1>
+        <p class="hero__sub reveal" data-delay="1">一个属于自己的、慢节奏的角落。<br />记录生活、思考、技术与日常。</p>
+        <div class="hero__actions reveal" data-delay="2">
+          <a class="btn btn--primary btn--lg" href="post-007.html">查看最新文章</a>
+          <a class="btn btn--ghost btn--lg" href="#about">了解更多</a>
+        </div>
+        <div class="hero__now reveal" data-delay="3" aria-live="polite"><span id="nowLine">在写一些东西。</span></div>
       </div>
-      <div class="hero__now reveal" data-delay="3" aria-live="polite"><span id="nowLine">在写一些东西。</span></div>
+
+      <section class="birthday-stage" id="birthdayStage" aria-labelledby="birthdayTitle" aria-hidden="true">
+        <div class="birthday-stage__copy">
+          <div class="birthday-stage__eyebrow">07 / 16 · BIRTHDAY MODE</div>
+          <h1 class="birthday-stage__title" id="birthdayTitle">Happy Birthday, WYQ!</h1>
+          <p class="birthday-stage__lead">今天，首页为你点亮。</p>
+          <p class="birthday-stage__wish">愿新的一岁，热爱有回应，奔赴都有意义。</p>
+          <div class="birthday-stage__actions">
+            <button class="birthday-button birthday-button--primary" id="birthdayReplay" type="button">再放一次烟花</button>
+            <a class="birthday-button birthday-button--ghost" href="post-007.html">继续逛逛</a>
+          </div>
+        </div>
+        <div class="birthday-stage__art">
+          <button class="birthday-cake" id="birthdayCake" type="button" aria-label="点一下蛋糕，许个愿" aria-pressed="false">
+            <span class="birthday-cake__plate" aria-hidden="true"></span>
+            <span class="birthday-cake__layer birthday-cake__layer--bottom" aria-hidden="true"></span>
+            <span class="birthday-cake__layer birthday-cake__layer--top" aria-hidden="true"></span>
+            <span class="birthday-cake__icing" aria-hidden="true"></span>
+            <span class="birthday-cake__candle" aria-hidden="true"><span class="birthday-cake__flame"></span></span>
+          </button>
+          <p class="birthday-wish-status" id="birthdayWishStatus" aria-live="polite">点一下蛋糕，许个愿</p>
+        </div>
+      </section>
     </div>
   </header>
 
@@ -280,10 +321,11 @@
   <script src="assets/js/enhancements.js?v=2"></script>
   <script src="assets/js/extras.js?v=5"></script>
   <script src="assets/js/home-extras.js?v=1"></script>
+  <script src="assets/js/birthday.js?v=1"></script>
   <script>
     (function () {
       var el = document.getElementById('heroTypewriter');
-      if (!el) return;
+      if (!el || document.documentElement.getAttribute('data-birthday') === 'active') return;
       var text = el.getAttribute('data-text') || el.textContent || '';
       var delay = 350;
       var speed = 70;
