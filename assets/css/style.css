@@ -3594,14 +3594,27 @@ html[data-birthday="active"] .hero--blue {
   color: #fff;
   background:
     radial-gradient(circle at 18% 16%, rgba(255, 207, 104, .30), transparent 30%),
-    radial-gradient(circle at 86% 18%, rgba(255, 105, 180, .34), transparent 34%),
-    linear-gradient(128deg, rgba(30, 78, 196, .90), rgba(108, 57, 190, .88) 48%, rgba(205, 67, 137, .86));
+    radial-gradient(circle at 86% 18%, rgba(255, 105, 180, .34), transparent 34%);
 }
 
 html[data-birthday="active"] .hero--blue::before {
+  z-index: 0;
   background:
     radial-gradient(circle at 50% 110%, rgba(95, 221, 255, .32), transparent 42%),
     radial-gradient(circle at 48% -10%, rgba(255, 228, 145, .22), transparent 36%);
+  -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 62%, rgba(0, 0, 0, .78) 76%, rgba(0, 0, 0, .28) 90%, transparent 100%);
+  mask-image: linear-gradient(to bottom, #000 0%, #000 62%, rgba(0, 0, 0, .78) 76%, rgba(0, 0, 0, .28) 90%, transparent 100%);
+}
+
+html[data-birthday="active"] .hero--blue::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background: linear-gradient(128deg, rgba(30, 78, 196, .90), rgba(108, 57, 190, .88) 48%, rgba(205, 67, 137, .86));
+  -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 58%, rgba(0, 0, 0, .88) 70%, rgba(0, 0, 0, .42) 86%, transparent 100%);
+  mask-image: linear-gradient(to bottom, #000 0%, #000 58%, rgba(0, 0, 0, .88) 70%, rgba(0, 0, 0, .42) 86%, transparent 100%);
 }
 
 html[data-birthday="active"] .hero__default {
@@ -3989,5 +4002,338 @@ html[data-birthday="active"] .birthday-fireworks {
   .birthday-cake,
   .birthday-cake__flame {
     animation: none !important;
+  }
+}
+
+/* =========================================================
+   FULL HOMEPAGE BIRTHDAY THEME — active only on July 16
+   ========================================================= */
+html[data-birthday="active"] {
+  --text: #fff;
+  --text-soft: rgba(255, 255, 255, .84);
+  --text-muted: rgba(255, 255, 255, .68);
+  --line: rgba(255, 255, 255, .22);
+  --line-strong: rgba(255, 230, 165, .40);
+  --bg-elev: rgba(38, 28, 88, .34);
+  --bg-tint: rgba(255, 255, 255, .10);
+  --accent: #ffd66b;
+  --accent-hover: #ffe79e;
+  --accent-soft: rgba(255, 214, 107, .18);
+  --birthday-glass: linear-gradient(135deg, rgba(78, 72, 178, .34), rgba(198, 72, 158, .28) 58%, rgba(255, 181, 101, .18));
+  --birthday-glass-strong: linear-gradient(135deg, rgba(61, 59, 158, .56), rgba(165, 55, 145, .48) 58%, rgba(224, 127, 95, .34));
+  --birthday-border: rgba(255, 237, 189, .32);
+  --birthday-shadow: 0 24px 68px rgba(31, 13, 92, .24), inset 0 1px 0 rgba(255, 255, 255, .26);
+}
+
+html[data-birthday="active"] body {
+  color: #fff;
+}
+
+html[data-birthday="active"] .aurora {
+  background-color: #33207c;
+  background-image:
+    radial-gradient(circle at 12% 18%, rgba(255, 228, 136, .28) 0 2px, transparent 3px),
+    radial-gradient(circle at 68% 14%, rgba(255, 157, 210, .30) 0 2px, transparent 3px),
+    radial-gradient(circle at 84% 72%, rgba(125, 220, 255, .28) 0 2px, transparent 3px),
+    radial-gradient(circle at 28% 82%, rgba(255, 255, 255, .22) 0 1px, transparent 2px);
+  background-size: 92px 88px, 128px 122px, 116px 108px, 74px 70px;
+}
+
+html[data-birthday="active"] body .nav__inner {
+  background: linear-gradient(110deg, rgba(87, 83, 192, .42), rgba(204, 76, 168, .36), rgba(255, 188, 105, .24)) !important;
+  border-color: rgba(255, 240, 199, .42) !important;
+  box-shadow: 0 20px 56px rgba(40, 13, 91, .24), inset 0 1px 0 rgba(255, 255, 255, .38) !important;
+}
+
+html[data-birthday="active"] body .nav__brand,
+html[data-birthday="active"] body .nav__menu a,
+html[data-birthday="active"] body .nav__sub-toggle,
+html[data-birthday="active"] body .nav__search-btn,
+html[data-birthday="active"] body .nav__theme {
+  color: rgba(255, 255, 255, .92) !important;
+}
+
+html[data-birthday="active"] body .nav__brand .dot {
+  background: #ffd66b !important;
+  box-shadow: 0 0 16px rgba(255, 214, 107, .72) !important;
+}
+
+html[data-birthday="active"] .nav-menu-portal,
+html[data-birthday="active"] body .nav-search {
+  background: linear-gradient(145deg, rgba(63, 48, 139, .78), rgba(155, 52, 132, .72)) !important;
+  border-color: rgba(255, 232, 172, .36) !important;
+  box-shadow: 0 28px 80px rgba(30, 11, 75, .38), inset 0 1px 0 rgba(255, 255, 255, .26) !important;
+  color: #fff !important;
+}
+
+html[data-birthday="active"] .desk-section,
+html[data-birthday="active"] .featured-section,
+html[data-birthday="active"] #limited-articles,
+html[data-birthday="active"] .mood-section,
+html[data-birthday="active"] #about,
+html[data-birthday="active"] .home-mini-links {
+  position: relative;
+}
+
+html[data-birthday="active"] .desk-section__title,
+html[data-birthday="active"] .featured-section__title,
+html[data-birthday="active"] .mood-section__title,
+html[data-birthday="active"] .home-section__title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #fff;
+  text-shadow: 0 8px 24px rgba(39, 16, 90, .30);
+}
+
+html[data-birthday="active"] .desk-section__title::after,
+html[data-birthday="active"] .featured-section__title::after,
+html[data-birthday="active"] .mood-section__title::after,
+html[data-birthday="active"] .home-section__title::after {
+  content: "✦ 07·16";
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
+  padding: 3px 10px;
+  border: 1px solid rgba(255, 231, 167, .34);
+  border-radius: 999px;
+  background: rgba(255, 214, 107, .12);
+  color: #ffe69b;
+  font-size: 10px;
+  font-weight: 750;
+  letter-spacing: .10em;
+  text-shadow: none;
+}
+
+html[data-birthday="active"] .home-section__subtitle,
+html[data-birthday="active"] .desk-card__sub,
+html[data-birthday="active"] .featured__desc,
+html[data-birthday="active"] .featured__meta,
+html[data-birthday="active"] .mood__desc,
+html[data-birthday="active"] .tile__desc {
+  color: rgba(255, 255, 255, .72) !important;
+}
+
+html[data-birthday="active"] body .desk-card,
+html[data-birthday="active"] body .featured,
+html[data-birthday="active"] body .mood,
+html[data-birthday="active"] body .tile,
+html[data-birthday="active"] body #liveTimeCard.tile--time,
+html[data-birthday="active"] .limited-card__inner {
+  background: var(--birthday-glass) !important;
+  border-color: var(--birthday-border) !important;
+  box-shadow: var(--birthday-shadow) !important;
+  backdrop-filter: blur(28px) saturate(165%) !important;
+  -webkit-backdrop-filter: blur(28px) saturate(165%) !important;
+  color: #fff !important;
+}
+
+html[data-birthday="active"] body #liveTimeCard.tile--time {
+  --time-text: #fff !important;
+  --time-muted: rgba(255, 255, 255, .72) !important;
+  --time-accent: #ffe69b !important;
+  --time-accent-2: #ff93ce !important;
+}
+
+html[data-birthday="active"] #liveTimeCard .time-card__digital,
+html[data-birthday="active"] #liveTimeCard .time-card__date,
+html[data-birthday="active"] #liveTimeCard .time-card__zone {
+  color: rgba(255, 255, 255, .82) !important;
+}
+
+html[data-birthday="active"] body .desk-card:hover,
+html[data-birthday="active"] body .featured:hover,
+html[data-birthday="active"] body .mood:hover,
+html[data-birthday="active"] body .tile:hover {
+  transform: translateY(-4px) !important;
+  border-color: rgba(255, 234, 174, .56) !important;
+  box-shadow: 0 30px 76px rgba(35, 13, 88, .32), 0 0 34px rgba(255, 132, 195, .12), inset 0 1px 0 rgba(255, 255, 255, .34) !important;
+}
+
+html[data-birthday="active"] body .desk-card:nth-child(1),
+html[data-birthday="active"] body .mood:nth-child(1) {
+  background: linear-gradient(135deg, rgba(68, 118, 220, .38), rgba(135, 69, 190, .34)) !important;
+}
+
+html[data-birthday="active"] body .desk-card:nth-child(2),
+html[data-birthday="active"] body .mood:nth-child(2) {
+  background: linear-gradient(135deg, rgba(132, 70, 192, .38), rgba(219, 80, 156, .32)) !important;
+}
+
+html[data-birthday="active"] body .desk-card:nth-child(3),
+html[data-birthday="active"] body .mood:nth-child(3) {
+  background: linear-gradient(135deg, rgba(201, 71, 153, .34), rgba(238, 145, 92, .28)) !important;
+}
+
+html[data-birthday="active"] body .desk-card__icon,
+html[data-birthday="active"] body .mood__icon,
+html[data-birthday="active"] body .featured__eyebrow,
+html[data-birthday="active"] body .time-clock,
+html[data-birthday="active"] body .time-card__badge {
+  background: rgba(255, 225, 143, .14) !important;
+  border-color: rgba(255, 231, 166, .28) !important;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .20) !important;
+  color: #ffe69b !important;
+}
+
+html[data-birthday="active"] .desk-card__label,
+html[data-birthday="active"] .tile__eyebrow,
+html[data-birthday="active"] .featured__eyebrow {
+  color: #ffe69b !important;
+}
+
+html[data-birthday="active"] .desk-card__title,
+html[data-birthday="active"] .featured__title,
+html[data-birthday="active"] .mood__title,
+html[data-birthday="active"] .tile__title,
+html[data-birthday="active"] .time-card__time {
+  color: #fff !important;
+  text-shadow: 0 7px 24px rgba(37, 14, 86, .26) !important;
+}
+
+html[data-birthday="active"] .desk-card__link,
+html[data-birthday="active"] .featured__cta,
+html[data-birthday="active"] .mood__arrow {
+  color: #ffe07f !important;
+}
+
+html[data-birthday="active"] .featured {
+  background: var(--birthday-glass-strong) !important;
+}
+
+html[data-birthday="active"] .featured__bg {
+  opacity: .22 !important;
+  filter: saturate(1.35) hue-rotate(22deg) !important;
+}
+
+html[data-birthday="active"] .limited-card__inner::before {
+  background:
+    radial-gradient(circle at 15% 15%, rgba(255, 214, 107, .28), transparent 34%),
+    radial-gradient(circle at 86% 12%, rgba(255, 112, 190, .25), transparent 36%),
+    radial-gradient(circle at 56% 112%, rgba(101, 207, 255, .22), transparent 42%);
+}
+
+html[data-birthday="active"] .limited-card__rail {
+  border-color: rgba(255, 229, 160, .24);
+  background: linear-gradient(160deg, rgba(255, 214, 107, .18), rgba(179, 82, 195, .26));
+}
+
+html[data-birthday="active"] .limited-card__rail span,
+html[data-birthday="active"] .limited-card__rail strong,
+html[data-birthday="active"] .limited-card__eyebrow {
+  color: #ffe69b;
+}
+
+html[data-birthday="active"] .limited-card__eyebrow {
+  border: 1px solid rgba(255, 232, 170, .30);
+  background: rgba(255, 214, 107, .13);
+}
+
+html[data-birthday="active"] .limited-card__title,
+html[data-birthday="active"] .limited-card__desc {
+  color: #fff;
+}
+
+html[data-birthday="active"] #limited-articles .btn--primary,
+html[data-birthday="active"] #about .btn--primary {
+  color: #35133e !important;
+  background: linear-gradient(115deg, #ffe58f, #ffb7da 52%, #bcecff) !important;
+  box-shadow: 0 14px 32px rgba(40, 13, 91, .22), inset 0 1px 0 rgba(255, 255, 255, .72) !important;
+}
+
+html[data-birthday="active"] #limited-articles .btn--ghost,
+html[data-birthday="active"] #about .btn--ghost {
+  color: #fff !important;
+  background: rgba(255, 255, 255, .11) !important;
+  border: 1px solid rgba(255, 232, 175, .28) !important;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .16) !important;
+}
+
+html[data-birthday="active"] .profile-row {
+  border-bottom-color: rgba(255, 235, 187, .16) !important;
+  color: rgba(255, 255, 255, .76);
+}
+
+html[data-birthday="active"] .profile-row span:last-child {
+  color: #fff;
+}
+
+html[data-birthday="active"] .home-mini-link {
+  border-color: rgba(255, 232, 174, .28);
+  color: rgba(255, 255, 255, .78);
+  background: linear-gradient(135deg, rgba(85, 72, 177, .34), rgba(207, 75, 160, .25));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .18), 0 10px 26px rgba(35, 14, 85, .16);
+}
+
+html[data-birthday="active"] .home-mini-link:hover {
+  border-color: rgba(255, 232, 174, .48);
+  color: #ffe69b;
+}
+
+html[data-birthday="active"] .footer {
+  border-top-color: rgba(255, 231, 169, .24);
+  background: linear-gradient(110deg, rgba(44, 35, 115, .48), rgba(145, 48, 129, .42), rgba(213, 103, 106, .34));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .14);
+}
+
+html[data-birthday="active"] .footer__inner,
+html[data-birthday="active"] .footer__links a {
+  color: rgba(255, 255, 255, .72);
+}
+
+html[data-birthday="active"] .footer__links a:hover {
+  color: #ffe69b;
+}
+
+html[data-birthday="active"] body .back-to-top,
+html[data-birthday="active"] body .accent-picker-btn,
+html[data-birthday="active"] body .accent-picker-panel {
+  border-color: rgba(255, 231, 169, .34) !important;
+  background: linear-gradient(145deg, rgba(79, 66, 167, .70), rgba(192, 61, 151, .62)) !important;
+  box-shadow: 0 18px 46px rgba(35, 12, 85, .28), inset 0 1px 0 rgba(255, 255, 255, .24) !important;
+  color: #fff !important;
+}
+
+@media (max-width: 720px) {
+  html[data-birthday="active"] .desk-section__title::after,
+  html[data-birthday="active"] .featured-section__title::after,
+  html[data-birthday="active"] .mood-section__title::after,
+  html[data-birthday="active"] .home-section__title::after {
+    padding-inline: 8px;
+    font-size: 9px;
+  }
+
+  html[data-birthday="active"] body .desk-card,
+  html[data-birthday="active"] body .featured,
+  html[data-birthday="active"] body .mood,
+  html[data-birthday="active"] body .tile,
+  html[data-birthday="active"] .limited-card__inner {
+    box-shadow: 0 18px 46px rgba(31, 12, 80, .22), inset 0 1px 0 rgba(255, 255, 255, .22) !important;
+  }
+}
+
+@media (max-width: 430px) {
+  html[data-birthday="active"] .home-section__title::after {
+    content: "✦";
+  }
+
+  html[data-birthday="active"] body .nav__inner {
+    gap: 8px !important;
+    padding-inline: 12px !important;
+  }
+
+  html[data-birthday="active"] body .nav__brand {
+    flex: 0 0 auto !important;
+    white-space: nowrap !important;
+  }
+
+  html[data-birthday="active"] body .nav__menu {
+    gap: 3px !important;
+  }
+
+  html[data-birthday="active"] body .nav__has-sub > summary,
+  html[data-birthday="active"] body .nav__menu > li > a {
+    padding-inline: 8px !important;
+    white-space: nowrap !important;
   }
 }
