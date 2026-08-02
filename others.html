@@ -4,208 +4,92 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="view-transition" content="same-origin" />
-  <title>其他 — WYQ 专属博客</title>
-  <meta name="description" content="更多内容正在准备中，敬请期待。" />
-  <meta name="theme-color" content="#fbfbfd" media="(prefers-color-scheme: light)" />
-  <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)" />
-  <link rel="stylesheet" href="assets/css/style.css?v=19" />
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230071e3'/%3E%3Ctext x='50%25' y='62%25' text-anchor='middle' font-family='-apple-system,system-ui,sans-serif' font-weight='700' font-size='14' fill='white'%3EWYQ%3C/text%3E%3C/svg%3E" />
-  <script>
-    (function(){try{var t=localStorage.getItem('wyq-theme');if(t!=='light'&&t!=='dark'){t=window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';}document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
-  </script>
-  <!-- SEO: Open Graph -->
+  <title>Super Mario · WYQ Game World</title>
+  <meta name="description" content="进入 WYQ 的像素冒险主页，点击游玩 Super Mario。" />
+  <meta name="theme-color" content="#5c94fc" />
+  <link rel="stylesheet" href="assets/css/style.css?v=26" />
+  <link rel="stylesheet" href="assets/css/mario.css?v=1" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='5' fill='%23e52521'/%3E%3Ctext x='50%25' y='68%25' text-anchor='middle' font-family='Arial Black,sans-serif' font-weight='900' font-size='19' fill='white'%3EM%3C/text%3E%3C/svg%3E" />
   <meta property="og:type" content="website" />
-  <meta property="og:title" content="其他 - WYQ 专属博客" />
-  <meta property="og:description" content="更多内容即将上线。" />
+  <meta property="og:title" content="Super Mario · WYQ Game World" />
+  <meta property="og:description" content="准备好了吗？点击进入 WYQ 的像素冒险。" />
   <meta property="og:url" content="https://riuip.github.io/my-book/others.html" />
   <meta property="og:site_name" content="WYQ 专属博客" />
   <meta property="og:locale" content="zh_CN" />
-  <meta property="og:image" content="https://riuip.github.io/my-book/assets/og/default.png" />
-  <meta property="og:image:type" content="image/png" />
-  <meta property="og:image:width" content="1200" />
-  <meta property="og:image:height" content="630" />
   <meta property="og:image" content="https://riuip.github.io/my-book/assets/og/default.svg" />
-  <meta property="og:image:type" content="image/svg+xml" />
-  <!-- SEO: Twitter Card -->
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="其他 - WYQ 专属博客" />
-  <meta name="twitter:description" content="更多内容即将上线。" />
-  <meta name="twitter:image" content="https://riuip.github.io/my-book/assets/og/default.png" />
-  <!-- SEO: Canonical -->
+  <meta name="twitter:title" content="Super Mario · WYQ Game World" />
+  <meta name="twitter:description" content="准备好了吗？点击进入 WYQ 的像素冒险。" />
   <link rel="canonical" href="https://riuip.github.io/my-book/others.html" />
   <link rel="alternate" type="application/rss+xml" title="WYQ 专属博客 RSS" href="feed.xml" />
-  <link rel="search" type="application/opensearchdescription+xml" title="WYQ Blog" href="opensearch.xml" />
-  <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png" />
   <link rel="manifest" href="manifest.json" />
 </head>
-<body>
-
-  <!-- AURORA — animated blue/white/purple gradient (whole site) -->
-  <div class="aurora" aria-hidden="true"></div>
-
-  <!-- NAV -->
-  <nav class="nav">
+<body class="mario-page">
+  <nav class="nav" aria-label="主导航">
     <div class="nav__inner">
-      <a class="nav__brand" href="index.html">
-        <span class="dot"></span>
-        <span>WYQ</span>
-      </a>
+      <a class="nav__brand" href="index.html"><span>WYQ</span></a>
       <ul class="nav__menu">
-        <li class="nav__has-sub">
-          <button class="nav__sub-toggle" data-nav-sub-toggle type="button">
-            <span>文章</span>
-            <svg class="nav__sub-toggle__chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <polyline points="6 9 12 15 18 9"/>
-            </svg>
-          </button>
-          <div class="nav__submenu" role="menu">
-            <a href="post-006.html" role="menuitem">
-              <svg class="nav__submenu__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="15" y2="17"/></svg>
-              <span>最新文章</span>
-            </a>
-            <a href="archive.html" role="menuitem">
-              <svg class="nav__submenu__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><polyline points="21 8 21 21 3 21 3 8"/><rect x="1" y="3" width="22" height="5"/><line x1="10" y1="12" x2="14" y2="12"/></svg>
-              <span>归档</span>
-            </a>
-            <a href="tags.html" role="menuitem">
-              <svg class="nav__submenu__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
-              <span>按分类</span>
-            </a>
-            <div class="nav__submenu__sep"></div>
-            <a href="feed.xml" role="menuitem">
-              <svg class="nav__submenu__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11a9 9 0 0 1 9 9"/><path d="M4 4a16 16 0 0 1 16 16"/><circle cx="5" cy="19" r="1"/></svg>
-              <span>RSS 订阅</span>
-            </a>
-          </div>
-        </li>
-        <li class="nav__has-sub">
-          <button class="nav__sub-toggle" data-nav-sub-toggle type="button">
-            <span>实验</span>
-            <svg class="nav__sub-toggle__chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <polyline points="6 9 12 15 18 9"/>
-            </svg>
-          </button>
-          <div class="nav__submenu" role="menu">
-            <a href="lab.html" role="menuitem">
-              <svg class="nav__submenu__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8" cy="9" r="3"/><path d="M16.5 17a3.5 3.5 0 0 0 0-7 4.5 4.5 0 0 0-8.5 0"/></svg>
-              <span>天气卡片</span>
-            </a>
-            <a href="dna.html" role="menuitem">
-              <svg class="nav__submenu__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 3c0 6 16 12 16 18"/><path d="M20 3c0 6-16 12-16 18"/><line x1="6" y1="7" x2="18" y2="7"/><line x1="6" y1="17" x2="18" y2="17"/></svg>
-              <span>博客 DNA</span>
-            </a>
-            <a href="others.html" role="menuitem" aria-current="page">
-              <svg class="nav__submenu__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><circle cx="5" cy="12" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="19" cy="12" r="1.5"/></svg>
-              <span>其他</span>
-            </a>
-            <div class="nav__submenu__sep"></div>
-            <a href="gradient.html" role="menuitem">
-              <svg class="nav__submenu__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3a14.5 14.5 0 0 1 0 18"/></svg>
-              <span>渐变实验室</span>
-            </a>
-            <a href="pomodoro.html" role="menuitem">
-              <svg class="nav__submenu__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="13" r="8"/><path d="M9 2h6"/><path d="M12 8v5l3 2"/></svg>
-              <span>极简番茄钟</span>
-            </a>
-            <a href="md-card.html" role="menuitem">
-              <svg class="nav__submenu__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M7 9l2 4 2-2 2 2 2-4"/></svg>
-              <span>Markdown 卡片</span>
-            </a>
-          </div>
-        </li>
-        <li><a href="index.html#about">关于</a></li>
-        <li>
-          <button class="nav__search-btn" id="navSearchBtn" aria-label="搜索文章">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="11" cy="11" r="7"/>
-              <line x1="21" y1="21" x2="16.65" y2="16.65"/>
-            </svg>
-          </button>
-        </li>
-        <li>
-          <button class="nav__theme" data-theme-toggle aria-label="切换主题">
-            <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
-            </svg>
-            <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="12" cy="12" r="4"/>
-              <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/>
-            </svg>
-          </button>
-        </li>
+        <li><a href="index.html">博客主页</a></li>
+        <li><a href="archive.html">文章</a></li>
+        <li><a href="others.html" aria-current="page">马里奥</a></li>
       </ul>
     </div>
   </nav>
 
-  <!-- HERO — Coming-soon stage with vivid multi-color animated gradient -->
-  <main class="others-stage">
-    <div class="others-stage__inner">
+  <main class="mario-world">
+    <div class="mario-cloud mario-cloud--one" aria-hidden="true"></div>
+    <div class="mario-cloud mario-cloud--two" aria-hidden="true"></div>
 
-      <span class="others-pill reveal">Coming Soon &middot; 敬请期待</span>
+    <section class="mario-hero" aria-labelledby="mario-title">
+      <div class="mario-hud" aria-label="游戏状态">
+        <span>WORLD&nbsp; 1-1</span>
+        <span>PLAYER&nbsp; WYQ</span>
+        <span>STATUS&nbsp; READY</span>
+      </div>
 
-      <h1 class="others-title reveal" data-delay="1">
-        <span class="others-title__rainbow">其&nbsp;他</span>
+      <p class="mario-kicker">WYQ GAME WORLD</p>
+      <h1 class="mario-title" id="mario-title" aria-label="Super Mario">
+        <span class="mario-title__top">SUPER</span>
+        <span class="mario-title__bottom" aria-hidden="true"><span>M</span><span>A</span><span>R</span><span>I</span><span>O</span></span>
       </h1>
+      <p class="mario-lead">准备好了吗？踩下第一块砖，进入这场像素冒险。</p>
 
-      <p class="others-sub reveal" data-delay="2">
-        更多内容正在准备中。
-      </p>
-
-      <p class="others-meta reveal" data-delay="3">
-        想法、收藏、小工具、奇怪的灵感 &mdash; 慢慢上线，敬请期待。
-      </p>
-
-      <!-- Animated marquee strip of category pills -->
-      <div class="others-marquee reveal" data-delay="3" aria-hidden="true">
-        <div class="others-marquee__track">
-          <span class="others-tag others-tag--c1">音乐</span>
-          <span class="others-tag others-tag--c2">影视</span>
-          <span class="others-tag others-tag--c3">摄影</span>
-          <span class="others-tag others-tag--c4">收藏</span>
-          <span class="others-tag others-tag--c5">小工具</span>
-          <span class="others-tag others-tag--c6">奇思妙想</span>
-          <!-- duplicate for seamless loop -->
-          <span class="others-tag others-tag--c1">音乐</span>
-          <span class="others-tag others-tag--c2">影视</span>
-          <span class="others-tag others-tag--c3">摄影</span>
-          <span class="others-tag others-tag--c4">收藏</span>
-          <span class="others-tag others-tag--c5">小工具</span>
-          <span class="others-tag others-tag--c6">奇思妙想</span>
-        </div>
+      <div class="mario-actions">
+        <a class="mario-button mario-button--play" href="https://riuip-super-mario.netlify.app/" target="_blank" rel="noopener noreferrer">
+          <span class="mario-button__icon" aria-hidden="true">▶</span>
+          点击游玩
+        </a>
+        <a class="mario-button mario-button--home" href="index.html">
+          <span class="mario-button__icon" aria-hidden="true">↩</span>
+          返回博客
+        </a>
       </div>
 
-      <!-- Floating dots animation -->
-      <div class="others-dots reveal" data-delay="4">
-        <span></span><span></span><span></span>
-      </div>
+      <p class="mario-note">游戏将在新窗口打开 · 支持电脑和手机</p>
 
-      <div class="others-actions reveal" data-delay="4">
-        <a class="btn btn--primary btn--lg" href="index.html">回到主页</a>
-        <a class="btn btn--ghost btn--lg" href="mailto:wyq200707@qq.com">写信告诉我你想看的</a>
+      <div class="mario-blocks" aria-hidden="true">
+        <span class="mario-block"></span>
+        <span class="mario-block mario-block--question">?</span>
+        <span class="mario-block"></span>
       </div>
+    </section>
 
-    </div>
+    <div class="mario-pipe" aria-hidden="true"></div>
+    <div class="mario-ground" aria-hidden="true"></div>
   </main>
 
-  <!-- FOOTER -->
   <footer class="footer">
     <div class="footer__inner">
-      <div>&copy; <span data-year>2026</span> WYQ. All rights reserved.</div>
+      <div>&copy; <span data-year>2026</span> WYQ · GAME WORLD</div>
       <ul class="footer__links">
         <li><a href="index.html">主页</a></li>
-        <li><a href="post-006.html">文章</a></li>
-        <li><a href="archive.html">归档</a></li>
-        <li><a href="tags.html">分类</a></li>
-        <li><a href="lab.html">实验</a></li>
-        <li><a href="others.html">其他</a></li>
-        <li><a href="feed.xml">RSS</a></li>
+        <li><a href="archive.html">文章</a></li>
+        <li><a href="https://riuip-super-mario.netlify.app/" target="_blank" rel="noopener noreferrer">开始游戏</a></li>
       </ul>
     </div>
   </footer>
 
   <script src="assets/js/view-transitions.js?v=1"></script>
-  <script src="assets/js/main.js?v=8"></script>
-  <script src="assets/js/posts-data.js?v=2"></script>
-  <script src="assets/js/extras.js?v=5"></script>
+  <script src="assets/js/main.js?v=16"></script>
 </body>
 </html>

@@ -8,6 +8,18 @@
 
   var POSTS = [
     {
+      num: '08',
+      title: '广州白云美亚 IMAX：影厅与选座指南',
+      desc: '介绍广州美亚 IMAX 激光影城（云门店）的 IMAX 厅配置，并给出不依赖具体排号的实用选座建议。',
+      url: 'post-008.html',
+      ogImage: 'assets/images/meiah-imax-screen-illustration.png',
+      date: '2026-08-02',
+      cat: '影视',
+      catKey: 'life',
+      tags: ['广州影院', 'IMAX', '选座'],
+      body: '广州白云美亚 IMAX 激光影城云门店介绍。包含第二代激光 IMAX、349 个座位、约 21 米乘 12 米银幕、12.1 声道，以及中轴线和中部偏后的选座建议。'
+    },
+    {
       num: '07',
       title: '99% 必考知识点汇总 1',
       desc: '机械基础复习知识点汇总：力学基础与传动计算、轴的分类与应用、常用应力公式、单剪与双剪区分。',
@@ -158,7 +170,7 @@
   function updateHomeLatestLinks() {
     if (currentFile() !== 'index.html') return;
     var latestUrl = POSTS[0].url;
-    var links = document.querySelectorAll('a[href="post-006.html"], a[href="./post-006.html"], a[href$="/post-006.html"]');
+    var links = document.querySelectorAll('[data-latest-post]');
     Array.prototype.forEach.call(links, function (a) {
       a.setAttribute('href', latestUrl);
     });

@@ -5,15 +5,16 @@
    ========================================================= */
 'use strict';
 
-var VERSION = 'wyq-v6-2026-07-16-full-birthday';
+var VERSION = 'wyq-v7-2026-08-02-imax-mario';
 var CORE = [
   './',
   './index.html',
-  './assets/css/style.css?v=25',
+  './assets/css/style.css?v=26',
+  './assets/css/mario.css?v=1',
   './assets/css/prism-wyq.css',
   './assets/js/main.js?v=16',
   './assets/js/enhancements.js?v=2',
-  './assets/js/posts-data.js?v=3',
+  './assets/js/posts-data.js?v=4',
   './assets/js/extras.js?v=5',
   './assets/js/search.js?v=3',
   './assets/js/copy-btn.js',
@@ -24,6 +25,8 @@ var CORE = [
   './lab.html',
   './dna.html',
   './others.html',
+  './post-008.html',
+  './assets/images/meiah-imax-screen-illustration.png',
   './gradient.html',
   './pomodoro.html',
   './md-card.html'
