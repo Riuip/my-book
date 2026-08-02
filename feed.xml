@@ -6,8 +6,19 @@
     <atom:link href="https://riuip.github.io/my-book/feed.xml" rel="self" type="application/rss+xml"/>
     <description>WYQ 的个人空间。记录生活、思考与日常。</description>
     <language>zh-CN</language>
-    <lastBuildDate>Wed, 08 Jul 2026 00:00:00 +0800</lastBuildDate>
+    <lastBuildDate>Sun, 02 Aug 2026 00:00:00 +0800</lastBuildDate>
     <generator>handcrafted</generator>
+
+    <item>
+      <title>广州白云美亚 IMAX：影厅与选座指南</title>
+      <link>https://riuip.github.io/my-book/post-008.html</link>
+      <guid isPermaLink="true">https://riuip.github.io/my-book/post-008.html</guid>
+      <pubDate>Sun, 02 Aug 2026 00:00:00 +0800</pubDate>
+      <dc:creator>WYQ</dc:creator>
+      <category>影视</category>
+      <description><![CDATA[介绍广州美亚 IMAX 激光影城（云门店）的 IMAX 厅配置，并给出不依赖具体排号的实用选座建议。]]></description>
+      <enclosure url="https://riuip.github.io/my-book/assets/images/meiah-imax-screen-illustration.png" type="image/png" length="1676283"/>
+    </item>
 
     <item>
       <title>99% 必考知识点汇总 1</title>

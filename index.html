@@ -125,7 +125,7 @@
 
   <nav class="nav" aria-label="主导航">
     <div class="nav__inner">
-      <a class="nav__brand" href="index.html"><span class="dot"></span><span>WYQ</span></a>
+      <a class="nav__brand" href="index.html"><span>WYQ</span></a>
       <ul class="nav__menu">
         <li>
           <details class="nav__has-sub">
@@ -134,7 +134,7 @@
               <svg class="nav__sub-toggle__chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9" /></svg>
             </summary>
             <div class="nav__submenu" role="menu">
-              <a href="post-007.html" role="menuitem"><span>最新文章</span></a>
+              <a href="post-008.html" role="menuitem" data-latest-post><span>最新文章</span></a>
               <a href="archive.html" role="menuitem"><span>归档</span></a>
               <a href="tags.html" role="menuitem"><span>按分类</span></a>
               <div class="nav__submenu__sep"></div>
@@ -151,7 +151,7 @@
             <div class="nav__submenu" role="menu">
               <a href="lab.html" role="menuitem"><span>天气卡片</span></a>
               <a href="dna.html" role="menuitem"><span>博客 DNA</span></a>
-              <a href="others.html" role="menuitem"><span>其他</span></a>
+              <a href="others.html" role="menuitem"><span>马里奥</span></a>
               <div class="nav__submenu__sep"></div>
               <a href="gradient.html" role="menuitem"><span>渐变实验室</span></a>
               <a href="pomodoro.html" role="menuitem"><span>极简番茄钟</span></a>
@@ -173,7 +173,7 @@
         <h1 class="hero__title hero__title--brand typewriter-typing" id="heroTypewriter" data-text="Hello, I'm WYQ">Hello, I'm WYQ</h1>
         <p class="hero__sub reveal" data-delay="1">一个属于自己的、慢节奏的角落。<br />记录生活、思考、技术与日常。</p>
         <div class="hero__actions reveal" data-delay="2">
-          <a class="btn btn--primary btn--lg" href="post-007.html">查看最新文章</a>
+          <a class="btn btn--primary btn--lg" href="post-008.html" data-latest-post>查看最新文章</a>
           <a class="btn btn--ghost btn--lg" href="#about">了解更多</a>
         </div>
         <div class="hero__now reveal" data-delay="3" aria-live="polite"><span id="nowLine">在写一些东西。</span></div>
@@ -187,7 +187,7 @@
           <p class="birthday-stage__wish">愿新的一岁，热爱有回应，奔赴都有意义。</p>
           <div class="birthday-stage__actions">
             <button class="birthday-button birthday-button--primary" id="birthdayReplay" type="button">再放一次烟花</button>
-            <a class="birthday-button birthday-button--ghost" href="post-007.html">继续逛逛</a>
+            <a class="birthday-button birthday-button--ghost" href="post-008.html" data-latest-post>继续逛逛</a>
           </div>
         </div>
         <div class="birthday-stage__art">
@@ -250,7 +250,7 @@
         <h2 class="tile__title">你好，我是 WYQ。</h2>
         <p class="tile__desc">我喜欢记录，也喜欢慢慢地把生活整理成可以被回头翻阅的样子。这里是我的私人空间，没有焦虑的算法，也没有刻意的曝光，只是把那些值得留下的瞬间安放在文字里。</p>
         <div class="tile__actions">
-          <a class="btn btn--primary" href="post-007.html">读我的最新文章</a>
+          <a class="btn btn--primary" href="post-008.html" data-latest-post>读我的最新文章</a>
           <a class="btn btn--ghost" href="mailto:wyq200707@qq.com">联系我</a>
         </div>
       </article>
@@ -279,7 +279,7 @@
   <section class="home-mini-links" aria-label="实验入口">
     <a class="home-mini-link" href="lab.html">天气卡片 →</a>
     <a class="home-mini-link" href="dna.html">博客 DNA →</a>
-    <a class="home-mini-link" href="others.html">其他 →</a>
+    <a class="home-mini-link" href="others.html">马里奥游戏 →</a>
     <a class="home-mini-link" href="gradient.html">渐变实验室 →</a>
     <a class="home-mini-link" href="pomodoro.html">极简番茄钟 →</a>
     <a class="home-mini-link" href="md-card.html">Markdown 卡片 →</a>
@@ -289,15 +289,15 @@
     <div class="footer__inner">
       <div>
         <div>&copy; <span data-year>2026</span> WYQ. All rights reserved.</div>
-        <div style="margin-top:4px;opacity:.78;"><span data-post-count>7</span> 篇文章 · <span data-last-updated>持续更新</span></div>
+        <div style="margin-top:4px;opacity:.78;"><span data-post-count>8</span> 篇文章 · <span data-last-updated>持续更新</span></div>
       </div>
       <ul class="footer__links">
         <li><a href="index.html">主页</a></li>
-        <li><a href="post-007.html">文章</a></li>
+        <li><a href="post-008.html" data-latest-post>文章</a></li>
         <li><a href="archive.html">归档</a></li>
         <li><a href="tags.html">分类</a></li>
         <li><a href="lab.html">实验</a></li>
-        <li><a href="others.html">其他</a></li>
+        <li><a href="others.html">马里奥</a></li>
         <li><a href="feed.xml">RSS</a></li>
       </ul>
     </div>
@@ -316,7 +316,7 @@
 
   <script src="assets/js/view-transitions.js?v=1"></script>
   <script src="assets/js/main.js?v=16"></script>
-  <script src="assets/js/posts-data.js?v=3"></script>
+  <script src="assets/js/posts-data.js?v=4"></script>
   <script src="assets/js/search.js?v=3"></script>
   <script src="assets/js/enhancements.js?v=2"></script>
   <script src="assets/js/extras.js?v=5"></script>
