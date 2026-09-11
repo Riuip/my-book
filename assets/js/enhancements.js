@@ -143,45 +143,6 @@
     });
   }
 
-  /* ---------- Dark Mode Transition Animation ---------- */
-  var themeToggle = document.querySelector('[data-theme-toggle]');
-  if (themeToggle) {
-    // Replace the simple toggle with an animated one
-    var originalClick = null;
-
-    themeToggle.addEventListener('click', function (e) {
-      // Add transition overlay animation
-      var overlay = document.createElement('div');
-      overlay.className = 'theme-transition-overlay';
-
-      // Get button position for radial animation origin
-      var rect = themeToggle.getBoundingClientRect();
-      var x = rect.left + rect.width / 2;
-      var y = rect.top + rect.height / 2;
-
-      overlay.style.setProperty('--tx', x + 'px');
-      overlay.style.setProperty('--ty', y + 'px');
-
-      var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-      overlay.style.background = isDark ? '#fbfbfd' : '#000000';
-
-      document.body.appendChild(overlay);
-
-      // Trigger animation
-      requestAnimationFrame(function () {
-        overlay.classList.add('is-active');
-      });
-
-      // Remove overlay after animation
-      setTimeout(function () {
-        overlay.classList.add('is-fading');
-        setTimeout(function () {
-          if (overlay.parentNode) overlay.parentNode.removeChild(overlay);
-        }, 400);
-      }, 500);
-    });
-  }
-
   /* ---------- Share Buttons ---------- */
   var shareContainer = document.getElementById('share-buttons');
   if (shareContainer) {
