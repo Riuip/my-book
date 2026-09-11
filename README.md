@@ -65,3 +65,9 @@ python3 -m http.server 8000
 - 天气导出卡保持浅色读数；Markdown 导出主题、渐变预览及色板保留各自内容颜色。
 - 新版本静态资源和 Service Worker 一起更新，避免旧缓存继续注入旧样式。
 - 页面转场使用原生 CSS 渐进增强，普通导航、页内锚点、下载及组合键点击仍交给浏览器。
+
+## 光学折射与弹性升级
+
+`liquid-optics.css` / `liquid-optics.js` 在共享材质上增加独立背景折射、色散边缘、交互反光和触摸回弹。
+采用原生实现，继续支持 GitHub Pages 的零构建部署。Safari / Firefox 保留 CSS 光学层，完整 SVG 背景折射只在 Chromium 路径启用。
+实现边界、性能预算及参考项目见 [光学层说明](docs/liquid-optics.md)。

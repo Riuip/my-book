@@ -5,12 +5,14 @@
    ========================================================= */
 'use strict';
 
-var VERSION = 'wyq-v8-2026-09-11-liquid-glass';
+var VERSION = 'wyq-v9-2026-09-11-optical-glass';
 var CORE = [
   './',
   './index.html',
   './assets/css/style.css?v=27',
   './assets/css/liquid-glass.css?v=1',
+  './assets/css/liquid-optics.css?v=1',
+  './assets/js/liquid-optics.js?v=1',
   './assets/css/mario.css?v=1',
   './assets/css/prism-wyq.css',
   './assets/js/main.js?v=17',
