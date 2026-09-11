@@ -5,21 +5,22 @@
    ========================================================= */
 'use strict';
 
-var VERSION = 'wyq-v7-2026-08-02-imax-mario';
+var VERSION = 'wyq-v8-2026-09-11-liquid-glass';
 var CORE = [
   './',
   './index.html',
-  './assets/css/style.css?v=26',
+  './assets/css/style.css?v=27',
+  './assets/css/liquid-glass.css?v=1',
   './assets/css/mario.css?v=1',
   './assets/css/prism-wyq.css',
-  './assets/js/main.js?v=16',
-  './assets/js/enhancements.js?v=2',
+  './assets/js/main.js?v=17',
+  './assets/js/enhancements.js?v=3',
   './assets/js/posts-data.js?v=4',
-  './assets/js/extras.js?v=5',
-  './assets/js/search.js?v=3',
+  './assets/js/extras.js?v=6',
+  './assets/js/search.js?v=4',
   './assets/js/copy-btn.js',
-  './assets/js/view-transitions.js?v=1',
-  './assets/js/home-extras.js?v=1',
+  './assets/js/view-transitions.js?v=2',
+  './assets/js/home-extras.js?v=2',
   './assets/js/birthday.js?v=1',
   './404.html',
   './lab.html',

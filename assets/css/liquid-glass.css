@@ -1,0 +1,277 @@
+/* Liquid Glass — shared material system. Load after page-specific styles.
+ * Layout stays with components. No material rule changes position/transform,
+ * so drawers, sticky editors, portals and export previews keep their behavior.
+ * Explicit component selectors include cards rendered after DOMContentLoaded.
+ */
+:root {
+  color-scheme: light;
+  --glass-fill: rgba(247, 251, 255, .62);
+  --glass-float: rgba(250, 252, 255, .84);
+  --glass-inset: rgba(244, 249, 255, .50);
+  --glass-solid: #f4f8ff;
+  --glass-edge: rgba(255, 255, 255, .82);
+  --glass-highlight: rgba(255, 255, 255, .74);
+  --glass-glint: rgba(255, 255, 255, .36);
+  --glass-bottom: rgba(72, 103, 149, .13);
+  --glass-shadow: 0 14px 36px -16px rgba(33, 66, 110, .26), 0 3px 10px -5px rgba(33, 66, 110, .14);
+  --glass-shadow-hover: 0 22px 46px -18px rgba(33, 66, 110, .34), 0 5px 14px -6px rgba(33, 66, 110, .18);
+  --glass-rim: inset 0 1px 0 var(--glass-highlight), inset 1px 0 0 rgba(255,255,255,.16), inset 0 -1px 0 var(--glass-bottom);
+  --glass-blur: 20px;
+  --glass-saturation: 145%;
+  --glass-ease: cubic-bezier(.22, .8, .25, 1);
+  --glass-duration: 220ms;
+  --glass-primary: #0864cf;
+  --glass-primary-end: #0754b0;
+  --text-muted: #536176;
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --glass-fill: rgba(25, 34, 51, .68);
+  --glass-float: rgba(24, 32, 48, .90);
+  --glass-inset: rgba(40, 52, 73, .54);
+  --glass-solid: #1b2435;
+  --glass-edge: rgba(195, 220, 255, .20);
+  --glass-highlight: rgba(225, 239, 255, .20);
+  --glass-glint: rgba(210, 232, 255, .075);
+  --glass-bottom: rgba(0, 0, 0, .30);
+  --glass-shadow: 0 16px 40px -16px rgba(0,0,0,.54), 0 3px 10px -4px rgba(0,0,0,.25);
+  --glass-shadow-hover: 0 22px 48px -14px rgba(0,0,0,.62), 0 5px 16px -5px rgba(0,0,0,.32);
+  --text-muted: #b0bdd0;
+}
+:root[data-birthday="active"] {
+  --glass-fill:rgba(54,35,100,.72); --glass-float:rgba(44,29,83,.94);
+  --glass-inset:rgba(255,255,255,.12); --glass-solid:#302052;
+  --glass-edge:rgba(255,237,189,.36); --glass-highlight:rgba(255,243,208,.34);
+  --glass-glint:rgba(255,221,162,.12); --text-muted:#d9cbe7;
+}
+/* Four optical layers: glint, top reflection, translucent fill, inner rim. */
+:root :is(.tile, .desk-card, .featured, .mood, .limited-card__inner, .pn-card, .related-card, .search-result, .tags-article, .archive-item, .weather-card, .dna-card, .grad-panel, .mc-editor, .mc-card-wrap, .pomo-set, .pomo-stat, .cinema-fact, .cinema-callout, .notice, :where(.asset-generator) .card, .btn, .btn-pill, .grad-btn, .mc-btn, .pomo-btn, .wc-action-btn, .home-mini-link, .lab-tease__link, .share-btn, .copy-btn, .code-fold-btn, .tag-cloud__item, .sidebar__chip, .mc-chip, .grad-add, .sound-toggle, :where(.asset-generator) button, .nav__inner, .nav__submenu, .nav-search, .sidebar, .toc, .toc-toggle, .back-to-top, .accent-picker-btn, .accent-picker-panel, .kbd-help__panel, .grad-toast, .mc-toast, .wc-toast, .city-panel, :where(.dna-card) .panel, :where(.dna-card) .stat, :where(.weather-card) .metric, .mode-tabs, .seg, .search-page__box, .grad-preview__sample) {
+  background: radial-gradient(ellipse at var(--glass-x, 18%) var(--glass-y, 0%), var(--glass-glint), transparent 64%),
+    linear-gradient(155deg, var(--glass-glint), transparent 42%, rgba(111,172,255,.035)), var(--glass-fill);
+  border: 1px solid var(--glass-edge);
+  box-shadow: var(--glass-rim), var(--glass-shadow);
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
+  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
+  color: var(--text, #1d1d1f);
+}
+:root :is(.tile, .desk-card, .featured, .mood, .limited-card__inner, .pn-card, .related-card, .search-result, .tags-article, .archive-item, .weather-card, .dna-card, .grad-panel, .mc-editor, .mc-card-wrap, .pomo-set, .pomo-stat, .cinema-fact, .cinema-callout, .notice, :where(.asset-generator) .card) {
+  border-radius: 26px;
+  transition: box-shadow var(--glass-duration) ease, border-color var(--glass-duration) ease,
+    transform var(--glass-duration) var(--glass-ease);
+}
+:root :is(.nav__inner, .nav__submenu, .nav-search, .sidebar, .toc, .toc-toggle, .back-to-top, .accent-picker-btn, .accent-picker-panel, .kbd-help__panel, .grad-toast, .mc-toast, .wc-toast, .city-panel) {
+  background-color: var(--glass-float);
+  --glass-blur: 24px;
+}
+:root :is(.btn, .btn-pill, .grad-btn, .mc-btn, .pomo-btn, .wc-action-btn, .home-mini-link, .lab-tease__link, .share-btn, .copy-btn, .code-fold-btn, .tag-cloud__item, .sidebar__chip, .mc-chip, .grad-add, .sound-toggle, :where(.asset-generator) button) {
+  --glass-blur: 10px;
+  border-radius: 999px;
+  min-height: 44px;
+  font-size: .875rem;
+  font-weight: 550;
+  line-height: 1.4;
+  text-shadow: none;
+  box-shadow: var(--glass-rim), 0 4px 12px -6px rgba(33,66,110,.22);
+  transition: background-color var(--glass-duration) ease, box-shadow var(--glass-duration) ease,
+    border-color var(--glass-duration) ease, transform var(--glass-duration) var(--glass-ease);
+  touch-action: manipulation;
+}
+:root :is(:where(.dna-card) .panel, :where(.dna-card) .stat, :where(.weather-card) .metric, .mode-tabs, .seg, .search-page__box) {
+  background-color: var(--glass-inset);
+  box-shadow: var(--glass-rim);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+  border-radius: 18px;
+}
+/* One backdrop pass on each large surface; nested controls use tinted fills. */
+:root :is(.nav__inner, .tile, .grad-panel, .mc-editor, .dna-card, .weather-card, .sidebar, .nav-search)
+ :is(.btn, .btn-pill, .grad-btn, .mc-btn, .pomo-btn, .wc-action-btn, .home-mini-link, .lab-tease__link, .share-btn, .copy-btn, .code-fold-btn, .tag-cloud__item, .sidebar__chip, .mc-chip, .grad-add, .sound-toggle, :where(.asset-generator) button) { -webkit-backdrop-filter: none; backdrop-filter: none; }
+:root :is(.btn--primary, .btn-pill--primary, .grad-btn:not(.grad-btn--ghost), .mc-btn:not(.mc-btn--ghost), .pomo-btn:not(.pomo-btn--ghost), :where(.asset-generator) button:not(.secondary)) {
+  background: linear-gradient(160deg, rgba(255,255,255,.16), transparent 48%), linear-gradient(135deg, var(--glass-primary), var(--glass-primary-end));
+  border-color: rgba(160,206,255,.60);
+  color: #fff;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.35), inset 0 -1px 0 rgba(0,0,0,.14), 0 8px 22px -10px rgba(0,80,180,.50);
+}
+:root :is(.btn--lg) { font-size: 1rem; min-height: 50px; padding-inline: 24px; }
+:root :is(.tile--dark, .tile--accent) :is(.tile__title, .tile__desc, .tile__eyebrow) { color: var(--text); }
+:root :is(.tile--dark, .tile--accent) .tile__desc { color: var(--text-muted); }
+:root :is(.tile--dark, .tile--accent) .tile__eyebrow { color: var(--accent); }
+:root .featured__bg { opacity: .18; }
+:root .featured__fg { color: var(--text); text-shadow: none; }
+:root .featured__title { color: var(--text); }
+:root :is(.featured__desc, .featured__meta) { color: var(--text-muted); }
+:root .featured__cta { color: var(--accent); background: var(--glass-inset); }
+:root :is(.tile, .desk-card, .mood, .limited-card__inner)::before { pointer-events: none; }
+:root .hero__actions { display:flex; justify-content:center; flex-wrap:wrap; gap:14px; }
+:root .hero__now { display:flex; justify-content:center; margin:24px auto 0; padding:0; max-width:100%; background:none; border:0; box-shadow:none; -webkit-backdrop-filter:none; backdrop-filter:none; }
+:root .hero__now span { padding:9px 18px; border-radius:999px; color:var(--text-soft); background:var(--glass-fill); border:1px solid var(--glass-edge); box-shadow:var(--glass-rim); }
+
+/* Floating navigation: blur the material, never its text or the whole bar. */
+:root .nav {
+  top: max(12px, env(safe-area-inset-top)); left:50%; right:auto;
+  width:min(calc(100% - 24px), 1180px); height:auto; min-height:60px;
+  transform:translateX(-50%); background:none; border:0; box-shadow:none;
+  -webkit-backdrop-filter:none; backdrop-filter:none; overflow:visible;
+  transition:transform 260ms var(--glass-ease), opacity 180ms ease;
+}
+:root .nav.nav--hidden { transform:translate(-50%, calc(-100% - 32px)); opacity:0; }
+:root .nav:focus-within { transform:translateX(-50%); opacity:1; }
+:root .nav__inner { min-height:60px; height:auto; width:100%; max-width:none; padding:7px 18px; border-radius:30px; gap:12px; }
+:root .nav__menu { gap:4px; flex-wrap:wrap; justify-content:flex-end; min-width:0; }
+:root .nav__brand { flex-shrink:0; color:var(--text); }
+:root .nav__menu :is(a, .nav__sub-toggle, button) {
+  display:inline-flex; align-items:center; justify-content:center; min-height:44px;
+  padding:9px 12px; border-radius:999px; border:1px solid transparent;
+  font-size:.875rem; line-height:1.35; background:transparent; color:var(--text-soft);
+  box-shadow:none; -webkit-backdrop-filter:none; backdrop-filter:none;
+}
+:root .nav__menu :is(a.active, .nav__sub-toggle.active, [aria-expanded="true"]) {
+  background:var(--glass-inset); color:var(--text); border-color:var(--glass-edge); box-shadow:var(--glass-rim);
+}
+:root :is(.nav__theme, .nav__search-btn, .nav__sidebar-toggle) { width:44px; height:44px; flex-shrink:0; }
+:root .nav__theme svg, :root .nav__search-btn svg { width:20px; height:20px; }
+:root details.nav__has-sub > summary { list-style:none; cursor:pointer; gap:5px; }
+:root details.nav__has-sub > summary::-webkit-details-marker { display:none; }
+:root details.nav__has-sub.is-visible .nav__sub-toggle__chevron { transform:rotate(180deg); }
+:root .nav__submenu {
+  border-radius:22px; padding:8px; overflow-y:auto; max-height:calc(100dvh - 110px);
+  min-width:min(230px, calc(100vw - 24px)); z-index:10020;
+}
+:root .nav-menu-portal { position:fixed; opacity:0; visibility:hidden; pointer-events:none; transform:translateY(-6px) scale(.98); }
+:root .nav-menu-portal.is-visible { opacity:1; visibility:visible; pointer-events:auto; transform:none; }
+:root .nav__submenu a { min-height:44px; border-radius:14px; padding:11px 14px; color:var(--text-soft); }
+:root .nav__submenu a:is(:hover, :focus-visible) { background:var(--accent-soft); color:var(--text); }
+
+/* Search has its own stacking and open states; never shares card positioning. */
+:root .nav-search__overlay {
+  display:block; position:fixed; inset:0; z-index:10040;
+  background:rgba(10,20,40,.32); -webkit-backdrop-filter:blur(4px); backdrop-filter:blur(4px);
+  opacity:0; visibility:hidden; pointer-events:none;
+}
+:root .nav-search {
+  display:block; position:fixed; top:84px; right:max(12px, calc((100vw - 1180px) / 2)); left:auto; bottom:auto;
+  z-index:10050; width:min(460px, calc(100vw - 24px)); max-width:calc(100vw - 24px);
+  max-height:calc(100dvh - 104px); padding:8px; border-radius:26px;
+  opacity:0; visibility:hidden; pointer-events:none; transform:translateY(-8px) scale(.98);
+  overflow:auto; transition:opacity 180ms ease, transform 220ms var(--glass-ease), visibility 180ms;
+}
+:root body.search-open .nav-search, :root .nav-search.is-open { opacity:1; visibility:visible; pointer-events:auto; transform:none; }
+:root body.search-open .nav-search__overlay, :root .nav-search__overlay.is-open { opacity:1; visibility:visible; pointer-events:auto; }
+:root .nav-search__inner { padding:10px; gap:10px; background:transparent; }
+:root .nav-search__results { margin-top:4px; max-height:min(380px, calc(100dvh - 210px)); overflow:auto; }
+:root :is(.nav-search__hint, .nav-search__empty) { padding:20px 12px; color:var(--text-muted); }
+:root .nav-search__item { border-radius:16px; padding:14px; }
+:root .nav-search__item-title { display:block; color:var(--text); }
+:root :is(.nav-search__item-cat, .nav-search__item-snippet) { color:var(--text-muted); }
+:root :is(.nav-search__input, .search-page__input, .mc-textarea, .mc-input-row input, .pomo-set__row input, .stop input[type="text"], .city-panel__input) {
+  color:var(--text); background:var(--glass-inset); border:1px solid var(--glass-edge);
+  border-radius:12px; padding:11px 12px; min-width:0; font-size:1rem; line-height:1.5;
+  box-shadow:inset 0 1px 3px rgba(22,44,80,.045);
+}
+:root .search-page__input { background:transparent; border:0; box-shadow:none; }
+:root .nav-search__input { width:100%; }
+:root .mc-textarea { resize:vertical; }
+:root :is(.mode-tabs button, .seg button) { border-radius:999px; min-height:44px; font-size:.875rem; color:var(--text-soft); }
+:root :is(.mode-tabs, .seg) { padding:5px; border-radius:999px; flex-wrap:wrap; }
+:root :is(.mode-tabs button, .seg button, .mc-chip, .sidebar__chip, .tag-cloud__item).is-active {
+  background:var(--text); color:var(--bg); border-color:var(--text); box-shadow:var(--glass-rim);
+}
+:root .tag-cloud__item.is-active .tag-cloud__count { color:inherit; }
+:root .tag-cloud__item:hover:not(.is-active) { color:var(--text); background-color:var(--glass-float); }
+:root input[type="range"] { accent-color:var(--accent); min-height:32px; }
+
+/* Reading surfaces remain quiet; compact rows need only shallow depth. */
+:root :is(.archive-item, .tags-article) { border-radius:18px; margin-bottom:10px; box-shadow:var(--glass-rim), 0 4px 14px -10px rgba(33,66,110,.24); }
+:root :is(.archive-item__title, .tags-article__title) { min-width:0; overflow-wrap:anywhere; }
+:root .pn-card--placeholder { opacity:.58; box-shadow:var(--glass-rim); }
+:root .back-to-top { position:fixed; bottom:max(24px, env(safe-area-inset-bottom)); right:24px; border-radius:50%; }
+:root .toc { border-radius:22px; }
+:root .sidebar { border-radius:0 26px 26px 0; }
+:root .mc-editor { top:88px; }
+:root :is(.grad-preview, .mc-card) { border:1px solid var(--glass-edge); box-shadow:var(--glass-rim), var(--glass-shadow); }
+/* Exported artwork and swatches retain their selected colors. */
+:root .weather-card { color:#1d1d1f; --glass-fill:rgba(247,251,255,.82); --glass-glint:rgba(255,255,255,.25); }
+:root :where(.weather-card) .metric { color:#1d1d1f; background-color:rgba(255,255,255,.55); border-color:rgba(130,155,185,.25); }
+:root .weather-card .wc-loc__btn { min-height:44px; }
+:root .weather-card .city-panel { background:#f4f8ff; color:#1d1d1f; }
+:root .weather-card .city-panel__input { color:#1d1d1f; background:rgba(255,255,255,.9); border-color:#d4deec; }
+:root #liveTimeCard.tile--time {
+  --time-text:var(--text); --time-muted:var(--text-muted);
+  background:radial-gradient(ellipse at 100% 0%, var(--time-glow), transparent 65%), var(--glass-fill);
+  border-color:var(--glass-edge); box-shadow:var(--glass-rim), var(--glass-shadow);
+}
+:root #liveTimeCard .time-clock { background:var(--glass-inset); border-color:var(--glass-edge); box-shadow:var(--glass-rim); -webkit-backdrop-filter:none; backdrop-filter:none; }
+:root #liveTimeCard .time-clock__tick { background:var(--text-muted); }
+:root #liveTimeCard .time-clock__ring { border-color:var(--line); }
+/* A glass HUD respects the existing game's artwork and yellow/red identity. */
+:root .mario-hud span { background:rgba(15,50,105,.72); border:1px solid rgba(255,255,255,.50); border-radius:16px; box-shadow:inset 0 1px 0 rgba(255,255,255,.35), var(--glass-shadow); -webkit-backdrop-filter:blur(12px); backdrop-filter:blur(12px); }
+:root .mario-button { border-width:1px; border-color:rgba(255,255,255,.6); border-radius:18px; box-shadow:inset 0 1px 0 rgba(255,255,255,.6), 0 8px 20px rgba(0,0,0,.22); }
+:root .asset-generator { --text:#1d1d1f; --text-soft:#424245; --accent:#0071e3; --bg:#f4f8ff; color:var(--text); background:radial-gradient(ellipse at 10% 0%, #d3e7ff, transparent 65%), #f4f8ff; }
+:root[data-theme="dark"] .asset-generator { --text:#f5f5f7; --text-soft:#d2d2d7; --bg:#111c2d; color:var(--text); background:radial-gradient(ellipse at 10% 0%, #153256, transparent 65%), #111c2d; }
+:root .asset-generator :is(.hint, .progress, .card .label) { color:var(--text-muted); }
+:root .asset-generator .preview-grid { grid-template-columns:repeat(auto-fill, minmax(min(220px, 100%), 1fr)); }
+
+/* Interaction: a tiny lift for clickable surfaces, no idle animation loops. */
+@media (hover:hover) and (pointer:fine) {
+  :root :is(a.tile, .desk-card, .featured, a.mood, a.pn-card, .related-card, .search-result, .tags-article, .archive-item):hover {
+    transform:translateY(-3px); box-shadow:var(--glass-rim), var(--glass-shadow-hover); border-color:var(--glass-highlight);
+  }
+  :root :is(.btn, .btn-pill, .grad-btn, .mc-btn, .pomo-btn, .wc-action-btn, .home-mini-link, .lab-tease__link, .share-btn, .copy-btn, .code-fold-btn, .tag-cloud__item, .sidebar__chip, .mc-chip, .grad-add, .sound-toggle, :where(.asset-generator) button):hover { box-shadow:var(--glass-rim), 0 8px 20px -9px rgba(33,66,110,.38); border-color:var(--glass-highlight); }
+  :root .nav__menu :is(a, button, summary):hover { background:var(--glass-inset); color:var(--text); }
+}
+:root :is(.btn, .btn-pill, .grad-btn, .mc-btn, .pomo-btn, .wc-action-btn, .home-mini-link, .lab-tease__link, .share-btn, .copy-btn, .code-fold-btn, .tag-cloud__item, .sidebar__chip, .mc-chip, .grad-add, .sound-toggle, :where(.asset-generator) button):active { scale:.98; }
+:root :is(button, a, summary, input, textarea, select):focus-visible {
+  outline:3px solid var(--accent, #0071e3); outline-offset:3px;
+}
+:root :is(button, input, textarea, select):disabled { opacity:.5; cursor:not-allowed; scale:1; }
+:root .search-page__box:focus-within { outline:3px solid var(--accent); outline-offset:3px; }
+
+@media (max-width:720px) {
+  :root { --glass-blur:12px; }
+  :root .nav { top:max(8px, env(safe-area-inset-top)); width:calc(100% - 16px); }
+  :root .nav__inner { padding:5px 8px; gap:6px; border-radius:26px; min-height:56px; }
+  :root .nav__brand { font-size:1rem; }
+  :root .nav__menu { gap:0; }
+  :root .nav__menu :is(a, .nav__sub-toggle, button) { padding-inline:8px; }
+  :root :is(.tile, .desk-card, .featured, .mood, .limited-card__inner, .pn-card, .related-card, .search-result, .tags-article, .archive-item, .weather-card, .dna-card, .grad-panel, .mc-editor, .mc-card-wrap, .pomo-set, .pomo-stat, .cinema-fact, .cinema-callout, .notice, :where(.asset-generator) .card) { border-radius:22px; }
+  :root .nav-search { top:80px; right:12px; }
+  :root .mc-editor { position:relative; top:0; }
+  :root :is(.mc-wrap, .grad-wrap) > * { min-width:0; }
+  :root .back-to-top { right:16px; bottom:max(18px, env(safe-area-inset-bottom)); }
+  :root .archive-item { flex-wrap:wrap; gap:8px; }
+  :root .archive-item__title { flex-basis:100%; }
+}
+@media (max-width:390px) {
+  :root .nav__inner { flex-wrap:wrap; justify-content:center; gap:0; }
+  :root .nav__brand { padding:4px 6px; }
+  :root .nav__menu { justify-content:center; }
+  :root :is(.lab-stage, .dna-stage, .grad-stage, .pomo-stage, .mc-stage) { padding-top:128px; }
+  :root .nav-search { top:112px; max-height:calc(100dvh - 132px); }
+}
+/* Native page transitions do not hijack the browser's navigation semantics. */
+@view-transition { navigation:auto; }
+::view-transition-old(root), ::view-transition-new(root) { animation-duration:180ms; }
+@media (prefers-reduced-motion:reduce) {
+  :root { --glass-duration:0ms; }
+  :root, :root body { scroll-behavior:auto; }
+  :root *, :root *::before, :root *::after { animation:none !important; transition:none !important; }
+  :root .reveal { opacity:1; transform:none; filter:none; }
+  :root :is(.btn, .btn-pill, .grad-btn, .mc-btn, .pomo-btn, .wc-action-btn, .home-mini-link, .lab-tease__link, .share-btn, .copy-btn, .code-fold-btn, .tag-cloud__item, .sidebar__chip, .mc-chip, .grad-add, .sound-toggle, :where(.asset-generator) button):active { scale:1; }
+  :root :is(a.tile, .desk-card, .featured, a.mood, a.pn-card, .related-card, .search-result, .tags-article, .archive-item):hover { transform:none; }
+}
+/* Opaque fallbacks preserve contrast without support or with transparency off. */
+@supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))) {
+  :root { --glass-fill:var(--glass-solid); --glass-float:var(--glass-solid); --glass-inset:var(--glass-solid); }
+  :root .weather-card { --glass-fill:#f4f8ff; }
+}
+@media (prefers-reduced-transparency:reduce), (prefers-contrast:more) {
+  :root { --glass-fill:var(--glass-solid); --glass-float:var(--glass-solid); --glass-inset:var(--glass-solid); --glass-glint:transparent; --glass-blur:0px; --glass-edge:var(--text-muted); }
+  :root .weather-card { --glass-fill:#f4f8ff; --glass-glint:transparent; }
+}
+@media (forced-colors:active) {
+  :root :is(.tile, .desk-card, .featured, .mood, .limited-card__inner, .pn-card, .related-card, .search-result, .tags-article, .archive-item, .weather-card, .dna-card, .grad-panel, .mc-editor, .mc-card-wrap, .pomo-set, .pomo-stat, .cinema-fact, .cinema-callout, .notice, :where(.asset-generator) .card, .btn, .btn-pill, .grad-btn, .mc-btn, .pomo-btn, .wc-action-btn, .home-mini-link, .lab-tease__link, .share-btn, .copy-btn, .code-fold-btn, .tag-cloud__item, .sidebar__chip, .mc-chip, .grad-add, .sound-toggle, :where(.asset-generator) button, .nav__inner, .nav__submenu, .nav-search, .sidebar, .toc, .toc-toggle, .back-to-top, .accent-picker-btn, .accent-picker-panel, .kbd-help__panel, .grad-toast, .mc-toast, .wc-toast, .city-panel, :where(.dna-card) .panel, :where(.dna-card) .stat, :where(.weather-card) .metric, .mode-tabs, .seg, .search-page__box, .grad-preview__sample) { background:Canvas; color:CanvasText; border:1px solid ButtonText; box-shadow:none; -webkit-backdrop-filter:none; backdrop-filter:none; }
+}
+@media print {
+  :root :is(.tile, .desk-card, .featured, .mood, .limited-card__inner, .pn-card, .related-card, .search-result, .tags-article, .archive-item, .weather-card, .dna-card, .grad-panel, .mc-editor, .mc-card-wrap, .pomo-set, .pomo-stat, .cinema-fact, .cinema-callout, .notice, :where(.asset-generator) .card, .btn, .btn-pill, .grad-btn, .mc-btn, .pomo-btn, .wc-action-btn, .home-mini-link, .lab-tease__link, .share-btn, .copy-btn, .code-fold-btn, .tag-cloud__item, .sidebar__chip, .mc-chip, .grad-add, .sound-toggle, :where(.asset-generator) button, .nav__inner, .nav__submenu, .nav-search, .sidebar, .toc, .toc-toggle, .back-to-top, .accent-picker-btn, .accent-picker-panel, .kbd-help__panel, .grad-toast, .mc-toast, .wc-toast, .city-panel, :where(.dna-card) .panel, :where(.dna-card) .stat, :where(.weather-card) .metric, .mode-tabs, .seg, .search-page__box, .grad-preview__sample) { background:transparent !important; box-shadow:none !important; -webkit-backdrop-filter:none !important; backdrop-filter:none !important; color:#000; }
+  :root :is(.nav, .nav__submenu, .nav-search, .nav-search__overlay, .sidebar, .back-to-top) { display:none !important; }
+}

@@ -1,26 +1,4 @@
-(function(){
-'use strict';
-function home(){var n=(location.pathname.split('/').pop()||'').toLowerCase();return n===''||n==='index.html';}
-function css(){
- if(!home()||document.getElementById('wyq-liquid-home-nav'))return;
- var s=document.createElement('style');s.id='wyq-liquid-home-nav';s.textContent=[
- '.nav{overflow:visible!important}',
- '.nav__inner{position:relative!important;isolation:isolate!important;overflow:hidden!important;background:rgba(248,252,255,.26)!important;border:1px solid rgba(255,255,255,.56)!important;box-shadow:0 18px 48px rgba(24,52,90,.10),0 6px 18px rgba(24,52,90,.06),inset 0 1px 1px rgba(255,255,255,.78),inset 0 -1px 1px rgba(30,60,95,.07),inset 0 0 0 1px rgba(255,255,255,.16)!important;backdrop-filter:blur(30px) saturate(175%) brightness(1.05) contrast(.98)!important;-webkit-backdrop-filter:blur(30px) saturate(175%) brightness(1.05) contrast(.98)!important}',
- '.nav__inner::before{content:""!important;position:absolute!important;inset:0!important;z-index:0!important;border-radius:inherit!important;background:radial-gradient(circle at 10% 16%,rgba(255,255,255,.38) 0 8%,rgba(255,255,255,.13) 22%,transparent 42%),radial-gradient(circle at 84% 86%,rgba(120,175,255,.10),transparent 38%),linear-gradient(145deg,rgba(255,255,255,.12),rgba(255,255,255,.035) 50%,rgba(170,215,255,.08))!important;pointer-events:none!important}',
- '.nav__inner::after{content:""!important;position:absolute!important;inset:1px!important;z-index:1!important;border-radius:inherit!important;background:linear-gradient(180deg,rgba(255,255,255,.30) 0%,rgba(255,255,255,.08) 38%,rgba(255,255,255,0) 68%),radial-gradient(ellipse at 50% 116%,rgba(255,255,255,.14),transparent 56%)!important;box-shadow:inset 14px 14px 28px rgba(255,255,255,.10),inset -16px -14px 30px rgba(40,82,130,.045)!important;pointer-events:none!important}',
- '.nav__brand,.nav__menu,.nav__menu>li{position:relative!important;z-index:2!important}',
- '.nav__menu a,.nav__sub-toggle,.nav__search-btn,.nav__theme{background:transparent!important;border-color:transparent!important;border-width:0!important;box-shadow:none!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;filter:none!important;text-shadow:none!important;color:var(--text-soft)!important;transform:none!important;overflow:visible!important}',
- '.nav__menu a::before,.nav__menu a::after,.nav__sub-toggle::before,.nav__sub-toggle::after,.nav__search-btn::before,.nav__search-btn::after,.nav__theme::before,.nav__theme::after{content:none!important;display:none!important;background:none!important;box-shadow:none!important;filter:none!important}',
- '.nav__menu a:hover,.nav__sub-toggle:hover,.nav__search-btn:hover,.nav__theme:hover,details.nav__has-sub.is-visible>summary.nav__sub-toggle,details.nav__has-sub[open]>summary.nav__sub-toggle{background:transparent!important;border-color:transparent!important;box-shadow:none!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;color:var(--text)!important;transform:none!important}',
- '.nav__search-btn,.nav__theme{width:42px!important;height:42px!important;display:inline-flex!important;align-items:center!important;justify-content:center!important}',
- '.nav__search-btn svg,.nav__theme svg{width:21px!important;height:21px!important;opacity:.88!important;filter:none!important}',
- '[data-theme="dark"] .nav__inner{background:rgba(24,26,34,.24)!important;border-color:rgba(255,255,255,.12)!important;box-shadow:0 18px 50px rgba(0,0,0,.34),0 6px 18px rgba(0,0,0,.18),inset 0 1px 1px rgba(255,255,255,.10),inset 0 -1px 1px rgba(0,0,0,.22),inset 0 0 0 1px rgba(255,255,255,.035)!important}',
- '[data-theme="dark"] .nav__inner::before{background:radial-gradient(circle at 10% 16%,rgba(255,255,255,.12) 0 8%,rgba(255,255,255,.045) 22%,transparent 42%),radial-gradient(circle at 84% 86%,rgba(90,160,255,.10),transparent 38%),linear-gradient(145deg,rgba(255,255,255,.05),rgba(255,255,255,.02) 50%,rgba(80,120,180,.07))!important}',
- '[data-theme="dark"] .nav__inner::after{background:linear-gradient(180deg,rgba(255,255,255,.09) 0%,rgba(255,255,255,.03) 38%,rgba(255,255,255,0) 68%),radial-gradient(ellipse at 50% 116%,rgba(255,255,255,.06),transparent 56%)!important;box-shadow:inset 14px 14px 28px rgba(255,255,255,.025),inset -16px -14px 30px rgba(0,0,0,.10)!important}',
- '[data-theme="dark"] .nav__menu a,[data-theme="dark"] .nav__sub-toggle,[data-theme="dark"] .nav__search-btn,[data-theme="dark"] .nav__theme{background:transparent!important;color:rgba(245,245,247,.82)!important;box-shadow:none!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important}'
- ].join('\n');document.head.appendChild(s);
-}
-setTimeout(css,0);
-if(!document.startViewTransition)return;
-document.addEventListener('click',function(e){var l=e.target.closest('a[href]');if(!l)return;var u=new URL(l.href,location.origin);if(u.origin!==location.origin||l.hasAttribute('download')||l.target==='_blank'||e.ctrlKey||e.metaKey||e.shiftKey)return;e.preventDefault();document.startViewTransition(function(){location.href=u.href;});});
-})();
+/* Native cross-document transitions are declared in liquid-glass.css.
+ * Keep this entry point for cached pages. Never intercept hash links, modified
+ * clicks, downloads, external links, or navigation when the API is unavailable.
+ */
