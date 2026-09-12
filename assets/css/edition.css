@@ -223,7 +223,7 @@ html.edition .archive-entry:last-child { border-bottom:1px solid var(--ed-line);
 html.edition .archive-entry__copy { min-width:0; }
 html.edition .archive-entry__meta { display:flex; gap:18px; font-size:12px; color:var(--ed-soft); line-height:1.5; }
 html.edition .archive-entry__meta time { font-variant-numeric:tabular-nums; }
-html.edition .archive-entry h3 { font-size:22px; line-height:1.5; font-weight:550; letter-spacing:-.02em; margin:8px 0 0; overflow-wrap:anywhere; }
+html.edition .archive-entry h3 { font-size:22px; line-height:1.5; font-weight:550; letter-spacing:-.02em; margin:8px 0 0; overflow-wrap:anywhere; text-wrap:balance; }
 html.edition .archive-entry__arrow { flex-shrink:0; color:var(--ed-soft); font-size:26px; transition:transform .2s ease; }
 html.edition .archive-entry:hover h3 { color:var(--accent); }
 html.edition .archive-entry:hover .archive-entry__arrow { transform:translateX(4px); color:var(--accent); }

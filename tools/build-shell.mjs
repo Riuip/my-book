@@ -87,7 +87,7 @@ for (const file of pages) {
     if (!html.includes('assets/js/'+name+'.js')) html=html.replace('</body>','  <script src="'+prefix+'assets/js/'+name+'.js?v='+version+'"></script>\n</body>');
   }
   if (!html.includes('assets/js/edition.js')) html=html.replace('</body>','  <script src="'+prefix+'assets/js/edition.js?v=1" defer></script>\n</body>');
-  html=html.replaceAll('search.js?v=6','search.js?v=7').replace(/edition.css\?v=[12]/g,'edition.css?v=3').replace(/edition.js\?v=[12]/g,'edition.js?v=3').replaceAll('liquid-optics.js?v=4','liquid-optics.js?v=5');
+  html=html.replaceAll('search.js?v=6','search.js?v=7').replace(/edition.css\?v=[123]/g,'edition.css?v=4').replace(/edition.js\?v=[12]/g,'edition.js?v=3').replaceAll('liquid-optics.js?v=4','liquid-optics.js?v=5');
   html=html.replace(/<p class="ed-kicker">[\s\S]*?<\/p>/g,'').replace('← JOURNAL / 返回全部文章','‹ 返回全部文章');
   if (file.startsWith('tools/')&&!html.includes('assets/css/style.css')) html=html.replace(/(<style>)/,'<link rel="stylesheet" href="../assets/css/style.css?v=27" />\n$1');
   html=html.replace(/(<meta name="theme-color" content=")(?:#fbfbfd|#f2f2e9)/g,'$1#ffffff').replace(/(<meta name="theme-color" content=")(?:#000000|#111e19)/g,'$1#000000');
