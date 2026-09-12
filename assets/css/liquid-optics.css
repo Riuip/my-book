@@ -2,23 +2,23 @@
  * The CSS reflection/bevel is present on WebKit too; SVG displacement is optional.
  */
 :root {
-  --lg-fill:rgba(246,251,255,.32);
-  --lg-float:rgba(245,250,255,.64);
-  --lg-reflect:rgba(255,255,255,.62);
+  --lg-fill:rgba(255,255,255,.28);
+  --lg-float:rgba(250,251,255,.70);
+  --lg-reflect:rgba(255,255,255,.56);
   --lg-rim-light:rgba(255,255,255,.94);
-  --lg-rim-shade:rgba(47,74,113,.25);
-  --lg-cyan:rgba(70,189,255,.35);
-  --lg-rose:rgba(214,126,229,.26);
-  --lg-blur:6px;
+  --lg-rim-shade:rgba(35,44,63,.20);
+  --lg-cyan:rgba(203,234,255,.48);
+  --lg-rose:rgba(255,237,232,.42);
+  --lg-blur:12px;
 }
 :root[data-theme="dark"] {
-  --lg-fill:rgba(17,27,46,.48);
-  --lg-float:rgba(20,29,47,.76);
+  --lg-fill:rgba(30,34,43,.42);
+  --lg-float:rgba(28,31,40,.78);
   --lg-reflect:rgba(209,231,255,.16);
   --lg-rim-light:rgba(226,244,255,.53);
   --lg-rim-shade:rgba(0,0,0,.48);
-  --lg-cyan:rgba(97,200,255,.30);
-  --lg-rose:rgba(204,142,255,.27);
+  --lg-cyan:rgba(170,207,233,.24);
+  --lg-rose:rgba(227,198,216,.20);
 }
 :root[data-birthday="active"] {
   --lg-fill:rgba(62,35,113,.50); --lg-float:rgba(50,29,92,.83);
@@ -40,9 +40,9 @@
     0 2px 4px -2px rgba(28,49,84,.16), var(--glass-shadow);
 }
 :root body .lg-host.lg-static { position:relative; }
-:root body .lg-host.lg-floating { --lg-tint:var(--lg-float); --lg-blur:12px; }
+:root body .lg-host.lg-floating { --lg-tint:var(--lg-float); --lg-blur:18px; }
 :root body .lg-host.lg-control {
-  --lg-blur:3px;
+  --lg-blur:8px;
   translate:var(--lg-dx,0px) var(--lg-dy,0px);
   scale:var(--lg-sx,1) var(--lg-sy,1);
   /* Scale/translate are driven by a finite spring, separate from reveal/position. */
@@ -70,7 +70,7 @@
 }
 :root body .lg-host.mario-button--play { --lg-tint:rgba(216,35,38,.87); }
 :root body .lg-host.mario-button--home { --lg-tint:rgba(21,125,60,.88); }
-:root body .lg-host .lg-optics {
+:root body .lg-host > .lg-optics {
   position:absolute; inset:0; z-index:-1; display:block;
   border-radius:inherit; overflow:hidden;
   pointer-events:none; user-select:none;
@@ -79,18 +79,18 @@
     inset 1px 0 1px rgba(255,255,255,.23),
     inset 0 -2px 2px var(--lg-rim-shade), inset 0 0 12px rgba(255,255,255,.09);
 }
-:root body .lg-host .lg-warp {
-  position:absolute; inset:0; display:block; border-radius:inherit;
+:root body .lg-host > .lg-optics > .lg-warp {
+  position:absolute; inset:0; z-index:0; display:block; border-radius:inherit;
   background:var(--lg-tint);
-  -webkit-backdrop-filter:blur(var(--lg-blur)) saturate(165%);
-  backdrop-filter:blur(var(--lg-blur)) saturate(165%);
+  -webkit-backdrop-filter:blur(var(--lg-blur)) saturate(145%);
+  backdrop-filter:blur(var(--lg-blur)) saturate(145%);
 }
-:root body .lg-host.lg-nested .lg-warp {
+:root body .lg-host.lg-nested > .lg-optics > .lg-warp {
   -webkit-backdrop-filter:none; backdrop-filter:none;
 }
 /* Broad highlight follows the pointer. Its gradient never overlays text. */
-:root body .lg-host .lg-optics::before {
-  content:""; position:absolute; inset:0; border-radius:inherit; pointer-events:none;
+:root body .lg-host > .lg-optics::before {
+  content:""; position:absolute; inset:0; z-index:1; border-radius:inherit; pointer-events:none;
   background:
     radial-gradient(ellipse at var(--lg-x) var(--lg-y), var(--lg-reflect), transparent 54%),
     linear-gradient(155deg, rgba(255,255,255,.17), transparent 34%, transparent 63%, rgba(155,214,255,.08));
@@ -101,8 +101,8 @@
 /* A two-pixel optical rim: white light, cyan/red separation, dark underside.
  * Exclusion masking leaves the center entirely open and works in Safari.
  */
-:root body .lg-host .lg-optics::after {
-  content:""; position:absolute; inset:0; padding:1.5px; border-radius:inherit; pointer-events:none;
+:root body .lg-host > .lg-optics::after {
+  content:""; position:absolute; inset:0; z-index:2; padding:1.5px; border-radius:inherit; pointer-events:none;
   background:conic-gradient(from var(--lg-angle) at 50% 50%,
     var(--lg-rim-light) 0deg, var(--lg-cyan) 50deg, transparent 88deg,
     var(--lg-rim-shade) 132deg, var(--lg-rose) 180deg,
@@ -112,17 +112,11 @@
   -webkit-mask-composite:xor; mask-composite:exclude;
   opacity:.92;
 }
-:root body .lg-host.lg-control .lg-optics::after { padding:1px; }
-:root body .lg-host.lg-nested .lg-optics::before { opacity:calc(.10 + var(--lg-hot)*.58 + var(--lg-press)*.24); }
-:root body .lg-host.lg-nested .lg-optics::after { opacity:calc(.18 + var(--lg-hot)*.65); }
-:root body .lg-host.lg-nested:is(.active, .is-active, [aria-expanded="true"]) .lg-optics::after { opacity:.90; }
-:root body #liveTimeCard.lg-host { --lg-tint:var(--lg-fill); }
-:root body #liveTimeCard.lg-host .lg-optics::before {
-  background:radial-gradient(ellipse at 90% 0%, var(--time-glow), transparent 60%),
-    radial-gradient(ellipse at var(--lg-x) var(--lg-y), var(--lg-reflect), transparent 54%);
-}
+:root body .lg-host.lg-control > .lg-optics::after { padding:1px; }
+:root body .lg-host.lg-nested > .lg-optics::before { opacity:calc(.10 + var(--lg-hot)*.58 + var(--lg-press)*.24); }
+:root body .lg-host.lg-nested > .lg-optics::after { opacity:calc(.18 + var(--lg-hot)*.65); }
+:root body .lg-host.lg-nested:is(.active, .is-active, [aria-expanded="true"]) > .lg-optics::after { opacity:.90; }
 :root .featured__eyebrow { color:var(--text-soft); }
-:root body .lg-host:is(.archive-item, .tags-article, .search-result) { --lg-tint:var(--glass-fill); --lg-blur:8px; }
 :root body .lg-host:is(.nav-search, .nav__submenu, .toc, .city-panel, .kbd-help__panel) { --lg-tint:var(--lg-float); }
 :root body .lg-host.lg-control:disabled { translate:none; scale:1; }
 :root body .lg-host:focus-visible { outline:3px solid var(--accent); outline-offset:4px; }
@@ -132,30 +126,82 @@
   :root body .lg-host.lg-control:hover { box-shadow:0 8px 22px -9px rgba(29,66,121,.35), inset 0 1px 0 var(--lg-rim-light); }
 }
 @supports not ((mask-composite:exclude) or (-webkit-mask-composite:xor)) {
-  :root body .lg-host .lg-optics::after { background:none; border:1px solid var(--lg-rim-light); padding:0; }
+  :root body .lg-host > .lg-optics::after { background:none; border:1px solid var(--lg-rim-light); padding:0; }
 }
 @media (max-width:720px) {
-  :root { --lg-blur:5px; }
-  :root body .lg-host.lg-floating { --lg-blur:10px; }
+  :root { --lg-blur:10px; }
+  :root body .lg-host.lg-floating { --lg-blur:16px; }
+}
+/* Liquid Glass belongs to the interaction layer; reading stays on calm cards. */
+:root {
+  --reading-fill:rgba(255,255,255,.90);
+  --reading-edge:rgba(73,86,108,.10);
+}
+:root[data-theme="dark"] {
+  --reading-fill:rgba(28,30,36,.94);
+  --reading-edge:rgba(220,228,244,.12);
+}
+:root[data-birthday="active"] { --reading-fill:#302052; --reading-edge:rgba(255,237,189,.24); }
+:root body :is(.tile, .desk-card, .featured, .mood, .limited-card__inner, .pn-card, .related-card,
+  .search-result, .tags-article, .archive-item, .grad-panel, .mc-editor, .mc-card-wrap, .pomo-set,
+  .pomo-stat, .cinema-fact, .cinema-callout, .notice, .asset-generator .card) {
+  background:var(--reading-fill);
+  border:1px solid var(--reading-edge);
+  box-shadow:0 5px 24px -12px rgba(20,30,55,.16);
+  -webkit-backdrop-filter:none; backdrop-filter:none;
+}
+:root body #liveTimeCard.tile--time {
+  background:radial-gradient(ellipse at 100% 0%, var(--time-glow), transparent 70%), var(--reading-fill);
+}
+:root body .lg-host.nav__inner {
+  --lg-tint:rgba(255,255,255,.40);
+  box-shadow:0 8px 28px -12px rgba(20,30,55,.28), 0 2px 5px -3px rgba(20,30,55,.20);
+}
+:root[data-theme="dark"] body .lg-host.nav__inner { --lg-tint:rgba(28,31,40,.54); }
+:root[data-birthday="active"] body .lg-host.nav__inner { --lg-tint:rgba(50,29,92,.68); }
+/* Navigation items share one glass sheet; only the active item gains a pill. */
+:root body .nav__menu .lg-host.lg-nested {
+  --lg-tint:transparent; box-shadow:none; border-color:transparent;
+}
+:root body .nav__menu .lg-host.lg-nested > .lg-optics { box-shadow:none; }
+:root body .nav__menu .lg-host.lg-nested > .lg-optics::before,
+:root body .nav__menu .lg-host.lg-nested > .lg-optics::after { opacity:calc(var(--lg-hot)*.55); }
+:root body .nav__menu .lg-host:is(.active, [aria-expanded="true"]) {
+  --lg-tint:var(--glass-inset); color:var(--text); border-color:var(--glass-edge);
+  box-shadow:inset 0 1px 0 var(--lg-rim-light), 0 2px 6px -3px rgba(20,30,55,.2);
+}
+:root body .nav__menu .lg-host:is(.active, [aria-expanded="true"]) > .lg-optics::after { opacity:.65; }
+:root body .lg-host.lg-nested:not(.lg-primary) { --lg-tint:var(--glass-inset); }
+:root body .lg-host.lg-nested:is(.is-active, [aria-current="page"]) { --lg-tint:var(--text); }
+/* Override the inset fill for idle navigation after general nested controls. */
+:root body .nav__menu .lg-host.lg-nested:not(.active):not([aria-expanded="true"]) { --lg-tint:transparent; }
+
+@media (prefers-reduced-transparency:reduce), (prefers-contrast:more) {
+  :root:root { --reading-fill:var(--glass-solid); }
+}
+@supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))) {
+  :root:root { --reading-fill:var(--glass-solid); }
 }
 /* Fallbacks are functional materials, not invisible or half-rendered filters. */
-:root[data-liquid-engine="opaque"] body .lg-host .lg-warp { background:var(--glass-solid); filter:none !important; -webkit-backdrop-filter:none; backdrop-filter:none; }
-:root[data-liquid-engine="opaque"] body .lg-host.lg-primary .lg-warp { background:var(--glass-primary); }
+:root[data-liquid-engine="opaque"] body .lg-host > .lg-optics > .lg-warp { background:var(--glass-solid); -webkit-backdrop-filter:none !important; backdrop-filter:none !important; }
+:root[data-liquid-engine="opaque"] body .lg-host.lg-primary > .lg-optics > .lg-warp { background:var(--glass-primary); }
 @media (prefers-reduced-transparency:reduce), (prefers-contrast:more) {
-  :root body .lg-host .lg-warp { background:var(--glass-solid); filter:none !important; -webkit-backdrop-filter:none; backdrop-filter:none; }
-  :root body .lg-host.lg-primary .lg-warp { background:var(--glass-primary); }
-  :root body .lg-host .lg-optics::before, :root body .lg-host .lg-optics::after { display:none; }
+  :root body .lg-host > .lg-optics > .lg-warp { background:var(--glass-solid); -webkit-backdrop-filter:none !important; backdrop-filter:none !important; }
+  :root body .lg-host.lg-primary > .lg-optics > .lg-warp { background:var(--glass-primary); }
+  :root body .lg-host > .lg-optics::before, :root body .lg-host > .lg-optics::after { display:none; }
 }
 @media (prefers-reduced-motion:reduce) {
   :root body .lg-host.lg-control { translate:none; scale:1; }
-  :root body .lg-host .lg-optics::before { transition:none; }
+  :root body .lg-host > .lg-optics::before { transition:none; }
 }
-:root[data-liquid-engine="opaque"] body .lg-host:is(.is-active, [aria-current="page"]) .lg-warp { background:var(--text); }
+:root[data-liquid-engine="opaque"] body .lg-host:is(.is-active, [aria-current="page"]) > .lg-optics > .lg-warp { background:var(--text); }
 @media (forced-colors:active) {
+  :root:root { --reading-fill:Canvas; --reading-edge:CanvasText; }
   :root body .lg-host { background:Canvas !important; color:CanvasText; border:1px solid ButtonText; box-shadow:none; }
-  :root body .lg-host .lg-optics { display:none; }
+  :root body .lg-host > .lg-optics { display:none; }
 }
 @media print {
+  :root:root { --reading-fill:transparent; --reading-edge:transparent; }
   :root body .lg-host { background:transparent !important; box-shadow:none; }
-  :root body .lg-host .lg-optics { display:none; }
+  :root body .lg-host > .lg-optics { display:none; }
 }

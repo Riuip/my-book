@@ -144,7 +144,33 @@
     navSearchBtn.setAttribute('aria-expanded', 'false');
     navSearchBtn.setAttribute('aria-controls', navSearchBox.id);
     navSearchBox.setAttribute('aria-hidden', 'true');
-    function isMobile() { return window.innerWidth <= 720; }
+    navSearchBox.setAttribute('aria-modal', 'true');
+    navSearchBox.inert = true;
+    var focusTimer, inertBackground = [];
+    var closeButton = document.createElement('button');
+    closeButton.type = 'button'; closeButton.className = 'nav-search__close';
+    closeButton.setAttribute('aria-label', '关闭搜索'); closeButton.textContent = '×';
+    navSearchBox.querySelector('.nav-search__inner').appendChild(closeButton);
+    closeButton.addEventListener('click', closeNavSearch);
+    // An iPhone in landscape must still use the full search page.
+    function isMobile() { return window.innerWidth <= 720 || matchMedia('(pointer: coarse)').matches; }
+    function positionSearch() {
+      if (!navSearchBox.classList.contains('is-open')) return;
+      if (isMobile()) { closeNavSearch(); return; }
+      var viewport = window.visualViewport;
+      var top = viewport ? viewport.offsetTop : 0;
+      var height = viewport ? viewport.height : innerHeight;
+      var nav = document.querySelector('.nav');
+      var preferred = nav ? nav.getBoundingClientRect().bottom + 12 : top + 84;
+      var panelTop = Math.max(top + 12, Math.min(preferred, top + height - 180));
+      navSearchBox.style.top = panelTop + 'px';
+      navSearchBox.style.maxHeight = Math.max(80, top + height - panelTop - 12) + 'px';
+    }
+    window.addEventListener('resize', positionSearch, { passive:true });
+    if (window.visualViewport) {
+      visualViewport.addEventListener('resize', positionSearch, { passive:true });
+      visualViewport.addEventListener('scroll', positionSearch, { passive:true });
+    }
 
     navSearchBtn.addEventListener('click', function (e) {
       e.preventDefault();
@@ -158,15 +184,26 @@
     });
 
     function openNavSearch() {
+      clearTimeout(focusTimer);
+      navSearchBox.inert = false;
+      inertBackground = Array.from(document.body.children).filter(function (node) {
+        return node !== navSearchBox && node !== navSearchOverlay && !node.inert;
+      });
+      inertBackground.forEach(function (node) { node.inert = true; });
       navSearchBox.classList.add('is-open');
       navSearchBtn.setAttribute('aria-expanded', 'true');
       navSearchBox.setAttribute('aria-hidden', 'false');
       if (navSearchOverlay) navSearchOverlay.classList.add('is-open');
       document.body.classList.add('search-open');
-      setTimeout(function () { if (navSearchInput) navSearchInput.focus(); }, 160);
+      positionSearch();
+      focusTimer = setTimeout(function () { if (navSearchInput && !navSearchBox.inert) navSearchInput.focus(); }, 160);
     }
 
     function closeNavSearch() {
+      clearTimeout(focusTimer);
+      navSearchBox.inert = true;
+      inertBackground.forEach(function (node) { node.inert = false; });
+      inertBackground = [];
       navSearchBox.classList.remove('is-open');
       navSearchBtn.setAttribute('aria-expanded', 'false');
       navSearchBox.setAttribute('aria-hidden', 'true');
@@ -177,6 +214,13 @@
       if (navSearchResults) navSearchResults.innerHTML = '<p class="nav-search__hint">输入关键词搜索文章...</p>';
     }
 
+    navSearchBox.addEventListener('keydown', function (event) {
+      if (event.key !== 'Tab') return;
+      var focusable = Array.from(navSearchBox.querySelectorAll('input,button,a[href]')).filter(function (node) { return !node.disabled; });
+      var first = focusable[0], last = focusable[focusable.length - 1];
+      if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
+      else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
+    });
     if (navSearchOverlay) navSearchOverlay.addEventListener('click', closeNavSearch);
 
     document.addEventListener('keydown', function (e) {

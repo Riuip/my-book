@@ -9,6 +9,7 @@
    ========================================================= */
 (function () {
   'use strict';
+  var reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
 
   /* ---------- Prism.js Auto-Setup ---------- */
   // Add line-numbers class to all <pre> elements and detect language
@@ -76,8 +77,9 @@
           e.preventDefault();
           var target = document.getElementById(this.getAttribute('data-target'));
           if (target) {
-            var offset = target.getBoundingClientRect().top + window.pageYOffset - 70;
-            window.scrollTo({ top: offset, behavior: 'smooth' });
+            var clearance = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--nav-clearance')) || 88;
+            var offset = target.getBoundingClientRect().top + window.pageYOffset - clearance;
+            window.scrollTo({ top: offset, behavior: reducedMotion.matches ? 'instant' : 'smooth' });
           }
         });
 
@@ -90,9 +92,17 @@
       // TOC toggle
       var tocToggle = document.getElementById('toc-toggle');
       if (tocToggle) {
+        function syncToc() {
+          var collapsed = tocContainer.classList.contains('is-collapsed');
+          tocToggle.setAttribute('aria-expanded', String(!collapsed));
+          tocToggle.setAttribute('aria-controls', tocContainer.id);
+          tocContainer.inert = collapsed;
+        }
+        syncToc();
         tocToggle.addEventListener('click', function () {
           tocContainer.classList.toggle('is-collapsed');
           tocToggle.classList.toggle('is-collapsed');
+          syncToc();
         });
       }
 
@@ -139,7 +149,7 @@
     toggleBackToTop();
 
     backToTop.addEventListener('click', function () {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      window.scrollTo({ top: 0, behavior: reducedMotion.matches ? 'instant' : 'smooth' });
     });
   }
 
