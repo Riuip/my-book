@@ -15,7 +15,6 @@ const nav = read('templates/navigation.tpl');
 const footer = read('templates/footer.tpl');
 const search = read('templates/search.tpl');
 const homeTemplate = read('templates/home.tpl');
-const toolNames = [ ['base64.html','Base64'],['gradient.html','渐变'],['pomodoro.html','专注'],['md-card.html','排版'],['lab.html','天气'],['dna.html','写作画像'],['others.html','游戏'] ];
 const toolMeta = {
   'base64.html':['grad','BASE64','把编码，还原成文字。支持中文与 URL-safe Base64。'],
   'gradient.html':['grad','01 / COLOUR STUDY','调出你的下一组灵感色。支持线性、径向和锥形渐变，完成后复制 CSS。'],
@@ -76,12 +75,8 @@ for (const file of pages) {
     html=html.replace(new RegExp('(<span class="'+cls+'-eyebrow">)[\\s\\S]*?(</span>)'),'$1'+label+'$2');
     html=html.replace(new RegExp('(<p class="'+cls+'-sub">)[\\s\\S]*?(</p>)'),'$1'+description+'$2');
   }
-  if (toolNames.some(([url])=>url===file)) {
-    const tabs='<nav class="ed-studio-nav" aria-label="实验工具">'+toolNames.map(([url,label])=>`<a href="${url}"${url===file?' aria-current="page"':''}>${label}</a>`).join('')+'</nav>';
-    if (html.includes('class="ed-studio-nav"')) html=html.replace(/<nav class="ed-studio-nav"[\s\S]*?<\/nav>/,tabs);
-    else if (toolMeta[file]) html=html.replace(new RegExp('(<div class="'+toolMeta[file][0]+'-head">[\\s\\S]*?</div>)'),'$1\n'+tabs);
-    else html=html.replace(/(<main\b[^>]*>)/,'$1\n'+tabs);
-  }
+  // Tool pages use the shared top navigation; no secondary pill menu.
+  html=html.replace(/\s*<nav class="ed-studio-nav"[\s\S]*?<\/nav>/g,'');
   const titles={ 'archive.html':['THE COMPLETE INDEX / 01','文字存档'], 'tags.html':['FOLLOW A THREAD / 02','从兴趣出发'], 'search.html':['FIND A LITTLE SOMETHING / 03','找一篇，慢慢读。'] };
   if(titles[file])html=html.replace(/(<h1\b[^>]*>)[\s\S]*?(<\/h1>)/,'$1'+titles[file][1]+'$2');
   if (!html.includes('assets/css/edition.css')) html=html.replace('</head>','  <link rel="stylesheet" href="'+prefix+'assets/css/edition.css?v=1" />\n</head>');
