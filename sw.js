@@ -5,7 +5,7 @@
    ========================================================= */
 'use strict';
 
-var VERSION = 'wyq-v16-2026-09-12-fieldnotes';
+var VERSION = 'wyq-v17-2026-09-12-minimal';
 var CORE = [
   './',
   './index.html',
@@ -16,10 +16,9 @@ var CORE = [
   './assets/css/style.css?v=27',
   './assets/css/liquid-glass.css?v=2',
   './assets/css/liquid-optics.css?v=7',
-  './assets/css/edition.css?v=1',
-  './assets/js/edition.js?v=1',
-  './assets/js/orbit.js?v=1',
-  './assets/js/liquid-optics.js?v=4',
+  './assets/css/edition.css?v=2',
+  './assets/js/edition.js?v=2',
+  './assets/js/liquid-optics.js?v=5',
   './assets/css/mario.css?v=1',
   './assets/css/prism-wyq.css',
   './assets/js/main.js?v=19',

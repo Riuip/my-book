@@ -23,46 +23,6 @@
     resumeClock();
     if (clock) document.addEventListener('visibilitychange', resumeClock);
 
-    var svg = document.getElementById('edOrbit');
-    var group = document.getElementById('edOrbitLines');
-    var button = document.getElementById('edOrbitNext');
-    var title = document.getElementById('edOrbitName');
-    if (svg && group && button && window.WYQ_ORBIT) {
-      var mode = 0, frame = 0, point = null;
-      button.addEventListener('click', function () {
-        mode = (mode + 1) % window.WYQ_ORBIT.names.length;
-        var fragment = document.createDocumentFragment();
-        window.WYQ_ORBIT.paths(mode).forEach(function (line) {
-          var path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-          path.setAttribute('d', line.d); path.setAttribute('opacity', line.opacity); fragment.appendChild(path);
-        });
-        group.replaceChildren(fragment);
-        title.textContent = '0' + (mode + 1) + ' / ' + window.WYQ_ORBIT.names[mode];
-        svg.setAttribute('aria-label', '由细线构成的' + window.WYQ_ORBIT.names[mode] + '雕塑');
-      });
-      var art = svg.closest('.ed-art');
-      function reset() {
-        cancelAnimationFrame(frame); frame = 0; point = null;
-        svg.style.removeProperty('--orbit-rx'); svg.style.removeProperty('--orbit-ry');
-      }
-      art.addEventListener('pointermove', function (event) {
-        if (motion.matches || event.pointerType !== 'mouse') return;
-        point = { x:event.clientX, y:event.clientY };
-        if (frame) return;
-        frame = requestAnimationFrame(function () {
-          frame = 0;
-          if (!point) return;
-          var rect = art.getBoundingClientRect();
-          svg.style.setProperty('--orbit-rx', ((point.x - rect.left) / rect.width * 8 - 4).toFixed(2) + 'deg');
-          svg.style.setProperty('--orbit-ry', (4 - (point.y - rect.top) / rect.height * 8).toFixed(2) + 'deg');
-        });
-      }, { passive:true });
-      art.addEventListener('pointerleave', reset);
-      art.addEventListener('pointercancel', reset);
-      window.addEventListener('blur', reset);
-      document.addEventListener('visibilitychange', function () { if (document.hidden) reset(); });
-      if (motion.addEventListener) motion.addEventListener('change', reset);
-    }
     // Keep the static cover selection fresh when the single post index changes.
     var feature = document.getElementById('edFeatured');
     if (feature && posts[0] && feature.getAttribute('href') !== posts[0].url) {
@@ -84,10 +44,10 @@
         var list = document.createDocumentFragment();
         selected.forEach(function (post) {
           var link = document.createElement('a'); link.className = 'ed-note'; link.href = post.url;
-          var meta = document.createElement('div'); meta.className = 'ed-note-meta'; meta.textContent = 'N° ' + post.num + ' / ' + post.cat + '　' + post.date;
+          var meta = document.createElement('div'); meta.className = 'ed-note-meta'; meta.textContent = post.cat + '　' + post.date;
           var heading = document.createElement('h3'); heading.textContent = post.title;
           var description = document.createElement('p'); description.textContent = post.desc;
-          var tail = document.createElement('div'); tail.className = 'ed-note-tail'; tail.textContent = (post.tags || []).join(' · ') + '　↗';
+          var tail = document.createElement('div'); tail.className = 'ed-note-tail'; tail.textContent = (post.tags || []).join(' · ') + '　›';
           link.append(meta, heading, description, tail); list.appendChild(link);
         });
         notes.replaceChildren(list);

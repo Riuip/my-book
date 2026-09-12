@@ -7,6 +7,8 @@
   'use strict';
   if (window.WYQ_OPTICS) return;
   var root = document.documentElement;
+  // The minimal design uses one CSS-blurred header, without lens or spring layers.
+  if (root.dataset.design === 'minimal') return;
   var reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
   var reducedTransparency = matchMedia('(prefers-reduced-transparency: reduce)');
   var highContrast = matchMedia('(prefers-contrast: more)');
