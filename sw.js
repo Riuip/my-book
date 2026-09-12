@@ -5,7 +5,7 @@
    ========================================================= */
 'use strict';
 
-var VERSION = 'wyq-v23-2026-09-12-base64-feedback';
+var VERSION = 'wyq-v24-2026-09-12-tool-navigation';
 var CORE = [
   './',
   './index.html',
