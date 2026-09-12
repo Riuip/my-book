@@ -2,26 +2,29 @@
  * The CSS reflection/bevel is present on WebKit too; SVG displacement is optional.
  */
 :root {
-  --lg-fill:rgba(255,255,255,.22);
-  --lg-float:rgba(250,252,255,.72);
-  --lg-reflect:rgba(255,255,255,.36);
+  --lg-fill:rgba(255,255,255,.10);
+  --lg-float:rgba(250,252,255,.58);
+  --lg-inset:rgba(244,249,255,.24);
+  --lg-reflect:rgba(255,255,255,.22);
   --lg-rim-light:rgba(255,255,255,.90);
   --lg-rim-shade:rgba(34,49,69,.18);
   --lg-cyan:rgba(203,234,255,.48);
   --lg-rose:rgba(255,237,232,.42);
-  --lg-blur:12px;
+  --lg-blur:8px;
 }
 :root[data-theme="dark"] {
-  --lg-fill:rgba(42,48,59,.30);
-  --lg-float:rgba(25,30,39,.76);
-  --lg-reflect:rgba(222,236,255,.15);
+  --lg-fill:rgba(42,48,59,.16);
+  --lg-float:rgba(25,30,39,.64);
+  --lg-inset:rgba(40,52,73,.28);
+  --lg-reflect:rgba(222,236,255,.10);
   --lg-rim-light:rgba(236,246,255,.42);
   --lg-rim-shade:rgba(0,0,0,.48);
   --lg-cyan:rgba(170,207,233,.24);
   --lg-rose:rgba(227,198,216,.20);
 }
 :root[data-birthday="active"] {
-  --lg-fill:rgba(62,35,113,.50); --lg-float:rgba(50,29,92,.83);
+  --lg-fill:rgba(62,35,113,.32); --lg-float:rgba(50,29,92,.70);
+  --lg-inset:rgba(255,255,255,.12);
   --lg-reflect:rgba(255,235,188,.24); --lg-rim-light:rgba(255,242,203,.75);
   --lg-cyan:rgba(122,212,255,.36); --lg-rose:rgba(255,152,206,.34);
 }
@@ -40,9 +43,9 @@
     0 2px 4px -2px rgba(28,49,84,.16), var(--glass-shadow);
 }
 :root body .lg-host.lg-static { position:relative; }
-:root body .lg-host.lg-floating { --lg-tint:var(--lg-float); --lg-blur:18px; }
+:root body .lg-host.lg-floating { --lg-tint:var(--lg-float); --lg-blur:14px; }
 :root body .lg-host.lg-control {
-  --lg-blur:8px;
+  --lg-blur:6px;
   translate:var(--lg-dx,0px) var(--lg-dy,0px);
   scale:var(--lg-sx,1) var(--lg-sy,1);
   /* Scale/translate are driven by a finite spring, separate from reveal/position. */
@@ -50,8 +53,8 @@
   box-shadow:0 3px 10px -5px rgba(24,55,104,.28), inset 0 1px 0 var(--lg-rim-light);
 }
 :root body .lg-host.lg-primary {
-  --lg-tint:linear-gradient(155deg, rgba(24,136,252,.95), rgba(0,100,224,.98));
-  --lg-reflect:rgba(214,240,255,.20);
+  --lg-tint:linear-gradient(155deg, rgba(0,89,206,.86), rgba(0,78,185,.92));
+  --lg-reflect:rgba(214,240,255,.12);
   color:#fff;
   border-color:rgba(185,222,255,.32);
   box-shadow:0 10px 26px -12px rgba(0,89,213,.60), inset 0 1px 0 rgba(255,255,255,.72);
@@ -60,7 +63,7 @@
   --lg-tint:rgba(255,255,255,.07);
   box-shadow:inset 0 1px 0 rgba(255,255,255,.18);
 }
-:root body .lg-host.lg-nested.lg-primary { --lg-tint:linear-gradient(155deg, rgba(24,136,252,.95), rgba(0,100,224,.98)); }
+:root body .lg-host.lg-nested.lg-primary { --lg-tint:linear-gradient(155deg, rgba(0,89,206,.86), rgba(0,78,185,.92)); }
 :root body .lg-host:is(.is-active, [aria-current="page"]) {
   --lg-tint:var(--text);
   color:var(--bg);
@@ -93,7 +96,7 @@
   content:""; position:absolute; inset:0; z-index:1; border-radius:inherit; pointer-events:none;
   background:
     radial-gradient(ellipse 46% 115% at var(--lg-x) var(--lg-y), var(--lg-reflect), transparent 70%),
-    linear-gradient(175deg, rgba(255,255,255,.24), transparent 18%, transparent 78%, rgba(255,255,255,.09));
+    linear-gradient(175deg, rgba(255,255,255,.14), transparent 18%, transparent 78%, rgba(255,255,255,.05));
   opacity:calc(.50 + var(--lg-hot)*.18 + var(--lg-press)*.32);
   box-shadow:inset 0 5px 9px -6px rgba(255,255,255,.85), inset 0 -7px 10px -9px rgba(20,44,82,.60);
   transition:opacity 180ms ease;
@@ -129,8 +132,8 @@
   :root body .lg-host > .lg-optics::after { background:none; border:1px solid var(--lg-rim-light); padding:0; }
 }
 @media (max-width:720px) {
-  :root { --lg-blur:10px; }
-  :root body .lg-host.lg-floating { --lg-blur:16px; }
+  :root { --lg-blur:8px; }
+  :root body .lg-host.lg-floating { --lg-blur:12px; }
 }
 /* Liquid Glass belongs to the interaction layer; reading stays on calm cards. */
 :root {
@@ -154,11 +157,11 @@
   background:radial-gradient(ellipse at 100% 0%, var(--time-glow), transparent 70%), var(--reading-fill);
 }
 :root body .lg-host.nav__menu {
-  --lg-tint:rgba(255,255,255,.30);
+  --lg-tint:rgba(255,255,255,.12);
   box-shadow:0 8px 28px -12px rgba(20,30,55,.28), 0 2px 5px -3px rgba(20,30,55,.20);
 }
-:root[data-theme="dark"] body .lg-host.nav__menu { --lg-tint:rgba(31,36,46,.48); }
-:root[data-birthday="active"] body .lg-host.nav__menu { --lg-tint:rgba(50,29,92,.68); }
+:root[data-theme="dark"] body .lg-host.nav__menu { --lg-tint:rgba(31,36,46,.28); }
+:root[data-birthday="active"] body .lg-host.nav__menu { --lg-tint:rgba(50,29,92,.46); }
 /* Navigation items share one glass sheet; only the active item gains a pill. */
 :root body .nav__menu .lg-host.lg-nested {
   --lg-tint:transparent; box-shadow:none; border-color:transparent;
@@ -167,11 +170,11 @@
 :root body .nav__menu .lg-host.lg-nested > .lg-optics::before,
 :root body .nav__menu .lg-host.lg-nested > .lg-optics::after { opacity:calc(var(--lg-hot)*.55); }
 :root body .nav__menu .lg-host:is(.active, [aria-expanded="true"]) {
-  --lg-tint:var(--glass-inset); color:var(--text); border-color:var(--glass-edge);
+  --lg-tint:var(--lg-inset); color:var(--text); border-color:var(--glass-edge);
   box-shadow:inset 0 1px 0 var(--lg-rim-light), 0 2px 6px -3px rgba(20,30,55,.2);
 }
 :root body .nav__menu .lg-host:is(.active, [aria-expanded="true"]) > .lg-optics::after { opacity:.65; }
-:root body .lg-host.lg-nested:not(.lg-primary) { --lg-tint:var(--glass-inset); }
+:root body .lg-host.lg-nested:not(.lg-primary) { --lg-tint:var(--lg-inset); }
 :root body .lg-host.lg-nested:is(.is-active, [aria-current="page"]) { --lg-tint:var(--text); }
 /* Override the inset fill for idle navigation after general nested controls. */
 :root body .nav__menu .lg-host.lg-nested:not(.active):not([aria-expanded="true"]) { --lg-tint:transparent; }
@@ -197,8 +200,8 @@
 }
 :root body .nav__menu :is(a, .nav__sub-toggle, button) { padding-inline:14px; font-size:14px; }
 :root body .nav__menu :is(.nav__theme, .nav__search-btn) { padding:0; }
-:root body .lg-host.nav__brand { --lg-blur:12px; --lg-tint:var(--lg-fill); }
-:root body .lg-host.nav__menu { --lg-blur:12px; }
+:root body .lg-host.nav__brand { --lg-blur:8px; --lg-tint:var(--lg-fill); }
+:root body .lg-host.nav__menu { --lg-blur:8px; }
 :root body :is(.nav__menu, .nav__brand).lg-host {
   box-shadow:0 12px 32px -16px rgba(23,40,68,.32), 0 2px 5px -2px rgba(23,40,68,.12);
 }

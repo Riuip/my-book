@@ -104,7 +104,7 @@
     filter.appendChild(element('feDisplacementMap', { in:'SourceGraphic', in2:'lens', scale:strength,
       xChannelSelector:'R', yChannelSelector:'G' }));
     defs.appendChild(filter);
-    var blur = state.node.matches('.nav__menu,.nav__brand') ? 8 : state.control ? 4 : 16;
+    var blur = state.node.matches('.nav__menu,.nav__brand') ? 5 : state.control ? 3 : 12;
     state.warp.style.setProperty('backdrop-filter', 'url(#' + name + ') blur(' + blur + 'px) saturate(1.3)');
     state.filter = filter; state.geometry = key;
   }
