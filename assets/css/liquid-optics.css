@@ -205,3 +205,30 @@
   :root body .lg-host { background:transparent !important; box-shadow:none; }
   :root body .lg-host > .lg-optics { display:none; }
 }
+
+/* Keep the dark hero readable as its animated blue background moves. */
+:root[data-theme="dark"]:not([data-birthday="active"]) .hero__title--brand {
+  color:#f5f9ff !important;
+  -webkit-text-fill-color:#f5f9ff !important;
+  text-shadow:0 2px 20px rgba(8,20,46,.22);
+}
+:root body :is(.grad-sub, .mc-sub, .pomo-sub) { color:var(--text-soft); }
+/* A large hit area must not stretch the painted range track into a slab. */
+:root body input[type="range"].grad-range {
+  height:44px; min-height:44px; background:none; border:0; box-shadow:none;
+  touch-action:pan-y;
+}
+:root body input[type="range"].grad-range::-webkit-slider-runnable-track {
+  height:6px; border-radius:999px; background:var(--glass-bottom);
+}
+:root body input[type="range"].grad-range::-moz-range-track {
+  height:6px; border-radius:999px; background:var(--glass-bottom);
+}
+:root body input[type="range"].grad-range::-webkit-slider-thumb {
+  width:22px; height:22px; margin-top:-8px; border-radius:50%;
+  background:#fff; border:1px solid rgba(90,110,145,.24); box-shadow:0 2px 5px rgba(12,24,44,.2);
+}
+:root body input[type="range"].grad-range::-moz-range-thumb {
+  width:22px; height:22px; border-radius:50%;
+  background:#fff; border:1px solid rgba(90,110,145,.24); box-shadow:0 2px 5px rgba(12,24,44,.2);
+}
