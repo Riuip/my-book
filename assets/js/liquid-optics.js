@@ -18,8 +18,8 @@
   var chromium = /(?:Chrome|Chromium|Edg|OPR)\//.test(ua) && !/(?:CriOS|FxiOS|EdgiOS)/.test(ua);
   var backdrop = CSS.supports('backdrop-filter', 'blur(1px)') || CSS.supports('-webkit-backdrop-filter', 'blur(1px)');
   var readingSurfaces = '.tile,.desk-card,.featured,a.mood,.limited-card__inner,.pn-card:not(.pn-card--placeholder),.related-card,.search-result,.tags-article,.archive-item,.grad-panel,.mc-editor,.mc-card-wrap,.pomo-set,.pomo-stat,.cinema-fact,.cinema-callout,.asset-generator .card';
-  var controls = '.btn,.btn-pill,.grad-btn,.mc-btn,.pomo-btn,.wc-action-btn,.home-mini-link,.share-btn,.copy-btn,.code-fold-btn,.tag-cloud__item,.mc-chip,.grad-add,.sound-toggle,.back-to-top,.toc-toggle,.accent-picker-btn,.mario-button,.asset-generator button,.nav__menu a,.nav__menu button,.nav__sub-toggle,.nav-search__close,.search-page__clear';
-  var floating = '.nav__inner,.nav__submenu,.nav-search,.toc,.accent-picker-panel,.kbd-help__panel,.city-panel';
+  var controls = '.btn,.btn-pill,.grad-btn,.mc-btn,.pomo-btn,.wc-action-btn,.home-mini-link,.share-btn,.copy-btn,.code-fold-btn,.tag-cloud__item,.mc-chip,.grad-add,.sound-toggle,.back-to-top,.toc-toggle,.accent-picker-btn,.mario-button,.asset-generator button,.nav__menu a,.nav__menu button,.nav__sub-toggle,.nav-search__close,.search-page__clear,.nav__brand';
+  var floating = '.nav__menu,.nav__brand,.nav__submenu,.nav-search,.toc,.accent-picker-panel,.kbd-help__panel,.city-panel';
   var selector = controls + ',' + floating;
   var primary = '.btn--primary,.btn-pill--primary,.grad-btn:not(.grad-btn--ghost),.mc-btn:not(.mc-btn--ghost),.pomo-btn:not(.pomo-btn--ghost),.asset-generator button:not(.secondary)';
   var states = new WeakMap(), all = new Set(), moving = new Set();
@@ -97,14 +97,15 @@
     var name = 'wyq-lens-' + (++id);
     var filter = element('filter', { id:name, filterUnits:'userSpaceOnUse', primitiveUnits:'userSpaceOnUse', x:'0', y:'0', width:box.width, height:box.height, 'color-interpolation-filters':'sRGB' });
     filter.appendChild(element('feImage', { x:'0', y:'0', width:box.width, height:box.height, href:url, preserveAspectRatio:'none', result:'lens' }));
-    var strength = state.control ? 22 : state.node.matches('.nav__inner') ? 30 : 16;
+    var strength = state.control ? 22 : state.node.matches('.nav__menu') ? 30 : 16;
     // Run the lens on the backdrop input. Filtering the tinted span's own
     // SourceGraphic (v1) produced a grey plate, not refracted page content.
     // A single displacement preserves alpha and avoids RGB screen blending.
     filter.appendChild(element('feDisplacementMap', { in:'SourceGraphic', in2:'lens', scale:strength,
       xChannelSelector:'R', yChannelSelector:'G' }));
     defs.appendChild(filter);
-    state.warp.style.setProperty('backdrop-filter', 'url(#' + name + ') blur(2px) saturate(1.35)');
+    var blur = state.node.matches('.nav__menu,.nav__brand') ? 8 : state.control ? 4 : 16;
+    state.warp.style.setProperty('backdrop-filter', 'url(#' + name + ') blur(' + blur + 'px) saturate(1.3)');
     state.filter = filter; state.geometry = key;
   }
   function rebuild() {
@@ -126,7 +127,7 @@
       candidates.push({ state:state, box:box, style:style });
     });
     candidates.sort(function (a,b) {
-      var priority = function (c) { return c.state.node.matches('.nav__inner') ? -3 : c.state.node.matches(floating) ? -2 : -1; };
+      var priority = function (c) { return c.state.node.matches('.nav__menu') ? -3 : c.state.node.matches(floating) ? -2 : -1; };
       return priority(a) - priority(b) || a.box.top - b.box.top;
     });
     candidates.forEach(function (candidate, index) {
@@ -222,7 +223,7 @@
     state.node.style.setProperty('--lg-angle',(115 + (x-.5)*60 + (y-.5)*30).toFixed(1)+'deg');
     state.node.style.setProperty('--lg-hot','1');
     if (state.control && !state.pressed) {
-      state.target = [(x-.5)*3,(y-.5)*2,1 + Math.abs(x-.5)*.045,1 + Math.abs(y-.5)*.045];
+      state.target = [(x-.5)*1.5,(y-.5),1 + Math.abs(x-.5)*.02,1 + Math.abs(y-.5)*.02];
       animate(state);
     }
   }
@@ -273,7 +274,7 @@
       if (event.button !== 0) return;
       var state=stateFrom(event); if (!state || !state.control || opaque()) return;
       if (!reducedMotion.matches) point(state,event);
-      state.pressed=true; state.target=[0,0,.958,.942]; state.node.style.setProperty('--lg-press','1'); animate(state);
+      state.pressed=true; state.target=[0,1,1.035,.93]; state.node.style.setProperty('--lg-press','1'); animate(state);
     },{passive:true});
     function release() { all.forEach(function (state) { if (state.pressed) reset(state); }); }
     document.addEventListener('pointerup',release,{passive:true});

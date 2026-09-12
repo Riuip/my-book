@@ -5,7 +5,7 @@
    ========================================================= */
 'use strict';
 
-var VERSION = 'wyq-v11-2026-09-12-glass-verified';
+var VERSION = 'wyq-v12-2026-09-12-compact-glass';
 var CORE = [
   './',
   './index.html',
@@ -15,15 +15,15 @@ var CORE = [
   './assets/icons/icon-maskable-512.png',
   './assets/css/style.css?v=27',
   './assets/css/liquid-glass.css?v=2',
-  './assets/css/liquid-optics.css?v=3',
-  './assets/js/liquid-optics.js?v=2',
+  './assets/css/liquid-optics.css?v=4',
+  './assets/js/liquid-optics.js?v=3',
   './assets/css/mario.css?v=1',
   './assets/css/prism-wyq.css',
   './assets/js/main.js?v=19',
   './assets/js/enhancements.js?v=4',
   './assets/js/posts-data.js?v=4',
   './assets/js/extras.js?v=6',
-  './assets/js/search.js?v=5',
+  './assets/js/search.js?v=6',
   './assets/js/copy-btn.js',
   './assets/js/view-transitions.js?v=2',
   './assets/js/home-extras.js?v=2',
