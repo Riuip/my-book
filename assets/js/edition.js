@@ -24,7 +24,8 @@
     if (clock) document.addEventListener('visibilitychange', resumeClock);
 
     var ride = document.getElementById('pelicanRide');
-    if (ride) {
+    // A cached older SVG can safely remain static while its HTML refreshes.
+    if (ride && document.getElementById('pelicanNearFoot') && document.getElementById('pelicanFarFoot')) {
       var toggle = document.getElementById('pelicanToggle');
       var near = document.getElementById('pelicanNearLeg'), far = document.getElementById('pelicanFarLeg');
       var crank = document.getElementById('pelicanCrank');
