@@ -2,7 +2,7 @@
 
 # WYQ / Minimal
 
-一份关于生活、观察与动手实验的私人数字刊物。暖纸色、墨绿文字、原创线条装置，以及通透细边的玻璃操作层。
+WYQ 的个人网站。黑白灰界面、清晰的大标题、内容图片与蓝色操作入口，记录生活与动手实验。
 
 - 8 篇文章、归档、分类与全文搜索。
 - 渐变、番茄钟、Markdown 卡片、天气、博客 DNA 和游戏入口。
@@ -17,7 +17,7 @@
 node tools/build-shell.mjs
 ```
 
-视觉规则在 `assets/css/edition.css`，首页交互在 `assets/js/edition.js`，原创几何生成器在 `assets/js/orbit.js`。原有文章、工具脚本和导出主题保持独立。详情见 [设计与维护说明](docs/minimal-design.md)。
+视觉规则在 `assets/css/edition.css`，最新文章与时钟由 `assets/js/edition.js` 维护。原有文章、工具脚本和导出主题保持独立。详情见 [设计与维护说明](docs/minimal-design.md)。
 
 ## 发布文章
 
@@ -35,8 +35,8 @@ python3 -m http.server 8000
 
 GitHub Pages 从 `main` 的根目录发布：[线上网站](https://riuip.github.io/my-book/)。更改共享资源时同步 HTML 引用版本和 `sw.js` 缓存版本。
 
-玻璃只用于导航、按钮和浮层；正文保持清楚。Safari / Firefox 使用 CSS 材质，Chromium 渐进增强 SVG 背景折射。
+当前简约版只对顶栏使用 CSS 模糊，并提供实色回退；全站停用 SVG 折射和按钮弹性。
 
-- [Fieldnotes 设计与验收](docs/minimal-design.md)
+- [简约设计与验收](docs/minimal-design.md)
 - [光学层说明](docs/liquid-optics.md)
 - [iPhone / Chromium 简短验收清单](docs/iphone-glass-checklist.md)
