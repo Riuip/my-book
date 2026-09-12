@@ -6,7 +6,8 @@
   --lg-float:rgba(250,252,255,.58);
   --lg-inset:rgba(244,249,255,.24);
   --lg-reflect:rgba(255,255,255,.22);
-  --lg-rim-light:rgba(255,255,255,.90);
+  --lg-edge:rgba(255,255,255,.18);
+  --lg-rim-light:rgba(255,255,255,.60);
   --lg-rim-shade:rgba(34,49,69,.18);
   --lg-cyan:rgba(203,234,255,.48);
   --lg-rose:rgba(255,237,232,.42);
@@ -17,7 +18,8 @@
   --lg-float:rgba(25,30,39,.64);
   --lg-inset:rgba(40,52,73,.28);
   --lg-reflect:rgba(222,236,255,.10);
-  --lg-rim-light:rgba(236,246,255,.42);
+  --lg-edge:rgba(195,220,255,.12);
+  --lg-rim-light:rgba(236,246,255,.30);
   --lg-rim-shade:rgba(0,0,0,.48);
   --lg-cyan:rgba(170,207,233,.24);
   --lg-rose:rgba(227,198,216,.20);
@@ -25,7 +27,8 @@
 :root[data-birthday="active"] {
   --lg-fill:rgba(62,35,113,.32); --lg-float:rgba(50,29,92,.70);
   --lg-inset:rgba(255,255,255,.12);
-  --lg-reflect:rgba(255,235,188,.24); --lg-rim-light:rgba(255,242,203,.75);
+  --lg-edge:rgba(255,237,189,.18);
+  --lg-reflect:rgba(255,235,188,.24); --lg-rim-light:rgba(255,242,203,.48);
   --lg-cyan:rgba(122,212,255,.36); --lg-rose:rgba(255,152,206,.34);
 }
 /* These scoped overrides transfer the existing material to the decorative lens.
@@ -38,9 +41,8 @@
   background:transparent !important;
   -webkit-backdrop-filter:none !important;
   backdrop-filter:none !important;
-  border-color:var(--glass-edge);
-  box-shadow:inset 0 0 0 1px rgba(255,255,255,.10),
-    0 2px 4px -2px rgba(28,49,84,.16), var(--glass-shadow);
+  border-color:var(--lg-edge);
+  box-shadow:0 2px 4px -2px rgba(28,49,84,.16), var(--glass-shadow);
 }
 :root body .lg-host.lg-static { position:relative; }
 :root body .lg-host.lg-floating { --lg-tint:var(--lg-float); --lg-blur:14px; }
@@ -50,18 +52,18 @@
   scale:var(--lg-sx,1) var(--lg-sy,1);
   /* Scale/translate are driven by a finite spring, separate from reveal/position. */
   transition:box-shadow 180ms ease, border-color 180ms ease, color 180ms ease;
-  box-shadow:0 3px 10px -5px rgba(24,55,104,.28), inset 0 1px 0 var(--lg-rim-light);
+  box-shadow:0 3px 10px -5px rgba(24,55,104,.28);
 }
 :root body .lg-host.lg-primary {
   --lg-tint:linear-gradient(155deg, rgba(0,89,206,.86), rgba(0,78,185,.92));
   --lg-reflect:rgba(214,240,255,.12);
   color:#fff;
-  border-color:rgba(185,222,255,.32);
-  box-shadow:0 10px 26px -12px rgba(0,89,213,.60), inset 0 1px 0 rgba(255,255,255,.72);
+  border-color:rgba(185,222,255,.18);
+  box-shadow:0 10px 26px -12px rgba(0,89,213,.60);
 }
 :root body .lg-host.lg-nested {
   --lg-tint:rgba(255,255,255,.07);
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.18);
+  box-shadow:none;
 }
 :root body .lg-host.lg-nested.lg-primary { --lg-tint:linear-gradient(155deg, rgba(0,89,206,.86), rgba(0,78,185,.92)); }
 :root body .lg-host:is(.is-active, [aria-current="page"]) {
@@ -69,7 +71,7 @@
   color:var(--bg);
 }
 :root body .nav__menu .lg-host:is(.active, [aria-expanded="true"]) {
-  --lg-tint:var(--accent-soft); color:var(--text); border-color:var(--glass-edge);
+  --lg-tint:var(--accent-soft); color:var(--text); border-color:var(--lg-edge);
 }
 :root body .lg-host.mario-button--play { --lg-tint:rgba(216,35,38,.87); }
 :root body .lg-host.mario-button--home { --lg-tint:rgba(21,125,60,.88); }
@@ -78,9 +80,7 @@
   border-radius:inherit; overflow:hidden;
   pointer-events:none; user-select:none;
   /* A clipped frame prevents filter pixels escaping into nearby text. */
-  box-shadow:inset 0 1px 1px var(--lg-rim-light),
-    inset 1px 0 1px rgba(255,255,255,.23),
-    inset 0 -2px 2px var(--lg-rim-shade), inset 0 0 12px rgba(255,255,255,.09);
+  box-shadow:none;
 }
 :root body .lg-host > .lg-optics > .lg-warp {
   position:absolute; inset:0; z-index:0; display:block; border-radius:inherit;
@@ -98,14 +98,14 @@
     radial-gradient(ellipse 46% 115% at var(--lg-x) var(--lg-y), var(--lg-reflect), transparent 70%),
     linear-gradient(175deg, rgba(255,255,255,.14), transparent 18%, transparent 78%, rgba(255,255,255,.05));
   opacity:calc(.50 + var(--lg-hot)*.18 + var(--lg-press)*.32);
-  box-shadow:inset 0 5px 9px -6px rgba(255,255,255,.85), inset 0 -7px 10px -9px rgba(20,44,82,.60);
+  box-shadow:none;
   transition:opacity 180ms ease;
 }
-/* A two-pixel optical rim: white light, cyan/red separation, dark underside.
+/* One half-pixel optical rim carries the edge without stacked white bevels.
  * Exclusion masking leaves the center entirely open and works in Safari.
  */
 :root body .lg-host > .lg-optics::after {
-  content:""; position:absolute; inset:0; z-index:2; padding:1.5px; border-radius:inherit; pointer-events:none;
+  content:""; position:absolute; inset:0; z-index:2; padding:.5px; border-radius:inherit; pointer-events:none;
   background:conic-gradient(from var(--lg-angle) at 50% 50%,
     var(--lg-rim-light) 0deg, var(--lg-cyan) 50deg, transparent 88deg,
     var(--lg-rim-shade) 132deg, var(--lg-rose) 180deg,
@@ -113,9 +113,8 @@
   -webkit-mask:linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
   mask:linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
   -webkit-mask-composite:xor; mask-composite:exclude;
-  opacity:.92;
+  opacity:.80;
 }
-:root body .lg-host.lg-control > .lg-optics::after { padding:1px; }
 :root body .lg-host.lg-nested > .lg-optics::before { opacity:calc(.10 + var(--lg-hot)*.58 + var(--lg-press)*.24); }
 :root body .lg-host.lg-nested > .lg-optics::after { opacity:calc(.18 + var(--lg-hot)*.65); }
 :root body .lg-host.lg-nested:is(.active, .is-active, [aria-expanded="true"]) > .lg-optics::after { opacity:.90; }
@@ -125,11 +124,11 @@
 :root body .lg-host:focus-visible { outline:3px solid var(--accent); outline-offset:4px; }
 :root .lg-definitions { position:absolute; width:0; height:0; overflow:hidden; pointer-events:none; }
 @media (hover:hover) and (pointer:fine) {
-  :root body .lg-host:hover { border-color:var(--lg-rim-light); }
-  :root body .lg-host.lg-control:hover { box-shadow:0 8px 22px -9px rgba(29,66,121,.35), inset 0 1px 0 var(--lg-rim-light); }
+  :root body .lg-host:hover { border-color:var(--lg-edge); }
+  :root body .lg-host.lg-control:hover { box-shadow:0 8px 22px -9px rgba(29,66,121,.35); }
 }
 @supports not ((mask-composite:exclude) or (-webkit-mask-composite:xor)) {
-  :root body .lg-host > .lg-optics::after { background:none; border:1px solid var(--lg-rim-light); padding:0; }
+  :root body .lg-host > .lg-optics::after { background:none; border:.5px solid var(--lg-rim-light); padding:0; }
 }
 @media (max-width:720px) {
   :root { --lg-blur:8px; }
@@ -170,8 +169,8 @@
 :root body .nav__menu .lg-host.lg-nested > .lg-optics::before,
 :root body .nav__menu .lg-host.lg-nested > .lg-optics::after { opacity:calc(var(--lg-hot)*.55); }
 :root body .nav__menu .lg-host:is(.active, [aria-expanded="true"]) {
-  --lg-tint:var(--lg-inset); color:var(--text); border-color:var(--glass-edge);
-  box-shadow:inset 0 1px 0 var(--lg-rim-light), 0 2px 6px -3px rgba(20,30,55,.2);
+  --lg-tint:var(--lg-inset); color:var(--text); border-color:var(--lg-edge);
+  box-shadow:0 2px 6px -3px rgba(20,30,55,.2);
 }
 :root body .nav__menu .lg-host:is(.active, [aria-expanded="true"]) > .lg-optics::after { opacity:.65; }
 :root body .lg-host.lg-nested:not(.lg-primary) { --lg-tint:var(--lg-inset); }
@@ -191,12 +190,12 @@
 }
 :root body .nav__brand {
   display:flex; align-items:center; justify-content:center; flex:0 0 56px;
-  width:56px; height:56px; padding:0; border:1px solid var(--glass-edge); border-radius:50%;
+  width:56px; height:56px; padding:0; border:1px solid var(--lg-edge); border-radius:50%;
   font-size:14px; font-weight:750; letter-spacing:-.045em;
 }
 :root body .nav__menu {
   display:flex; align-items:center; flex-wrap:wrap; justify-content:center;
-  gap:2px; padding:5px; min-height:56px; border:1px solid var(--glass-edge); border-radius:32px;
+  gap:2px; padding:5px; min-height:56px; border:1px solid var(--lg-edge); border-radius:32px;
 }
 :root body .nav__menu :is(a, .nav__sub-toggle, button) { padding-inline:14px; font-size:14px; }
 :root body .nav__menu :is(.nav__theme, .nav__search-btn) { padding:0; }
@@ -204,10 +203,6 @@
 :root body .lg-host.nav__menu { --lg-blur:8px; }
 :root body :is(.nav__menu, .nav__brand).lg-host {
   box-shadow:0 12px 32px -16px rgba(23,40,68,.32), 0 2px 5px -2px rgba(23,40,68,.12);
-}
-:root body :is(.nav__menu, .nav__brand).lg-host > .lg-optics::after {
-  padding:2.5px;
-  box-shadow:inset 0 1px 2px rgba(255,255,255,.60), inset 0 -1px 1px rgba(31,53,88,.10);
 }
 :root body .nav__submenu { padding:7px; border-radius:25px; }
 :root body .nav__submenu a { padding:13px 16px; border-radius:17px; }
