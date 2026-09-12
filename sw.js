@@ -5,21 +5,25 @@
    ========================================================= */
 'use strict';
 
-var VERSION = 'wyq-v9-2026-09-11-optical-glass';
+var VERSION = 'wyq-v10-2026-09-12-safari-material';
 var CORE = [
   './',
   './index.html',
+  './assets/icons/apple-touch-icon.png',
+  './assets/icons/icon-192.png',
+  './assets/icons/icon-512.png',
+  './assets/icons/icon-maskable-512.png',
   './assets/css/style.css?v=27',
-  './assets/css/liquid-glass.css?v=1',
-  './assets/css/liquid-optics.css?v=1',
-  './assets/js/liquid-optics.js?v=1',
+  './assets/css/liquid-glass.css?v=2',
+  './assets/css/liquid-optics.css?v=2',
+  './assets/js/liquid-optics.js?v=2',
   './assets/css/mario.css?v=1',
   './assets/css/prism-wyq.css',
-  './assets/js/main.js?v=17',
-  './assets/js/enhancements.js?v=3',
+  './assets/js/main.js?v=18',
+  './assets/js/enhancements.js?v=4',
   './assets/js/posts-data.js?v=4',
   './assets/js/extras.js?v=6',
-  './assets/js/search.js?v=4',
+  './assets/js/search.js?v=5',
   './assets/js/copy-btn.js',
   './assets/js/view-transitions.js?v=2',
   './assets/js/home-extras.js?v=2',
@@ -50,7 +54,7 @@ self.addEventListener('activate', function (e) {
   e.waitUntil(
     caches.keys().then(function (keys) {
       return Promise.all(keys.map(function (k) {
-        if (k !== VERSION) return caches.delete(k);
+        if (k.indexOf('wyq-') === 0 && k !== VERSION) return caches.delete(k);
       }));
     }).then(function () { return self.clients.claim(); })
   );

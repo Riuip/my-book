@@ -17,10 +17,10 @@
   // WebKit/Firefox retain the polished CSS lens; they never get a broken filter.
   var chromium = /(?:Chrome|Chromium|Edg|OPR)\//.test(ua) && !/(?:CriOS|FxiOS|EdgiOS)/.test(ua);
   var backdrop = CSS.supports('backdrop-filter', 'blur(1px)') || CSS.supports('-webkit-backdrop-filter', 'blur(1px)');
-  var cards = '.tile,.desk-card,.featured,a.mood,.limited-card__inner,.pn-card:not(.pn-card--placeholder),.related-card,.search-result,.tags-article,.archive-item,.grad-panel,.mc-editor,.mc-card-wrap,.pomo-set,.pomo-stat,.cinema-fact,.cinema-callout,.asset-generator .card';
-  var controls = '.btn,.btn-pill,.grad-btn,.mc-btn,.pomo-btn,.wc-action-btn,.home-mini-link,.share-btn,.copy-btn,.code-fold-btn,.tag-cloud__item,.mc-chip,.grad-add,.sound-toggle,.back-to-top,.toc-toggle,.accent-picker-btn,.mario-button,.asset-generator button,.nav__menu a,.nav__menu button,.nav__sub-toggle';
+  var readingSurfaces = '.tile,.desk-card,.featured,a.mood,.limited-card__inner,.pn-card:not(.pn-card--placeholder),.related-card,.search-result,.tags-article,.archive-item,.grad-panel,.mc-editor,.mc-card-wrap,.pomo-set,.pomo-stat,.cinema-fact,.cinema-callout,.asset-generator .card';
+  var controls = '.btn,.btn-pill,.grad-btn,.mc-btn,.pomo-btn,.wc-action-btn,.home-mini-link,.share-btn,.copy-btn,.code-fold-btn,.tag-cloud__item,.mc-chip,.grad-add,.sound-toggle,.back-to-top,.toc-toggle,.accent-picker-btn,.mario-button,.asset-generator button,.nav__menu a,.nav__menu button,.nav__sub-toggle,.nav-search__close,.search-page__clear';
   var floating = '.nav__inner,.nav__submenu,.nav-search,.toc,.accent-picker-panel,.kbd-help__panel,.city-panel';
-  var selector = cards + ',' + controls + ',' + floating;
+  var selector = controls + ',' + floating;
   var primary = '.btn--primary,.btn-pill--primary,.grad-btn:not(.grad-btn--ghost),.mc-btn:not(.mc-btn--ghost),.pomo-btn:not(.pomo-btn--ghost),.asset-generator button:not(.secondary)';
   var states = new WeakMap(), all = new Set(), moving = new Set();
   var svg, defs, observer, resizeObserver, intersectionObserver;
@@ -37,7 +37,7 @@
     var w = Math.max(2, Math.round(width * ratio));
     var h = Math.max(2, Math.round(height * ratio));
     var r = clamp(radius, 0, Math.min(width, height) / 2);
-    var key = [w, h, Math.round(r * ratio)].join(':');
+    var key = [width, height, r, w, h].join(':');
     if (mapCache.has(key)) return mapCache.get(key);
     var canvas = document.createElement('canvas');
     canvas.width = w; canvas.height = h;
@@ -81,7 +81,7 @@
     return node;
   }
   function dropFilter(state) {
-    state.warp.style.removeProperty('filter');
+    state.warp.style.removeProperty('backdrop-filter');
     if (state.filter) state.filter.remove();
     state.filter = null; state.geometry = '';
   }
@@ -98,36 +98,35 @@
     var filter = element('filter', { id:name, filterUnits:'userSpaceOnUse', primitiveUnits:'userSpaceOnUse', x:'0', y:'0', width:box.width, height:box.height, 'color-interpolation-filters':'sRGB' });
     filter.appendChild(element('feImage', { x:'0', y:'0', width:box.width, height:box.height, href:url, preserveAspectRatio:'none', result:'lens' }));
     var strength = state.control ? 22 : state.node.matches('.nav__inner') ? 30 : 16;
-    ['r','g','b'].forEach(function (channel, index) {
-      filter.appendChild(element('feDisplacementMap', { in:'SourceGraphic', in2:'lens', scale:strength + (index - 1) * 1.8, xChannelSelector:'R', yChannelSelector:'G', result:channel + '-lens' }));
-      var matrix = channel === 'r' ? '1 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 1 0' : channel === 'g' ? '0 0 0 0 0  0 1 0 0 0  0 0 0 0 0  0 0 0 1 0' : '0 0 0 0 0  0 0 0 0 0  0 0 1 0 0  0 0 0 1 0';
-      filter.appendChild(element('feColorMatrix', { in:channel + '-lens', type:'matrix', values:matrix, result:channel }));
-    });
-    filter.appendChild(element('feBlend', { in:'r', in2:'g', mode:'screen', result:'rg' }));
-    filter.appendChild(element('feBlend', { in:'rg', in2:'b', mode:'screen' }));
+    // Run the lens on the backdrop input. Filtering the tinted span's own
+    // SourceGraphic (v1) produced a grey plate, not refracted page content.
+    // A single displacement preserves alpha and avoids RGB screen blending.
+    filter.appendChild(element('feDisplacementMap', { in:'SourceGraphic', in2:'lens', scale:strength,
+      xChannelSelector:'R', yChannelSelector:'G' }));
     defs.appendChild(filter);
-    state.warp.style.filter = 'url(#' + name + ')';
+    state.warp.style.setProperty('backdrop-filter', 'url(#' + name + ') blur(2px) saturate(1.35)');
     state.filter = filter; state.geometry = key;
   }
   function rebuild() {
     geometryFrame = 0;
     var enabled = chromium && !opaque() && !document.hidden;
-    var limit = finePointer.matches ? 6 : 3;
+    var limit = finePointer.matches ? 4 : 2;
     var candidates = [];
     all.forEach(function (state) {
       if (!state.node.isConnected) { destroy(state); return; }
       if (!state.node.contains(state.frame)) state.node.prepend(state.frame);
-      var nested = state.node.parentElement && state.node.parentElement.closest('.lg-host');
+      var nested = state.node.parentElement && state.node.parentElement.closest('.lg-host,' + readingSurfaces);
       if (state.node.classList.contains('lg-nested') !== !!nested) state.node.classList.toggle('lg-nested', !!nested);
       if (!enabled || !state.visible || nested || state.node.matches(':disabled')) { dropFilter(state); return; }
       var style = getComputedStyle(state.node);
       var rect = state.node.getBoundingClientRect();
+      if (rect.bottom <= 0 || rect.top >= innerHeight || (state.node.checkVisibility && !state.node.checkVisibility({ checkOpacity:true, checkVisibilityCSS:true }))) { dropFilter(state); return; }
       var box = { top:rect.top, width:state.node.offsetWidth, height:state.node.offsetHeight };
       if (style.visibility === 'hidden' || style.display === 'none' || Number(style.opacity) < .05 || box.width < 4 || box.height < 4) { dropFilter(state); return; }
       candidates.push({ state:state, box:box, style:style });
     });
     candidates.sort(function (a,b) {
-      var priority = function (c) { return c.state.node.matches('.nav__inner') ? -2 : c.state.control ? -1 : 0; };
+      var priority = function (c) { return c.state.node.matches('.nav__inner') ? -3 : c.state.node.matches(floating) ? -2 : -1; };
       return priority(a) - priority(b) || a.box.top - b.box.top;
     });
     candidates.forEach(function (candidate, index) {
@@ -171,6 +170,9 @@
     dropFilter(state); moving.delete(state); all.delete(state); states.delete(state.node);
     if (intersectionObserver) intersectionObserver.unobserve(state.node);
     if (resizeObserver) resizeObserver.unobserve(state.node);
+    state.frame.remove();
+    state.node.classList.remove('lg-host','lg-static','lg-control','lg-primary','lg-floating','lg-nested');
+    ['--lg-dx','--lg-dy','--lg-sx','--lg-sy','--lg-hot','--lg-press','--lg-x','--lg-y','--lg-angle'].forEach(function (name) { state.node.style.removeProperty(name); });
   }
   function reset(state) {
     state.pressed = false; state.target = [0,0,1,1];
@@ -179,7 +181,7 @@
     animate(state);
   }
   function animate(state) {
-    if (reducedMotion.matches || document.hidden) {
+    if (reducedMotion.matches || opaque() || document.hidden) {
       state.values = [0,0,1,1]; state.velocity = [0,0,0,0];
       state.node.style.removeProperty('--lg-dx'); state.node.style.removeProperty('--lg-dy');
       state.node.style.removeProperty('--lg-sx'); state.node.style.removeProperty('--lg-sy');
@@ -243,7 +245,7 @@
           return;
         }
         record.addedNodes.forEach(function (node) { if (node.nodeType === 1 && !node.matches('.lg-optics,.lg-definitions')) { scan(node); changed = true; } });
-        if (record.removedNodes.length) removed = true;
+        record.removedNodes.forEach(function (node) { if (node.nodeType === 1 && !node.matches('.lg-optics,.lg-definitions')) removed = true; });
       });
       if (removed) all.forEach(function (state) {
         if (!state.node.isConnected) destroy(state);
@@ -269,7 +271,7 @@
     document.addEventListener('pointerout',function (event) { if (!event.relatedTarget && hovered) { reset(hovered); hovered=null; } },{passive:true});
     document.addEventListener('pointerdown',function (event) {
       if (event.button !== 0) return;
-      var state=stateFrom(event); if (!state || !state.control) return;
+      var state=stateFrom(event); if (!state || !state.control || opaque()) return;
       if (!reducedMotion.matches) point(state,event);
       state.pressed=true; state.target=[0,0,.958,.942]; state.node.style.setProperty('--lg-press','1'); animate(state);
     },{passive:true});

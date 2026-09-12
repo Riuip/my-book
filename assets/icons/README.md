@@ -1,8 +1,8 @@
 # PWA / Apple Touch Icons
 
-PNG 图标由 `tools/image-generator.html` 在浏览器里生成。
+4 个 PNG 图标已随仓库提交；源设计在 `tools/image-generator.html` 的 `makeIconSVG` 中。Apple 图标使用完整不透明底色，由 iOS 裁切圆角；字标留有安全边距。
 
-## 期望文件 (生成后放在这里)
+## 已提供文件
 
 | 文件 | 尺寸 | 用途 |
 |------|------|------|
@@ -19,4 +19,4 @@ PNG 图标由 `tools/image-generator.html` 在浏览器里生成。
 4. 把生成的 PNG 放进 `assets/icons/`
 5. 提交并 push
 
-在你生成 PNG 之前, manifest.json 里有一个 SVG 数据 URI 兜底, 站点不会因为缺图标而崩。
+manifest.json 同时保留 SVG 数据 URI 兜底。更新图标时请同步修改 Service Worker 版本。

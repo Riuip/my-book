@@ -71,3 +71,5 @@ python3 -m http.server 8000
 `liquid-optics.css` / `liquid-optics.js` 在共享材质上增加独立背景折射、色散边缘、交互反光和触摸回弹。
 采用原生实现，继续支持 GitHub Pages 的零构建部署。Safari / Firefox 保留 CSS 光学层，完整 SVG 背景折射只在 Chromium 路径启用。
 实现边界、性能预算及参考项目见 [光学层说明](docs/liquid-optics.md)。
+
+光学层仅用于导航、按钮和浮层，正文卡片保持清晰。详见 [材质实现](docs/liquid-optics.md) 和 [iPhone / Chromium 验收清单](docs/iphone-glass-checklist.md)。

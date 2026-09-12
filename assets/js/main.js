@@ -46,11 +46,22 @@
       var hover = window.matchMedia('(hover: hover) and (pointer: fine)');
       function position() {
         var rect = toggle.getBoundingClientRect();
-        var width = Math.min(280, window.innerWidth - 24);
+        var viewport = window.visualViewport;
+        var left = viewport ? viewport.offsetLeft : 0;
+        var top = viewport ? viewport.offsetTop : 0;
+        var viewportWidth = viewport ? viewport.width : innerWidth;
+        var viewportHeight = viewport ? viewport.height : innerHeight;
+        var safe = getComputedStyle(root);
+        var safeLeft = parseFloat(safe.getPropertyValue('--safe-left')) || 0;
+        var safeRight = parseFloat(safe.getPropertyValue('--safe-right')) || 0;
+        var minLeft = left + safeLeft + 12;
+        var maxRight = left + viewportWidth - safeRight - 12;
+        var width = Math.min(280, maxRight - minLeft);
         panel.style.width = width + 'px';
-        panel.style.left = Math.max(12, Math.min(rect.left + rect.width / 2 - width / 2, innerWidth - width - 12)) + 'px';
-        panel.style.top = Math.round(rect.bottom + 12) + 'px';
-        panel.style.maxHeight = Math.max(100, innerHeight - rect.bottom - 24) + 'px';
+        panel.style.left = Math.max(minLeft, Math.min(rect.left + rect.width / 2 - width / 2, maxRight - width)) + 'px';
+        var panelTop = Math.max(top + 12, Math.min(rect.bottom + 12, top + viewportHeight - 120));
+        panel.style.top = Math.round(panelTop) + 'px';
+        panel.style.maxHeight = Math.max(40, top + viewportHeight - panelTop - 12) + 'px';
       }
       function close(restoreFocus) {
         clearTimeout(closeTimer);
@@ -138,12 +149,23 @@
     }
     window.addEventListener('scroll', reposition, { passive: true });
     window.addEventListener('resize', reposition);
+    if (window.visualViewport) {
+      visualViewport.addEventListener('resize', reposition, { passive:true });
+      visualViewport.addEventListener('scroll', reposition, { passive:true });
+    }
   }
 
   function initNav() {
     var nav = document.querySelector('.nav');
     if (!nav) return;
     var last = scrollY, pending = false;
+    function measureNav() {
+      var top = parseFloat(getComputedStyle(nav).top) || 0;
+      root.style.setProperty('--nav-clearance', Math.ceil(nav.offsetHeight + top + 16) + 'px');
+    }
+    measureNav();
+    if ('ResizeObserver' in window) new ResizeObserver(measureNav).observe(nav);
+    window.addEventListener('resize', measureNav, { passive:true });
     nav.addEventListener('focusin', function () { nav.classList.remove('nav--hidden'); });
     window.addEventListener('scroll', function () {
       if (pending) return;
