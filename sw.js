@@ -5,7 +5,7 @@
    ========================================================= */
 'use strict';
 
-var VERSION = 'wyq-v19-2026-09-12-pelican';
+var VERSION = 'wyq-v20-2026-09-12-pelican';
 var CORE = [
   './',
   './index.html',
@@ -17,7 +17,7 @@ var CORE = [
   './assets/css/liquid-glass.css?v=2',
   './assets/css/liquid-optics.css?v=7',
   './assets/css/edition.css?v=4',
-  './assets/js/edition.js?v=3',
+  './assets/js/edition.js?v=4',
   './assets/js/liquid-optics.js?v=5',
   './assets/css/mario.css?v=1',
   './assets/css/prism-wyq.css',
