@@ -2,20 +2,20 @@
  * The CSS reflection/bevel is present on WebKit too; SVG displacement is optional.
  */
 :root {
-  --lg-fill:rgba(255,255,255,.28);
-  --lg-float:rgba(250,251,255,.70);
-  --lg-reflect:rgba(255,255,255,.56);
-  --lg-rim-light:rgba(255,255,255,.94);
-  --lg-rim-shade:rgba(35,44,63,.20);
+  --lg-fill:rgba(255,255,255,.22);
+  --lg-float:rgba(250,252,255,.72);
+  --lg-reflect:rgba(255,255,255,.36);
+  --lg-rim-light:rgba(255,255,255,.90);
+  --lg-rim-shade:rgba(34,49,69,.18);
   --lg-cyan:rgba(203,234,255,.48);
   --lg-rose:rgba(255,237,232,.42);
   --lg-blur:12px;
 }
 :root[data-theme="dark"] {
-  --lg-fill:rgba(30,34,43,.42);
-  --lg-float:rgba(28,31,40,.78);
-  --lg-reflect:rgba(209,231,255,.16);
-  --lg-rim-light:rgba(226,244,255,.53);
+  --lg-fill:rgba(42,48,59,.30);
+  --lg-float:rgba(25,30,39,.76);
+  --lg-reflect:rgba(222,236,255,.15);
+  --lg-rim-light:rgba(236,246,255,.42);
   --lg-rim-shade:rgba(0,0,0,.48);
   --lg-cyan:rgba(170,207,233,.24);
   --lg-rose:rgba(227,198,216,.20);
@@ -50,17 +50,17 @@
   box-shadow:0 3px 10px -5px rgba(24,55,104,.28), inset 0 1px 0 var(--lg-rim-light);
 }
 :root body .lg-host.lg-primary {
-  --lg-tint:linear-gradient(145deg, rgba(17,120,235,.84), rgba(0,75,182,.94));
-  --lg-reflect:rgba(214,240,255,.35);
+  --lg-tint:linear-gradient(155deg, rgba(24,136,252,.95), rgba(0,100,224,.98));
+  --lg-reflect:rgba(214,240,255,.20);
   color:#fff;
-  border-color:rgba(185,222,255,.72);
+  border-color:rgba(185,222,255,.32);
   box-shadow:0 10px 26px -12px rgba(0,89,213,.60), inset 0 1px 0 rgba(255,255,255,.72);
 }
 :root body .lg-host.lg-nested {
   --lg-tint:rgba(255,255,255,.07);
   box-shadow:inset 0 1px 0 rgba(255,255,255,.18);
 }
-:root body .lg-host.lg-nested.lg-primary { --lg-tint:linear-gradient(145deg, rgba(17,120,235,.84), rgba(0,75,182,.94)); }
+:root body .lg-host.lg-nested.lg-primary { --lg-tint:linear-gradient(155deg, rgba(24,136,252,.95), rgba(0,100,224,.98)); }
 :root body .lg-host:is(.is-active, [aria-current="page"]) {
   --lg-tint:var(--text);
   color:var(--bg);
@@ -88,13 +88,13 @@
 :root body .lg-host.lg-nested > .lg-optics > .lg-warp {
   -webkit-backdrop-filter:none; backdrop-filter:none;
 }
-/* Broad highlight follows the pointer. Its gradient never overlays text. */
+/* A restrained highlight follows the pointer without overlaying text. */
 :root body .lg-host > .lg-optics::before {
   content:""; position:absolute; inset:0; z-index:1; border-radius:inherit; pointer-events:none;
   background:
-    radial-gradient(ellipse at var(--lg-x) var(--lg-y), var(--lg-reflect), transparent 54%),
-    linear-gradient(155deg, rgba(255,255,255,.17), transparent 34%, transparent 63%, rgba(155,214,255,.08));
-  opacity:calc(.62 + var(--lg-hot)*.25 + var(--lg-press)*.13);
+    radial-gradient(ellipse 46% 115% at var(--lg-x) var(--lg-y), var(--lg-reflect), transparent 70%),
+    linear-gradient(175deg, rgba(255,255,255,.24), transparent 18%, transparent 78%, rgba(255,255,255,.09));
+  opacity:calc(.50 + var(--lg-hot)*.18 + var(--lg-press)*.32);
   box-shadow:inset 0 5px 9px -6px rgba(255,255,255,.85), inset 0 -7px 10px -9px rgba(20,44,82,.60);
   transition:opacity 180ms ease;
 }
@@ -153,12 +153,12 @@
 :root body #liveTimeCard.tile--time {
   background:radial-gradient(ellipse at 100% 0%, var(--time-glow), transparent 70%), var(--reading-fill);
 }
-:root body .lg-host.nav__inner {
-  --lg-tint:rgba(255,255,255,.40);
+:root body .lg-host.nav__menu {
+  --lg-tint:rgba(255,255,255,.30);
   box-shadow:0 8px 28px -12px rgba(20,30,55,.28), 0 2px 5px -3px rgba(20,30,55,.20);
 }
-:root[data-theme="dark"] body .lg-host.nav__inner { --lg-tint:rgba(28,31,40,.54); }
-:root[data-birthday="active"] body .lg-host.nav__inner { --lg-tint:rgba(50,29,92,.68); }
+:root[data-theme="dark"] body .lg-host.nav__menu { --lg-tint:rgba(31,36,46,.48); }
+:root[data-birthday="active"] body .lg-host.nav__menu { --lg-tint:rgba(50,29,92,.68); }
 /* Navigation items share one glass sheet; only the active item gains a pill. */
 :root body .nav__menu .lg-host.lg-nested {
   --lg-tint:transparent; box-shadow:none; border-color:transparent;
@@ -175,6 +175,89 @@
 :root body .lg-host.lg-nested:is(.is-active, [aria-current="page"]) { --lg-tint:var(--text); }
 /* Override the inset fill for idle navigation after general nested controls. */
 :root body .nav__menu .lg-host.lg-nested:not(.active):not([aria-expanded="true"]) { --lg-tint:transparent; }
+
+/* Compact navigation: a home button and a shared floating control capsule. */
+:root body .nav {
+  width:max-content; max-width:calc(100% - 24px - var(--safe-left) - var(--safe-right));
+  min-height:56px; top:calc(18px + env(safe-area-inset-top));
+}
+:root body .nav__inner {
+  display:flex; flex-wrap:nowrap; width:auto; min-height:56px; padding:0; gap:10px;
+  background:none; border:0; border-radius:0; box-shadow:none;
+  -webkit-backdrop-filter:none; backdrop-filter:none;
+}
+:root body .nav__brand {
+  display:flex; align-items:center; justify-content:center; flex:0 0 56px;
+  width:56px; height:56px; padding:0; border:1px solid var(--glass-edge); border-radius:50%;
+  font-size:14px; font-weight:750; letter-spacing:-.045em;
+}
+:root body .nav__menu {
+  display:flex; align-items:center; flex-wrap:wrap; justify-content:center;
+  gap:2px; padding:5px; min-height:56px; border:1px solid var(--glass-edge); border-radius:32px;
+}
+:root body .nav__menu :is(a, .nav__sub-toggle, button) { padding-inline:14px; font-size:14px; }
+:root body .nav__menu :is(.nav__theme, .nav__search-btn) { padding:0; }
+:root body .lg-host.nav__brand { --lg-blur:12px; --lg-tint:var(--lg-fill); }
+:root body .lg-host.nav__menu { --lg-blur:12px; }
+:root body :is(.nav__menu, .nav__brand).lg-host {
+  box-shadow:0 12px 32px -16px rgba(23,40,68,.32), 0 2px 5px -2px rgba(23,40,68,.12);
+}
+:root body :is(.nav__menu, .nav__brand).lg-host > .lg-optics::after {
+  padding:2.5px;
+  box-shadow:inset 0 1px 2px rgba(255,255,255,.60), inset 0 -1px 1px rgba(31,53,88,.10);
+}
+:root body .nav__submenu { padding:7px; border-radius:25px; }
+:root body .nav__submenu a { padding:13px 16px; border-radius:17px; }
+:root body .nav-search { border-radius:28px; }
+:root body .hero__actions { gap:12px; }
+:root body .hero__actions .btn { min-height:52px; padding:14px 25px; font-size:15px; font-weight:550; }
+/* The material sits above a quiet pearl/ink surface, instead of a neon field. */
+:root:not([data-birthday="active"]) .aurora { inset:0; background:var(--bg); }
+:root:not([data-birthday="active"]) .aurora::before {
+  inset:0; opacity:1; transform:none; filter:none; animation:none; will-change:auto;
+  background:radial-gradient(ellipse 85% 62% at 0% 0%, rgba(164,193,225,.34), transparent 75%),
+    radial-gradient(ellipse 75% 55% at 110% 10%, rgba(196,209,230,.46), transparent 75%);
+}
+:root:not([data-birthday="active"]) .aurora::after {
+  inset:0; opacity:1; transform:none; filter:none; animation:none; will-change:auto; mix-blend-mode:normal;
+  background:radial-gradient(ellipse 75% 48% at 60% 4%, rgba(255,255,255,.72), transparent 80%);
+}
+:root[data-theme="dark"]:not([data-birthday="active"]) .aurora::before {
+  background:radial-gradient(ellipse 80% 68% at 0% 0%, rgba(39,63,91,.55), transparent 75%),
+    radial-gradient(ellipse 70% 56% at 110% 15%, rgba(54,55,75,.46), transparent 75%);
+}
+:root[data-theme="dark"]:not([data-birthday="active"]) .aurora::after {
+  background:radial-gradient(ellipse 60% 50% at 58% -15%, rgba(127,149,176,.12), transparent 80%);
+}
+:root:not([data-birthday="active"]) body .hero {
+  min-height:min(720px, 82svh); padding-top:max(152px, var(--nav-clearance)); padding-bottom:88px;
+}
+:root:not([data-birthday="active"]) body .hero::before { opacity:.25; }
+:root:not([data-birthday="active"]) body .hero__title--brand {
+  max-width:100%; margin-inline:auto; font-size:clamp(48px, 7.5vw, 100px); font-weight:700;
+  line-height:1.06; letter-spacing:-.055em; color:var(--text) !important;
+  -webkit-text-fill-color:var(--text) !important; filter:none; text-shadow:none;
+}
+:root:not([data-birthday="active"]) body .hero__sub { font-size:clamp(17px, 2vw, 22px); line-height:1.6; }
+:root body .hero__now span { background:transparent; border:0; box-shadow:none; font-size:12px; color:var(--text-muted); }
+:root body .hero__now span::before { content:""; display:inline-block; width:6px; height:6px; margin:0 8px 1px 0; border-radius:50%; background:#4ca278; }
+@media (max-width:720px) {
+  :root body .nav { top:calc(12px + env(safe-area-inset-top)); }
+  :root body .nav__inner { gap:7px; min-height:52px; }
+  :root body .nav__brand { flex-basis:50px; width:50px; height:50px; font-size:12px; }
+  :root body .nav__menu { gap:0; padding:3px; min-height:52px; border-radius:28px; }
+  :root body .nav__menu :is(a, .nav__sub-toggle, button) { padding-inline:8px; font-size:13px; }
+  :root body .nav__menu :is(.nav__theme, .nav__search-btn) { padding:0; }
+  :root:not([data-birthday="active"]) body .hero { min-height:0; padding:160px 22px 70px; }
+  :root:not([data-birthday="active"]) body .hero__title--brand { font-size:clamp(46px, 11.6vw, 74px); letter-spacing:-.05em; }
+}
+@media (max-width:360px) {
+  :root body .nav { max-width:calc(100% - 16px - var(--safe-left) - var(--safe-right)); }
+  :root body .nav__inner { gap:5px; }
+  :root body .nav__brand { flex-basis:44px; width:44px; height:50px; border-radius:24px; }
+  :root body .nav__menu :is(a, .nav__sub-toggle, button) { padding-inline:6px; }
+  :root body .nav__menu :is(.nav__theme, .nav__search-btn) { width:44px; padding:0; }
+}
 
 @media (prefers-reduced-transparency:reduce), (prefers-contrast:more) {
   :root:root { --reading-fill:var(--glass-solid); }
@@ -206,12 +289,6 @@
   :root body .lg-host > .lg-optics { display:none; }
 }
 
-/* Keep the dark hero readable as its animated blue background moves. */
-:root[data-theme="dark"]:not([data-birthday="active"]) .hero__title--brand {
-  color:#f5f9ff !important;
-  -webkit-text-fill-color:#f5f9ff !important;
-  text-shadow:0 2px 20px rgba(8,20,46,.22);
-}
 :root body :is(.grad-sub, .mc-sub, .pomo-sub) { color:var(--text-soft); }
 /* A large hit area must not stretch the painted range track into a slab. */
 :root body input[type="range"].grad-range {

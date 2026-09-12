@@ -163,6 +163,10 @@
       var nav = document.querySelector('.nav');
       var preferred = nav ? nav.getBoundingClientRect().bottom + 12 : top + 84;
       var panelTop = Math.max(top + 12, Math.min(preferred, top + height - 180));
+      var width = navSearchBox.offsetWidth;
+      var panelLeft = nav ? nav.getBoundingClientRect().right - width : innerWidth - width - 12;
+      navSearchBox.style.left = Math.max(12, Math.min(panelLeft, innerWidth - width - 12)) + 'px';
+      navSearchBox.style.right = 'auto';
       navSearchBox.style.top = panelTop + 'px';
       navSearchBox.style.maxHeight = Math.max(80, top + height - panelTop - 12) + 'px';
     }
