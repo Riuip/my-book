@@ -11,4 +11,6 @@
 
 版本：`edition.css?v=2`、`edition.js?v=2`、`liquid-optics.js?v=5`、`search.js?v=7`；缓存 `wyq-v17-2026-09-12-minimal`。
 
-验证：静态语法/资源与交互模拟通过。正式部署后继续用 Chromium 检查桌面和 `tools/layout-review.html` 的 320/390px 响应式布局。该预览不能代替 iPhone Safari、软键盘、安全区或设备 GPU 验证。
+验证：21 页资源与 191 处脚本、537 条 CSS 规则解析通过，构建幂等；8 篇正文完整保留。PR #64 部署后，Chromium 已目视检查桌面首页/工具入口/归档/编辑器和 320/390px 首页、深色菜单、番茄钟、机械笔记、分类；桌面无横向溢出，320px 长文内容宽度为 305px（扣除滚动条）。搜索 IMAX、关闭焦点、倒计时/暂停/重置、Markdown 编辑/主题切换/导出成功反馈均通过；DNA 显示索引范围与 84% 词片多样性。当前页面挂载的光学装饰数量为 0。
+
+`tools/layout-review.html` 是 Chromium 窄屏预览，不能代替 iPhone Safari、软键盘、安全区或设备 GPU 验证；未检查下载 PNG 的最终像素。
