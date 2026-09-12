@@ -5,7 +5,7 @@
    ========================================================= */
 'use strict';
 
-var VERSION = 'wyq-v15-2026-09-12-subtle-rim';
+var VERSION = 'wyq-v16-2026-09-12-fieldnotes';
 var CORE = [
   './',
   './index.html',
@@ -16,6 +16,9 @@ var CORE = [
   './assets/css/style.css?v=27',
   './assets/css/liquid-glass.css?v=2',
   './assets/css/liquid-optics.css?v=7',
+  './assets/css/edition.css?v=1',
+  './assets/js/edition.js?v=1',
+  './assets/js/orbit.js?v=1',
   './assets/js/liquid-optics.js?v=4',
   './assets/css/mario.css?v=1',
   './assets/css/prism-wyq.css',
@@ -23,12 +26,14 @@ var CORE = [
   './assets/js/enhancements.js?v=4',
   './assets/js/posts-data.js?v=4',
   './assets/js/extras.js?v=6',
-  './assets/js/search.js?v=6',
+  './assets/js/search.js?v=7',
   './assets/js/copy-btn.js',
   './assets/js/view-transitions.js?v=2',
-  './assets/js/home-extras.js?v=2',
   './assets/js/birthday.js?v=1',
   './404.html',
+  './archive.html',
+  './tags.html',
+  './search.html',
   './lab.html',
   './dna.html',
   './others.html',
