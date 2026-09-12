@@ -20,6 +20,6 @@ Canvas 按真实圆角尺寸生成 8–24px 的边缘位移图，中央保持中
 
 减少动态效果时停用弹簧与程序平滑滚动；降低透明度/提高对比度时使用实色，强制颜色/打印移除装饰。天气、DNA 和 Markdown 导出图内部不插入光学层。
 
-资源版本：`liquid-glass.css?v=2`、`liquid-optics.css?v=7`、`liquid-optics.js?v=4`、`search.js?v=6`；缓存为 `wyq-v15-2026-09-12-subtle-rim`。同步更新 HTML 与 `sw.js`，禁止只改资源内容而遗漏版本。
+资源版本：`liquid-glass.css?v=2`、`liquid-optics.css?v=7`、`liquid-optics.js?v=4`、`search.js?v=6`；缓存为 `wyq-v16-2026-09-12-fieldnotes`。同步更新 HTML 与 `sw.js`，禁止只改资源内容而遗漏版本。
 
 优先验收页面、操作步骤和验证边界见 [iPhone Safari / Chromium 验收清单](iphone-glass-checklist.md)。模拟测试不代表真机像素或性能验收。

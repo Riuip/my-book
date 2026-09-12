@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <title>WYQ · 响应式检查</title>
+  <style>
+    *{box-sizing:border-box}body{margin:0;background:#dadfd7;color:#23382c;font:13px/1.5 system-ui,sans-serif}header{position:sticky;top:0;z-index:2;display:flex;gap:12px;flex-wrap:wrap;align-items:center;padding:12px 20px;background:#f9faf7;border-bottom:1px solid #bcc8b9}label{display:flex;align-items:center;gap:7px}select,button{min-height:38px;border:1px solid #bcc8b9;border-radius:7px;background:white;color:inherit;padding:5px 10px;font:inherit}small{margin-left:auto}main{padding:22px;overflow:auto;min-height:calc(100vh - 68px)}.device{width:390px;margin:auto;background:white;box-shadow:0 6px 30px #23382c1c}iframe{display:block;width:100%;height:780px;border:0;background:white}button:focus-visible,select:focus-visible{outline:2px solid #9a3e25;outline-offset:3px}
+  </style>
+</head>
+<body>
+  <header>
+    <label>页面 <select id="reviewPage" aria-label="预览页面">
+      <option value="index.html">首页</option><option value="archive.html">归档</option><option value="tags.html">分类</option><option value="search.html">搜索</option><option value="post-008.html">IMAX 文章</option><option value="post-007.html">机械笔记</option><option value="post-006.html">提示词文章</option><option value="post-001.html">博客教程</option><option value="gradient.html">渐变工具</option><option value="pomodoro.html">番茄钟</option><option value="md-card.html">Markdown 卡片</option><option value="lab.html">天气</option><option value="dna.html">DNA</option><option value="others.html">游戏</option><option value="404.html">404</option><option value="tools/image-generator.html">图片生成器</option>
+    </select></label>
+    <label>宽度 <select id="reviewWidth" aria-label="预览宽度"><option>320</option><option>375</option><option selected>390</option><option>768</option><option>1280</option></select></label>
+    <button id="reviewTheme" type="button">切换预览主题</button>
+    <small>Chromium 响应式预览 · 不代表真实 iPhone 验证</small>
+  </header>
+  <main><div class="device" id="reviewDevice"><iframe id="reviewFrame" title="页面预览" src="../index.html"></iframe></div></main>
+  <script>
+    const frame=document.getElementById('reviewFrame');
+    document.getElementById('reviewPage').addEventListener('change',event=>{frame.src='../'+event.target.value;});
+    document.getElementById('reviewWidth').addEventListener('change',event=>{document.getElementById('reviewDevice').style.width=event.target.value+'px';});
+    document.getElementById('reviewTheme').addEventListener('click',()=>{const button=frame.contentDocument&&frame.contentDocument.querySelector('[data-theme-toggle]');if(button)button.click();});
+  </script>
+</body>
+</html>

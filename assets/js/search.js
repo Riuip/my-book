@@ -9,6 +9,7 @@
 
   /* ---------- Posts index — use shared data source if present ---------- */
   var POSTS = window.WYQ_POSTS || [];
+  var siteRoot = document.documentElement.getAttribute('data-site-root') || '';
 
   /* ---------- Search function ---------- */
   function searchPosts(query) {
@@ -85,7 +86,7 @@
     for (var i = 0; i < results.length; i++) {
       var r = results[i];
       var snippet = r.body ? bodySnippet(r.body, query, 100) : '';
-      html += '<a class="search-result" href="' + r.url + '">';
+      html += '<a class="search-result" href="' + siteRoot + r.url + '">';
       html += '<span class="search-result__cat">' + r.cat + '</span>';
       html += '<span class="search-result__title">' + highlightText(r.title, query) + '</span>';
       html += '<span class="search-result__desc">' + highlightText(r.desc, query) + '</span>';
@@ -138,7 +139,7 @@
   var navSearchOverlay = document.getElementById('navSearchOverlay');
 
   if (navSearchBtn && !navSearchBox) {
-    navSearchBtn.addEventListener('click', function () { window.location.href = 'search.html'; });
+    navSearchBtn.addEventListener('click', function () { window.location.href = siteRoot + 'search.html'; });
   }
   if (navSearchBtn && navSearchBox) {
     navSearchBtn.setAttribute('aria-expanded', 'false');
@@ -180,7 +181,7 @@
       e.preventDefault();
       e.stopPropagation();
       if (isMobile()) {
-        window.location.href = 'search.html';
+        window.location.href = siteRoot + 'search.html';
         return;
       }
       if (navSearchBox.classList.contains('is-open')) closeNavSearch();
@@ -253,7 +254,7 @@
     for (var i = 0; i < results.length; i++) {
       var r = results[i];
       var snippet = r.body ? bodySnippet(r.body, query, 70) : '';
-      html += '<a class="nav-search__item" href="' + r.url + '">';
+      html += '<a class="nav-search__item" href="' + siteRoot + r.url + '">';
       html += '<span class="nav-search__item-title">' + highlightText(r.title, query) + '</span>';
       if (snippet) html += '<span class="nav-search__item-snippet">' + highlightText(snippet, query) + '</span>';
       html += '<span class="nav-search__item-cat">' + r.cat + '</span>';
