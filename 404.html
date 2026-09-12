@@ -1,12 +1,12 @@
 <!doctype html>
-<html lang="zh-CN" class="edition" data-site-root="">
+<html lang="zh-CN" class="edition" data-design="minimal" data-site-root="">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>页面走丢了 — WYQ 专属博客</title>
   <meta name="description" content="你访问的页面不存在。" />
-  <meta name="theme-color" content="#f2f2e9" media="(prefers-color-scheme: light)" />
-  <meta name="theme-color" content="#111e19" media="(prefers-color-scheme: dark)" />
+  <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
+  <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)" />
   <link rel="stylesheet" href="assets/css/style.css?v=27" />
   <link rel="alternate" type="application/rss+xml" title="WYQ 专属博客 RSS" href="feed.xml" />
   <link rel="search" type="application/opensearchdescription+xml" title="WYQ Blog" href="opensearch.xml" />
@@ -69,8 +69,8 @@
   <meta name="twitter:image" content="https://riuip.github.io/my-book/assets/og/default.png" />
   <link rel="stylesheet" href="assets/css/liquid-glass.css?v=2" />
   <link rel="stylesheet" href="assets/css/liquid-optics.css?v=7" />
-  <script src="assets/js/liquid-optics.js?v=4" defer></script>
-  <link rel="stylesheet" href="assets/css/edition.css?v=1" />
+  <script src="assets/js/liquid-optics.js?v=5" defer></script>
+  <link rel="stylesheet" href="assets/css/edition.css?v=2" />
 </head>
 <body class="ed-index">
 
@@ -80,13 +80,12 @@
     <div class="nav__inner">
       <div class="ed-brand">
         <a class="nav__brand" href="index.html" aria-label="WYQ 首页"><span>WYQ</span></a>
-        <span class="ed-brand-note" aria-hidden="true">FIELDNOTES<small>日常 · 观察 · 实验</small></span>
       </div>
       <ul class="nav__menu">
         <li><details class="nav__has-sub">
           <summary class="nav__sub-toggle"><span>文章</span><svg class="nav__sub-toggle__chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="m7 10 5 5 5-5"/></svg></summary>
           <div class="nav__submenu" role="menu">
-            <div class="ed-menu-caption">THE JOURNAL / 阅读</div>
+            <div class="ed-menu-caption">阅读</div>
             <a href="post-008.html" data-latest-post role="menuitem">最近一篇</a>
             <a href="archive.html" role="menuitem">全部文章</a>
             <a href="tags.html" role="menuitem">标签与分类</a>
@@ -98,13 +97,13 @@
         <li><details class="nav__has-sub">
           <summary class="nav__sub-toggle"><span>实验</span><svg class="nav__sub-toggle__chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="m7 10 5 5 5-5"/></svg></summary>
           <div class="nav__submenu" role="menu">
-            <div class="ed-menu-caption">THE STUDIO / 动手玩</div>
-            <a href="gradient.html" role="menuitem">01　渐变实验室</a>
-            <a href="pomodoro.html" role="menuitem">02　极简番茄钟</a>
-            <a href="md-card.html" role="menuitem">03　Markdown 卡片</a>
-            <a href="lab.html" role="menuitem">04　天气卡片</a>
-            <a href="dna.html" role="menuitem">05　博客 DNA</a>
-            <a href="others.html" role="menuitem">06　马里奥</a>
+            <div class="ed-menu-caption">工具</div>
+            <a href="gradient.html" role="menuitem">渐变实验室</a>
+            <a href="pomodoro.html" role="menuitem">极简番茄钟</a>
+            <a href="md-card.html" role="menuitem">Markdown 卡片</a>
+            <a href="lab.html" role="menuitem">天气卡片</a>
+            <a href="dna.html" role="menuitem">博客 DNA</a>
+            <a href="others.html" role="menuitem">马里奥</a>
           </div>
         </details></li>
         <li class="ed-nav-about"><a href="index.html#about">关于</a></li>
@@ -142,8 +141,8 @@
   <footer class="footer">
     <div class="ed-wrap">
       <div class="ed-footer-top">
-        <a class="ed-footer-mark" href="index.html" aria-label="返回 WYQ 首页">WYQ.</a>
-        <p class="ed-footer-message">A little life,<br>a little curiosity.</p>
+        <a class="ed-footer-mark" href="index.html" aria-label="返回 WYQ 首页">WYQ</a>
+        <p class="ed-footer-message">记录生活，保持好奇。</p>
       </div>
       <div class="footer__inner">
         <div>© <span data-year>2026</span> WYQ<br><span data-post-count>8</span> 篇记录 · 慢慢更新</div>
@@ -152,7 +151,7 @@
           <li><a href="tags.html">分类</a></li>
           <li><a href="index.html#studio">实验室</a></li>
           <li><a href="index.html#about">关于</a></li>
-          <li><a href="feed.xml">RSS ↗</a></li>
+          <li><a href="feed.xml">RSS</a></li>
         </ul>
       </div>
     </div>
@@ -163,6 +162,6 @@
   <script src="assets/js/posts-data.js?v=4"></script>
   <script src="assets/js/extras.js?v=6"></script>
   <script src="assets/js/search.js?v=7"></script>
-  <script src="assets/js/edition.js?v=1" defer></script>
+  <script src="assets/js/edition.js?v=2" defer></script>
 </body>
 </html>

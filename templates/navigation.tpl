@@ -3,13 +3,12 @@
     <div class="nav__inner">
       <div class="ed-brand">
         <a class="nav__brand" href="{{root}}index.html" aria-label="WYQ 首页"><span>WYQ</span></a>
-        <span class="ed-brand-note" aria-hidden="true">FIELDNOTES<small>日常 · 观察 · 实验</small></span>
       </div>
       <ul class="nav__menu">
         <li><details class="nav__has-sub">
           <summary class="nav__sub-toggle"><span>文章</span><svg class="nav__sub-toggle__chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="m7 10 5 5 5-5"/></svg></summary>
           <div class="nav__submenu" role="menu">
-            <div class="ed-menu-caption">THE JOURNAL / 阅读</div>
+            <div class="ed-menu-caption">阅读</div>
             <a href="{{root}}post-008.html" data-latest-post role="menuitem">最近一篇</a>
             <a href="{{root}}archive.html" role="menuitem">全部文章</a>
             <a href="{{root}}tags.html" role="menuitem">标签与分类</a>
@@ -21,13 +20,13 @@
         <li><details class="nav__has-sub">
           <summary class="nav__sub-toggle"><span>实验</span><svg class="nav__sub-toggle__chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="m7 10 5 5 5-5"/></svg></summary>
           <div class="nav__submenu" role="menu">
-            <div class="ed-menu-caption">THE STUDIO / 动手玩</div>
-            <a href="{{root}}gradient.html" role="menuitem">01　渐变实验室</a>
-            <a href="{{root}}pomodoro.html" role="menuitem">02　极简番茄钟</a>
-            <a href="{{root}}md-card.html" role="menuitem">03　Markdown 卡片</a>
-            <a href="{{root}}lab.html" role="menuitem">04　天气卡片</a>
-            <a href="{{root}}dna.html" role="menuitem">05　博客 DNA</a>
-            <a href="{{root}}others.html" role="menuitem">06　马里奥</a>
+            <div class="ed-menu-caption">工具</div>
+            <a href="{{root}}gradient.html" role="menuitem">渐变实验室</a>
+            <a href="{{root}}pomodoro.html" role="menuitem">极简番茄钟</a>
+            <a href="{{root}}md-card.html" role="menuitem">Markdown 卡片</a>
+            <a href="{{root}}lab.html" role="menuitem">天气卡片</a>
+            <a href="{{root}}dna.html" role="menuitem">博客 DNA</a>
+            <a href="{{root}}others.html" role="menuitem">马里奥</a>
           </div>
         </details></li>
         <li class="ed-nav-about"><a href="{{root}}index.html#about">关于</a></li>

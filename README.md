@@ -1,4 +1,6 @@
-# WYQ / Fieldnotes
+> 当前界面已按用户反馈改为黑白简约风，详见 [设计说明](docs/minimal-design.md)。
+
+# WYQ / Minimal
 
 一份关于生活、观察与动手实验的私人数字刊物。暖纸色、墨绿文字、原创线条装置，以及通透细边的玻璃操作层。
 
@@ -15,7 +17,7 @@
 node tools/build-shell.mjs
 ```
 
-视觉规则在 `assets/css/edition.css`，首页交互在 `assets/js/edition.js`，原创几何生成器在 `assets/js/orbit.js`。原有文章、工具脚本和导出主题保持独立。详情见 [设计与维护说明](docs/fieldnotes-design.md)。
+视觉规则在 `assets/css/edition.css`，首页交互在 `assets/js/edition.js`，原创几何生成器在 `assets/js/orbit.js`。原有文章、工具脚本和导出主题保持独立。详情见 [设计与维护说明](docs/minimal-design.md)。
 
 ## 发布文章
 
@@ -35,6 +37,6 @@ GitHub Pages 从 `main` 的根目录发布：[线上网站](https://riuip.github
 
 玻璃只用于导航、按钮和浮层；正文保持清楚。Safari / Firefox 使用 CSS 材质，Chromium 渐进增强 SVG 背景折射。
 
-- [Fieldnotes 设计与验收](docs/fieldnotes-design.md)
+- [Fieldnotes 设计与验收](docs/minimal-design.md)
 - [光学层说明](docs/liquid-optics.md)
 - [iPhone / Chromium 简短验收清单](docs/iphone-glass-checklist.md)

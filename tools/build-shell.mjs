@@ -36,7 +36,7 @@ for (const file of pages) {
   let html = read(file);
   const prefix = file.startsWith('tools/') ? '../' : '';
   const kind = file==='index.html'?'ed-home':file.startsWith('post-')?'ed-article':file==='others.html'?'ed-game':file.startsWith('tools/')?'ed-generator':toolMeta[file]?'ed-tool':'ed-index';
-  html = html.replace(/<html\b([^>]*)>/,(_,attrs)=>'<html'+attrs.replace(/\sclass="[^"]*"/,'').replace(/\sdata-site-root="[^"]*"/,'')+' class="edition" data-site-root="'+prefix+'">');
+  html = html.replace(/<html\b([^>]*)>/,(_,attrs)=>'<html'+attrs.replace(/\sclass="[^"]*"/,'').replace(/\sdata-site-root="[^"]*"/,'').replace(/\sdata-design="[^"]*"/,'')+' class="edition" data-design="minimal" data-site-root="'+prefix+'">');
   html = html.replace(/<body\b([^>]*)>/,(_,attrs)=>{
     const cls=(attrs.match(/class="([^"]*)"/)||[])[1]||'';
     const list=cls.split(/\s+/).filter(c=>c&&!c.startsWith('ed-'));
@@ -56,7 +56,7 @@ for (const file of pages) {
     html=html.replace(/\s*<style>[\s\S]*?<\/style>/g,'');
     html=html.replace(/\s*<script src="assets\/js\/home-extras\.js[^>]*><\/script>/,'');
     html=html.replace(/\s*<script>\s*\(function \(\) \{\s*var el = document\.getElementById\('heroTypewriter'\);[\s\S]*?<\/script>/,'');
-    if (!html.includes('assets/js/orbit.js')) html=html.replace('</body>','  <script src="assets/js/orbit.js?v=1"></script>\n</body>');
+    html=html.replace(/\s*<script src="assets\/js\/orbit\.js[^>]*><\/script>/,'');
   }
   // Obsolete drawer navigation is consolidated into the shared menu and TOC.
   html=html.replace(/\s*<aside class="sidebar"[\s\S]*?<\/aside>/,'').replace(/\s*<div class="sidebar-backdrop"[^>]*><\/div>/,'');
@@ -81,15 +81,16 @@ for (const file of pages) {
     else html=html.replace(/(<main\b[^>]*>)/,'$1\n'+tabs);
   }
   const titles={ 'archive.html':['THE COMPLETE INDEX / 01','文字存档'], 'tags.html':['FOLLOW A THREAD / 02','从兴趣出发'], 'search.html':['FIND A LITTLE SOMETHING / 03','找一篇，慢慢读。'] };
-  if(titles[file]&&!html.includes('class="ed-kicker"'))html=html.replace(/(<h1\b[^>]*>)[\s\S]*?(<\/h1>)/,'<p class="ed-kicker">'+titles[file][0]+'</p>\n$1'+titles[file][1]+'$2');
+  if(titles[file])html=html.replace(/(<h1\b[^>]*>)[\s\S]*?(<\/h1>)/,'$1'+titles[file][1]+'$2');
   if (!html.includes('assets/css/edition.css')) html=html.replace('</head>','  <link rel="stylesheet" href="'+prefix+'assets/css/edition.css?v=1" />\n</head>');
   for (const [name,version] of [['main','19'],['posts-data','4'],['search','7']]) {
     if (!html.includes('assets/js/'+name+'.js')) html=html.replace('</body>','  <script src="'+prefix+'assets/js/'+name+'.js?v='+version+'"></script>\n</body>');
   }
   if (!html.includes('assets/js/edition.js')) html=html.replace('</body>','  <script src="'+prefix+'assets/js/edition.js?v=1" defer></script>\n</body>');
-  html=html.replaceAll('search.js?v=6','search.js?v=7');
+  html=html.replaceAll('search.js?v=6','search.js?v=7').replaceAll('edition.css?v=1','edition.css?v=2').replaceAll('edition.js?v=1','edition.js?v=2').replaceAll('liquid-optics.js?v=4','liquid-optics.js?v=5');
+  html=html.replace(/<p class="ed-kicker">[\s\S]*?<\/p>/g,'').replace('← JOURNAL / 返回全部文章','‹ 返回全部文章');
   if (file.startsWith('tools/')&&!html.includes('assets/css/style.css')) html=html.replace(/(<style>)/,'<link rel="stylesheet" href="../assets/css/style.css?v=27" />\n$1');
-  html=html.replace(/(<meta name="theme-color" content=")#fbfbfd/g,'$1#f2f2e9').replace(/(<meta name="theme-color" content=")#000000/g,'$1#111e19');
-  write(file,html);
+  html=html.replace(/(<meta name="theme-color" content=")(?:#fbfbfd|#f2f2e9)/g,'$1#ffffff').replace(/(<meta name="theme-color" content=")(?:#000000|#111e19)/g,'$1#000000');
+  write(file,html.replace(/[ \t]+$/gm,''));
 }
-console.log('Rebuilt the Fieldnotes shell for '+pages.length+' pages.');
+console.log('Rebuilt the minimal shell for '+pages.length+' pages.');

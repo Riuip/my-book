@@ -1,13 +1,13 @@
 <!doctype html>
-<html lang="zh-CN" class="edition" data-site-root="">
+<html lang="zh-CN" class="edition" data-design="minimal" data-site-root="">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta name="view-transition" content="same-origin" />
   <title>博客 DNA — WYQ 专属博客</title>
   <meta name="description" content="WYQ 博客的写作指纹 - 通过分析全部文章自动生成的写作 DNA 卡片。" />
-  <meta name="theme-color" content="#f2f2e9" media="(prefers-color-scheme: light)" />
-  <meta name="theme-color" content="#111e19" media="(prefers-color-scheme: dark)" />
+  <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
+  <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)" />
   <link rel="stylesheet" href="assets/css/style.css?v=27" />
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230071e3'/%3E%3Ctext x='50%25' y='62%25' text-anchor='middle' font-family='-apple-system,system-ui,sans-serif' font-weight='700' font-size='14' fill='white'%3EWYQ%3C/text%3E%3C/svg%3E" />
   <script>
@@ -321,8 +321,8 @@
   </style>
   <link rel="stylesheet" href="assets/css/liquid-glass.css?v=2" />
   <link rel="stylesheet" href="assets/css/liquid-optics.css?v=7" />
-  <script src="assets/js/liquid-optics.js?v=4" defer></script>
-  <link rel="stylesheet" href="assets/css/edition.css?v=1" />
+  <script src="assets/js/liquid-optics.js?v=5" defer></script>
+  <link rel="stylesheet" href="assets/css/edition.css?v=2" />
 </head>
 <body class="page-enter ed-tool">
 
@@ -335,13 +335,12 @@
     <div class="nav__inner">
       <div class="ed-brand">
         <a class="nav__brand" href="index.html" aria-label="WYQ 首页"><span>WYQ</span></a>
-        <span class="ed-brand-note" aria-hidden="true">FIELDNOTES<small>日常 · 观察 · 实验</small></span>
       </div>
       <ul class="nav__menu">
         <li><details class="nav__has-sub">
           <summary class="nav__sub-toggle"><span>文章</span><svg class="nav__sub-toggle__chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="m7 10 5 5 5-5"/></svg></summary>
           <div class="nav__submenu" role="menu">
-            <div class="ed-menu-caption">THE JOURNAL / 阅读</div>
+            <div class="ed-menu-caption">阅读</div>
             <a href="post-008.html" data-latest-post role="menuitem">最近一篇</a>
             <a href="archive.html" role="menuitem">全部文章</a>
             <a href="tags.html" role="menuitem">标签与分类</a>
@@ -353,13 +352,13 @@
         <li><details class="nav__has-sub">
           <summary class="nav__sub-toggle"><span>实验</span><svg class="nav__sub-toggle__chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="m7 10 5 5 5-5"/></svg></summary>
           <div class="nav__submenu" role="menu">
-            <div class="ed-menu-caption">THE STUDIO / 动手玩</div>
-            <a href="gradient.html" role="menuitem">01　渐变实验室</a>
-            <a href="pomodoro.html" role="menuitem">02　极简番茄钟</a>
-            <a href="md-card.html" role="menuitem">03　Markdown 卡片</a>
-            <a href="lab.html" role="menuitem">04　天气卡片</a>
-            <a href="dna.html" role="menuitem">05　博客 DNA</a>
-            <a href="others.html" role="menuitem">06　马里奥</a>
+            <div class="ed-menu-caption">工具</div>
+            <a href="gradient.html" role="menuitem">渐变实验室</a>
+            <a href="pomodoro.html" role="menuitem">极简番茄钟</a>
+            <a href="md-card.html" role="menuitem">Markdown 卡片</a>
+            <a href="lab.html" role="menuitem">天气卡片</a>
+            <a href="dna.html" role="menuitem">博客 DNA</a>
+            <a href="others.html" role="menuitem">马里奥</a>
           </div>
         </details></li>
         <li class="ed-nav-about"><a href="index.html#about">关于</a></li>
@@ -391,7 +390,7 @@
           <div class="dna-card__logo">WYQ</div>
           <div>
             <div class="dna-card__t1">WYQ 专属博客 · DNA</div>
-            <div class="dna-card__t2">基于全部已发布文章自动生成</div>
+            <div class="dna-card__t2">基于文章索引的标题与摘要</div>
           </div>
         </div>
         <div class="dna-card__date">
@@ -408,15 +407,15 @@
         </div>
         <div class="stat stat--green">
           <div class="stat__num"><span id="statChars">0</span></div>
-          <div class="stat__label">总字数</div>
+          <div class="stat__label">索引文字数</div>
         </div>
         <div class="stat stat--orange">
           <div class="stat__num"><span id="statAvgChars">0</span></div>
-          <div class="stat__label">平均篇幅</div>
+          <div class="stat__label">篇均索引字数</div>
         </div>
         <div class="stat stat--purple">
           <div class="stat__num"><span id="statRichness">0</span><sup>%</sup></div>
-          <div class="stat__label">词汇丰富度</div>
+          <div class="stat__label">词片多样性</div>
         </div>
       </section>
 
@@ -424,7 +423,7 @@
       <section class="dna-grid">
 
         <div class="panel">
-          <div class="panel__title">Top 高频实词</div>
+          <div class="panel__title">高频词片 · 近似分词</div>
           <div class="wordcloud" id="wordcloud"></div>
         </div>
 
@@ -479,7 +478,7 @@
     </div>
 
     <p class="dna-sub" style="opacity:0.7;font-size:12px;">
-      ※ 全部计算在你浏览器内完成，零网络请求
+      ※ 按标题与摘要统计，不代表全文；中文词片采用近似分词。
     </p>
 
   </main>
@@ -488,8 +487,8 @@
   <footer class="footer">
     <div class="ed-wrap">
       <div class="ed-footer-top">
-        <a class="ed-footer-mark" href="index.html" aria-label="返回 WYQ 首页">WYQ.</a>
-        <p class="ed-footer-message">A little life,<br>a little curiosity.</p>
+        <a class="ed-footer-mark" href="index.html" aria-label="返回 WYQ 首页">WYQ</a>
+        <p class="ed-footer-message">记录生活，保持好奇。</p>
       </div>
       <div class="footer__inner">
         <div>© <span data-year>2026</span> WYQ<br><span data-post-count>8</span> 篇记录 · 慢慢更新</div>
@@ -498,7 +497,7 @@
           <li><a href="tags.html">分类</a></li>
           <li><a href="index.html#studio">实验室</a></li>
           <li><a href="index.html#about">关于</a></li>
-          <li><a href="feed.xml">RSS ↗</a></li>
+          <li><a href="feed.xml">RSS</a></li>
         </ul>
       </div>
     </div>
@@ -647,8 +646,8 @@
 
       var topWords = keep.slice(0, 30);
 
-      // vocabulary richness — type/token ratio (English-only token set + CJK bigram set)
-      var allTokens = enWords.length + cjkChunks.reduce(function (acc, c) { return acc + Math.max(0, c.length - 1); }, 0);
+      // Type/token ratio uses the same filtered token population in both terms.
+      var allTokens = Object.keys(freq).reduce(function (total, token) { return total + freq[token]; }, 0);
       var uniqueTokens = Object.keys(freq).length;
       var richness = allTokens ? Math.round((uniqueTokens / allTokens) * 100) : 0;
 
@@ -836,6 +835,6 @@
   })();
   </script>
 
-  <script src="assets/js/edition.js?v=1" defer></script>
+  <script src="assets/js/edition.js?v=2" defer></script>
 </body>
 </html>
