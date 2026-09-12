@@ -5,7 +5,7 @@
    ========================================================= */
 'use strict';
 
-var VERSION = 'wyq-v10-2026-09-12-safari-material';
+var VERSION = 'wyq-v11-2026-09-12-glass-verified';
 var CORE = [
   './',
   './index.html',
@@ -15,11 +15,11 @@ var CORE = [
   './assets/icons/icon-maskable-512.png',
   './assets/css/style.css?v=27',
   './assets/css/liquid-glass.css?v=2',
-  './assets/css/liquid-optics.css?v=2',
+  './assets/css/liquid-optics.css?v=3',
   './assets/js/liquid-optics.js?v=2',
   './assets/css/mario.css?v=1',
   './assets/css/prism-wyq.css',
-  './assets/js/main.js?v=18',
+  './assets/js/main.js?v=19',
   './assets/js/enhancements.js?v=4',
   './assets/js/posts-data.js?v=4',
   './assets/js/extras.js?v=6',

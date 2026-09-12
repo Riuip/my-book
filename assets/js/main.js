@@ -42,7 +42,7 @@
           link.setAttribute('aria-current', 'page');
         }
       });
-      var closeTimer, hoverTimer;
+      var closeTimer, hoverTimer, openedByHover = false;
       var hover = window.matchMedia('(hover: hover) and (pointer: fine)');
       function position() {
         var rect = toggle.getBoundingClientRect();
@@ -64,6 +64,7 @@
         panel.style.maxHeight = Math.max(40, top + viewportHeight - panelTop - 12) + 'px';
       }
       function close(restoreFocus) {
+        openedByHover = false;
         clearTimeout(closeTimer);
         clearTimeout(hoverTimer);
         details.classList.remove('is-visible');
@@ -74,7 +75,8 @@
         if (restoreFocus) toggle.focus();
         closeTimer = setTimeout(function () { details.open = false; }, motion.matches ? 0 : 180);
       }
-      function open(focusIndex) {
+      function open(focusIndex, byHover) {
+        openedByHover = byHover === true;
         menus.forEach(function (menu) { if (menu.details !== details) menu.close(false); });
         clearTimeout(closeTimer);
         clearTimeout(hoverTimer);
@@ -89,7 +91,7 @@
       }
       toggle.addEventListener('click', function (event) {
         event.preventDefault();
-        details.classList.contains('is-visible') ? close(false) : open();
+        details.classList.contains('is-visible') && !openedByHover ? close(false) : open();
       });
       toggle.addEventListener('keydown', function (event) {
         if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
@@ -114,9 +116,11 @@
         }
       });
       function scheduleClose() {
-        if (hover.matches) hoverTimer = setTimeout(function () { close(false); }, 160);
+        if (hover.matches && openedByHover) hoverTimer = setTimeout(function () { close(false); }, 160);
       }
-      details.addEventListener('mouseenter', function () { if (hover.matches) open(); });
+      details.addEventListener('mouseenter', function () {
+        if (hover.matches && !details.classList.contains('is-visible')) open(undefined, true);
+      });
       details.addEventListener('mouseleave', scheduleClose);
       panel.addEventListener('mouseenter', function () { clearTimeout(hoverTimer); });
       panel.addEventListener('mouseleave', scheduleClose);
