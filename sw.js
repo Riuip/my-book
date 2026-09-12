@@ -5,7 +5,7 @@
    ========================================================= */
 'use strict';
 
-var VERSION = 'wyq-v22-2026-09-12-base64';
+var VERSION = 'wyq-v23-2026-09-12-base64-feedback';
 var CORE = [
   './',
   './index.html',
@@ -42,7 +42,7 @@ var CORE = [
   './pomodoro.html',
   './md-card.html',
   './base64.html',
-  './assets/css/base64.css?v=1',
+  './assets/css/base64.css?v=2',
   './assets/js/base64.js?v=1'
 ];
 

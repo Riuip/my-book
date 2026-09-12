@@ -13,7 +13,7 @@
   <link rel="stylesheet" href="assets/css/style.css?v=27">
   <link rel="stylesheet" href="assets/css/liquid-glass.css?v=2">
   <link rel="stylesheet" href="assets/css/liquid-optics.css?v=7">
-  <link rel="stylesheet" href="assets/css/base64.css?v=1">
+  <link rel="stylesheet" href="assets/css/base64.css?v=2">
   <script>(function(){try{var t=localStorage.getItem('wyq-theme');if(t!=='light'&&t!=='dark')t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';document.documentElement.dataset.theme=t;}catch(e){}})();</script>
   <link rel="stylesheet" href="assets/css/edition.css?v=5" />
 </head>
@@ -66,6 +66,7 @@
         <textarea id="b64Input" placeholder="粘贴 Base64 内容…" aria-describedby="b64Hint b64Status" maxlength="2000000" spellcheck="false" autocapitalize="off" autocomplete="off" autocorrect="off"></textarea>
         <p class="b64-hint" id="b64Hint">可含空格、换行，末尾的 = 可省略。最多 200 万个字符。</p>
         <div class="b64-actions"><button class="btn btn--primary" type="submit">解码</button><button class="btn" type="button" id="b64Clear">清空</button></div>
+        <p class="b64-status" id="b64Status" role="status" aria-live="polite" aria-atomic="true"></p>
       </section>
       <section class="b64-panel" aria-labelledby="b64OutputLabel">
         <div class="b64-panel-head"><label id="b64OutputLabel" for="b64Output">解码结果</label><span id="b64Size" class="b64-hint"></span></div>
@@ -73,7 +74,6 @@
         <p class="b64-hint">按 UTF-8 显示文字；二进制内容可下载为原始文件。</p>
         <div class="b64-actions"><button class="btn" type="button" id="b64Copy" disabled>复制结果</button><button class="btn" type="button" id="b64Download" disabled>下载文件</button></div>
       </section>
-      <p class="b64-status" id="b64Status" role="status" aria-live="polite" aria-atomic="true"></p>
       <p class="b64-privacy">内容只在当前浏览器中处理，不上传，也不保存输入记录。</p>
     </form>
     <noscript>请启用 JavaScript 后使用解码工具。</noscript>

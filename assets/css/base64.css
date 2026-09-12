@@ -13,6 +13,7 @@
 html.edition .b64-actions button{cursor:pointer;background:var(--ed-paper)}
 html.edition .b64-actions button:disabled{opacity:.45;cursor:default}
 .b64-status,.b64-privacy{grid-column:1/-1;margin:0;font-size:14px;line-height:1.7}
+.b64-status{margin-top:16px}
 .b64-status:empty{display:none}
 .b64-status[data-error="true"]{color:#bf352c}
 .b64-privacy{color:var(--ed-soft);font-size:12px}
