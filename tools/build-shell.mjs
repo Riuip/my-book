@@ -30,7 +30,7 @@ if (!fs.existsSync(path.join(root,birthdayPath))) {
   if (!found) throw new Error('Birthday content missing; refusing to drop it.');
   write(birthdayPath,found[0]+'\n');
 }
-const home = homeTemplate.replace('{{birthday}}',read(birthdayPath)).replace('{{orbit}}',orbit.paths(0).map(p=>`<path d="${p.d}" opacity="${p.opacity}"/>`).join('\n'));
+const home = homeTemplate.replace('{{pelican}}',read('templates/pelican.tpl')).replace('{{birthday}}',read(birthdayPath)).replace('{{orbit}}',orbit.paths(0).map(p=>`<path d="${p.d}" opacity="${p.opacity}"/>`).join('\n'));
 const pages = fs.readdirSync(root).filter(p=>p.endsWith('.html')).concat('tools/image-generator.html');
 for (const file of pages) {
   let html = read(file);
@@ -87,7 +87,7 @@ for (const file of pages) {
     if (!html.includes('assets/js/'+name+'.js')) html=html.replace('</body>','  <script src="'+prefix+'assets/js/'+name+'.js?v='+version+'"></script>\n</body>');
   }
   if (!html.includes('assets/js/edition.js')) html=html.replace('</body>','  <script src="'+prefix+'assets/js/edition.js?v=1" defer></script>\n</body>');
-  html=html.replaceAll('search.js?v=6','search.js?v=7').replaceAll('edition.css?v=1','edition.css?v=2').replaceAll('edition.js?v=1','edition.js?v=2').replaceAll('liquid-optics.js?v=4','liquid-optics.js?v=5');
+  html=html.replaceAll('search.js?v=6','search.js?v=7').replace(/edition.css\?v=[12]/g,'edition.css?v=3').replace(/edition.js\?v=[12]/g,'edition.js?v=3').replaceAll('liquid-optics.js?v=4','liquid-optics.js?v=5');
   html=html.replace(/<p class="ed-kicker">[\s\S]*?<\/p>/g,'').replace('← JOURNAL / 返回全部文章','‹ 返回全部文章');
   if (file.startsWith('tools/')&&!html.includes('assets/css/style.css')) html=html.replace(/(<style>)/,'<link rel="stylesheet" href="../assets/css/style.css?v=27" />\n$1');
   html=html.replace(/(<meta name="theme-color" content=")(?:#fbfbfd|#f2f2e9)/g,'$1#ffffff').replace(/(<meta name="theme-color" content=")(?:#000000|#111e19)/g,'$1#000000');

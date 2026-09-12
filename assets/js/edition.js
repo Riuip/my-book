@@ -23,6 +23,54 @@
     resumeClock();
     if (clock) document.addEventListener('visibilitychange', resumeClock);
 
+    var ride = document.getElementById('pelicanRide');
+    if (ride) {
+      var toggle = document.getElementById('pelicanToggle');
+      var near = document.getElementById('pelicanNearLeg'), far = document.getElementById('pelicanFarLeg');
+      var bird = document.getElementById('pelicanBird'), crank = document.getElementById('pelicanCrank');
+      var rear = document.getElementById('pelicanRearWheel'), front = document.getElementById('pelicanFrontWheel');
+      var phase = 0, animation = 0, last = 0, inView = !('IntersectionObserver' in window), paused = false;
+      function leg(node, angle, side, lift) {
+        var hip = {x:227,y:173 + lift};
+        var foot = {x:247 + 18 * Math.cos(angle),y:240 + 18 * Math.sin(angle)};
+        var dx = foot.x - hip.x, dy = foot.y - hip.y, d = Math.hypot(dx,dy);
+        var bend = Math.sqrt(Math.max(0, 46 * 46 - d * d / 4));
+        var knee = {x:(hip.x+foot.x)/2-side*dy/d*bend,y:(hip.y+foot.y)/2+side*dx/d*bend};
+        node.setAttribute('d','M'+hip.x+' '+hip.y+' L'+knee.x.toFixed(2)+' '+knee.y.toFixed(2)+' L'+foot.x.toFixed(2)+' '+foot.y.toFixed(2));
+      }
+      function draw() {
+        var degrees = phase * 180 / Math.PI, lift = Math.sin(phase * 2) * 1.2;
+        leg(near,phase + Math.PI,1,lift); leg(far,phase,-1,lift);
+        bird.setAttribute('transform','translate(0 '+lift.toFixed(2)+')');
+        crank.setAttribute('transform','rotate('+degrees.toFixed(2)+' 247 240)');
+        rear.setAttribute('transform','rotate('+(degrees*1.6).toFixed(2)+' 153 240)');
+        front.setAttribute('transform','rotate('+(degrees*1.6).toFixed(2)+' 345 240)');
+      }
+      function running() { return inView && !paused && !motion.matches && !document.hidden; }
+      function step(now) {
+        animation = 0;
+        if (!running()) { last = 0; return; }
+        if (last) phase = (phase + Math.min(now-last,64) / 1800 * Math.PI * 2) % (Math.PI * 20);
+        last = now; draw(); animation = requestAnimationFrame(step);
+      }
+      function sync() {
+        cancelAnimationFrame(animation); animation = 0; last = 0;
+        toggle.hidden = motion.matches;
+        if (running()) animation = requestAnimationFrame(step);
+      }
+      toggle.addEventListener('click',function(){
+        paused = !paused; toggle.setAttribute('aria-pressed',String(paused));
+        toggle.textContent = paused ? '播放动画' : '暂停动画'; sync();
+      });
+      document.addEventListener('visibilitychange',sync);
+      if (motion.addEventListener) motion.addEventListener('change',sync);
+      if ('IntersectionObserver' in window) {
+        var rideObserver = new IntersectionObserver(function(entries){ inView = entries[0].isIntersecting; sync(); },{threshold:0.05});
+        rideObserver.observe(ride);
+      }
+      draw(); sync();
+    }
+
     // Keep the static cover selection fresh when the single post index changes.
     var feature = document.getElementById('edFeatured');
     if (feature && posts[0] && feature.getAttribute('href') !== posts[0].url) {
