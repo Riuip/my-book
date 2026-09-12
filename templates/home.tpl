@@ -7,7 +7,6 @@
           <div class="ed-hero-copy">
             <p class="ed-hero-name">WYQ 的个人空间</p>
             <h1>记录生活。<br>也探索更多。</h1>
-            <p class="ed-hero-lead">一些文字，一些想法。<br>和把好奇变成现实的小工具。</p>
             <div class="ed-hero-actions"><a class="btn btn--primary" href="archive.html">浏览文章</a><a class="ed-text-link" href="#studio">探索工具 <span aria-hidden="true">›</span></a></div>
           </div>
         </div>
@@ -16,7 +15,7 @@
     </header>
 
     <section class="ed-section ed-wrap" id="journal" aria-labelledby="journal-title">
-      <div class="ed-section-head"><div><h2 id="journal-title">最近更新。</h2></div><a class="ed-text-link" href="archive.html">全部文章 <span>›</span></a></div>
+      <div class="ed-section-head"><div><h2 id="journal-title">最近更新</h2></div><a class="ed-text-link" href="archive.html">全部文章 <span>›</span></a></div>
       <div class="ed-reading-grid">
         <a class="ed-feature" id="edFeatured" href="post-008.html">
           <div class="ed-feature-image"><img src="assets/images/meiah-imax-screen-illustration.png" alt="IMAX 影厅示意图" width="1672" height="941" loading="lazy"><small>影厅示意图</small></div>
@@ -32,6 +31,7 @@
     <section class="ed-section ed-studio-section" id="studio" aria-labelledby="studio-title">
       <div class="ed-wrap">
         <div class="ed-section-head"><div><h2 id="studio-title">小工具，大有用。</h2></div><p class="ed-studio-lead">为日常，添一点便利。</p></div>
+{{pelican}}
         <div class="ed-tool-grid">
           <a class="ed-tool-card" href="gradient.html"><div class="ed-tool-art ed-tool-art--gradient" aria-hidden="true"></div><div class="ed-tool-caption"><h3>渐变实验室</h3><span aria-hidden="true">›</span></div><p>调一组颜色，带走一段 CSS。</p></a>
           <a class="ed-tool-card" href="pomodoro.html"><div class="ed-tool-art ed-tool-art--focus" aria-hidden="true"><div class="ed-mini-dial">25:00</div></div><div class="ed-tool-caption"><h3>极简番茄钟</h3><span aria-hidden="true">›</span></div><p>接下来的 25 分钟，只做一件事。</p></a>

@@ -9,8 +9,12 @@
 
 共享模板修改后运行 `node tools/build-shell.mjs`。新视觉由 `assets/css/edition.css` 维护；`edition.js` 仅维护最新文章和本地时钟。首页不再加载线条雕塑脚本。
 
-版本：`edition.css?v=2`、`edition.js?v=2`、`liquid-optics.js?v=5`、`search.js?v=7`；缓存 `wyq-v17-2026-09-12-minimal`。
+版本：`edition.css?v=3`、`edition.js?v=3`、`liquid-optics.js?v=5`、`search.js?v=7`；缓存 `wyq-v18-2026-09-12-pelican`。
 
 验证：21 页资源与 191 处脚本、537 条 CSS 规则解析通过，构建幂等；8 篇正文完整保留。PR #64 部署后，Chromium 已目视检查桌面首页/工具入口/归档/编辑器和 320/390px 首页、深色菜单、番茄钟、机械笔记、分类；桌面无横向溢出，320px 长文内容宽度为 305px（扣除滚动条）。搜索 IMAX、关闭焦点、倒计时/暂停/重置、Markdown 编辑/主题切换/导出成功反馈均通过；DNA 显示索引范围与 84% 词片多样性。当前页面挂载的光学装饰数量为 0。
 
 `tools/layout-review.html` 是 Chromium 窄屏预览，不能代替 iPhone Safari、软键盘、安全区或设备 GPU 验证；未检查下载 PNG 的最终像素。
+
+## 首页精简与骑行展示
+
+按手机截图移除首页两行说明和“最近更新”后的句号。存档改为年份分组、日期与分类独立一行、完整标题和轻量箭头。首页工具区的原创鹈鹕单车 SVG 由 `templates/pelican.tpl` 维护，车轮/曲柄/双腿同步；按钮可暂停，滚出屏幕、切换后台或减少动态效果时不继续绘制，无 JS 时保留静态插图。动画生命周期和存档条目已作模拟检查；部署后进行 Chromium 视觉复验。

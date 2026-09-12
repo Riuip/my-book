@@ -34,7 +34,7 @@
   <link rel="stylesheet" href="assets/css/liquid-glass.css?v=2" />
   <link rel="stylesheet" href="assets/css/liquid-optics.css?v=7" />
   <script src="assets/js/liquid-optics.js?v=5" defer></script>
-  <link rel="stylesheet" href="assets/css/edition.css?v=2" />
+  <link rel="stylesheet" href="assets/css/edition.css?v=3" />
 </head>
 <body class="ed-index">
 
@@ -85,7 +85,7 @@
 
 <h1 class="archive-page__title reveal">文字存档</h1>
       <p class="archive-page__subtitle reveal" data-delay="1">
-        全部文章，按时间倒序。共 <span id="archiveCount">0</span> 篇。
+        共 <span id="archiveCount">0</span> 篇。
       </p>
       <div id="archiveList" class="archive-list reveal" data-delay="2"></div>
     </div>
@@ -139,40 +139,38 @@
     if (!listEl) return;
     countEl.textContent = posts.length;
 
-    // Group by yyyy-mm (already sorted newest-first)
-    var groups = {};
-    var order = [];
-    posts.forEach(function (p) {
-      var ym = p.date.substring(0, 7);
-      if (!groups[ym]) { groups[ym] = []; order.push(ym); }
-      groups[ym].push(p);
+    // A year index with complete titles and one calm metadata line per entry.
+    var years = new Map();
+    posts.slice().sort(function(a,b){ return b.date.localeCompare(a.date); }).forEach(function(p){
+      var year = p.date.slice(0,4);
+      if (!years.has(year)) years.set(year,[]);
+      years.get(year).push(p);
     });
-
-    var html = '';
-    order.forEach(function (ym) {
-      var parts = ym.split('-');
-      html += '<section class="archive-group">';
-      html += '<div class="archive-group__title">' +
-                '<span class="archive-group__year">' + parts[0] + '</span>' +
-                '<span class="archive-group__sep">·</span>' +
-                '<span class="archive-group__month">' + parts[1] + ' 月</span>' +
-                '<span class="archive-group__count">' + groups[ym].length + ' 篇</span>' +
-              '</div>';
-      groups[ym].forEach(function (p) {
-        var day = p.date.substring(8, 10);
-        html += '<a class="archive-item" href="' + p.url + '">' +
-                  '<span class="archive-item__day">' + day + '</span>' +
-                  '<span class="archive-item__sep">·</span>' +
-                  '<span class="archive-item__cat" data-cat="' + p.catKey + '">' + p.cat + '</span>' +
-                  '<span class="archive-item__title">' + p.title + '</span>' +
-                '</a>';
+    years.forEach(function(items,year){
+      var section = document.createElement('section'); section.className = 'archive-year';
+      var heading = document.createElement('h2'); heading.className = 'archive-year__heading';
+      heading.id = 'year-' + year; heading.textContent = year;
+      section.setAttribute('aria-labelledby',heading.id);
+      var count = document.createElement('span'); count.textContent = items.length + ' 篇'; heading.appendChild(count);
+      var entries = document.createElement('div'); entries.className = 'archive-entries';
+      items.forEach(function(p){
+        var link = document.createElement('a'); link.className = 'archive-entry'; link.href = p.url;
+        var copy = document.createElement('div'); copy.className = 'archive-entry__copy';
+        var meta = document.createElement('div'); meta.className = 'archive-entry__meta';
+        var date = document.createElement('time'); date.dateTime = p.date;
+        date.textContent = Number(p.date.slice(5,7)) + ' 月 ' + Number(p.date.slice(8,10)) + ' 日';
+        var category = document.createElement('span'); category.textContent = p.cat;
+        meta.append(date,category);
+        var title = document.createElement('h3'); title.textContent = p.title;
+        copy.append(meta,title);
+        var arrow = document.createElement('span'); arrow.className = 'archive-entry__arrow'; arrow.textContent = '›'; arrow.setAttribute('aria-hidden','true');
+        link.append(copy,arrow); entries.appendChild(link);
       });
-      html += '</section>';
+      section.append(heading,entries); listEl.appendChild(section);
     });
-    listEl.innerHTML = html;
   })();
   </script>
   <script src="assets/js/search.js?v=7"></script>
-  <script src="assets/js/edition.js?v=2" defer></script>
+  <script src="assets/js/edition.js?v=3" defer></script>
 </body>
 </html>
