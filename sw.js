@@ -5,7 +5,7 @@
    ========================================================= */
 'use strict';
 
-var VERSION = 'wyq-v20-2026-09-12-pelican';
+var VERSION = 'wyq-v21-2026-09-12-editorial';
 var CORE = [
   './',
   './index.html',

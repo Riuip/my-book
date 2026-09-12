@@ -6,7 +6,7 @@
         <div class="ed-hero" id="defaultHero" aria-hidden="false">
           <div class="ed-hero-copy">
             <p class="ed-hero-name">WYQ 的个人空间</p>
-            <h1>记录生活。<br>也探索更多。</h1>
+            <h1>记录生活。<br><span>也探索更多。</span></h1>
             <div class="ed-hero-actions"><a class="btn btn--primary" href="archive.html">浏览文章</a><a class="ed-text-link" href="#studio">探索工具 <span aria-hidden="true">›</span></a></div>
           </div>
         </div>
@@ -14,17 +14,19 @@
       </div>
     </header>
 
-    <section class="ed-section ed-wrap" id="journal" aria-labelledby="journal-title">
+    <section class="ed-section ed-journal-section" id="journal" aria-labelledby="journal-title">
+      <div class="ed-wrap">
       <div class="ed-section-head"><div><h2 id="journal-title">最近更新</h2></div><a class="ed-text-link" href="archive.html">全部文章 <span>›</span></a></div>
       <div class="ed-reading-grid">
         <a class="ed-feature" id="edFeatured" href="post-008.html">
-          <div class="ed-feature-image"><img src="assets/images/meiah-imax-screen-illustration.png" alt="IMAX 影厅示意图" width="1672" height="941" loading="lazy"><small>影厅示意图</small></div>
+          <div class="ed-feature-image"><img src="assets/images/meiah-imax-screen-illustration.png" alt="IMAX 影厅示意图" width="1672" height="941" fetchpriority="high"><small>影厅示意图</small></div>
           <div class="ed-feature-copy"><div class="ed-feature-meta"><span>最近一篇 / 影视</span><span>2026.08.02</span></div><h3>广州白云美亚 IMAX：<br>影厅与选座指南</h3><p>一块大银幕，一次认真挑选的位置。记录影厅配置，也聊聊怎样选一个舒服的座位。</p><div class="ed-feature-tail"><span>阅读这篇记录</span><b aria-hidden="true">›</b></div></div>
         </a>
         <div class="ed-note-stack" id="edNotes">
           <a class="ed-note" href="post-007.html"><div class="ed-note-meta"><span>学习笔记</span><span>2026.07.08</span></div><h3>99% 必考知识点汇总 1</h3><p>把机械基础的力学、传动、轴与应力公式，整理成一份可以反复翻阅的复习笔记。</p><div class="ed-note-tail"><span>机械基础 · 复习 · 公式</span><span aria-hidden="true">›</span></div></a>
           <a class="ed-note" href="post-006.html"><div class="ed-note-meta"><span>技术与工具</span><span>2026.05.15</span></div><h3>AI 提示词收藏：<br>4 套实用 Prompt 模板</h3><p>从中文助理到论文科普，把用得顺手的提示词留下来，慢慢补全自己的工具箱。</p><div class="ed-note-tail"><span>AI · 提示词 · 工具</span><span aria-hidden="true">›</span></div></a>
         </div>
+      </div>
       </div>
     </section>
 
