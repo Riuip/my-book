@@ -1,80 +1,23 @@
 <!doctype html>
 <html lang="zh-CN" class="edition" data-design="minimal" data-site-root="">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <title>页面走丢了 — WYQ 专属博客</title>
-  <meta name="description" content="你访问的页面不存在。" />
-  <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
-  <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)" />
-  <link rel="stylesheet" href="assets/css/style.css?v=27" />
-  <link rel="alternate" type="application/rss+xml" title="WYQ 专属博客 RSS" href="feed.xml" />
-  <link rel="search" type="application/opensearchdescription+xml" title="WYQ Blog" href="opensearch.xml" />
-  <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png" />
-  <link rel="manifest" href="manifest.json" />
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230071e3'/%3E%3Ctext x='50%25' y='62%25' text-anchor='middle' font-family='-apple-system,system-ui,sans-serif' font-weight='700' font-size='14' fill='white'%3EWYQ%3C/text%3E%3C/svg%3E" />
-  <script>
-    (function(){try{var t=localStorage.getItem('wyq-theme');if(t!=='light'&&t!=='dark'){t=window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';}document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
-  </script>
-  <style>
-    .nf-stage {
-      min-height: 100vh;
-      padding: 130px 22px 80px;
-      display: flex; align-items: center; justify-content: center;
-      text-align: center;
-    }
-    .nf-stage__inner { max-width: 720px; width: 100%; }
-    .nf-code {
-      font-size: clamp(110px, 22vw, 220px);
-      line-height: 1;
-      font-weight: 800;
-      letter-spacing: -0.06em;
-      background: linear-gradient(110deg, #ff5f8a, #ff8a3d, #ffd23d, #6ee7b7, #60a5fa, #a78bfa, #ff5f8a);
-      background-size: 250% 100%;
-      -webkit-background-clip: text;
-      background-clip: text;
-      -webkit-text-fill-color: transparent;
-      animation: nf-flow 9s linear infinite;
-      filter: drop-shadow(0 8px 32px rgba(160, 100, 255, 0.30));
-      margin-bottom: 16px;
-    }
-    @keyframes nf-flow {
-      from { background-position: 0% 50%; }
-      to   { background-position: 250% 50%; }
-    }
-    .nf-title {
-      font-size: clamp(28px, 4vw, 40px);
-      font-weight: 700;
-      letter-spacing: -0.03em;
-      color: var(--text);
-      margin-bottom: 14px;
-    }
-    .nf-sub {
-      font-size: 18px;
-      color: var(--text-soft);
-      margin: 0 auto 32px;
-      max-width: 520px;
-      line-height: 1.55;
-    }
-    .nf-actions {
-      display: inline-flex; flex-wrap: wrap; justify-content: center; gap: 16px;
-    }
-  </style>
-  <meta property="og:image" content="https://riuip.github.io/my-book/assets/og/default.png" />
-  <meta property="og:image:type" content="image/png" />
-  <meta property="og:image:width" content="1200" />
-  <meta property="og:image:height" content="630" />
-  <meta property="og:image" content="https://riuip.github.io/my-book/assets/og/default.svg" />
-  <meta property="og:image:type" content="image/svg+xml" />
-  <meta name="twitter:image" content="https://riuip.github.io/my-book/assets/og/default.png" />
-  <link rel="stylesheet" href="assets/css/liquid-glass.css?v=2" />
-  <link rel="stylesheet" href="assets/css/liquid-optics.css?v=7" />
-  <script src="assets/js/liquid-optics.js?v=5" defer></script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Base64 解码 — WYQ 专属博客</title>
+  <meta name="description" content="在线解码 Base64，支持中文 UTF-8、URL-safe 格式、一键复制与原始文件下载。内容只在浏览器中处理。">
+  <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
+  <link rel="canonical" href="https://riuip.github.io/my-book/base64.html">
+  <link rel="icon" href="assets/icons/icon-192.png">
+  <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png">
+  <link rel="stylesheet" href="assets/css/style.css?v=27">
+  <link rel="stylesheet" href="assets/css/liquid-glass.css?v=2">
+  <link rel="stylesheet" href="assets/css/liquid-optics.css?v=7">
+  <link rel="stylesheet" href="assets/css/base64.css?v=1">
+  <script>(function(){try{var t=localStorage.getItem('wyq-theme');if(t!=='light'&&t!=='dark')t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';document.documentElement.dataset.theme=t;}catch(e){}})();</script>
   <link rel="stylesheet" href="assets/css/edition.css?v=5" />
 </head>
-<body class="ed-index">
-
-  <div class="aurora" aria-hidden="true"></div>
+<body class="ed-tool">
   <a class="ed-skip" href="#main-content">跳到正文</a>
   <nav class="nav" aria-label="主导航">
     <div class="nav__inner">
@@ -114,22 +57,29 @@
     </div>
   </nav>
 
-  <main class="nf-stage" id="main-content" tabindex="-1">
-    <div class="nf-stage__inner">
-      <div class="nf-code">404</div>
-      <h1 class="nf-title">这个页面走丢了</h1>
-      <p class="nf-sub">
-        没事，互联网上每天都有页面在迷路。<br/>
-        要不要回主页看看，或者换个关键词搜搜？
-      </p>
-      <div class="nf-actions">
-        <a class="btn btn--primary btn--lg" href="index.html">回到主页</a>
-        <a class="btn btn--ghost btn--lg" href="search.html">搜索文章</a>
-        <a class="btn btn--ghost btn--lg" href="archive.html">浏览归档</a>
-      </div>
-    </div>
+  <main class="grad-stage b64-stage" id="main-content" tabindex="-1">
+    <div class="grad-head"><h1 class="grad-title">Base64 解码</h1><p class="grad-sub">把编码，还原成文字。支持中文与 URL-safe Base64。</p></div>
+<nav class="ed-studio-nav" aria-label="实验工具"><a href="base64.html" aria-current="page">Base64</a><a href="gradient.html">渐变</a><a href="pomodoro.html">专注</a><a href="md-card.html">排版</a><a href="lab.html">天气</a><a href="dna.html">写作画像</a><a href="others.html">游戏</a></nav>
+    <form class="b64-workspace" id="b64Form">
+      <section class="b64-panel" aria-labelledby="b64InputLabel">
+        <div class="b64-panel-head"><label id="b64InputLabel" for="b64Input">输入 Base64</label><button type="button" id="b64Example" class="b64-text-button">试个例子</button></div>
+        <textarea id="b64Input" placeholder="粘贴 Base64 内容…" aria-describedby="b64Hint b64Status" maxlength="2000000" spellcheck="false" autocapitalize="off" autocomplete="off" autocorrect="off"></textarea>
+        <p class="b64-hint" id="b64Hint">可含空格、换行，末尾的 = 可省略。最多 200 万个字符。</p>
+        <div class="b64-actions"><button class="btn btn--primary" type="submit">解码</button><button class="btn" type="button" id="b64Clear">清空</button></div>
+      </section>
+      <section class="b64-panel" aria-labelledby="b64OutputLabel">
+        <div class="b64-panel-head"><label id="b64OutputLabel" for="b64Output">解码结果</label><span id="b64Size" class="b64-hint"></span></div>
+        <textarea id="b64Output" placeholder="解码后的文字会出现在这里" readonly spellcheck="false"></textarea>
+        <p class="b64-hint">按 UTF-8 显示文字；二进制内容可下载为原始文件。</p>
+        <div class="b64-actions"><button class="btn" type="button" id="b64Copy" disabled>复制结果</button><button class="btn" type="button" id="b64Download" disabled>下载文件</button></div>
+      </section>
+      <p class="b64-status" id="b64Status" role="status" aria-live="polite" aria-atomic="true"></p>
+      <p class="b64-privacy">内容只在当前浏览器中处理，不上传，也不保存输入记录。</p>
+    </form>
+    <noscript>请启用 JavaScript 后使用解码工具。</noscript>
   </main>
-
+  <script src="assets/js/liquid-optics.js?v=5" defer></script>
+  <script src="assets/js/base64.js?v=1" defer></script>
     <div class="nav-search__overlay" id="navSearchOverlay"></div>
   <div class="nav-search" id="navSearchBox" role="dialog" aria-label="搜索文章">
     <div class="nav-search__inner">
@@ -158,10 +108,8 @@
     </div>
   </footer>
 
-  <script src="assets/js/view-transitions.js?v=2"></script>
   <script src="assets/js/main.js?v=19"></script>
   <script src="assets/js/posts-data.js?v=4"></script>
-  <script src="assets/js/extras.js?v=6"></script>
   <script src="assets/js/search.js?v=7"></script>
   <script src="assets/js/edition.js?v=4" defer></script>
 </body>

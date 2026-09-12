@@ -35,6 +35,7 @@
         <div class="ed-section-head"><div><h2 id="studio-title">小工具，大有用。</h2></div><p class="ed-studio-lead">为日常，添一点便利。</p></div>
 {{pelican}}
         <div class="ed-tool-grid">
+          <a class="ed-tool-card" href="base64.html"><div class="ed-tool-art ed-tool-art--card" aria-hidden="true"><div class="ed-mini-page">B64<i></i><i></i><i></i></div></div><div class="ed-tool-caption"><h3>Base64 解码</h3><span aria-hidden="true">›</span></div><p>把一段编码，还原成文字。</p></a>
           <a class="ed-tool-card" href="gradient.html"><div class="ed-tool-art ed-tool-art--gradient" aria-hidden="true"></div><div class="ed-tool-caption"><h3>渐变实验室</h3><span aria-hidden="true">›</span></div><p>调一组颜色，带走一段 CSS。</p></a>
           <a class="ed-tool-card" href="pomodoro.html"><div class="ed-tool-art ed-tool-art--focus" aria-hidden="true"><div class="ed-mini-dial">25:00</div></div><div class="ed-tool-caption"><h3>极简番茄钟</h3><span aria-hidden="true">›</span></div><p>接下来的 25 分钟，只做一件事。</p></a>
           <a class="ed-tool-card" href="md-card.html"><div class="ed-tool-art ed-tool-art--card" aria-hidden="true"><div class="ed-mini-page">Aa<i></i><i></i><i></i></div></div><div class="ed-tool-caption"><h3>Markdown 卡片</h3><span aria-hidden="true">›</span></div><p>给一段文字，找一个好看的容器。</p></a>

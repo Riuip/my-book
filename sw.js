@@ -5,7 +5,7 @@
    ========================================================= */
 'use strict';
 
-var VERSION = 'wyq-v21-2026-09-12-editorial';
+var VERSION = 'wyq-v22-2026-09-12-base64';
 var CORE = [
   './',
   './index.html',
@@ -16,7 +16,7 @@ var CORE = [
   './assets/css/style.css?v=27',
   './assets/css/liquid-glass.css?v=2',
   './assets/css/liquid-optics.css?v=7',
-  './assets/css/edition.css?v=4',
+  './assets/css/edition.css?v=5',
   './assets/js/edition.js?v=4',
   './assets/js/liquid-optics.js?v=5',
   './assets/css/mario.css?v=1',
@@ -40,7 +40,10 @@ var CORE = [
   './assets/images/meiah-imax-screen-illustration.png',
   './gradient.html',
   './pomodoro.html',
-  './md-card.html'
+  './md-card.html',
+  './base64.html',
+  './assets/css/base64.css?v=1',
+  './assets/js/base64.js?v=1'
 ];
 
 self.addEventListener('install', function (e) {
