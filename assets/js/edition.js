@@ -27,22 +27,26 @@
     if (ride) {
       var toggle = document.getElementById('pelicanToggle');
       var near = document.getElementById('pelicanNearLeg'), far = document.getElementById('pelicanFarLeg');
-      var bird = document.getElementById('pelicanBird'), crank = document.getElementById('pelicanCrank');
+      var crank = document.getElementById('pelicanCrank');
+      var nearFoot = document.getElementById('pelicanNearFoot'), farFoot = document.getElementById('pelicanFarFoot');
       var rear = document.getElementById('pelicanRearWheel'), front = document.getElementById('pelicanFrontWheel');
       var phase = 0, animation = 0, last = 0, inView = !('IntersectionObserver' in window), paused = false;
-      function leg(node, angle, side, lift) {
-        var hip = {x:227,y:173 + lift};
-        var foot = {x:247 + 18 * Math.cos(angle),y:240 + 18 * Math.sin(angle)};
-        var dx = foot.x - hip.x, dy = foot.y - hip.y, d = Math.hypot(dx,dy);
-        var bend = Math.sqrt(Math.max(0, 46 * 46 - d * d / 4));
-        var knee = {x:(hip.x+foot.x)/2-side*dy/d*bend,y:(hip.y+foot.y)/2+side*dx/d*bend};
-        node.setAttribute('d','M'+hip.x+' '+hip.y+' L'+knee.x.toFixed(2)+' '+knee.y.toFixed(2)+' L'+foot.x.toFixed(2)+' '+foot.y.toFixed(2));
+      // Both legs bend forward; feet stay planted on horizontal pedals.
+      // Hip-to-ankle distance remains below the two 42px segments for the entire turn.
+      function leg(node, shoe, angle) {
+        var hip = {x:224,y:174};
+        var pedal = {x:247 + 18 * Math.cos(angle),y:238 + 18 * Math.sin(angle)};
+        var ankle = {x:pedal.x-4,y:pedal.y-6};
+        var dx = ankle.x - hip.x, dy = ankle.y - hip.y, d = Math.hypot(dx,dy);
+        var bend = Math.sqrt(Math.max(0,42 * 42 - d * d / 4));
+        var knee = {x:(hip.x+ankle.x)/2+dy/d*bend,y:(hip.y+ankle.y)/2-dx/d*bend};
+        node.setAttribute('d','M'+hip.x+' '+hip.y+' L'+knee.x.toFixed(2)+' '+knee.y.toFixed(2)+' L'+ankle.x.toFixed(2)+' '+ankle.y.toFixed(2));
+        shoe.setAttribute('transform','translate('+pedal.x.toFixed(2)+' '+pedal.y.toFixed(2)+')');
       }
       function draw() {
-        var degrees = phase * 180 / Math.PI, lift = Math.sin(phase * 2) * 1.2;
-        leg(near,phase + Math.PI,1,lift); leg(far,phase,-1,lift);
-        bird.setAttribute('transform','translate(0 '+lift.toFixed(2)+')');
-        crank.setAttribute('transform','rotate('+degrees.toFixed(2)+' 247 240)');
+        var degrees = phase * 180 / Math.PI;
+        leg(far,farFoot,phase); leg(near,nearFoot,phase + Math.PI);
+        crank.setAttribute('transform','rotate('+degrees.toFixed(2)+' 247 238)');
         rear.setAttribute('transform','rotate('+(degrees*1.6).toFixed(2)+' 153 240)');
         front.setAttribute('transform','rotate('+(degrees*1.6).toFixed(2)+' 345 240)');
       }
@@ -50,7 +54,7 @@
       function step(now) {
         animation = 0;
         if (!running()) { last = 0; return; }
-        if (last) phase = (phase + Math.min(now-last,64) / 1800 * Math.PI * 2) % (Math.PI * 20);
+        if (last) phase = (phase + Math.min(now-last,64) / 2100 * Math.PI * 2) % (Math.PI * 20);
         last = now; draw(); animation = requestAnimationFrame(step);
       }
       function sync() {
