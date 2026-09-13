@@ -58,17 +58,23 @@
     return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
   }
 
+  function escapeHtml(text) {
+    return String(text == null ? '' : text).replace(/[&<>"']/g, function (char) {
+      return { '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[char];
+    });
+  }
   function highlightText(text, query) {
-    if (!query) return text;
-    var keywords = query.trim().toLowerCase().split(/\s+/);
-    var result = text;
-    for (var i = 0; i < keywords.length; i++) {
-      var kw = keywords[i];
-      if (!kw) continue;
-      var regex = new RegExp('(' + escapeRegExp(kw) + ')', 'gi');
-      result = result.replace(regex, '<mark>$1</mark>');
-    }
-    return result;
+    var value = String(text == null ? '' : text);
+    var keywords = (query || '').trim().split(/\s+/).filter(Boolean).sort(function (a,b) { return b.length-a.length; });
+    if (!keywords.length) return escapeHtml(value);
+    var regex = new RegExp(keywords.map(escapeRegExp).join('|'), 'gi');
+    var result = '', last = 0;
+    value.replace(regex, function (match, offset) {
+      result += escapeHtml(value.slice(last, offset)) + '<mark>' + escapeHtml(match) + '</mark>';
+      last = offset + match.length;
+      return match;
+    });
+    return result + escapeHtml(value.slice(last));
   }
 
   /* ---------- Render results ---------- */

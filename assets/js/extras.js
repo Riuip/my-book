@@ -285,6 +285,15 @@
       if (t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.isContentEditable)) return;
       if (e.metaKey || e.ctrlKey || e.altKey) return;
 
+      // g h → home, g a → archive, g t → tags
+      if (inSeq) {
+        clearTimeout(seqTimer);
+        inSeq = false;
+        if (e.key === 'h') { window.location.href = 'index.html'; return; }
+        if (e.key === 'a') { window.location.href = 'archive.html'; return; }
+        if (e.key === 't') { window.location.href = 'tags.html'; return; }
+        return;
+      }
       // ? → help
       if (e.key === '?' || (e.shiftKey && e.key === '/')) {
         e.preventDefault();
@@ -314,24 +323,15 @@
       // j / k → scroll down/up
       if (e.key === 'j' || e.key === 'J') {
         e.preventDefault();
-        window.scrollBy({ top: window.innerHeight * 0.4, behavior: 'smooth' });
+        window.scrollBy({ top: window.innerHeight * 0.4, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth' });
         return;
       }
       if (e.key === 'k' || e.key === 'K') {
         e.preventDefault();
-        window.scrollBy({ top: -window.innerHeight * 0.4, behavior: 'smooth' });
+        window.scrollBy({ top: -window.innerHeight * 0.4, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth' });
         return;
       }
 
-      // g h → home, g a → archive, g t → tags
-      if (inSeq) {
-        clearTimeout(seqTimer);
-        inSeq = false;
-        if (e.key === 'h') { window.location.href = 'index.html'; return; }
-        if (e.key === 'a') { window.location.href = 'archive.html'; return; }
-        if (e.key === 't') { window.location.href = 'tags.html'; return; }
-        return;
-      }
       if (e.key === 'g' || e.key === 'G') {
         inSeq = true;
         seqTimer = setTimeout(function () { inSeq = false; }, 1200);

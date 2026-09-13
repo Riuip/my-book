@@ -28,22 +28,25 @@
 
   // Copy text to clipboard
   function copyText(text, btn) {
-    if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(text).then(function () {
-        showCopied(btn);
-      });
-    } else {
-      // Fallback for older browsers
+    function failed() {
+      var label = btn.querySelector('.copy-btn__text');
+      if (label) label.textContent = '复制失败';
+      setTimeout(function () { if (label) label.textContent = '复制'; }, 2000);
+    }
+    function fallback() {
+      var active = document.activeElement;
       var ta = document.createElement('textarea');
       ta.value = text;
-      ta.style.position = 'fixed';
-      ta.style.opacity = '0';
+      ta.style.cssText = 'position:fixed;opacity:0;left:0;top:0';
       document.body.appendChild(ta);
       ta.select();
-      document.execCommand('copy');
-      document.body.removeChild(ta);
-      showCopied(btn);
+      try { if (document.execCommand('copy')) showCopied(btn); else failed(); }
+      catch (error) { failed(); }
+      finally { ta.remove(); if (active) active.focus({ preventScroll:true }); }
     }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(function () { showCopied(btn); }).catch(fallback);
+    } else fallback();
   }
 
   // 1. Add copy buttons to all <pre> blocks

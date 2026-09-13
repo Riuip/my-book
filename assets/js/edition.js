@@ -25,7 +25,7 @@
 
     var ride = document.getElementById('pelicanRide');
     // A cached older SVG can safely remain static while its HTML refreshes.
-    if (ride && document.getElementById('pelicanNearFoot') && document.getElementById('pelicanFarFoot')) {
+    if (ride && ['pelicanToggle','pelicanNearLeg','pelicanFarLeg','pelicanNearFoot','pelicanFarFoot','pelicanCrank','pelicanRearWheel','pelicanFrontWheel'].every(function (id) { return document.getElementById(id); })) {
       var toggle = document.getElementById('pelicanToggle');
       var near = document.getElementById('pelicanNearLeg'), far = document.getElementById('pelicanFarLeg');
       var crank = document.getElementById('pelicanCrank');
@@ -78,33 +78,28 @@
 
     // Keep the static cover selection fresh when the single post index changes.
     var feature = document.getElementById('edFeatured');
-    if (feature && posts[0] && feature.getAttribute('href') !== posts[0].url) {
+    if (feature && posts[0]) {
       var p = posts[0];
-      feature.href = p.url;
+      feature.href = base + p.url;
       feature.querySelector('h3').textContent = p.title;
-      feature.querySelector('.ed-feature-copy > p').textContent = p.desc;
       feature.querySelector('.ed-feature-meta').textContent = '最近一篇 / ' + p.cat + '　' + p.date;
       var img = feature.querySelector('img');
-      img.src = p.ogImage || 'assets/og/default.svg'; img.alt = p.title + '封面';
-      feature.querySelector('.ed-feature-image small').textContent = '文章封面';
+      var nextImage = base + (p.ogImage || 'assets/og/default.svg');
+      if (img.getAttribute('src') !== nextImage) feature.querySelector('.ed-feature-image small').textContent = '文章封面';
+      img.src = nextImage; img.alt = p.title + '封面';
     }
     var notes = document.getElementById('edNotes');
-    if (notes && posts.length > 1) {
+    if (notes && posts.length) {
       var selected = posts.slice(1, 3);
-      var oldLinks = notes.querySelectorAll('.ed-note');
-      var changed = selected.some(function (post, i) { return !oldLinks[i] || oldLinks[i].getAttribute('href') !== post.url; });
-      if (changed) {
-        var list = document.createDocumentFragment();
-        selected.forEach(function (post) {
-          var link = document.createElement('a'); link.className = 'ed-note'; link.href = post.url;
-          var meta = document.createElement('div'); meta.className = 'ed-note-meta'; meta.textContent = post.cat + '　' + post.date;
-          var heading = document.createElement('h3'); heading.textContent = post.title;
-          var description = document.createElement('p'); description.textContent = post.desc;
-          var tail = document.createElement('div'); tail.className = 'ed-note-tail'; tail.textContent = (post.tags || []).join(' · ') + '　›';
-          link.append(meta, heading, description, tail); list.appendChild(link);
-        });
-        notes.replaceChildren(list);
-      }
+      var list = document.createDocumentFragment();
+      selected.forEach(function (post) {
+        var link = document.createElement('a'); link.className = 'ed-note'; link.href = base + post.url;
+        var meta = document.createElement('div'); meta.className = 'ed-note-meta'; meta.textContent = post.cat + '　' + post.date;
+        var heading = document.createElement('h3'); heading.textContent = post.title;
+        var tail = document.createElement('div'); tail.className = 'ed-note-tail'; tail.textContent = (post.tags || []).join(' · ') + '　›';
+        link.append(meta, heading, tail); list.appendChild(link);
+      });
+      notes.replaceChildren(list);
     }
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', ready);
