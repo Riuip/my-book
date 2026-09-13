@@ -1,0 +1,72 @@
+const { chromium } = require('playwright');
+const assert = require('node:assert/strict');
+const fs = require('node:fs');
+const base = process.env.TEST_BASE_URL || 'http://127.0.0.1:8000/';
+(async () => {
+  fs.mkdirSync('test-results', { recursive:true });
+  const browser = await chromium.launch();
+  const context = await browser.newContext({ reducedMotion:'reduce', serviceWorkers:'block' });
+  // Test the site's own UI independently from remote comments, fonts and weather APIs.
+  await context.route('**/*', route => new URL(route.request().url()).origin === new URL(base).origin ? route.continue() : route.abort());
+  const page = await context.newPage();
+  const errors=[], failures=[];
+  page.on('pageerror',error=>errors.push(page.url()+': '+error.message));
+  page.on('response',response=> { if(response.status()>=400 && response.url().startsWith(base)) failures.push(response.url()+': '+response.status()); });
+  const files=fs.readdirSync('.').filter(f=>f.endsWith('.html'));
+  for(const width of [320,390,768,1440]) {
+    await page.setViewportSize({width,height:900});
+    for(const file of files) {
+      await page.goto(base+file,{waitUntil:'load'});
+      const overflow=await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth+1);
+      assert(!overflow,`${file} horizontal overflow at ${width}px`);
+      if(['index.html','post-008.html','post-007.html'].includes(file)) await page.screenshot({path:`test-results/${file}-${width}.png`,fullPage:true});
+    }
+  }
+  await page.setViewportSize({width:390,height:844});
+  await page.goto(base+'index.html');
+  assert.equal(await page.locator('.ed-hero-name,.ed-feature-copy>p,.ed-note>p,.ed-tool-card>p,.ed-pelican figcaption>span').count(),0);
+  await page.locator('[data-theme-toggle]').click();
+  assert.equal(await page.locator('html').getAttribute('data-theme'),'dark');
+  await page.screenshot({path:'test-results/home-dark.png',fullPage:true});
+  await page.reload();
+  assert.equal(await page.locator('html').getAttribute('data-theme'),'dark');
+  await page.goto(base+'post-008.html');
+  assert.equal(await page.locator('#toc-toggle').getAttribute('aria-expanded'),'false');
+  await page.locator('#toc-toggle').click();
+  assert.equal(await page.locator('#toc-toggle').getAttribute('aria-expanded'),'true');
+  const anchor=page.locator('#toc a').nth(1), href=await anchor.getAttribute('href');
+  await anchor.click();
+  await page.waitForFunction(hash=>location.hash===hash,href);
+  const top=await page.locator(href).evaluate(n=>n.getBoundingClientRect().top);
+  assert(top>=0&&top<160,'TOC target hidden or not scrolled');
+  await page.screenshot({path:'test-results/article-dark.png',fullPage:true});
+  await page.goto(base+'index.html');
+  await page.locator('#navSearchBtn').click();
+  await page.waitForURL('**/search.html');
+  await page.locator('#searchPageInput').fill('IMAX');
+  assert(await page.locator('.search-result').count()>0);
+  await page.locator('#searchPageInput').fill('zzzz-no-results-123');
+  assert.equal(await page.locator('.search-result').count(),0);
+  await page.setViewportSize({width:1440,height:900});
+  await page.goto(base+'index.html');
+  await page.locator('#navSearchBtn').click();
+  await page.locator('#navSearchInput').fill('机械');
+  assert(await page.locator('.nav-search__item').count()>0);
+  await page.keyboard.press('Escape');
+  assert.equal(await page.locator('#navSearchBox').getAttribute('aria-hidden'),'true');
+  await page.keyboard.press('g'); await page.keyboard.press('t');
+  await page.waitForURL('**/tags.html');
+  await page.goto(base+'base64.html');
+  await page.locator('#b64Input').fill('5L2g5aW9');
+  await page.locator('#b64Form button[type=submit]').click();
+  assert.equal(await page.locator('#b64Output').inputValue(),'你好');
+  assert.deepEqual(errors,[],'uncaught browser errors');
+  assert.deepEqual(failures,[],'local resource failures');
+  await context.close();
+  const nojs=await browser.newContext({javaScriptEnabled:false,viewport:{width:390,height:844}});
+  const plain=await nojs.newPage();
+  await plain.goto(base+'post-008.html');
+  assert(await plain.locator('#toc a').first().isVisible(),'static TOC unavailable without JS');
+  await nojs.close(); await browser.close();
+  console.log(`PASS ${files.length*4} page/viewport checks; theme, TOC, search, keyboard, Base64, no-JS reading; no uncaught errors or local 404s`);
+})().catch(error=>{console.error(error);process.exit(1);});
