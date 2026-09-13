@@ -40,11 +40,16 @@
   if (progressBar) {
     function updateProgress() {
       var scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-      var docHeight = document.documentElement.scrollHeight - window.innerHeight;
-      var progress = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
-      progressBar.style.width = Math.min(progress, 100) + '%';
+      var content = document.querySelector('.article');
+      var start = content ? content.getBoundingClientRect().top + scrollTop : 0;
+      var end = content ? start + content.offsetHeight : document.documentElement.scrollHeight;
+      var distance = Math.max(1, end - start - window.innerHeight);
+      var progress = (scrollTop - start) / distance * 100;
+      progressBar.style.width = Math.max(0, Math.min(progress, 100)) + '%';
     }
     window.addEventListener('scroll', updateProgress, { passive: true });
+    window.addEventListener('resize', updateProgress);
+    if ('ResizeObserver' in window) new ResizeObserver(updateProgress).observe(document.body);
     updateProgress();
   }
 
@@ -79,6 +84,9 @@
           if (target) {
             var clearance = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--nav-clearance')) || 88;
             var offset = target.getBoundingClientRect().top + window.pageYOffset - clearance;
+            history.replaceState(null, '', '#' + encodeURIComponent(target.id));
+            target.setAttribute('tabindex', '-1');
+            target.focus({ preventScroll: true });
             window.scrollTo({ top: offset, behavior: reducedMotion.matches ? 'instant' : 'smooth' });
           }
         });
@@ -87,16 +95,21 @@
         tocList.appendChild(li);
       });
 
-      tocContainer.appendChild(tocList);
+      tocContainer.replaceChildren(tocList);
 
       // TOC toggle
       var tocToggle = document.getElementById('toc-toggle');
       if (tocToggle) {
+        if (matchMedia('(max-width: 900px)').matches) {
+          tocContainer.classList.add('is-collapsed');
+          tocToggle.classList.add('is-collapsed');
+        }
         function syncToc() {
           var collapsed = tocContainer.classList.contains('is-collapsed');
           tocToggle.setAttribute('aria-expanded', String(!collapsed));
           tocToggle.setAttribute('aria-controls', tocContainer.id);
           tocContainer.inert = collapsed;
+          tocContainer.setAttribute('aria-hidden', String(collapsed));
         }
         syncToc();
         tocToggle.addEventListener('click', function () {
@@ -109,11 +122,11 @@
       // Highlight active heading in TOC on scroll
       var tocLinks = tocContainer.querySelectorAll('.toc__link');
       function updateActiveToc() {
-        var scrollPos = window.pageYOffset + 100;
+        var clearance = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--nav-clearance')) || 88;
         var currentActive = null;
 
         Array.prototype.forEach.call(headings, function (heading) {
-          if (heading.offsetTop <= scrollPos) {
+          if (heading.getBoundingClientRect().top <= clearance + 24) {
             currentActive = heading.id;
           }
         });
@@ -121,12 +134,18 @@
         Array.prototype.forEach.call(tocLinks, function (link) {
           if (link.getAttribute('data-target') === currentActive) {
             link.classList.add('is-active');
+            link.setAttribute('aria-current', 'location');
           } else {
             link.classList.remove('is-active');
+            link.removeAttribute('aria-current');
           }
         });
       }
-      window.addEventListener('scroll', updateActiveToc, { passive: true });
+      var tocFrame = 0;
+      window.addEventListener('scroll', function () {
+        if (!tocFrame) tocFrame = requestAnimationFrame(function () { tocFrame = 0; updateActiveToc(); });
+      }, { passive: true });
+      window.addEventListener('resize', updateActiveToc);
       updateActiveToc();
     } else {
       // No headings, hide TOC

@@ -32,7 +32,7 @@
   <link rel="stylesheet" href="assets/css/liquid-glass.css?v=2" />
   <link rel="stylesheet" href="assets/css/liquid-optics.css?v=7" />
   <script src="assets/js/liquid-optics.js?v=5" defer></script>
-  <link rel="stylesheet" href="assets/css/edition.css?v=5" />
+  <link rel="stylesheet" href="assets/css/edition.css?v=6" />
 </head>
 <body class="ed-article">
   <div class="reading-progress" aria-hidden="true"><div class="reading-progress__bar" id="reading-progress"></div></div>
@@ -77,17 +77,23 @@
   </nav>
   <header class="article-hero"><div class="article-hero__inner">
       <a class="ed-article-back" href="archive.html">‹ 返回全部文章</a><br><span class="article-hero__tag reveal">机械基础</span><h1 class="article-hero__title reveal" data-delay="1">99% 必考知识点汇总 1</h1><div class="article-hero__meta reveal" data-delay="2"><span>WYQ</span><span class="dot"></span><span>2026 &middot; 07 &middot; 08</span><span class="dot"></span><span data-reading-time>5 分钟阅读</span></div></div></header>
-  <article class="article" id="main-content" tabindex="-1"><div class="doc-sheet">
+<!-- reading-layout-start -->
+<div class="ed-reading-layout">
+<div class="toc-widget"><button type="button" class="toc-toggle" id="toc-toggle" aria-expanded="true" aria-controls="toc"><span>文章目录</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg></button><nav class="toc" id="toc" aria-label="文章目录"><ul class="toc__list"><li class="toc__item"><a class="toc__link" href="#doc-title">99%必考知识点汇总1</a></li><li class="toc__item"><a class="toc__link" href="#section-1">一、力学基础与传动计算</a></li><li class="toc__item toc__item--sub"><a class="toc__link" href="#section-2">1. 变形与材料属性</a></li><li class="toc__item toc__item--sub"><a class="toc__link" href="#section-3">2. 齿轮分度圆计算</a></li><li class="toc__item toc__item--sub"><a class="toc__link" href="#section-4">3. 齿轮传动核心要点</a></li><li class="toc__item"><a class="toc__link" href="#section-5">二、轴的分类与应用</a></li><li class="toc__item"><a class="toc__link" href="#section-6">三、99% 必考公式：</a></li><li class="toc__item"><a class="toc__link" href="#section-7">四、必考应力区分</a></li></ul></nav></div>
+<article class="article" id="main-content" tabindex="-1"><div class="doc-sheet">
     <h2 class="doc-title" id="doc-title"><span class="doc-red">99%</span><span>必考知识点汇总</span><sup>1</sup></h2>
     <section class="doc-preface" aria-label="前言"><p><strong>前言：1：</strong>标题纯属自娱自乐，本人不知道考试内容和考试范围，请不要对号入座，如刚好考到对应内容或原题，纯属巧合</p><p><strong>2：</strong>该知识点通用性高，不针对考试内容，考试场次整理，如碰巧，纯属巧合！！</p><p><strong>3：</strong>全文出现的必考字样指的是：必须自我考查的意思，请勿对号入座。</p></section>
-    <h2>一、力学基础与传动计算</h2>
-    <h3>1. 变形与材料属性</h3><ul class="doc-list doc-list--disc"><li><strong>弹性变形：</strong>外力去除后能够恢复原状的变形。</li><li><strong>塑性变形：</strong>不能恢复原状的变形。</li><li><strong>硬度：</strong>材料抵抗局部塑性变形的能力。</li><li><strong>刚度：</strong>材料抵抗弹性变形的能力。</li><li><strong>韧性：</strong>材料抵抗冲击的能力。</li></ul>
-    <h3>2. 齿轮分度圆计算</h3><p class="doc-formula">d = m × z</p><p>其中：<strong>d</strong> 为分度圆直径；<strong>m</strong> 为模数；<strong>z</strong> 为齿数。</p>
-    <h3>3. 齿轮传动核心要点</h3><p><strong>核心概念：</strong>压力角、模数、分度圆。</p><p class="doc-note">○ 注：齿轮的模数反映了齿形大小，而非压力角。</p><p><strong>中心距计算公式</strong></p><p class="doc-formula doc-formula--large">a = ½ (d1 + d2) = ½ m (z1 + z2)</p><p><strong>齿轮正确啮合条件：</strong></p><ul class="doc-list doc-list--circle"><li>两齿轮的模数（m）必须相等。</li><li>两齿轮的压力角（α）必须相等。</li><li>标准压力角通常为：<span class="doc-muted-dark">20°</span>。</li></ul>
-    <h2>二、轴的分类与应用</h2><ol class="doc-list doc-list--number"><li><strong>心轴：</strong>只承受弯矩而不传递扭矩的轴。</li><li><strong>传动轴：</strong>主要传递扭矩，弯矩很小或可忽略的轴。</li><li><strong>转轴：</strong>既承受弯矩又承受扭矩的轴。</li></ol><p class="doc-indent"><span class="doc-small-num">1.1</span> <strong>轴向定位：</strong>解决零件在轴上是否会前后窜动的问题（侧重于位置固定）。</p><p class="doc-indent"><strong>周向定位：</strong>解决零件是否会相对轴发生打滑转动的问题（侧重于动力传递）。</p>
-    <h2>三、99% 必考公式：</h2><div class="table-wrap"><table class="doc-table doc-table--formula"><thead><tr><th>序号</th><th>公式</th><th>名称</th><th>速记口诀</th><th>备注</th></tr></thead><tbody><tr><td>1</td><td class="doc-eq">σ=F/A</td><td>正应力</td><td>正应力 = 轴力 ÷ 面积</td><td>拉压应力计算</td></tr><tr><td>2</td><td class="doc-eq">τ=F/A</td><td>剪应力（平均）</td><td>剪应力 = 剪力 ÷ 面积</td><td>单剪情况</td></tr><tr><td>3</td><td class="doc-eq">ε=ΔL/L</td><td>线应变</td><td>应变 = 伸长量 ÷ 原长</td><td>变形比例</td></tr><tr><td>4</td><td class="doc-eq">d=mz</td><td>齿轮分度圆直径</td><td>直径 = 模数 × 齿数</td><td>齿轮基本参数</td></tr></tbody></table></div><p class="doc-footnote">包括变式，考试中：4.1.2 点是重点 不仅要求正应力和剪应力，还可能会涉及求面积和剪应力双剪情况，下一页会说</p>
-    <h2>四、必考应力区分</h2><div class="table-wrap"><table class="doc-table doc-table--stress"><thead><tr><th>应力类别</th><th colspan="2">核心定义与计算要点</th></tr></thead><tbody><tr><th>正应力</th><td colspan="2">垂直于截面的应力，公式为 <span class="doc-eq-inline">σ = F / A</span>。反映材料在拉伸或压缩下的受力情况。</td></tr><tr><th>许用应力</th><td colspan="2">材料在正常工作条件下允许承受的最大应力值 [σ] 或 [τ]，是安全设计的依据。</td></tr><tr><th rowspan="2">剪应力</th><td class="doc-subhead">单剪</td><td class="doc-subhead">双剪</td></tr><tr><td>平行于截面，公式 <span class="doc-eq-inline">τ = F / A</span>。力由单个截面承担。</td><td>公式 <span class="doc-eq-inline">τ = F / 2A</span>。相同力下，双剪应力仅为单剪的一半，安全性更高。</td></tr></tbody></table></div>
+    <h2 id="section-1">一、力学基础与传动计算</h2>
+    <h3 id="section-2">1. 变形与材料属性</h3><ul class="doc-list doc-list--disc"><li><strong>弹性变形：</strong>外力去除后能够恢复原状的变形。</li><li><strong>塑性变形：</strong>不能恢复原状的变形。</li><li><strong>硬度：</strong>材料抵抗局部塑性变形的能力。</li><li><strong>刚度：</strong>材料抵抗弹性变形的能力。</li><li><strong>韧性：</strong>材料抵抗冲击的能力。</li></ul>
+    <h3 id="section-3">2. 齿轮分度圆计算</h3><p class="doc-formula">d = m × z</p><p>其中：<strong>d</strong> 为分度圆直径；<strong>m</strong> 为模数；<strong>z</strong> 为齿数。</p>
+    <h3 id="section-4">3. 齿轮传动核心要点</h3><p><strong>核心概念：</strong>压力角、模数、分度圆。</p><p class="doc-note">○ 注：齿轮的模数反映了齿形大小，而非压力角。</p><p><strong>中心距计算公式</strong></p><p class="doc-formula doc-formula--large">a = ½ (d1 + d2) = ½ m (z1 + z2)</p><p><strong>齿轮正确啮合条件：</strong></p><ul class="doc-list doc-list--circle"><li>两齿轮的模数（m）必须相等。</li><li>两齿轮的压力角（α）必须相等。</li><li>标准压力角通常为：<span class="doc-muted-dark">20°</span>。</li></ul>
+    <h2 id="section-5">二、轴的分类与应用</h2><ol class="doc-list doc-list--number"><li><strong>心轴：</strong>只承受弯矩而不传递扭矩的轴。</li><li><strong>传动轴：</strong>主要传递扭矩，弯矩很小或可忽略的轴。</li><li><strong>转轴：</strong>既承受弯矩又承受扭矩的轴。</li></ol><p class="doc-indent"><span class="doc-small-num">1.1</span> <strong>轴向定位：</strong>解决零件在轴上是否会前后窜动的问题（侧重于位置固定）。</p><p class="doc-indent"><strong>周向定位：</strong>解决零件是否会相对轴发生打滑转动的问题（侧重于动力传递）。</p>
+    <h2 id="section-6">三、99% 必考公式：</h2><div class="table-wrap"><table class="doc-table doc-table--formula"><thead><tr><th>序号</th><th>公式</th><th>名称</th><th>速记口诀</th><th>备注</th></tr></thead><tbody><tr><td>1</td><td class="doc-eq">σ=F/A</td><td>正应力</td><td>正应力 = 轴力 ÷ 面积</td><td>拉压应力计算</td></tr><tr><td>2</td><td class="doc-eq">τ=F/A</td><td>剪应力（平均）</td><td>剪应力 = 剪力 ÷ 面积</td><td>单剪情况</td></tr><tr><td>3</td><td class="doc-eq">ε=ΔL/L</td><td>线应变</td><td>应变 = 伸长量 ÷ 原长</td><td>变形比例</td></tr><tr><td>4</td><td class="doc-eq">d=mz</td><td>齿轮分度圆直径</td><td>直径 = 模数 × 齿数</td><td>齿轮基本参数</td></tr></tbody></table></div><p class="doc-footnote">包括变式，考试中：4.1.2 点是重点 不仅要求正应力和剪应力，还可能会涉及求面积和剪应力双剪情况，下一页会说</p>
+    <h2 id="section-7">四、必考应力区分</h2><div class="table-wrap"><table class="doc-table doc-table--stress"><thead><tr><th>应力类别</th><th colspan="2">核心定义与计算要点</th></tr></thead><tbody><tr><th>正应力</th><td colspan="2">垂直于截面的应力，公式为 <span class="doc-eq-inline">σ = F / A</span>。反映材料在拉伸或压缩下的受力情况。</td></tr><tr><th>许用应力</th><td colspan="2">材料在正常工作条件下允许承受的最大应力值 [σ] 或 [τ]，是安全设计的依据。</td></tr><tr><th rowspan="2">剪应力</th><td class="doc-subhead">单剪</td><td class="doc-subhead">双剪</td></tr><tr><td>平行于截面，公式 <span class="doc-eq-inline">τ = F / A</span>。力由单个截面承担。</td><td>公式 <span class="doc-eq-inline">τ = F / 2A</span>。相同力下，双剪应力仅为单剪的一半，安全性更高。</td></tr></tbody></table></div>
   </div></article>
+</div>
+<!-- reading-layout-end -->
+
   <div class="comments-section"><div class="comments-section__title">评论</div><script src="https://giscus.app/client.js" data-repo="Riuip/my-book" data-repo-id="R_kgDOSd9iQQ" data-category="General" data-category-id="DIC_kwDOSd9iQc4C9HAT" data-mapping="pathname" data-strict="0" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="preferred_color_scheme" data-lang="zh-CN" data-loading="lazy" crossorigin="anonymous" async></script></div>
   <div class="share-section"><div class="share-section__title">分享文章</div><div class="share-buttons" id="share-buttons"></div></div>
   <div class="article-foot"><a class="btn btn--ghost" href="index.html" style="color:var(--text-soft);">&lsaquo; 返回主页</a><a class="btn btn--ghost" href="archive.html">浏览所有文章</a></div>
@@ -117,10 +123,9 @@
         </ul>
       </div>
     </div>
-  </footer>
-  <div class="toc-widget"><button class="toc-toggle" id="toc-toggle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg><span>目录</span></button><nav class="toc" id="toc" aria-label="文章目录"></nav></div><button class="back-to-top" id="back-to-top" aria-label="返回顶部"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg></button>
-  <script src="assets/js/view-transitions.js?v=2"></script><script src="assets/js/main.js?v=19"></script><script src="assets/js/posts-data.js?v=4"></script><script src="assets/js/enhancements.js?v=4"></script><script src="assets/js/extras.js?v=6"></script>
-  <script src="assets/js/search.js?v=7"></script>
-  <script src="assets/js/edition.js?v=4" defer></script>
+  </footer><button class="back-to-top" id="back-to-top" aria-label="返回顶部"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg></button>
+  <script src="assets/js/view-transitions.js?v=2"></script><script src="assets/js/main.js?v=19"></script><script src="assets/js/posts-data.js?v=4"></script><script src="assets/js/enhancements.js?v=5"></script><script src="assets/js/extras.js?v=7"></script>
+  <script src="assets/js/search.js?v=8"></script>
+  <script src="assets/js/edition.js?v=5" defer></script>
 </body>
 </html>

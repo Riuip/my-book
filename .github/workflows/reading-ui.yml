@@ -1,0 +1,28 @@
+name: Reading UI acceptance
+on:
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm install --no-save --package-lock=false playwright@1.58.2 linkedom@0.18.12
+      - run: npx playwright install --with-deps chromium
+      - run: node tools/test-base64.cjs && node tools/test-reading-ui.cjs
+      - name: Browser acceptance
+        run: |
+          python3 -m http.server 8000 > /tmp/wyq-http.log 2>&1 &
+          node tools/test-browser.cjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: reading-ui-screenshots
+          path: test-results/

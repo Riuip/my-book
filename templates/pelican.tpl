@@ -35,5 +35,5 @@
             <g id="pelicanNearFoot" transform="translate(229 238)"><path d="M-13 3h28" stroke="currentColor" stroke-width="3" stroke-linecap="round"/><path d="M-8-9q5-1 8 5L14-1q3 3-2 3H-10q-4-2 2-11Z" fill="#f5b553" stroke="#d99134" stroke-width="1"/><path d="m3-2 3 3m2-2 3 2" fill="none" stroke="#d99134" stroke-width=".9" stroke-linecap="round"/></g>
             <circle cx="153" cy="240" r="4.5" fill="#2589eb"/><circle cx="345" cy="240" r="4.5" fill="#2589eb"/><circle cx="247" cy="238" r="3.2" fill="currentColor"/>
           </svg>
-          <figcaption><span>出发，去探索。</span><button id="pelicanToggle" type="button" aria-pressed="false" hidden>暂停动画</button></figcaption>
+          <figcaption><button id="pelicanToggle" type="button" aria-pressed="false" hidden>暂停动画</button></figcaption>
         </figure>

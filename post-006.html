@@ -70,7 +70,7 @@
   <link rel="stylesheet" href="assets/css/liquid-glass.css?v=2" />
   <link rel="stylesheet" href="assets/css/liquid-optics.css?v=7" />
   <script src="assets/js/liquid-optics.js?v=5" defer></script>
-  <link rel="stylesheet" href="assets/css/edition.css?v=5" />
+  <link rel="stylesheet" href="assets/css/edition.css?v=6" />
 </head>
 <body class="ed-article">
 
@@ -137,7 +137,10 @@
   </header>
 
   <!-- ARTICLE BODY -->
-  <article class="article" id="main-content" tabindex="-1">
+<!-- reading-layout-start -->
+<div class="ed-reading-layout">
+<div class="toc-widget"><button type="button" class="toc-toggle" id="toc-toggle" aria-expanded="true" aria-controls="toc"><span>文章目录</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg></button><nav class="toc" id="toc" aria-label="文章目录"><ul class="toc__list"><li class="toc__item"><a class="toc__link" href="#section-1">1. 元提示词工程师 (Alpha-Prompt)</a></li><li class="toc__item"><a class="toc__link" href="#section-2">2. 全能中文 AI 助理</a></li><li class="toc__item"><a class="toc__link" href="#section-3">3. 论文内容科普</a></li><li class="toc__item"><a class="toc__link" href="#section-4">4. 论文 AI 降重（改写助手）</a></li><li class="toc__item"><a class="toc__link" href="#section-5">使用说明</a></li></ul></nav></div>
+<article class="article" id="main-content" tabindex="-1">
     <p class="lead">
       这里收集了我日常使用的、经过验证有效的 AI 提示词模板。每个模板都可以直接复制粘贴到对应的 AI 工具中使用。点击标题展开查看完整内容。
     </p>
@@ -145,7 +148,7 @@
 
     <hr/>
 
-    <h2>1. 元提示词工程师 (Alpha-Prompt)</h2>
+    <h2 id="section-1">1. 元提示词工程师 (Alpha-Prompt)</h2>
     <p>用 AI 来帮你生成更好的提示词。它会以专家顾问的角色，通过对话引导你一步步构建出高质量的 Prompt。</p>
     <p><strong>适用场景</strong>：当你不知道怎么写提示词、或者想把一个粗糙的想法升级为专业级 Prompt 时使用。</p>
 
@@ -185,7 +188,7 @@
 
     <hr/>
 
-    <h2>2. 全能中文 AI 助理</h2>
+    <h2 id="section-2">2. 全能中文 AI 助理</h2>
     <p>一个通用的、高质量中文 AI 助理人设。输出结构化、有关键词高亮、有名词解释、有总结表格。适合作为日常对话的"底座 Prompt"。</p>
     <p><strong>适用场景</strong>：日常问答、写作、编程、分析 &mdash; 万能底座。</p>
 
@@ -216,7 +219,7 @@
 
     <hr/>
 
-    <h2>3. 论文内容科普</h2>
+    <h2 id="section-3">3. 论文内容科普</h2>
     <p>把充斥着术语和数据的学术论文，转译成普通人能轻松读懂的科普文章。适合做公众号、博客的学术解读内容。</p>
     <p><strong>适用场景</strong>：拿到一篇论文 PDF，想写一篇通俗易懂的解读文。</p>
 
@@ -246,7 +249,7 @@
 
     <hr/>
 
-    <h2>4. 论文 AI 降重（改写助手）</h2>
+    <h2 id="section-4">4. 论文 AI 降重（改写助手）</h2>
     <p>把 AI 生成的或学术化的段落，改写成更自然、更"人味"的风格，同时保持技术准确性。适合论文降重、去 AI 检测。</p>
     <p><strong>适用场景</strong>：论文降重、去除 AI 痕迹、让学术文字更通顺。</p>
 
@@ -291,7 +294,7 @@
 
     <hr/>
 
-    <h2>使用说明</h2>
+    <h2 id="section-5">使用说明</h2>
     <ul>
       <li>点击每个提示词的标题栏即可展开/折叠完整内容</li>
       <li>展开后可以直接全选复制，粘贴到 ChatGPT / Claude / DeepSeek 等工具中使用</li>
@@ -302,6 +305,9 @@
       &mdash; WYQ &nbsp;&middot;&nbsp; 2026 年 5 月 15 日 &nbsp;&middot;&nbsp; 持续更新中
     </p>
   </article>
+</div>
+<!-- reading-layout-end -->
+
 
   <!-- COMMENTS (Giscus) -->
   <div class="comments-section">
@@ -369,17 +375,8 @@
 
   <script src="assets/js/view-transitions.js?v=2"></script>
   <script src="assets/js/main.js?v=19"></script>
-  <script src="assets/js/copy-btn.js?v=1"></script>
+  <script src="assets/js/copy-btn.js?v=2"></script>
   <!-- TOC WIDGET -->
-  <div class="toc-widget">
-    <button class="toc-toggle" id="toc-toggle">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <polyline points="6 9 12 15 18 9"/>
-      </svg>
-      <span>目录</span>
-    </button>
-    <nav class="toc" id="toc" aria-label="文章目录"></nav>
-  </div>
 
   <!-- BACK TO TOP -->
   <button class="back-to-top" id="back-to-top" aria-label="返回顶部">
@@ -392,9 +389,9 @@
   <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/line-numbers/prism-line-numbers.min.js"></script>
   <script src="assets/js/posts-data.js?v=4"></script>
-  <script src="assets/js/enhancements.js?v=4"></script>
-  <script src="assets/js/extras.js?v=6"></script>
-  <script src="assets/js/search.js?v=7"></script>
-  <script src="assets/js/edition.js?v=4" defer></script>
+  <script src="assets/js/enhancements.js?v=5"></script>
+  <script src="assets/js/extras.js?v=7"></script>
+  <script src="assets/js/search.js?v=8"></script>
+  <script src="assets/js/edition.js?v=5" defer></script>
 </body>
 </html>

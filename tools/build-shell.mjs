@@ -88,6 +88,30 @@ for (const file of pages) {
   html=html.replace(/<p class="ed-kicker">[\s\S]*?<\/p>/g,'').replace('← JOURNAL / 返回全部文章','‹ 返回全部文章');
   if (file.startsWith('tools/')&&!html.includes('assets/css/style.css')) html=html.replace(/(<style>)/,'<link rel="stylesheet" href="../assets/css/style.css?v=27" />\n$1');
   html=html.replace(/(<meta name="theme-color" content=")(?:#fbfbfd|#f2f2e9)/g,'$1#ffffff').replace(/(<meta name="theme-color" content=")(?:#000000|#111e19)/g,'$1#000000');
+  if (file.startsWith('post-')) {
+    // Rebuild one static reading layout; headings and TOC also work without JS.
+    html = html.replace(/<!-- reading-layout-start -->\s*<div class="ed-reading-layout">\s*/g,'').replace(/\s*<\/div>\s*<!-- reading-layout-end -->/g,'');
+    html = html.replace(/\s*<div class="toc-widget">[\s\S]*?<\/nav>\s*<\/div>/g,'');
+    html = html.replace(/<article class="article"[\s\S]*?<\/article>/, body => {
+      const entries = [];
+      let index = 0;
+      body = body.replace(/<(h[23])\b([^>]*)>([\s\S]*?)<\/\1>/g, (_,tag,attrs,label) => {
+        const existing = attrs.match(/\bid="([^"]+)"/);
+        let id = existing?.[1];
+        if (!id) {
+          do { id = 'section-' + (++index); } while (html.includes('id="'+id+'"'));
+          attrs += ' id="'+id+'"';
+        }
+        entries.push('<li class="toc__item'+(tag==='h3'?' toc__item--sub':'')+'"><a class="toc__link" href="#'+id+'">'+label.replace(/<[^>]*>/g,'')+'</a></li>');
+        return '<'+tag+attrs+'>'+label+'</'+tag+'>';
+      });
+      const toc = entries.length ? '<div class="toc-widget"><button type="button" class="toc-toggle" id="toc-toggle" aria-expanded="true" aria-controls="toc"><span>文章目录</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg></button><nav class="toc" id="toc" aria-label="文章目录"><ul class="toc__list">'+entries.join('')+'</ul></nav></div>' : '';
+      return '<!-- reading-layout-start -->\n<div class="ed-reading-layout">\n'+toc+'\n'+body+'\n</div>\n<!-- reading-layout-end -->';
+    });
+  }
+  for (const [asset,version] of [['edition.css',6],['edition.js',5],['enhancements.js',5],['extras.js',7],['search.js',8],['copy-btn.js',2]]) {
+    html = html.replace(new RegExp(asset.replace('.', '\\.')+'(?:\\?v=\\d+)?(?=["\\\'])','g'),asset+'?v='+version);
+  }
   write(file,html.replace(/[ \t]+$/gm,''));
 }
 console.log('Rebuilt the minimal shell for '+pages.length+' pages.');
