@@ -16,7 +16,7 @@ const footer = read('templates/footer.tpl');
 const search = read('templates/search.tpl');
 const homeTemplate = read('templates/home.tpl');
 const toolMeta = {
-  'base64.html':['grad','BASE64','把编码，还原成文字。支持中文与 URL-safe Base64。'],
+  'base64.html':['grad','BASE64','转换一段文字，或用密码为它留一把钥匙。'],
   'gradient.html':['grad','01 / COLOUR STUDY','调出你的下一组灵感色。支持线性、径向和锥形渐变，完成后复制 CSS。'],
   'pomodoro.html':['pomo','02 / A LITTLE FOCUS','给自己一段完整的时间。选择专注或休息，让眼前这件事慢慢完成。'],
   'md-card.html':['mc','03 / WORDS, FRAMED','把笔记、摘录与小想法排成卡片。选一个主题，再带走你的作品。'],
@@ -109,7 +109,7 @@ for (const file of pages) {
       return '<!-- reading-layout-start -->\n<div class="ed-reading-layout">\n'+toc+'\n'+body+'\n</div>\n<!-- reading-layout-end -->';
     });
   }
-  for (const [asset,version] of [['edition.css',6],['edition.js',5],['enhancements.js',5],['extras.js',7],['search.js',8],['copy-btn.js',2]]) {
+  for (const [asset,version] of [['edition.css',7],['edition.js',5],['enhancements.js',5],['extras.js',7],['search.js',8],['copy-btn.js',2],['base64.css',3],['base64.js',2]]) {
     html = html.replace(new RegExp(asset.replace('.', '\\.')+'(?:\\?v=\\d+)?(?=["\\\'])','g'),asset+'?v='+version);
   }
   write(file,html.replace(/[ \t]+$/gm,''));

@@ -6,8 +6,8 @@
         <div class="ed-hero" id="defaultHero" aria-hidden="false">
           <div class="ed-hero-copy">
             <h1>记录生活。<br><span>也探索更多。</span></h1>
-            <div class="ed-hero-actions"><a class="btn btn--primary" href="archive.html">浏览文章</a><a class="ed-text-link" href="#studio">探索工具 <span aria-hidden="true">›</span></a></div>
           </div>
+          <div class="ed-hero-actions"><a class="btn btn--primary" href="archive.html">浏览文章 <span aria-hidden="true">↗</span></a><a class="ed-text-link" href="#studio">探索工具 <span aria-hidden="true">↓</span></a></div>
         </div>
         {{birthday}}
       </div>
@@ -34,7 +34,7 @@
         <div class="ed-section-head"><div><h2 id="studio-title">小工具，大有用。</h2></div><p class="ed-studio-lead">为日常，添一点便利。</p></div>
 {{pelican}}
         <div class="ed-tool-grid">
-          <a class="ed-tool-card" href="base64.html"><div class="ed-tool-art ed-tool-art--card" aria-hidden="true"><div class="ed-mini-page">B64<i></i><i></i><i></i></div></div><div class="ed-tool-caption"><h3>Base64 解码</h3><span aria-hidden="true">›</span></div></a>
+          <a class="ed-tool-card" href="base64.html"><div class="ed-tool-art ed-tool-art--base64" aria-hidden="true"><div class="ed-mini-code"><span>Aa</span><span>⇄</span><span>64</span></div></div><div class="ed-tool-caption"><h3>Base64 与加密</h3><span aria-hidden="true">›</span></div></a>
           <a class="ed-tool-card" href="gradient.html"><div class="ed-tool-art ed-tool-art--gradient" aria-hidden="true"></div><div class="ed-tool-caption"><h3>渐变实验室</h3><span aria-hidden="true">›</span></div></a>
           <a class="ed-tool-card" href="pomodoro.html"><div class="ed-tool-art ed-tool-art--focus" aria-hidden="true"><div class="ed-mini-dial">25:00</div></div><div class="ed-tool-caption"><h3>极简番茄钟</h3><span aria-hidden="true">›</span></div></a>
           <a class="ed-tool-card" href="md-card.html"><div class="ed-tool-art ed-tool-art--card" aria-hidden="true"><div class="ed-mini-page">Aa<i></i><i></i><i></i></div></div><div class="ed-tool-caption"><h3>Markdown 卡片</h3><span aria-hidden="true">›</span></div></a>
