@@ -9,6 +9,15 @@ const base = process.env.TEST_BASE_URL || 'http://127.0.0.1:8000/';
   // Test the site's own UI independently from remote comments, fonts and weather APIs.
   await context.route('**/*', route => new URL(route.request().url()).origin === new URL(base).origin ? route.continue() : route.abort());
   const page = await context.newPage();
+  async function capture(name) {
+    // Full-page screenshots otherwise pin fixed UI at the current scroll offset.
+    await page.evaluate(()=>{
+      document.activeElement?.blur();
+      window.scrollTo({top:0,behavior:'instant'});
+      return new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)));
+    });
+    await page.screenshot({path:'test-results/'+name,fullPage:true});
+  }
   const errors=[], failures=[];
   page.on('pageerror',error=>errors.push(page.url()+': '+error.message));
   page.on('response',response=> { if(response.status()>=400 && response.url().startsWith(base)) failures.push(response.url()+': '+response.status()); });
@@ -19,7 +28,7 @@ const base = process.env.TEST_BASE_URL || 'http://127.0.0.1:8000/';
       await page.goto(base+file,{waitUntil:'load'});
       const overflow=await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth+1);
       assert(!overflow,`${file} horizontal overflow at ${width}px`);
-      if(['index.html','post-008.html','post-007.html'].includes(file)) await page.screenshot({path:`test-results/${file}-${width}.png`,fullPage:true});
+      if(['index.html','post-008.html','post-007.html'].includes(file)) await capture(`${file}-${width}.png`);
     }
   }
   await page.setViewportSize({width:390,height:844});
@@ -27,7 +36,7 @@ const base = process.env.TEST_BASE_URL || 'http://127.0.0.1:8000/';
   assert.equal(await page.locator('.ed-hero-name,.ed-feature-copy>p,.ed-note>p,.ed-tool-card>p,.ed-pelican figcaption>span').count(),0);
   await page.locator('[data-theme-toggle]').click();
   assert.equal(await page.locator('html').getAttribute('data-theme'),'dark');
-  await page.screenshot({path:'test-results/home-dark.png',fullPage:true});
+  await capture('home-dark.png');
   await page.reload();
   assert.equal(await page.locator('html').getAttribute('data-theme'),'dark');
   await page.goto(base+'post-008.html');
@@ -39,7 +48,7 @@ const base = process.env.TEST_BASE_URL || 'http://127.0.0.1:8000/';
   await page.waitForFunction(hash=>location.hash===hash,href);
   const top=await page.locator(href).evaluate(n=>n.getBoundingClientRect().top);
   assert(top>=0&&top<160,'TOC target hidden or not scrolled');
-  await page.screenshot({path:'test-results/article-dark.png',fullPage:true});
+  await capture('article-dark.png');
   await page.goto(base+'index.html');
   await page.locator('#navSearchBtn').click();
   await page.waitForURL('**/search.html');
@@ -60,6 +69,61 @@ const base = process.env.TEST_BASE_URL || 'http://127.0.0.1:8000/';
   await page.locator('#b64Input').fill('5L2g5aW9');
   await page.locator('#b64Form button[type=submit]').click();
   assert.equal(await page.locator('#b64Output').inputValue(),'你好');
+  // Exercise encryption as a visitor, including confirmation, reuse and errors.
+  await page.getByRole('radio',{name:'密码加密',exact:true}).check();
+  await page.locator('#b64Input').fill('你好，WYQ！\n保留中文与 Emoji 🔐');
+  await page.locator('#b64Password').fill('a-long-test-password');
+  await page.locator('#b64Confirm').fill('a-different-password');
+  await page.locator('#b64Submit').click();
+  assert.match(await page.locator('#b64Status').textContent(),/不一致/);
+  await page.locator('#b64Confirm').fill('a-long-test-password');
+  await page.locator('#b64Submit').click();
+  await page.waitForFunction(()=>document.querySelector('#b64Output').value.length>0);
+  const encrypted=await page.locator('#b64Output').inputValue();
+  assert(encrypted.startsWith('V1lRA'));
+  await capture('base64-encrypt-desktop.png');
+  await page.locator('#b64Reuse').click();
+  assert.equal(await page.locator('#b64Input').inputValue(),encrypted);
+  assert.equal(await page.locator('#b64Password').inputValue(),'');
+  await page.locator('#b64Password').fill('a-wrong-test-password');
+  await page.locator('#b64Submit').click();
+  await page.waitForFunction(()=>document.querySelector('#b64Status').dataset.error==='true');
+  assert.equal(await page.locator('#b64Output').inputValue(),'');
+  assert(await page.locator('#b64Copy').isDisabled());
+  await page.locator('#b64Password').fill('a-long-test-password');
+  await page.locator('#b64Submit').click();
+  await page.waitForFunction(()=>document.querySelector('#b64Output').value.length>0);
+  assert.equal(await page.locator('#b64Output').inputValue(),'你好，WYQ！\n保留中文与 Emoji 🔐');
+  const downloadEvent=page.waitForEvent('download');
+  await page.locator('#b64Download').click();
+  const download=await downloadEvent;
+  assert.equal(download.suggestedFilename(),'decrypted.txt');
+  assert.equal(fs.readFileSync(await download.path(),'utf8'),'你好，WYQ！\n保留中文与 Emoji 🔐');
+  await page.locator('#b64Clear').click();
+  assert.equal(await page.locator('#b64Output').inputValue(),'');
+  assert.equal(await page.locator('#b64Password').inputValue(),'');
+  await page.setViewportSize({width:320,height:844});
+  await page.getByRole('radio',{name:'密码加密',exact:true}).check();
+  assert(!(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth+1)),'encryption overflows at 320px');
+  await capture('base64-encrypt-mobile-dark.png');
+  // Model a slow cryptographic operation, then edit its source before completion.
+  await page.evaluate(()=>{
+    const original=crypto.subtle.encrypt.bind(crypto.subtle);
+    crypto.subtle.encrypt=async (...args)=>{await new Promise(resolve=>setTimeout(resolve,500));return original(...args);};
+  });
+  await page.locator('#b64Input').fill('old input');
+  await page.locator('#b64Password').fill('a-long-test-password');
+  await page.locator('#b64Confirm').fill('a-long-test-password');
+  await page.locator('#b64Submit').click();
+  await page.locator('#b64Input').fill('new input');
+  await page.waitForFunction(()=>!document.querySelector('#b64Submit').disabled);
+  assert.equal(await page.locator('#b64Output').inputValue(),'','stale encryption result must be discarded');
+  assert(await page.locator('#b64Download').isDisabled());
+  // Theme toggles are available across tools, with visible selection in both palettes.
+  await page.locator('[data-theme-toggle]').click();
+  await page.setViewportSize({width:390,height:844});
+  await capture('base64-encrypt-mobile-light.png');
+
   assert.deepEqual(errors,[],'uncaught browser errors');
   assert.deepEqual(failures,[],'local resource failures');
   await context.close();

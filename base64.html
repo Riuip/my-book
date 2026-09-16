@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>Base64 解码 — WYQ 专属博客</title>
-  <meta name="description" content="在线解码 Base64，支持中文 UTF-8、URL-safe 格式、一键复制与原始文件下载。内容只在浏览器中处理。">
+  <title>Base64 与密码加密 — WYQ</title>
+  <meta name="description" content="Base64 编码与解码、AES-GCM 密码加密与解密。支持中文、一键复制与下载，内容与密码只在浏览器本地处理。">
   <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
   <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
   <link rel="canonical" href="https://riuip.github.io/my-book/base64.html">
@@ -13,9 +13,9 @@
   <link rel="stylesheet" href="assets/css/style.css?v=27">
   <link rel="stylesheet" href="assets/css/liquid-glass.css?v=2">
   <link rel="stylesheet" href="assets/css/liquid-optics.css?v=7">
-  <link rel="stylesheet" href="assets/css/base64.css?v=2">
+  <link rel="stylesheet" href="assets/css/base64.css?v=3">
   <script>(function(){try{var t=localStorage.getItem('wyq-theme');if(t!=='light'&&t!=='dark')t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';document.documentElement.dataset.theme=t;}catch(e){}})();</script>
-  <link rel="stylesheet" href="assets/css/edition.css?v=6" />
+  <link rel="stylesheet" href="assets/css/edition.css?v=7" />
 </head>
 <body class="ed-tool">
   <a class="ed-skip" href="#main-content">跳到正文</a>
@@ -41,7 +41,7 @@
           <summary class="nav__sub-toggle"><span>实验</span><svg class="nav__sub-toggle__chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="m7 10 5 5 5-5"/></svg></summary>
           <div class="nav__submenu" role="menu">
             <div class="ed-menu-caption">工具</div>
-            <a href="base64.html" role="menuitem">Base64 解码</a>
+            <a href="base64.html" role="menuitem">Base64 与加密</a>
             <a href="gradient.html" role="menuitem">渐变实验室</a>
             <a href="pomodoro.html" role="menuitem">极简番茄钟</a>
             <a href="md-card.html" role="menuitem">Markdown 卡片</a>
@@ -58,27 +58,40 @@
   </nav>
 
   <main class="grad-stage b64-stage" id="main-content" tabindex="-1">
-    <div class="grad-head"><h1 class="grad-title">Base64 解码</h1><p class="grad-sub">把编码，还原成文字。支持中文与 URL-safe Base64。</p></div>
-    <form class="b64-workspace" id="b64Form">
+    <div class="grad-head"><h1 class="grad-title">Base64 与加密</h1><p class="grad-sub">转换一段文字，或用密码为它留一把钥匙。</p></div>
+    <form class="b64-workspace" id="b64Form" novalidate>
+      <fieldset class="b64-modes">
+        <legend class="b64-sr-only">选择处理方式</legend>
+        <label><input type="radio" name="b64Mode" value="decode" checked><span>解码</span></label>
+        <label><input type="radio" name="b64Mode" value="encode"><span>编码</span></label>
+        <label><input type="radio" name="b64Mode" value="encrypt"><span>密码加密</span></label>
+        <label><input type="radio" name="b64Mode" value="decrypt"><span>密码解密</span></label>
+      </fieldset>
       <section class="b64-panel" aria-labelledby="b64InputLabel">
         <div class="b64-panel-head"><label id="b64InputLabel" for="b64Input">输入 Base64</label><button type="button" id="b64Example" class="b64-text-button">试个例子</button></div>
         <textarea id="b64Input" placeholder="粘贴 Base64 内容…" aria-describedby="b64Hint b64Status" maxlength="2000000" spellcheck="false" autocapitalize="off" autocomplete="off" autocorrect="off"></textarea>
-        <p class="b64-hint" id="b64Hint">可含空格、换行，末尾的 = 可省略。最多 200 万个字符。</p>
-        <div class="b64-actions"><button class="btn btn--primary" type="submit">解码</button><button class="btn" type="button" id="b64Clear">清空</button></div>
+        <p class="b64-hint" id="b64Hint">支持中文、URL-safe 格式、空格和换行；末尾的 = 可省略。</p>
+        <div class="b64-crypto-fields" id="b64CryptoFields" hidden>
+          <div class="b64-password-head"><label for="b64Password">密码</label><button type="button" class="b64-text-button" id="b64Reveal" aria-pressed="false" aria-controls="b64Password b64Confirm">显示密码</button></div>
+          <input id="b64Password" type="password" maxlength="1024" autocomplete="off" spellcheck="false" autocapitalize="off" autocorrect="off" aria-describedby="b64PasswordHint b64Status" disabled>
+          <div id="b64ConfirmField"><label for="b64Confirm">确认密码</label><input id="b64Confirm" type="password" maxlength="1024" autocomplete="new-password" spellcheck="false" autocapitalize="off" autocorrect="off" aria-describedby="b64PasswordHint b64Status" disabled></div>
+          <p class="b64-hint" id="b64PasswordHint">加密密码至少 8 个字符，建议使用较长的独特密码。密码不会保存在本站，遗忘后无法找回。</p>
+        </div>
+        <div class="b64-actions"><button class="btn btn--primary" type="submit" id="b64Submit">解码</button><button class="btn" type="button" id="b64Clear">清空</button></div>
         <p class="b64-status" id="b64Status" role="status" aria-live="polite" aria-atomic="true"></p>
       </section>
       <section class="b64-panel" aria-labelledby="b64OutputLabel">
         <div class="b64-panel-head"><label id="b64OutputLabel" for="b64Output">解码结果</label><span id="b64Size" class="b64-hint"></span></div>
-        <textarea id="b64Output" placeholder="解码后的文字会出现在这里" readonly spellcheck="false"></textarea>
-        <p class="b64-hint">按 UTF-8 显示文字；二进制内容可下载为原始文件。</p>
-        <div class="b64-actions"><button class="btn" type="button" id="b64Copy" disabled>复制结果</button><button class="btn" type="button" id="b64Download" disabled>下载文件</button></div>
+        <textarea id="b64Output" placeholder="结果会出现在这里" readonly spellcheck="false" aria-describedby="b64OutputHint"></textarea>
+        <p class="b64-hint" id="b64OutputHint">按 UTF-8 显示文字；二进制内容可下载为原始文件。</p>
+        <div class="b64-actions"><button class="btn" type="button" id="b64Copy" disabled>复制结果</button><button class="btn" type="button" id="b64Download" disabled>下载文件</button><button class="b64-text-button" type="button" id="b64Reuse" disabled>用结果作为输入 <span aria-hidden="true">↗</span></button></div>
       </section>
-      <p class="b64-privacy">内容只在当前浏览器中处理，不上传，也不保存输入记录。</p>
+      <div class="b64-privacy"><p>所有转换均在当前浏览器中完成，文字和密码不会上传，也不保存输入记录。</p><p>Base64 是编码方式；需要保密时请选择“密码加密”。密文使用 AES-256-GCM 生成，以 Base64 形式保存。</p></div>
     </form>
-    <noscript>请启用 JavaScript 后使用解码工具。</noscript>
+    <noscript>请启用 JavaScript 后使用转换与加密工具。</noscript>
   </main>
   <script src="assets/js/liquid-optics.js?v=5" defer></script>
-  <script src="assets/js/base64.js?v=1" defer></script>
+  <script src="assets/js/base64.js?v=2" defer></script>
     <div class="nav-search__overlay" id="navSearchOverlay"></div>
   <div class="nav-search" id="navSearchBox" role="dialog" aria-label="搜索文章">
     <div class="nav-search__inner">
