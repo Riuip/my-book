@@ -9,6 +9,15 @@ const base = process.env.TEST_BASE_URL || 'http://127.0.0.1:8000/';
   // Test the site's own UI independently from remote comments, fonts and weather APIs.
   await context.route('**/*', route => new URL(route.request().url()).origin === new URL(base).origin ? route.continue() : route.abort());
   const page = await context.newPage();
+  async function capture(name) {
+    // Full-page screenshots otherwise pin fixed UI at the current scroll offset.
+    await page.evaluate(()=>{
+      document.activeElement?.blur();
+      window.scrollTo({top:0,behavior:'instant'});
+      return new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)));
+    });
+    await page.screenshot({path:'test-results/'+name,fullPage:true});
+  }
   const errors=[], failures=[];
   page.on('pageerror',error=>errors.push(page.url()+': '+error.message));
   page.on('response',response=> { if(response.status()>=400 && response.url().startsWith(base)) failures.push(response.url()+': '+response.status()); });
@@ -19,7 +28,7 @@ const base = process.env.TEST_BASE_URL || 'http://127.0.0.1:8000/';
       await page.goto(base+file,{waitUntil:'load'});
       const overflow=await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth+1);
       assert(!overflow,`${file} horizontal overflow at ${width}px`);
-      if(['index.html','post-008.html','post-007.html'].includes(file)) await page.screenshot({path:`test-results/${file}-${width}.png`,fullPage:true});
+      if(['index.html','post-008.html','post-007.html'].includes(file)) await capture(`${file}-${width}.png`);
     }
   }
   await page.setViewportSize({width:390,height:844});
@@ -27,7 +36,7 @@ const base = process.env.TEST_BASE_URL || 'http://127.0.0.1:8000/';
   assert.equal(await page.locator('.ed-hero-name,.ed-feature-copy>p,.ed-note>p,.ed-tool-card>p,.ed-pelican figcaption>span').count(),0);
   await page.locator('[data-theme-toggle]').click();
   assert.equal(await page.locator('html').getAttribute('data-theme'),'dark');
-  await page.screenshot({path:'test-results/home-dark.png',fullPage:true});
+  await capture('home-dark.png');
   await page.reload();
   assert.equal(await page.locator('html').getAttribute('data-theme'),'dark');
   await page.goto(base+'post-008.html');
@@ -39,7 +48,7 @@ const base = process.env.TEST_BASE_URL || 'http://127.0.0.1:8000/';
   await page.waitForFunction(hash=>location.hash===hash,href);
   const top=await page.locator(href).evaluate(n=>n.getBoundingClientRect().top);
   assert(top>=0&&top<160,'TOC target hidden or not scrolled');
-  await page.screenshot({path:'test-results/article-dark.png',fullPage:true});
+  await capture('article-dark.png');
   await page.goto(base+'index.html');
   await page.locator('#navSearchBtn').click();
   await page.waitForURL('**/search.html');
@@ -72,7 +81,7 @@ const base = process.env.TEST_BASE_URL || 'http://127.0.0.1:8000/';
   await page.waitForFunction(()=>document.querySelector('#b64Output').value.length>0);
   const encrypted=await page.locator('#b64Output').inputValue();
   assert(encrypted.startsWith('V1lRA'));
-  await page.screenshot({path:'test-results/base64-encrypt-desktop.png',fullPage:true});
+  await capture('base64-encrypt-desktop.png');
   await page.locator('#b64Reuse').click();
   assert.equal(await page.locator('#b64Input').inputValue(),encrypted);
   assert.equal(await page.locator('#b64Password').inputValue(),'');
@@ -96,7 +105,7 @@ const base = process.env.TEST_BASE_URL || 'http://127.0.0.1:8000/';
   await page.setViewportSize({width:320,height:844});
   await page.getByRole('radio',{name:'密码加密',exact:true}).check();
   assert(!(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth+1)),'encryption overflows at 320px');
-  await page.screenshot({path:'test-results/base64-encrypt-mobile-dark.png',fullPage:true});
+  await capture('base64-encrypt-mobile-dark.png');
   // Model a slow cryptographic operation, then edit its source before completion.
   await page.evaluate(()=>{
     const original=crypto.subtle.encrypt.bind(crypto.subtle);
@@ -113,7 +122,7 @@ const base = process.env.TEST_BASE_URL || 'http://127.0.0.1:8000/';
   // Theme toggles are available across tools, with visible selection in both palettes.
   await page.locator('[data-theme-toggle]').click();
   await page.setViewportSize({width:390,height:844});
-  await page.screenshot({path:'test-results/base64-encrypt-mobile-light.png',fullPage:true});
+  await capture('base64-encrypt-mobile-light.png');
 
   assert.deepEqual(errors,[],'uncaught browser errors');
   assert.deepEqual(failures,[],'local resource failures');
