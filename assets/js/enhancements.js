@@ -1,1 +1,1 @@
-PLACEHOLDER_WILL_REPLACE
+test <svg>icon</svg> Figma probe
