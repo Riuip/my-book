@@ -4,9 +4,6 @@
       <canvas class="birthday-fireworks" id="birthdayFireworks" aria-hidden="true"></canvas>
       <div class="ed-wrap">
         <div class="ed-hero" id="defaultHero" aria-hidden="false">
-          <div class="ed-hero-copy">
-            <h1>记录生活。<br><span>也探索更多。</span></h1>
-          </div>
           <div class="ed-hero-actions"><a class="btn btn--primary" href="archive.html">浏览文章 <span aria-hidden="true">↗</span></a><a class="ed-text-link" href="#studio">探索工具 <span aria-hidden="true">↓</span></a></div>
         </div>
         {{birthday}}
@@ -31,7 +28,7 @@
 
     <section class="ed-section ed-studio-section" id="studio" aria-labelledby="studio-title">
       <div class="ed-wrap">
-        <div class="ed-section-head"><div><h2 id="studio-title">小工具，大有用。</h2></div><p class="ed-studio-lead">为日常，添一点便利。</p></div>
+        <div class="ed-section-head"><div><h2 id="studio-title">小工具，大有用。</h2></div></div>
 {{pelican}}
         <div class="ed-tool-grid">
           <a class="ed-tool-card" href="base64.html"><div class="ed-tool-art ed-tool-art--base64" aria-hidden="true"><div class="ed-mini-code"><span>Aa</span><span>⇄</span><span>64</span></div></div><div class="ed-tool-caption"><h3>Base64 与加密</h3><span aria-hidden="true">›</span></div></a>

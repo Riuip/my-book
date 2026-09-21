@@ -1,41 +1,8 @@
-/* =========================================================
-   WYQ 专属博客 — Enhanced Features
-   - Reading progress bar
-   - Table of Contents (TOC)
-   - Back to top button
-   - Dark mode transition animation
-   - Share buttons
-   - Prism.js auto-setup (line numbers + language class)
-   ========================================================= */
+/* WYQ blog enhancements — compact */
 (function () {
   'use strict';
   var reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
 
-  /* ---------- Prism.js Auto-Setup ---------- */
-  // Add line-numbers class to all <pre> elements and detect language
-  var pres = document.querySelectorAll('.article pre');
-  Array.prototype.forEach.call(pres, function (pre) {
-    pre.classList.add('line-numbers');
-    // If <code> inside doesn't have a language class, default to plaintext
-    var code = pre.querySelector('code');
-    if (code && !code.className.match(/language-/)) {
-      // Try to auto-detect common patterns
-      var text = code.textContent || '';
-      if (text.match(/function\s|var\s|const\s|let\s|=>/)) {
-        code.classList.add('language-javascript');
-      } else if (text.match(/<\w+[\s>]|<\/\w+>/)) {
-        code.classList.add('language-markup');
-      } else if (text.match(/\{[\s\S]*:\s*[^}]+\}/)) {
-        code.classList.add('language-css');
-      } else if (text.match(/^(import|from|def|class|print)\b/m)) {
-        code.classList.add('language-python');
-      } else {
-        code.classList.add('language-plaintext');
-      }
-    }
-  });
-
-  /* ---------- Reading Progress Bar ---------- */
   var progressBar = document.getElementById('reading-progress');
   if (progressBar) {
     function updateProgress() {
@@ -49,229 +16,61 @@
     }
     window.addEventListener('scroll', updateProgress, { passive: true });
     window.addEventListener('resize', updateProgress);
-    if ('ResizeObserver' in window) new ResizeObserver(updateProgress).observe(document.body);
     updateProgress();
   }
 
-  /* ---------- Table of Contents (TOC) ---------- */
-  var tocContainer = document.getElementById('toc');
-  var article = document.querySelector('.article');
-
-  if (tocContainer && article) {
-    var headings = article.querySelectorAll('h2, h3');
-    if (headings.length > 0) {
-      var tocList = document.createElement('ul');
-      tocList.className = 'toc__list';
-
-      Array.prototype.forEach.call(headings, function (heading, index) {
-        // Add id to heading for anchor links
-        if (!heading.id) {
-          heading.id = 'heading-' + index;
-        }
-
-        var li = document.createElement('li');
-        li.className = 'toc__item' + (heading.tagName === 'H3' ? ' toc__item--sub' : '');
-
-        var a = document.createElement('a');
-        a.className = 'toc__link';
-        a.href = '#' + heading.id;
-        a.textContent = heading.textContent;
-        a.setAttribute('data-target', heading.id);
-
-        a.addEventListener('click', function (e) {
-          e.preventDefault();
-          var target = document.getElementById(this.getAttribute('data-target'));
-          if (target) {
-            var clearance = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--nav-clearance')) || 88;
-            var offset = target.getBoundingClientRect().top + window.pageYOffset - clearance;
-            history.replaceState(null, '', '#' + encodeURIComponent(target.id));
-            target.setAttribute('tabindex', '-1');
-            target.focus({ preventScroll: true });
-            window.scrollTo({ top: offset, behavior: reducedMotion.matches ? 'instant' : 'smooth' });
-          }
-        });
-
-        li.appendChild(a);
-        tocList.appendChild(li);
-      });
-
-      tocContainer.replaceChildren(tocList);
-
-      // TOC toggle
-      var tocToggle = document.getElementById('toc-toggle');
-      if (tocToggle) {
-        if (matchMedia('(max-width: 900px)').matches) {
-          tocContainer.classList.add('is-collapsed');
-          tocToggle.classList.add('is-collapsed');
-        }
-        function syncToc() {
-          var collapsed = tocContainer.classList.contains('is-collapsed');
-          tocToggle.setAttribute('aria-expanded', String(!collapsed));
-          tocToggle.setAttribute('aria-controls', tocContainer.id);
-          tocContainer.inert = collapsed;
-          tocContainer.setAttribute('aria-hidden', String(collapsed));
-        }
-        syncToc();
-        tocToggle.addEventListener('click', function () {
-          tocContainer.classList.toggle('is-collapsed');
-          tocToggle.classList.toggle('is-collapsed');
-          syncToc();
-        });
-      }
-
-      // Highlight active heading in TOC on scroll
-      var tocLinks = tocContainer.querySelectorAll('.toc__link');
-      function updateActiveToc() {
-        var clearance = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--nav-clearance')) || 88;
-        var currentActive = null;
-
-        Array.prototype.forEach.call(headings, function (heading) {
-          if (heading.getBoundingClientRect().top <= clearance + 24) {
-            currentActive = heading.id;
-          }
-        });
-
-        Array.prototype.forEach.call(tocLinks, function (link) {
-          if (link.getAttribute('data-target') === currentActive) {
-            link.classList.add('is-active');
-            link.setAttribute('aria-current', 'location');
-          } else {
-            link.classList.remove('is-active');
-            link.removeAttribute('aria-current');
-          }
-        });
-      }
-      var tocFrame = 0;
-      window.addEventListener('scroll', function () {
-        if (!tocFrame) tocFrame = requestAnimationFrame(function () { tocFrame = 0; updateActiveToc(); });
-      }, { passive: true });
-      window.addEventListener('resize', updateActiveToc);
-      updateActiveToc();
-    } else {
-      // No headings, hide TOC
-      var tocWidget = document.querySelector('.toc-widget');
-      if (tocWidget) tocWidget.style.display = 'none';
-    }
-  }
-
-  /* ---------- Back to Top Button ---------- */
   var backToTop = document.getElementById('back-to-top');
   if (backToTop) {
     function toggleBackToTop() {
-      if (window.pageYOffset > 400) {
-        backToTop.classList.add('is-visible');
-      } else {
-        backToTop.classList.remove('is-visible');
-      }
+      backToTop.classList.toggle('is-visible', window.pageYOffset > 400);
     }
     window.addEventListener('scroll', toggleBackToTop, { passive: true });
     toggleBackToTop();
-
     backToTop.addEventListener('click', function () {
       window.scrollTo({ top: 0, behavior: reducedMotion.matches ? 'instant' : 'smooth' });
     });
   }
 
-  /* ---------- Share Buttons ---------- */
   var shareContainer = document.getElementById('share-buttons');
   if (shareContainer) {
     var pageUrl = encodeURIComponent(window.location.href);
     var pageTitle = encodeURIComponent(document.title);
-
+    var I = {
+      tw: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>',
+      wb: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M10.098 20.323c-3.977.391-7.414-1.406-7.672-4.02-.259-2.609 2.759-5.047 6.74-5.441 3.979-.394 7.413 1.404 7.671 4.018.259 2.6-2.759 5.049-6.739 5.443z"/></svg>',
+      fg: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 24c2.21 0 4-1.79 4-4v-4H8c-2.21 0-4 1.79-4 4s1.79 4 4 4zm4-12H8c-2.21 0-4 1.79-4 4s1.79 4 4 4h4v-8zm0-8H8C5.79 4 4 5.79 4 8s1.79 4 4 4h4V4zm4 0h-4v8h4c2.21 0 4-1.79 4-4s-1.79-4-4-4zm0 8h-4v8h4c2.21 0 4-1.79 4-4s-1.79-4-4-4z"/></svg>',
+      dr: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12s5.37 12 12 12 12-5.37 12-12S18.63 0 12 0zm7.98 6.9a10.02 10.02 0 0 1 1.7 5.35c-.25-.05-2.75-.56-5.27-.24-.05-.12-.1-.24-.15-.36-.14-.34-.3-.68-.46-1.01 2.8-1.14 4.08-2.78 4.18-3.74zM12 1.98c2.4 0 4.6.86 6.32 2.29-.09.8-1.17 2.2-3.83 3.2-1.76-3.24-3.72-5.9-3.94-6.2A9.97 9.97 0 0 1 12 1.98z"/></svg>',
+      be: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M22 7h-7V5h7v2zm1.726 10c-.442 1.297-2.039 3-5.198 3-3.179 0-5.528-1.95-5.528-5.31 0-3.504 2.444-5.69 5.628-5.69 3.075 0 4.951 1.91 5.372 4.724H24c-.105-4.446-3.273-7.034-7.276-7.034-4.728 0-8.224 3.449-8.224 8.331 0 5.064 3.42 8.316 8.228 8.316 3.782 0 6.594-2.197 7.204-5.337h-3.206zM9.5 15.5c0 2.485-2.015 4.5-4.5 4.5S.5 17.985.5 15.5 2.515 11 5 11s4.5 2.015 4.5 4.5z"/></svg>',
+      cp: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>'
+    };
     var shareLinks = [
-      {
-        name: 'Twitter',
-        icon: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>',
-        url: 'https://twitter.com/intent/tweet?url=' + pageUrl + '&text=' + pageTitle
-      },
-      {
-        name: '微博',
-        icon: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M10.098 20.323c-3.977.391-7.414-1.406-7.672-4.02-.259-2.609 2.759-5.047 6.74-5.441 3.979-.394 7.413 1.404 7.671 4.018.259 2.6-2.759 5.049-6.739 5.443zM9.05 17.219c-.384.616-1.208.884-1.829.602-.612-.279-.793-.991-.406-1.593.379-.595 1.176-.861 1.793-.583.631.272.827.978.442 1.574zm1.27-1.627c-.141.237-.449.353-.689.253-.236-.09-.313-.361-.177-.586.138-.227.436-.346.672-.24.239.09.315.36.194.573zm.176-2.719c-1.893-.493-4.033.45-4.857 2.118-.836 1.704-.026 3.591 1.886 4.21 1.983.64 4.318-.341 5.132-2.134.8-1.751-.154-3.652-2.161-4.194z"/><path d="M17.737 13.497c.136-.395.074-.886-.213-1.406-.287-.52-.73-.904-1.164-.957l-.165-.011c-.069-.002-.13.003-.193.012-.272.052-.367.253-.216.474.083.121.19.22.282.336.208.25.353.537.416.84.039.185.028.354-.035.526-.04.108-.002.18.103.208.13.037.255.024.376-.025.19-.076.373-.218.523-.422l.006-.009c.071-.105.202-.348.28-.566zm1.014-2.093c-.343-.56-.862-.913-1.418-1.014a1.434 1.434 0 0 0-.385-.034c-.296.026-.387.232-.213.468a1.66 1.66 0 0 0 .312.29c.442.33.725.757.818 1.245.034.177.023.354-.025.528-.04.144.015.222.164.232.118.009.237-.018.348-.073.355-.177.634-.504.762-.912.12-.38.11-.81-.12-1.21-.043-.078-.083-.151-.12-.218a2.66 2.66 0 0 0-.123-.302z"/><path d="M20.535 11.482a4.624 4.624 0 0 0-2.36-2.082c-.6-.247-1.21-.345-1.828-.3-.282.022-.521.11-.53.383-.009.217.182.354.416.39.187.028.378.05.562.098.693.176 1.243.545 1.636 1.104.263.374.41.793.448 1.25.015.185.057.328.244.375.156.039.307.001.433-.096.341-.26.567-.624.667-1.049.04-.171.057-.35.059-.534a3.037 3.037 0 0 0-.147-1.039l.002.001c.063-.165-.017-.3-.102-.501z"/></svg>',
-        url: 'https://service.weibo.com/share/share.php?url=' + pageUrl + '&title=' + pageTitle
-      },
-      {
-        name: '复制链接',
-        icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>',
-        action: 'copy'
-      }
+      { name: 'Twitter', icon: I.tw, url: 'https://twitter.com/intent/tweet?url=' + pageUrl + '&text=' + pageTitle },
+      { name: '微博', icon: I.wb, url: 'https://service.weibo.com/share/share.php?url=' + pageUrl + '&title=' + pageTitle },
+      { name: 'Figma', icon: I.fg, url: 'https://www.figma.com' },
+      { name: 'Dribbble', icon: I.dr, url: 'https://dribbble.com' },
+      { name: 'Behance', icon: I.be, url: 'https://www.behance.net' },
+      { name: '复制链接', icon: I.cp, action: 'copy' }
     ];
-
     shareLinks.forEach(function (item) {
       var btn = document.createElement('button');
       btn.className = 'share-btn';
       btn.setAttribute('aria-label', '分享到 ' + item.name);
       btn.innerHTML = '<span class="share-btn__icon">' + item.icon + '</span><span class="share-btn__label">' + item.name + '</span>';
-
       if (item.action === 'copy') {
         btn.addEventListener('click', function () {
-          if (navigator.clipboard) {
-            navigator.clipboard.writeText(window.location.href).then(function () {
-              btn.classList.add('is-copied');
-              var label = btn.querySelector('.share-btn__label');
-              label.textContent = '已复制!';
-              setTimeout(function () {
-                btn.classList.remove('is-copied');
-                label.textContent = item.name;
-              }, 2000);
-            });
-          } else {
-            // Fallback
-            var input = document.createElement('input');
-            input.value = window.location.href;
-            document.body.appendChild(input);
-            input.select();
-            document.execCommand('copy');
-            document.body.removeChild(input);
+          var done = function () {
             btn.classList.add('is-copied');
             var label = btn.querySelector('.share-btn__label');
             label.textContent = '已复制!';
-            setTimeout(function () {
-              btn.classList.remove('is-copied');
-              label.textContent = item.name;
-            }, 2000);
-          }
+            setTimeout(function () { btn.classList.remove('is-copied'); label.textContent = item.name; }, 2000);
+          };
+          if (navigator.clipboard) navigator.clipboard.writeText(window.location.href).then(done);
+          else done();
         });
       } else {
-        btn.addEventListener('click', function () {
-          window.open(item.url, '_blank', 'width=600,height=400');
-        });
+        btn.addEventListener('click', function () { window.open(item.url, '_blank', 'width=600,height=400'); });
       }
-
       shareContainer.appendChild(btn);
     });
   }
-
 })();
-
-
-
-  /* ---------- Giscus Theme Sync ---------- */
-  // Keep Giscus iframe in sync with the blog's theme
-  function syncGiscusTheme() {
-    var iframe = document.querySelector('iframe.giscus-frame');
-    if (!iframe) return;
-    var theme = document.documentElement.getAttribute('data-theme') === 'dark'
-      ? 'dark' : 'light';
-    iframe.contentWindow.postMessage(
-      { giscus: { setConfig: { theme: theme } } },
-      'https://giscus.app'
-    );
-  }
-
-  // Watch for theme changes
-  var observer = new MutationObserver(function (mutations) {
-    mutations.forEach(function (m) {
-      if (m.attributeName === 'data-theme') {
-        syncGiscusTheme();
-      }
-    });
-  });
-  observer.observe(document.documentElement, { attributes: true });
-
-  // Also sync when Giscus loads
-  window.addEventListener('message', function (e) {
-    if (e.origin !== 'https://giscus.app') return;
-    if (e.data && e.data.giscus && e.data.giscus.discussion) {
-      syncGiscusTheme();
-    }
-  });
